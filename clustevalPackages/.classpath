@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="program/Executable.java|program/ExecutableFinder.java|program/ExecutableFinderThread.java|run/config/RunConfig.java|run/config/ExecutionRunConfig.java|run/config/ClusteringRunConfig.java|run/config/ParameterOptimizationRunConfig.java|run/config/InternalParameterOptimizationRunConfig.java|run/config/AnalysisRunConfig.java|run/config/DataAnalysisRunConfig.java|run/config/RunAnalysisRunConfig.java|run/config/RunDataAnalysisRunConfig.java|run/config/" kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-6-sun-1.6.0.38"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/clustevalSVN"/>
 	<classpathentry kind="lib" path="/clusteval/lib/jansi-1.9.jar"/>
 	<classpathentry kind="lib" path="/clusteval/lib/jline-2.8-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="lib" path="/clusteval/lib/jline-2.8-SNAPSHOT.jar" sourcepath="/home/wiwie/Dropbox/workspace/ClusEvalFramework/lib/jline-2.8-SNAPSHOT-sources.jar"/>
@@ -40,5 +38,7 @@
 	<classpathentry kind="lib" path="/clusteval/lib/rJava/REngine.jar" sourcepath="/clusteval/lib/rJava"/>
 	<classpathentry kind="lib" path="/clusteval/lib/rJava/Rserve.jar" sourcepath="/clusteval/lib/rJava"/>
 	<classpathentry kind="lib" path="/clusteval/lib/transclust/TransClust.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/clusteval"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
