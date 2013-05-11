@@ -137,26 +137,7 @@ public class RepositorySupervisorThread extends SupervisorThread {
 			Map<String, Long> threadSleepTimes, final boolean checkOnce,
 			final boolean checkForRunResults) {
 		super(repository, checkForRunResults
-				? createList(DataSetFormatFinderThread.class,
-						DataSetTypeFinderThread.class,
-						DataSetFinderThread.class,
-						DataPreprocessorFinderThread.class,
-						DistanceMeasureFinderThread.class,
-						DataStatisticFinderThread.class,
-						RunStatisticFinderThread.class,
-						RunDataStatisticFinderThread.class,
-						RunResultFormatFinderThread.class,
-						ClusteringQualityMeasureFinderThread.class,
-						ParameterOptimizationMethodFinderThread.class,
-						DataSetConfigFinderThread.class,
-						GoldStandardConfigFinderThread.class,
-						DataConfigFinderThread.class,
-						RProgramFinderThread.class,
-						ProgramConfigFinderThread.class, RunFinderThread.class,
-						DataSetGeneratorFinderThread.class,
-						RunResultFinderThread.class, ContextFinderThread.class)
-				: createList(
-						// normal elements
+				? createList(ContextFinderThread.class,
 						DataSetFormatFinderThread.class,
 						DataSetTypeFinderThread.class,
 						DataSetFinderThread.class,
@@ -174,7 +155,27 @@ public class RepositorySupervisorThread extends SupervisorThread {
 						RProgramFinderThread.class,
 						ProgramConfigFinderThread.class, RunFinderThread.class,
 						DataSetGeneratorFinderThread.class,
-						ContextFinderThread.class), threadSleepTimes, checkOnce);
+						RunResultFinderThread.class) : createList(
+						// normal elements
+						ContextFinderThread.class,
+						DataSetFormatFinderThread.class,
+						DataSetTypeFinderThread.class,
+						DataSetFinderThread.class,
+						DataPreprocessorFinderThread.class,
+						DistanceMeasureFinderThread.class,
+						DataStatisticFinderThread.class,
+						RunStatisticFinderThread.class,
+						RunDataStatisticFinderThread.class,
+						RunResultFormatFinderThread.class,
+						ClusteringQualityMeasureFinderThread.class,
+						ParameterOptimizationMethodFinderThread.class,
+						DataSetConfigFinderThread.class,
+						GoldStandardConfigFinderThread.class,
+						DataConfigFinderThread.class,
+						RProgramFinderThread.class,
+						ProgramConfigFinderThread.class, RunFinderThread.class,
+						DataSetGeneratorFinderThread.class), threadSleepTimes,
+				checkOnce);
 
 		this.threads.put(RunSchedulerThread.class, new RunSchedulerThread(this,
 				this.repository, ClustevalBackendServer
