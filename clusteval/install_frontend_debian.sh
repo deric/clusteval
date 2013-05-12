@@ -9,7 +9,6 @@ MYSQL_NEW_READ_USER='clustEvalRead'
 MYSQL_NEW_READ_USER_PW='clustEvalRead'
 # website does rely on this database name
 DB_NAME='clustEval'
-SVN_USER='wiwiec'
 
 # install required aptitude packages
 echo 'Installing aptitude packages...'
@@ -42,13 +41,13 @@ mysql -u $MYSQL_ROOT_USER -p --execute "CREATE DATABASE $DB_NAME;"
 
 # checkout website
 echo 'Checking out Website into $INSTALL_DIRECTORY ...'
-svn export https://svn.csb.mpi-inf.mpg.de/CSB/ClustEval/trunk/website_rails $INSTALL_DIRECTORY --username $SVN_USER
+git clone https://github.com/wiwie/clustevalWebsite $INSTALL_DIRECTORY
+cd $INSTALL_DIRECTORY/clustevalWebsite
 sudo rm -R $INSTALL_DIRECTORY/tmp
 /var/lib/gems/$RUBY_VERSION/bin/rake tmp:create
 
 # install gems required by frontend
 echo 'Installing gems required by website...'
-cd $INSTALL_DIRECTORY
 sudo bundle install --no-deployment
 sudo bundle install --deployment
 
