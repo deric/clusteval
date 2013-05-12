@@ -3,8 +3,8 @@ clusteval
 
 An Integrated Clustering Evaluation Framework for Cluster Analysis
 
-This GIT repository contains three eclipse plugins for clusteval:
+This repository contains the eclipse java project of clusteval. This includes the sources of the backend server and client.
 
-clusteval - the core implementations of clusteval
-clustevalPackages - the default components that are dynamically loaded by clusteval during runtime. this includes for example input/output formats, distance measures, parameter optimization methods. This eclipse project depends on the clusteval project.
-clustevalWebsite - the Ruby on Rails website of clusteval, containing the DB schema. the website can be installed using the standard commands of Ruby on Rails
+The eclipse java project for the components that can be loaded by the clusteval server dynamically during runtime is contained in this repository: https://github.com/wiwie/clustevalPackages
+
+The frontend of clusteval including the Ruby on Rails website can be found in: https://github.com/wiwie/clustevalWebsite
