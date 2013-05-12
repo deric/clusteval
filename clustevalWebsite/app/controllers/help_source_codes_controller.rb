@@ -1,2 +1,0 @@
-class HelpSourceCodesController < ApplicationController
-end

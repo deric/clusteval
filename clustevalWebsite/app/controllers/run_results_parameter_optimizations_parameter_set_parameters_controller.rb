@@ -1,3 +1,0 @@
-class RunResultsParameterOptimizationsParameterSetParametersController < ApplicationController
-	before_filter :require_user
-end
