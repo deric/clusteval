@@ -12,7 +12,7 @@ DB_NAME='clustEval'
 
 # install required aptitude packages
 echo 'Installing aptitude packages...'
-sudo apt-get install apache2 ruby$RUBY_VERSION-full subversion git mysql-server libxml2-dev libxslt1-dev python g++ make libcurl4-openssl-dev libssl-dev zlib1g-dev apache2-prefork-dev libapr1-dev libaprutil1-dev
+sudo apt-get install apache2 ruby$RUBY_VERSION-full git mysql-server libxml2-dev libxslt1-dev python g++ make libcurl4-openssl-dev libssl-dev zlib1g-dev apache2-prefork-dev libapr1-dev libaprutil1-dev
 
 # create symlinks for installed binaries
 echo 'Setting up symlinks..'
