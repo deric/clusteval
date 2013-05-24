@@ -52,6 +52,12 @@ import de.clusteval.utils.RNotAvailableException;
 public abstract class DataSet extends RepositoryObject {
 
 	/**
+	 * Every data set needs an alias, that is used to represent the data set as
+	 * a short string, for example on the website.
+	 */
+	protected String alias;
+
+	/**
 	 * The format of this dataset. The format for a dataset is required by the
 	 * framework in order for it to be able to convert it to the internal
 	 * standard format.
@@ -100,6 +106,8 @@ public abstract class DataSet extends RepositoryObject {
 	 *            The change date of this dataset is used for equality checks.
 	 * @param absPath
 	 *            The absolute path of this dataset.
+	 * @param alias
+	 *            A short alias name for this data set.
 	 * @param dsFormat
 	 *            The format of this dataset.
 	 * @param dsType
@@ -107,11 +115,12 @@ public abstract class DataSet extends RepositoryObject {
 	 * @throws RegisterException
 	 */
 	public DataSet(final Repository repository, final boolean register,
-			final long changeDate, final File absPath,
+			final long changeDate, final File absPath, final String alias,
 			final DataSetFormat dsFormat, final DataSetType dsType)
 			throws RegisterException {
 		super(repository, false, changeDate, absPath);
 
+		this.alias = alias;
 		this.datasetFormat = dsFormat;
 		this.datasetType = dsType;
 
@@ -237,6 +246,14 @@ public abstract class DataSet extends RepositoryObject {
 			Repository repo = Repository.getRepositoryForPath(absPath
 					.getAbsolutePath());
 
+			String alias;
+			if (attributeValues.containsKey("alias"))
+				alias = attributeValues.get("alias");
+			else
+				throw new DataSetConfigurationException(
+						"No alias specified for data set "
+								+ absPath.getAbsolutePath());
+
 			DataSetFormat dsFormat;
 			if (attributeValues.containsKey("dataSetFormat")) {
 				if (attributeValues.containsKey("dataSetFormatVersion"))
@@ -280,10 +297,10 @@ public abstract class DataSet extends RepositoryObject {
 			if (RelativeDataSetFormat.class.isAssignableFrom(dsFormat
 					.getClass()))
 				result = new RelativeDataSet(repo, true, changeDate, absPath,
-						(RelativeDataSetFormat) dsFormat, dsType);
+						alias, (RelativeDataSetFormat) dsFormat, dsType);
 			else
 				result = new AbsoluteDataSet(repo, true, changeDate, absPath,
-						(AbsoluteDataSetFormat) dsFormat, dsType);
+						alias, (AbsoluteDataSetFormat) dsFormat, dsType);
 			result = repo.getRegisteredObject(result);
 			LoggerFactory.getLogger(DataSet.class).debug("Dataset parsed");
 			return result;

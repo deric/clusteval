@@ -180,7 +180,7 @@ public class TestDataSet extends TestRepositoryObject {
 								.getAbsoluteFile().lastModified(),
 						new File(
 								"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
-								.getAbsoluteFile(),
+								.getAbsoluteFile(), "zachary",
 						(RelativeDataSetFormat) (DataSetFormat.parseFromString(
 								repository, "RowSimDataSetFormat")),
 						DataSetType.parseFromString(repository,

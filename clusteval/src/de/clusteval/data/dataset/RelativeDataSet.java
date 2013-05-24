@@ -38,6 +38,8 @@ public class RelativeDataSet extends DataSet {
 	 *            The change date of this dataset is used for equality checks.
 	 * @param absPath
 	 *            The absolute path of this dataset.
+	 * @param alias
+	 *            A short alias name for this data set.
 	 * @param dsFormat
 	 *            The format of this dataset.
 	 * @param dsType
@@ -45,9 +47,11 @@ public class RelativeDataSet extends DataSet {
 	 * @throws RegisterException
 	 */
 	public RelativeDataSet(Repository repository, final boolean register,
-			long changeDate, File absPath, RelativeDataSetFormat dsFormat,
-			DataSetType dsType) throws RegisterException {
-		super(repository, register, changeDate, absPath, dsFormat, dsType);
+			long changeDate, File absPath, final String alias,
+			RelativeDataSetFormat dsFormat, DataSetType dsType)
+			throws RegisterException {
+		super(repository, register, changeDate, absPath, alias, dsFormat,
+				dsType);
 	}
 
 	/**

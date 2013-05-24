@@ -43,6 +43,8 @@ public class AbsoluteDataSet extends DataSet {
 	 *            Whether this dataset should be registered in the repository.
 	 * @param changeDate
 	 *            The change date of this dataset is used for equality checks.
+	 * @param alias
+	 *            A short alias name for this data set.
 	 * @param absPath
 	 *            The absolute path of this dataset.
 	 * @param dsFormat
@@ -52,9 +54,11 @@ public class AbsoluteDataSet extends DataSet {
 	 * @throws RegisterException
 	 */
 	public AbsoluteDataSet(Repository repository, final boolean register,
-			long changeDate, File absPath, AbsoluteDataSetFormat dsFormat,
-			DataSetType dsType) throws RegisterException {
-		super(repository, register, changeDate, absPath, dsFormat, dsType);
+			long changeDate, File absPath, final String alias,
+			AbsoluteDataSetFormat dsFormat, DataSetType dsType)
+			throws RegisterException {
+		super(repository, register, changeDate, absPath, alias, dsFormat,
+				dsType);
 	}
 
 	/**

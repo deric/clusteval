@@ -5,7 +5,6 @@
 # sudo apt-get update
 # sudo apt-get install r-base 
 
-# sudo apt-get install subversion
 # sudo apt-get install openjdk-6-jre
 
 # sudo R
