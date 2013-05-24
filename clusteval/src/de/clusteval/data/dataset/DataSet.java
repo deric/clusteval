@@ -3,6 +3,7 @@ package de.clusteval.data.dataset;
 import java.io.File;
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -253,6 +254,16 @@ public abstract class DataSet extends RepositoryObject {
 				throw new DataSetConfigurationException(
 						"No alias specified for data set "
 								+ absPath.getAbsolutePath());
+			// check whether the alias is already taken by another dataset ->
+			// throw exception
+			Collection<DataSet> dataSets = repo.getDataSets();
+			for (DataSet ds : dataSets)
+				if (ds.getAlias().equals(alias))
+					throw new DataSetConfigurationException("The alias ("
+							+ alias + ") of the data set "
+							+ absPath.getAbsolutePath()
+							+ " is already taken by the data set "
+							+ ds.getAbsolutePath());
 
 			DataSetFormat dsFormat;
 			if (attributeValues.containsKey("dataSetFormat")) {
