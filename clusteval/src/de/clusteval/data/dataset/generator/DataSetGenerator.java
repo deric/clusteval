@@ -43,6 +43,11 @@ public abstract class DataSetGenerator extends RepositoryObject {
 	private String fileName;
 
 	/**
+	 * The alias of the data set that is to be generated.
+	 */
+	private String alias;
+
+	/**
 	 * @param repository
 	 * @param register
 	 * @param changeDate
@@ -174,6 +179,7 @@ public abstract class DataSetGenerator extends RepositoryObject {
 
 		this.folderName = cmd.getOptionValue("folderName");
 		this.fileName = cmd.getOptionValue("fileName");
+		this.alias = cmd.getOptionValue("alias");
 
 		this.handleOptions(cmd);
 
@@ -229,6 +235,13 @@ public abstract class DataSetGenerator extends RepositoryObject {
 				.withDescription("The name of the dataset file to generate.");
 		option = OptionBuilder.create("fileName");
 		options.addOption(option);
+
+		OptionBuilder.withArgName("alias");
+		OptionBuilder.isRequired();
+		OptionBuilder.hasArg();
+		OptionBuilder.withDescription("The alias of the data set.");
+		option = OptionBuilder.create("alias");
+		options.addOption(option);
 	}
 
 	/**
@@ -252,6 +265,10 @@ public abstract class DataSetGenerator extends RepositoryObject {
 
 	protected String getFolderName() {
 		return this.folderName;
+	}
+
+	protected String getAlias() {
+		return this.alias;
 	}
 
 	/**
