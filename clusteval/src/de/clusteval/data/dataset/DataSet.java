@@ -804,6 +804,14 @@ public abstract class DataSet extends RepositoryObject {
 	}
 
 	/**
+	 * @return The alias of this data set.
+	 * @see #alias
+	 */
+	public String getAlias() {
+		return this.alias;
+	}
+
+	/**
 	 * @return This dataset in the internal standard format.
 	 * @see #thisInStandardFormat
 	 */
