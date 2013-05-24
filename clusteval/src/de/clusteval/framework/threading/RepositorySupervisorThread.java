@@ -137,8 +137,8 @@ public class RepositorySupervisorThread extends SupervisorThread {
 			Map<String, Long> threadSleepTimes, final boolean checkOnce,
 			final boolean checkForRunResults) {
 		super(repository, checkForRunResults
-				? createList(ContextFinderThread.class,
-						DataSetFormatFinderThread.class,
+				? createList(DataSetFormatFinderThread.class,
+						ContextFinderThread.class,
 						DataSetTypeFinderThread.class,
 						DataSetFinderThread.class,
 						DataPreprocessorFinderThread.class,
