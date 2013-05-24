@@ -29,6 +29,7 @@ import de.clusteval.framework.repository.RepositoryEvent;
 import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.RepositoryRemoveEvent;
 import de.clusteval.framework.repository.RepositoryReplaceEvent;
+import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.NamedDoubleAttribute;
 import de.clusteval.utils.NamedIntegerAttribute;
@@ -256,9 +257,17 @@ public abstract class DataSet extends RepositoryObject {
 								+ absPath.getAbsolutePath());
 			// check whether the alias is already taken by another dataset ->
 			// throw exception
-			Collection<DataSet> dataSets = repo.getDataSets();
+			Collection<DataSet> dataSets;
+			if (repo instanceof RunResultRepository)
+				dataSets = repo.getParent().getDataSets();
+			else
+				dataSets = repo.getDataSets();
+
 			for (DataSet ds : dataSets)
-				if (ds.getAlias().equals(alias))
+				if (!(repo instanceof RunResultRepository)
+						&& !(ds.getAbsolutePath().equals(absPath
+								.getAbsolutePath()))
+						&& ds.getAlias().equals(alias))
 					throw new DataSetConfigurationException("The alias ("
 							+ alias + ") of the data set "
 							+ absPath.getAbsolutePath()

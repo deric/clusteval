@@ -1,3 +1,4 @@
+// alias = brown
 // dataSetFormat = RowSimDataSetFormat
 // dataSetType = ProteinSequenceSimilarityDataSetType
 // dataSetFormatVersion = 1
