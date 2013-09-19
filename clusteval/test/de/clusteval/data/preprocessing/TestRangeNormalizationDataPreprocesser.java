@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2013 Christian Wiwie.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl.html
+ * 
+ * Contributors:
+ *     Christian Wiwie - initial API and implementation
+ ******************************************************************************/
 /**
  * 
  */
@@ -89,6 +99,39 @@ public class TestRangeNormalizationDataPreprocesser {
 
 		ds.setAbsolutePath(new File(
 				"testCaseRepository/data/datasets/synthetic/cassini250.strip"));
+
+		DataPreprocessor proc = DataPreprocessor.parseFromString(repo,
+				"RangeNormalizationDataPreprocessor");
+
+		DataSet newDs = proc.preprocess(ds);
+		Assert.assertTrue(new File(newDs.getAbsolutePath()).exists());
+	}
+
+	@Test
+	public void testSesameRange() throws RepositoryAlreadyExistsException,
+			InvalidRepositoryException, RepositoryConfigNotFoundException,
+			RepositoryConfigurationException, DataSetNotFoundException,
+			UnknownDataSetFormatException, DataSetConfigurationException,
+			NoDataSetException, NumberFormatException, RegisterException,
+			NoRepositoryFoundException, UnknownDataSetTypeException,
+			IOException, UnknownDataPreprocessorException {
+		ClustevalBackendServer.logLevel(Level.INFO);
+		Repository repo = new Repository(new File(
+				"/home/chris/Sesame/clusteval").getAbsolutePath(), null);
+		repo.initialize();
+
+		// File f = new File(
+		// "/home/chris/Sesame/clusteval/results/06_29_2013-10_20_55_sesame_rangeNorm/inputs/Hierarchical_Clustering_sesame_rangeNorm/sesame/sesame.num.imputed.txt");
+
+		// DataSet ds = DataSet.parseFromFile(f);
+		DataSet ds = repo.getDataSetWithName("sesame/sesame.num.imputed.txt");
+
+		DataSetAttributeFilterer filterer = new DataSetAttributeFilterer(
+				ds.getAbsolutePath());
+		filterer.process();
+
+		ds.setAbsolutePath(new File(
+				"/home/chris/Sesame/clusteval/data/datasets/sesame/sesame.num.imputed.txt.strip"));
 
 		DataPreprocessor proc = DataPreprocessor.parseFromString(repo,
 				"RangeNormalizationDataPreprocessor");
