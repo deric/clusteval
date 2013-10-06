@@ -5166,6 +5166,8 @@ public class Repository {
 			generator = DataStatistic.parseFromString(this,
 					classObject.getSimpleName());
 
+			if (generator.getRequiredRlibraries().isEmpty())
+				return true;
 			// ensure that all R libraries are available
 			MyRengine rEngine;
 			try {
@@ -6734,6 +6736,8 @@ public class Repository {
 			generator = DataSetGenerator.parseFromString(this,
 					classObject.getSimpleName());
 
+			if (generator.getRequiredRlibraries().isEmpty())
+				return true;
 			// ensure that all R libraries are available
 			MyRengine rEngine;
 			try {
@@ -6788,6 +6792,8 @@ public class Repository {
 			preprocessor = DataPreprocessor.parseFromString(this,
 					classObject.getSimpleName());
 
+			if (preprocessor.getRequiredRlibraries().isEmpty())
+				return true;
 			// ensure that all R libraries are available
 			MyRengine rEngine;
 			try {
@@ -6842,6 +6848,8 @@ public class Repository {
 			generator = RProgram.parseFromString(this,
 					classObject.getSimpleName());
 
+			if (generator.getRequiredRlibraries().isEmpty())
+				return true;
 			// ensure that all R libraries are available
 			MyRengine rEngine;
 			try {
@@ -6896,6 +6904,8 @@ public class Repository {
 			measure = ClusteringQualityMeasure.parseFromString(this,
 					classObject.getSimpleName());
 
+			if (measure.getRequiredRlibraries().isEmpty())
+				return true;
 			// ensure that all R libraries are available
 			MyRengine rEngine;
 			try {
@@ -6950,6 +6960,8 @@ public class Repository {
 			generator = DistanceMeasure.parseFromString(this,
 					classObject.getSimpleName());
 
+			if (generator.getRequiredRlibraries().isEmpty())
+				return true;
 			// ensure that all R libraries are available
 			MyRengine rEngine;
 			try {
@@ -7004,6 +7016,8 @@ public class Repository {
 			generator = RunDataStatistic.parseFromString(this,
 					classObject.getSimpleName());
 
+			if (generator.getRequiredRlibraries().isEmpty())
+				return true;
 			// ensure that all R libraries are available
 			MyRengine rEngine;
 			try {
@@ -7058,6 +7072,8 @@ public class Repository {
 			generator = RunStatistic.parseFromString(this,
 					classObject.getSimpleName());
 
+			if (generator.getRequiredRlibraries().isEmpty())
+				return true;
 			// ensure that all R libraries are available
 			MyRengine rEngine;
 			try {
