@@ -92,6 +92,7 @@ import de.clusteval.framework.repository.config.RepositoryConfigurationException
 import de.clusteval.framework.threading.SupervisorThread;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.Program;
+import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
 import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
@@ -144,8 +145,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	protected static BackendServerConfig config = new BackendServerConfig();
 
 	protected static String VERSION = "1.0 build1/"
-			+ Formatter.currentTimeAsString(true, "MM.dd.yyyy",
-					Locale.UK);
+			+ Formatter.currentTimeAsString(true, "MM.dd.yyyy", Locale.UK);
 
 	/**
 	 * @return The configuration of this backend server.
@@ -856,6 +856,8 @@ public class ClustevalBackendServer implements IBackendServer {
 		} catch (UnknownContextException e) {
 			e.printStackTrace();
 		} catch (IncompatibleContextException e) {
+			e.printStackTrace();
+		} catch (UnknownParameterType e) {
 			e.printStackTrace();
 		}
 

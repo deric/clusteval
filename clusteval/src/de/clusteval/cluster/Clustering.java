@@ -31,6 +31,7 @@ import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.framework.repository.Repository;
+import de.clusteval.program.ParameterSet;
 
 /**
  * A clustering contains several clusters. Every cluster contains cluster items.
@@ -352,7 +353,7 @@ public class Clustering implements Iterable<Cluster> {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public static Pair<Map<String, Double>, Clustering> parseFromFile(
+	public static Pair<ParameterSet, Clustering> parseFromFile(
 			final Repository repository, final File absFilePath,
 			final boolean parseQualities) throws IOException {
 		ClusteringParser parser = new ClusteringParser(repository,

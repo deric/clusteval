@@ -196,7 +196,7 @@ public class TestParameterOptimizationMethod {
 		Assert.assertTrue(method.hasNext());
 		ParameterSet paramSet = method.next();
 		ParameterSet expected = new ParameterSet();
-		expected.put("T", 0.21875);
+		expected.put("T", "0.21875");
 		Assert.assertEquals(expected, paramSet);
 
 	}
@@ -322,7 +322,7 @@ public class TestParameterOptimizationMethod {
 				0.9158869161844035};
 		for (double T : thresholds) {
 			ParameterSet paramSet = new ParameterSet();
-			paramSet.put("T", T);
+			paramSet.put("T", T + "");
 			expectedParameterSets.add(paramSet);
 		}
 
@@ -438,7 +438,7 @@ public class TestParameterOptimizationMethod {
 		double[] thresholds = new double[]{0.9158869161844035};
 		for (double T : thresholds) {
 			ParameterSet paramSet = new ParameterSet();
-			paramSet.put("T", T);
+			paramSet.put("T", T + "");
 			expectedParameterSets.add(paramSet);
 		}
 
@@ -648,7 +648,7 @@ public class TestParameterOptimizationMethod {
 		double[] thresholds = new double[]{0.005706059388063329};
 		for (double T : thresholds) {
 			ParameterSet paramSet = new ParameterSet();
-			paramSet.put("T", T);
+			paramSet.put("T", T + "");
 			expectedParameterSets.add(paramSet);
 		}
 

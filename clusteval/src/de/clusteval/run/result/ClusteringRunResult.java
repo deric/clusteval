@@ -55,6 +55,7 @@ import de.clusteval.framework.repository.config.RepositoryConfigurationException
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
+import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
 import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
@@ -386,6 +387,7 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	 * @throws IncompatibleDataSetConfigPreprocessorException
 	 * @throws UnknownContextException
 	 * @throws IncompatibleContextException
+	 * @throws UnknownParameterType
 	 */
 	public static Run parseFromRunResultFolder(
 			final Repository parentRepository, final File runResultFolder,
@@ -414,7 +416,8 @@ public class ClusteringRunResult extends ExecutionRunResult {
 			NumberFormatException, NoDataSetException,
 			UnknownRunDataStatisticException, UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
-			UnknownContextException, IncompatibleContextException {
+			UnknownContextException, IncompatibleContextException,
+			UnknownParameterType {
 
 		Repository childRepository = new RunResultRepository(
 				runResultFolder.getAbsolutePath(), parentRepository);
@@ -466,7 +469,7 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	public void loadIntoMemory() {
 		if (absPath.exists()) {
 			try {
-				final Pair<Map<String, Double>, Clustering> pair = Clustering
+				final Pair<ParameterSet, Clustering> pair = Clustering
 						.parseFromFile(repository, absPath, true);
 
 				ParameterSet paramSet = new ParameterSet();

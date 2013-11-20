@@ -97,7 +97,7 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 				String[] paramSplit = StringExt.split(value[1], ",");
 				for (int pos = 0; pos < paramSplit.length; pos++) {
 					ProgramParameter<?> p = this.parameters.get(pos);
-					paramSet.put(p.getName(), Double.valueOf(paramSplit[pos]));
+					paramSet.put(p.getName(), paramSplit[pos]);
 				}
 
 				ClusteringQualitySet qualitySet = new ClusteringQualitySet();

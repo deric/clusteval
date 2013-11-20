@@ -56,6 +56,7 @@ import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.program.NoOptimizableProgramParameterException;
+import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
 import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
@@ -75,8 +76,9 @@ import file.FileUtils;
  * @author Christian Wiwie
  * 
  */
-public class RunDataAnalysisRunResult extends
-		AnalysisRunResult<Pair<List<String>, List<String>>, RunDataStatistic> {
+public class RunDataAnalysisRunResult
+		extends
+			AnalysisRunResult<Pair<List<String>, List<String>>, RunDataStatistic> {
 
 	/**
 	 * @param repository
@@ -204,6 +206,7 @@ public class RunDataAnalysisRunResult extends
 	 * @throws IncompatibleDataSetConfigPreprocessorException
 	 * @throws UnknownContextException
 	 * @throws IncompatibleContextException
+	 * @throws UnknownParameterType
 	 */
 	public static RunDataAnalysisRunResult parseFromRunResultFolder(
 			final Repository parentRepository, final File runResultFolder)
@@ -233,7 +236,8 @@ public class RunDataAnalysisRunResult extends
 			UnknownRunDataStatisticException, RunResultParseException,
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
-			UnknownContextException, IncompatibleContextException {
+			UnknownContextException, IncompatibleContextException,
+			UnknownParameterType {
 		Repository childRepository = new RunResultRepository(
 				runResultFolder.getAbsolutePath(), parentRepository);
 		childRepository.initialize();

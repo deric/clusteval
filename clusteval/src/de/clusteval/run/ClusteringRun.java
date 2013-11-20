@@ -54,6 +54,7 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
+import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
 import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
@@ -232,6 +233,7 @@ public class ClusteringRun extends ExecutionRun {
 	 * @throws IncompatibleDataSetConfigPreprocessorException
 	 * @throws UnknownContextException
 	 * @throws IncompatibleContextException
+	 * @throws UnknownParameterType
 	 */
 	public static Run parseFromFile(final File absPath)
 			throws ConfigurationException, IOException,
@@ -249,7 +251,8 @@ public class ClusteringRun extends ExecutionRun {
 			UnknownDataSetTypeException, NumberFormatException,
 			NoDataSetException, UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
-			UnknownContextException, IncompatibleContextException {
+			UnknownContextException, IncompatibleContextException,
+			UnknownParameterType {
 		Logger log = LoggerFactory.getLogger(ClusteringRun.class);
 		log.debug("Parsing run \"" + absPath + "\"");
 

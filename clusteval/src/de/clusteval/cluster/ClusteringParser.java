@@ -16,7 +16,6 @@ package de.clusteval.cluster;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +28,7 @@ import de.clusteval.cluster.quality.ClusteringQualitySet;
 import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.Repository;
+import de.clusteval.program.ParameterSet;
 
 /**
  * A parser for files containing parameter sets and clusterings.
@@ -44,7 +44,7 @@ public class ClusteringParser extends TextFileParser {
 	/**
 	 * This variable holds the results after parsing
 	 */
-	protected Pair<Map<String, Double>, Clustering> result;
+	protected Pair<ParameterSet, Clustering> result;
 
 	/**
 	 * A temporary variable of no use after parsing.
@@ -102,10 +102,9 @@ public class ClusteringParser extends TextFileParser {
 			result = new Clustering();
 			String[] params = parameterString.split(",");
 
-			Map<String, Double> paramValues = new HashMap<String, Double>();
+			ParameterSet paramValues = new ParameterSet();
 			for (int pos = 0; pos < this.params.size(); pos++) {
-				paramValues.put(this.params.get(pos), Double.valueOf(Double
-						.valueOf(params[pos]).doubleValue()));
+				paramValues.put(this.params.get(pos), params[pos]);
 			}
 
 			String clusteringString = value[0];
@@ -171,7 +170,7 @@ public class ClusteringParser extends TextFileParser {
 	/**
 	 * @return A map containing parameter sets and corresponding clusterings.
 	 */
-	public Pair<Map<String, Double>, Clustering> getClusterings() {
+	public Pair<ParameterSet, Clustering> getClusterings() {
 		return this.result;
 	}
 }

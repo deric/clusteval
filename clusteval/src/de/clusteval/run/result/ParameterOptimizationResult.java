@@ -60,6 +60,7 @@ import de.clusteval.framework.repository.config.RepositoryConfigNotFoundExceptio
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.ParameterSet;
+import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
 import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
@@ -81,8 +82,9 @@ import file.FileUtils;
  * 
  */
 
-public class ParameterOptimizationResult extends ExecutionRunResult implements
-		Iterable<Pair<ParameterSet, ClusteringQualitySet>> {
+public class ParameterOptimizationResult extends ExecutionRunResult
+		implements
+			Iterable<Pair<ParameterSet, ClusteringQualitySet>> {
 
 	/**
 	 * @param parentRepository
@@ -136,6 +138,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult implements
 	 * @throws IncompatibleDataSetConfigPreprocessorException
 	 * @throws UnknownContextException
 	 * @throws IncompatibleContextException
+	 * @throws UnknownParameterType
 	 */
 	public static Run parseFromRunResultFolder(
 			final Repository parentRepository, final File runResultFolder,
@@ -167,7 +170,8 @@ public class ParameterOptimizationResult extends ExecutionRunResult implements
 			UnknownRunDataStatisticException, RunResultParseException,
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
-			UnknownContextException, IncompatibleContextException {
+			UnknownContextException, IncompatibleContextException,
+			UnknownParameterType {
 
 		Repository childRepository = new RunResultRepository(
 				runResultFolder.getAbsolutePath(), parentRepository);
@@ -656,7 +660,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult implements
 		try {
 			parser = new ParameterOptimizationResultParser(method,
 					this.getRun(), this, absPath.getAbsolutePath(),
-					new int[] {}, new int[] {}, parseClusterings,
+					new int[]{}, new int[]{}, parseClusterings,
 					storeClusterings);
 			parser.process();
 		} catch (IOException e) {
@@ -793,8 +797,9 @@ public class ParameterOptimizationResult extends ExecutionRunResult implements
 	}
 }
 
-class ParameterOptimizationResultIterator implements
-		Iterator<Pair<ParameterSet, ClusteringQualitySet>> {
+class ParameterOptimizationResultIterator
+		implements
+			Iterator<Pair<ParameterSet, ClusteringQualitySet>> {
 
 	protected ParameterOptimizationResult result;
 
