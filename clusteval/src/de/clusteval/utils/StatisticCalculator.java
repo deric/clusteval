@@ -53,6 +53,7 @@ import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.program.NoOptimizableProgramParameterException;
+import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
 import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
@@ -191,6 +192,7 @@ public abstract class StatisticCalculator<T extends Statistic>
 	 * @throws UnknownContextException
 	 * @throws REngineException
 	 * @throws RNotAvailableException
+	 * @throws UnknownParameterType
 	 */
 	public T calculate() throws IncompatibleDataConfigDataStatisticException,
 			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
@@ -221,7 +223,7 @@ public abstract class StatisticCalculator<T extends Statistic>
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleContextException, UnknownContextException,
-			REngineException, RNotAvailableException {
+			REngineException, RNotAvailableException, UnknownParameterType {
 		this.lastResult = calculateResult();
 		return this.lastResult;
 	}
@@ -281,6 +283,7 @@ public abstract class StatisticCalculator<T extends Statistic>
 	 * @throws UnknownContextException
 	 * @throws REngineException
 	 * @throws RNotAvailableException
+	 * @throws UnknownParameterType
 	 */
 	protected abstract T calculateResult()
 			throws IncompatibleDataConfigDataStatisticException,
@@ -312,7 +315,7 @@ public abstract class StatisticCalculator<T extends Statistic>
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
-			REngineException, RNotAvailableException;
+			REngineException, RNotAvailableException, UnknownParameterType;
 
 	/**
 	 * @param absFolderPath

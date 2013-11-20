@@ -56,6 +56,7 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.program.NoOptimizableProgramParameterException;
+import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
 import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
@@ -241,7 +242,7 @@ public abstract class RunDataStatisticCalculator<T extends RunDataStatistic>
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleContextException, UnknownContextException,
-			RNotAvailableException, REngineException {
+			RNotAvailableException, REngineException, UnknownParameterType {
 		return super.calculate();
 	}
 

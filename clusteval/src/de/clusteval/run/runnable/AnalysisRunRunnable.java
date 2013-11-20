@@ -59,6 +59,7 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.program.NoOptimizableProgramParameterException;
+import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
 import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
@@ -335,6 +336,9 @@ public abstract class AnalysisRunRunnable<T extends Statistic, R extends RunResu
 				e.printStackTrace();
 			} catch (RNotAvailableException e) {
 			} catch (REngineException e) {
+			} catch (UnknownParameterType e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			} finally {
 				currentPos++;
 				int iterationPercent = (int) (currentPos
