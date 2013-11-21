@@ -17,7 +17,6 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -134,7 +133,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 * The ordering of this list is assumed to be the same as the ordering of
 	 * {@link #params}.
 	 */
-	protected int[] iterationPerParameter;
+	protected int totalIterationCount;
 
 	/**
 	 * The parameters of the program encapsulated by the program configuration
@@ -201,7 +200,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 			final ProgramConfig programConfig, final DataConfig dataConfig,
 			final List<ProgramParameter<?>> params,
 			final ClusteringQualityMeasure optimizationCriterion,
-			final int[] iterationPerParameter, final boolean isResume)
+			final int totalIterationCount, final boolean isResume)
 			throws RegisterException {
 		super(repository, false, changeDate, absPath);
 
@@ -211,7 +210,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 		this.dataConfig = dataConfig;
 		this.params = params;
 		this.optimizationCriterion = optimizationCriterion;
-		this.iterationPerParameter = iterationPerParameter;
+		this.totalIterationCount = totalIterationCount;
 		this.isResume = isResume;
 
 		if (register)
@@ -235,7 +234,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 		this.dataConfig = method.dataConfig.clone();
 		this.params = ProgramParameter.cloneParameterList(method.params);
 		this.optimizationCriterion = method.optimizationCriterion.clone();
-		this.iterationPerParameter = method.iterationPerParameter.clone();
+		this.totalIterationCount = method.totalIterationCount;
 		this.isResume = method.isResume;
 	}
 
@@ -279,8 +278,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 				&& this.optimizationCriterion
 						.equals(other.optimizationCriterion)
 				&& this.params.equals(other.params)
-				&& Arrays.equals(this.iterationPerParameter,
-						other.iterationPerParameter);
+				&& this.totalIterationCount == other.totalIterationCount;
 	}
 
 	/*
@@ -293,8 +291,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 		return (this.run.toString() + this.dataConfig.toString()
 				+ this.programConfig.toString()
 				+ this.optimizationCriterion.toString()
-				+ this.params.toString() + Arrays
-					.toString(this.iterationPerParameter)).hashCode();
+				+ this.params.toString() + this.totalIterationCount).hashCode();
 	}
 
 	/**
@@ -522,7 +519,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 * @param optimizationCriterion
 	 *            The quality measure used as the optimization criterion (see
 	 *            {@link #optimizationCriterion}).
-	 * @param iterationCount
+	 * @param totalIterationCount
 	 *            This array holds the number of iterations that are to be
 	 *            performed for each optimization parameter.
 	 * @param isResume
@@ -537,7 +534,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 			final ProgramConfig programConfig, final DataConfig dataConfig,
 			final List<ProgramParameter<?>> params,
 			final ClusteringQualityMeasure optimizationCriterion,
-			final int[] iterationCount, final boolean isResume)
+			final int totalIterationCount, final boolean isResume)
 			throws UnknownParameterOptimizationMethodException {
 
 		Class<? extends ParameterOptimizationMethod> c = repository
@@ -556,8 +553,8 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 			ParameterOptimizationMethod method = constr.newInstance(repository,
 					false, System.currentTimeMillis(), new File(
 							parameterOptimizationMethod), run, programConfig,
-					dataConfig, params, optimizationCriterion, iterationCount,
-					isResume);
+					dataConfig, params, optimizationCriterion,
+					totalIterationCount, isResume);
 			return method;
 		} catch (InstantiationException e) {
 			e.printStackTrace();
@@ -585,8 +582,8 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 *         in {@link #iterationPerParameter}.
 	 * @see #iterationPerParameter
 	 */
-	public int[] getIterationPerParameter() {
-		return this.iterationPerParameter;
+	public int getIterationPerParameter() {
+		return this.totalIterationCount;
 	}
 
 	/**

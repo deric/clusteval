@@ -24,7 +24,6 @@ import org.apache.commons.configuration.HierarchicalINIConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utils.ArraysExt;
 import utils.Pair;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
@@ -653,30 +652,19 @@ public class ParameterOptimizationRun extends ExecutionRun {
 					"The number of optimization iterations has to be specified as attribute 'optimizationIterations'");
 
 		for (int i = 0; i < programConfigs.size(); i++) {
-			int totalIterationsPerParam = (int) Math.pow(
-					Long.valueOf(paramOptIterations),
-					1.0 / optimizationParameters.get(i).size());
-
 			for (int j = 0; j < dataConfigs.size(); j++) {
 
-				optimizationMethods
-						.add(ParameterOptimizationMethod.parseFromString(
+				optimizationMethods.add(ParameterOptimizationMethod
+						.parseFromString(
 								repo,
 								paramOptMethods.get(i),
 								// first we initialize the object with a null
 								// reference instead of the run
-								null,
-								programConfigs.get(i),
+								null, programConfigs.get(i),
 								dataConfigs.get(j),
 								optimizationParameters.get(i),
 								optimizationCriterion,
-								paramOptIterations != null
-										? ArraysExt.rep(
-												totalIterationsPerParam,
-												optimizationParameters.get(i)
-														.size()) : ArraysExt
-												.rep(10, optimizationParameters
-														.get(i).size()), false));
+								Integer.valueOf(paramOptIterations), false));
 			}
 		}
 

@@ -159,8 +159,8 @@ public class TestParameterOptimizationMethod {
 								.getRun("tc_vs_DS1"), programConfig,
 						dataConfig, programConfig.getOptimizableParams(),
 						ClusteringQualityMeasure.parseFromString(repo,
-								"TransClustF2ClusteringQualityMeasure"),
-						new int[]{10}, true);
+								"TransClustF2ClusteringQualityMeasure"), 10,
+						true);
 		method.reset(new File(
 				"testCaseRepository/results/12_05_2012-19_38_01_tc_vs_DS1/clusters/TransClust_2_DS1.results.qual.complete"));
 		Assert.assertFalse(method.hasNext());
@@ -174,8 +174,8 @@ public class TestParameterOptimizationMethod {
 						.getRun("tc_vs_DS1"), programConfig, dataConfig,
 				programConfig.getOptimizableParams(), ClusteringQualityMeasure
 						.parseFromString(repo,
-								"TransClustF2ClusteringQualityMeasure"),
-				new int[]{10}, true);
+								"TransClustF2ClusteringQualityMeasure"), 10,
+				true);
 		method.reset(new File(
 				"testCaseRepository/results/12_05_2012-19_38_01_tc_vs_DS1/clusters/TransClust_2_DS1_without_duplc.results.qual.complete"));
 		Assert.assertFalse(method.hasNext());
@@ -189,8 +189,8 @@ public class TestParameterOptimizationMethod {
 						.getRun("tc_vs_DS1"), programConfig, dataConfig,
 				programConfig.getOptimizableParams(), ClusteringQualityMeasure
 						.parseFromString(repo,
-								"TransClustF2ClusteringQualityMeasure"),
-				new int[]{10}, true);
+								"TransClustF2ClusteringQualityMeasure"), 10,
+				true);
 		method.reset(new File(
 				"testCaseRepository/results/12_05_2012-19_38_01_tc_vs_DS1/clusters/TransClust_2_DS1_without_duplc_with_missing.results.qual.complete"));
 		Assert.assertTrue(method.hasNext());
@@ -285,7 +285,7 @@ public class TestParameterOptimizationMethod {
 						"LayeredDivisiveParameterOptimizationMethod",
 						repo.getRun("paper_run_synthetic"), programConfig,
 						dataConfig, programConfig.getOptimizableParams(), f2,
-						new int[]{1001}, false);
+						1001, false);
 		method.reset(new File(
 				"testCaseRepository/results/04_05_2013-12_16_32_paper_run_synthetic/clusters/TransClust_2_synthetic_cassini250.results.qual.complete.test"));
 		List<ClusteringQualitySet> qualitySets = new ArrayList<ClusteringQualitySet>();
@@ -420,7 +420,7 @@ public class TestParameterOptimizationMethod {
 						"LayeredDivisiveParameterOptimizationMethod",
 						repo.getRun("paper_run_synthetic"), programConfig,
 						dataConfig, programConfig.getOptimizableParams(), f2,
-						new int[]{1001}, true);
+						1001, true);
 		method.reset(new File(
 				"testCaseRepository/results/04_05_2013-12_16_32_paper_run_synthetic/clusters/TransClust_2_synthetic_cassini250.results.qual.complete.test"));
 		List<ClusteringQualitySet> qualitySets = new ArrayList<ClusteringQualitySet>();
@@ -538,7 +538,7 @@ public class TestParameterOptimizationMethod {
 						"LayeredDivisiveParameterOptimizationMethod",
 						repo.getRun("paper_run_synthetic"), programConfig,
 						dataConfig, programConfig.getOptimizableParams(), f2,
-						new int[]{1001}, true);
+						1001, true);
 		method.reset(new File(
 				"testCaseRepository/results/04_06_2013-15_56_18_paper_run_synthetic/clusters/TransClust_2_synthetic_cassini250.results.qual.complete.test"));
 
@@ -629,8 +629,7 @@ public class TestParameterOptimizationMethod {
 				.parseFromString(repo,
 						"LayeredDivisiveParameterOptimizationMethod",
 						repo.getRun("baechler2003"), programConfig, dataConfig,
-						programConfig.getOptimizableParams(), f2,
-						new int[]{1001}, true);
+						programConfig.getOptimizableParams(), f2, 1001, true);
 		method.reset(new File(
 				"testCaseRepository/results/04_15_2013-16_39_59_baechler2003/clusters/TransClust_2_baechler2003.results.qual.complete.test"));
 		List<ClusteringQualitySet> qualitySets = new ArrayList<ClusteringQualitySet>();
