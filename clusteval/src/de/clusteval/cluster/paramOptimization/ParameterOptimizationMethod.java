@@ -546,7 +546,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 							long.class, File.class,
 							ParameterOptimizationRun.class,
 							ProgramConfig.class, DataConfig.class, List.class,
-							ClusteringQualityMeasure.class, int[].class,
+							ClusteringQualityMeasure.class, int.class,
 							boolean.class);
 			// changed 21.03.2013: do not register new parameter optimization
 			// methods here, because run is not set yet
