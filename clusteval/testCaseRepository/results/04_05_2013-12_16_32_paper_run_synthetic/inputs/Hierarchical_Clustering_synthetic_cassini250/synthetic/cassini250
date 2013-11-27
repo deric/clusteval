@@ -1,6 +1,7 @@
 // dataSetFormat = MatrixDataSetFormat
 // dataSetType = SyntheticDataSetType
 // dataSetFormatVersion = 1
+// alias = cassini250
 1	0.3906545801525463	-1.0438401650637388
 2	-0.11979296618862012	-1.3270683467388154
 3	-0.7806096346173024	-1.3467960953712463

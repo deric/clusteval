@@ -1,6 +1,7 @@
 // dataSetFormat = RowSimDataSetFormat
 // dataSetType = OtherDataSetType
 // dataSetFormatVersion = 1
+// alias = sfld
 gi15801179	gi16129025	323.3062153431158
 gi15801179	gi24112473	323.3062153431158
 gi15801179	gi1651519	323.3062153431158

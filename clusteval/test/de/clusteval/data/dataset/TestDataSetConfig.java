@@ -65,7 +65,7 @@ public class TestDataSetConfig extends TestRepositoryObject {
 		this.repositoryObject = DataSetConfig.parseFromFile(new File(
 				"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
 				.getAbsoluteFile());
-		Assert.assertEquals(this.repositoryObject, this.repository
+		Assert.assertEquals(this.repositoryObject, this.getRepository()
 				.getRegisteredObject((DataSetConfig) this.repositoryObject));
 
 		// adding a DataSetConfig equal to another one already registered
@@ -73,10 +73,10 @@ public class TestDataSetConfig extends TestRepositoryObject {
 		// not register the second object.
 		this.repositoryObject = new DataSetConfig(
 				(DataSetConfig) this.repositoryObject);
-		Assert.assertEquals(this.repository
+		Assert.assertEquals(this.getRepository()
 				.getRegisteredObject((DataSetConfig) this.repositoryObject),
 				this.repositoryObject);
-		Assert.assertFalse(this.repository
+		Assert.assertFalse(this.getRepository()
 				.getRegisteredObject((DataSetConfig) this.repositoryObject) == this.repositoryObject);
 	}
 
@@ -103,11 +103,11 @@ public class TestDataSetConfig extends TestRepositoryObject {
 		this.repositoryObject = DataSetConfig.parseFromFile(new File(
 				"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
 				.getAbsoluteFile());
-		Assert.assertEquals(this.repositoryObject, this.repository
+		Assert.assertEquals(this.repositoryObject, this.getRepository()
 				.getRegisteredObject((DataSetConfig) this.repositoryObject));
 		this.repositoryObject.unregister();
 		// is not registered anymore
-		Assert.assertTrue(this.repository
+		Assert.assertTrue(this.getRepository()
 				.getRegisteredObject((DataSetConfig) this.repositoryObject) == null);
 	}
 
@@ -146,7 +146,7 @@ public class TestDataSetConfig extends TestRepositoryObject {
 		DataSetConfig gsConfig = DataSetConfig.parseFromFile(new File(
 				"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
 				.getAbsoluteFile());
-		StubRepositoryObject child = new StubRepositoryObject(repository,
+		StubRepositoryObject child = new StubRepositoryObject(getRepository(),
 				false, System.currentTimeMillis(), new File(
 						"testCaseRepository/Bla"));
 		gsConfig.addListener(child);
@@ -185,12 +185,12 @@ public class TestDataSetConfig extends TestRepositoryObject {
 		 * DataSet is removed
 		 */
 		// gsconfig has to be registered
-		Assert.assertTrue(repository.getRegisteredObject(gsConfig) == gsConfig);
+		Assert.assertTrue(getRepository().getRegisteredObject(gsConfig) == gsConfig);
 
 		gsConfig.notify(new RepositoryRemoveEvent(gs2));
 
 		// not registered anymore
-		Assert.assertTrue(repository.getRegisteredObject(gsConfig) == null);
+		Assert.assertTrue(getRepository().getRegisteredObject(gsConfig) == null);
 	}
 
 	/**
@@ -257,7 +257,7 @@ public class TestDataSetConfig extends TestRepositoryObject {
 				.getAbsoluteFile());
 		Assert.assertEquals(
 				new DataSetConfig(
-						repository,
+						getRepository(),
 						new File(
 								"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
 								.getAbsoluteFile().lastModified(),
@@ -268,7 +268,7 @@ public class TestDataSetConfig extends TestRepositoryObject {
 								"testCaseRepository/data/datasets/astral_1_161/blastResults.txt")
 								.getAbsoluteFile()),
 						new ConversionInputToStandardConfiguration(
-								DistanceMeasure.parseFromString(repository,
+								DistanceMeasure.parseFromString(getRepository(),
 										"EuclidianDistanceMeasure"),
 								new ArrayList<DataPreprocessor>(),
 								new ArrayList<DataPreprocessor>()),

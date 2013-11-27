@@ -42,11 +42,11 @@ public class TestRun extends TestRepositoryObject {
 		/*
 		 * Ensure that a run is registered in the constructor
 		 */
-		Run run = new ClusteringRun(this.repository, context,
+		Run run = new ClusteringRun(this.getRepository(), context,
 				System.currentTimeMillis(), new File("test"),
 				new ArrayList<ProgramConfig>(), new ArrayList<DataConfig>(),
 				new ArrayList<ClusteringQualityMeasure>(),
 				new ArrayList<Map<ProgramParameter<?>, String>>());
-		Assert.assertTrue(run == this.repository.getRegisteredObject(run));
+		Assert.assertTrue(run == this.getRepository().getRegisteredObject(run));
 	}
 }

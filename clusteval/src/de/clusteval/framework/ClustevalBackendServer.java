@@ -245,11 +245,12 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * @throws RepositoryAlreadyExistsException
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
+	 * @throws InterruptedException
 	 */
 	public ClustevalBackendServer(final String absRepositoryPath)
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException {
+			RepositoryConfigurationException, InterruptedException {
 		this(new Repository(absRepositoryPath, null));
 	}
 
@@ -259,17 +260,20 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * 
 	 * @param repository
 	 *            The repository used by this server.
+	 * @throws InterruptedException
 	 */
-	public ClustevalBackendServer(final Repository repository) {
+	public ClustevalBackendServer(final Repository repository)
+			throws InterruptedException {
 		this(repository, true);
 	}
 
 	/**
 	 * @param repository
 	 * @param registerServer
+	 * @throws InterruptedException
 	 */
 	public ClustevalBackendServer(final Repository repository,
-			final boolean registerServer) {
+			final boolean registerServer) throws InterruptedException {
 		super();
 
 		this.log = LoggerFactory.getLogger(this.getClass());
@@ -351,10 +355,12 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * @throws RepositoryAlreadyExistsException
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
+	 * @throws InterruptedException
 	 */
 	public static void main(String[] args) throws FileNotFoundException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			RepositoryConfigNotFoundException, RepositoryConfigurationException {
+			RepositoryConfigNotFoundException,
+			RepositoryConfigurationException, InterruptedException {
 
 		// bugfix for log4j warning
 		org.apache.log4j.Logger.getRootLogger().setLevel(
@@ -858,6 +864,8 @@ public class ClustevalBackendServer implements IBackendServer {
 		} catch (IncompatibleContextException e) {
 			e.printStackTrace();
 		} catch (UnknownParameterType e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 

@@ -68,7 +68,7 @@ public class TestDunnIndexRClusteringQualityMeasure
 			UnknownContextException, RNotAvailableException, RCalculationException {
 		try {
 
-			Context context = Context.parseFromString(repository,
+			Context context = Context.parseFromString(getRepository(),
 					"ClusteringContext");
 			Clustering clustering = new Clustering();
 			Cluster cluster1 = new Cluster("1");
@@ -80,23 +80,23 @@ public class TestDunnIndexRClusteringQualityMeasure
 			cluster2.add(new ClusterItem("id3"), 1.0f);
 			clustering.addCluster(cluster2);
 
-			DataConfig dc = this.repository
+			DataConfig dc = this.getRepository()
 					.getDataConfigWithName("dunnIndexMatrixTest.dataconfig");
 			DataSetConfig dsc = dc.getDatasetConfig();
 			DataSet ds = dsc.getDataSet();
 			ds.preprocessAndConvertTo(
 					context,
-					DataSetFormat.parseFromString(this.repository,
+					DataSetFormat.parseFromString(this.getRepository(),
 							"SimMatrixDataSetFormat"),
 					new ConversionInputToStandardConfiguration(DistanceMeasure
-							.parseFromString(repository,
+							.parseFromString(getRepository(),
 									"EuclidianDistanceMeasure"),
 							new ArrayList<DataPreprocessor>(),
 							new ArrayList<DataPreprocessor>()),
 					new ConversionStandardToInputConfiguration());
 			ds.getInStandardFormat().loadIntoMemory();
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
-					.parseFromString(repository,
+					.parseFromString(getRepository(),
 							"DunnIndexRClusteringQualityMeasure");
 			double quality = measure.getQualityOfClustering(clustering, null,
 					dc).getValue();

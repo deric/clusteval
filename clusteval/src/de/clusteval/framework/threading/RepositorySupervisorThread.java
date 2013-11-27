@@ -167,8 +167,9 @@ public class RepositorySupervisorThread extends SupervisorThread {
 						DataSetGeneratorFinderThread.class,
 						RunResultFinderThread.class) : createList(
 						// normal elements
-						ContextFinderThread.class,
 						DataSetFormatFinderThread.class,
+						RunResultFormatFinderThread.class,
+						ContextFinderThread.class,
 						DataSetTypeFinderThread.class,
 						DataSetFinderThread.class,
 						DataPreprocessorFinderThread.class,
@@ -176,7 +177,6 @@ public class RepositorySupervisorThread extends SupervisorThread {
 						DataStatisticFinderThread.class,
 						RunStatisticFinderThread.class,
 						RunDataStatisticFinderThread.class,
-						RunResultFormatFinderThread.class,
 						ClusteringQualityMeasureFinderThread.class,
 						ParameterOptimizationMethodFinderThread.class,
 						DataSetConfigFinderThread.class,

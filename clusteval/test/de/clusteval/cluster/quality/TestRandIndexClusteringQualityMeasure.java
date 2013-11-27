@@ -83,7 +83,7 @@ public class TestRandIndexClusteringQualityMeasure extends TestRepositoryObject 
 			clustering.addCluster(cluster1);
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
-					.parseFromString(repository,
+					.parseFromString(getRepository(),
 							"RandIndexClusteringQualityMeasure");
 			double quality = measure.getQualityOfClustering(clustering,
 					goldStandard, null).getValue();
@@ -148,7 +148,7 @@ public class TestRandIndexClusteringQualityMeasure extends TestRepositoryObject 
 			clustering.addCluster(cluster1);
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
-					.parseFromString(repository,
+					.parseFromString(getRepository(),
 							"RandIndexClusteringQualityMeasure");
 			double quality = measure.getQualityOfClustering(clustering,
 					goldStandard, null).getValue();

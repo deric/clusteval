@@ -57,7 +57,7 @@ public class TestGoldStandardConfig extends TestRepositoryObject {
 				.getAbsoluteFile());
 		Assert.assertEquals(
 				this.repositoryObject,
-				this.repository
+				this.getRepository()
 						.getRegisteredObject((GoldStandardConfig) this.repositoryObject));
 
 		// adding a GoldStandardConfig equal to another one already registered
@@ -66,10 +66,10 @@ public class TestGoldStandardConfig extends TestRepositoryObject {
 		this.repositoryObject = new GoldStandardConfig(
 				(GoldStandardConfig) this.repositoryObject);
 		Assert.assertEquals(
-				this.repository
+				this.getRepository()
 						.getRegisteredObject((GoldStandardConfig) this.repositoryObject),
 				this.repositoryObject);
-		Assert.assertFalse(this.repository
+		Assert.assertFalse(this.getRepository()
 				.getRegisteredObject((GoldStandardConfig) this.repositoryObject) == this.repositoryObject);
 	}
 
@@ -92,11 +92,11 @@ public class TestGoldStandardConfig extends TestRepositoryObject {
 				.getAbsoluteFile());
 		Assert.assertEquals(
 				this.repositoryObject,
-				this.repository
+				this.getRepository()
 						.getRegisteredObject((GoldStandardConfig) this.repositoryObject));
 		this.repositoryObject.unregister();
 		// is not registered anymore
-		Assert.assertTrue(this.repository
+		Assert.assertTrue(this.getRepository()
 				.getRegisteredObject((GoldStandardConfig) this.repositoryObject) == null);
 	}
 
@@ -129,7 +129,7 @@ public class TestGoldStandardConfig extends TestRepositoryObject {
 				.parseFromFile(new File(
 						"testCaseRepository/data/goldstandards/configs/DS1_1.gsconfig")
 						.getAbsoluteFile());
-		StubRepositoryObject child = new StubRepositoryObject(repository,
+		StubRepositoryObject child = new StubRepositoryObject(getRepository(),
 				false, System.currentTimeMillis(), new File(
 						"testCaseRepository/Bla"));
 		gsConfig.addListener(child);
@@ -168,12 +168,12 @@ public class TestGoldStandardConfig extends TestRepositoryObject {
 		 * goldstandard is removed
 		 */
 		// gsconfig has to be registered
-		Assert.assertTrue(repository.getRegisteredObject(gsConfig) == gsConfig);
+		Assert.assertTrue(getRepository().getRegisteredObject(gsConfig) == gsConfig);
 
 		gsConfig.notify(new RepositoryRemoveEvent(gs2));
 
 		// not registered anymore
-		Assert.assertTrue(repository.getRegisteredObject(gsConfig) == null);
+		Assert.assertTrue(getRepository().getRegisteredObject(gsConfig) == null);
 	}
 
 	/**
@@ -225,7 +225,7 @@ public class TestGoldStandardConfig extends TestRepositoryObject {
 						.getAbsoluteFile());
 		Assert.assertEquals(
 				new GoldStandardConfig(
-						repository,
+						getRepository(),
 						new File(
 								"testCaseRepository/data/goldstandards/configs/DS1_1.gsconfig")
 								.getAbsoluteFile().lastModified(),

@@ -388,6 +388,7 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	 * @throws UnknownContextException
 	 * @throws IncompatibleContextException
 	 * @throws UnknownParameterType
+	 * @throws InterruptedException
 	 */
 	public static Run parseFromRunResultFolder(
 			final Repository parentRepository, final File runResultFolder,
@@ -417,7 +418,7 @@ public class ClusteringRunResult extends ExecutionRunResult {
 			UnknownRunDataStatisticException, UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
-			UnknownParameterType {
+			UnknownParameterType, InterruptedException {
 
 		Repository childRepository = new RunResultRepository(
 				runResultFolder.getAbsolutePath(), parentRepository);

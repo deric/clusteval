@@ -94,114 +94,6 @@ public class TestParameterOptimizationMethod {
 	}
 
 	@Test
-	public void testResume()
-			throws UnknownParameterOptimizationMethodException,
-			UnknownClusteringQualityMeasureException,
-			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, InternalAttributeException,
-			RegisterException, RunResultParseException,
-			ParameterOptimizationException, UnknownDataSetFormatException,
-			InvalidDataSetFormatVersionException, IllegalArgumentException,
-			IOException, NoParameterSetFoundException {
-		ClustevalBackendServer.logLevel(Level.INFO);
-		Repository repo = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		repo.initialize();
-
-		DataConfig dataConfig = repo.getDataConfigWithName("DS1.dataconfig");
-		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
-		ds.loadIntoMemory();
-		if (ds instanceof RelativeDataSet) {
-			RelativeDataSet dataSet = (RelativeDataSet) ds;
-			dataConfig
-					.getRepository()
-					.getInternalDoubleAttribute(
-							"$("
-									+ dataConfig.getDatasetConfig()
-											.getDataSet().getOriginalDataSet()
-											.getAbsolutePath()
-									+ ":minSimilarity)")
-					.setValue(dataSet.getDataSetContent().getMinValue());
-			dataConfig
-					.getRepository()
-					.getInternalDoubleAttribute(
-							"$("
-									+ dataConfig.getDatasetConfig()
-											.getDataSet().getOriginalDataSet()
-											.getAbsolutePath()
-									+ ":maxSimilarity)")
-					.setValue(dataSet.getDataSetContent().getMaxValue());
-			dataConfig
-					.getRepository()
-					.getInternalDoubleAttribute(
-							"$("
-									+ dataConfig.getDatasetConfig()
-											.getDataSet().getOriginalDataSet()
-											.getAbsolutePath()
-									+ ":meanSimilarity)")
-					.setValue(dataSet.getDataSetContent().getMean());
-		}
-		dataConfig
-				.getRepository()
-				.getInternalIntegerAttribute(
-						"$("
-								+ dataConfig.getDatasetConfig().getDataSet()
-										.getOriginalDataSet().getAbsolutePath()
-								+ ":numberOfElements)")
-				.setValue(ds.getIds().size());
-		ds.unloadFromMemory();
-		ProgramConfig programConfig = repo
-				.getProgramConfigWithName("TransClust_2.config");
-		ParameterOptimizationMethod method = ParameterOptimizationMethod
-				.parseFromString(repo,
-						"LayeredDivisiveParameterOptimizationMethod", repo
-								.getRun("tc_vs_DS1"), programConfig,
-						dataConfig, programConfig.getOptimizableParams(),
-						ClusteringQualityMeasure.parseFromString(repo,
-								"TransClustF2ClusteringQualityMeasure"), 10,
-						true);
-		method.reset(new File(
-				"testCaseRepository/results/12_05_2012-19_38_01_tc_vs_DS1/clusters/TransClust_2_DS1.results.qual.complete"));
-		Assert.assertFalse(method.hasNext());
-		while (method.hasNext()) {
-			ParameterSet paramSet = method.next();
-			System.out.println(paramSet);
-		}
-
-		method = ParameterOptimizationMethod.parseFromString(repo,
-				"LayeredDivisiveParameterOptimizationMethod", repo
-						.getRun("tc_vs_DS1"), programConfig, dataConfig,
-				programConfig.getOptimizableParams(), ClusteringQualityMeasure
-						.parseFromString(repo,
-								"TransClustF2ClusteringQualityMeasure"), 10,
-				true);
-		method.reset(new File(
-				"testCaseRepository/results/12_05_2012-19_38_01_tc_vs_DS1/clusters/TransClust_2_DS1_without_duplc.results.qual.complete"));
-		Assert.assertFalse(method.hasNext());
-		while (method.hasNext()) {
-			ParameterSet paramSet = method.next();
-			System.out.println(paramSet);
-		}
-
-		method = ParameterOptimizationMethod.parseFromString(repo,
-				"LayeredDivisiveParameterOptimizationMethod", repo
-						.getRun("tc_vs_DS1"), programConfig, dataConfig,
-				programConfig.getOptimizableParams(), ClusteringQualityMeasure
-						.parseFromString(repo,
-								"TransClustF2ClusteringQualityMeasure"), 10,
-				true);
-		method.reset(new File(
-				"testCaseRepository/results/12_05_2012-19_38_01_tc_vs_DS1/clusters/TransClust_2_DS1_without_duplc_with_missing.results.qual.complete"));
-		Assert.assertTrue(method.hasNext());
-		ParameterSet paramSet = method.next();
-		ParameterSet expected = new ParameterSet();
-		expected.put("T", "0.21875");
-		Assert.assertEquals(expected, paramSet);
-
-	}
-
-	@Test
 	public void testTransClustCassini250()
 			throws UnknownParameterOptimizationMethodException,
 			UnknownClusteringQualityMeasureException,
@@ -213,7 +105,8 @@ public class TestParameterOptimizationMethod {
 			InternalAttributeException, RegisterException,
 			ParameterOptimizationException, FormatConversionException,
 			UnknownDistanceMeasureException, NoParameterSetFoundException,
-			UnknownContextException, RNotAvailableException {
+			UnknownContextException, RNotAvailableException,
+			InterruptedException {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
 		Repository repo = new Repository(
@@ -348,7 +241,8 @@ public class TestParameterOptimizationMethod {
 			InternalAttributeException, RegisterException,
 			ParameterOptimizationException, FormatConversionException,
 			UnknownDistanceMeasureException, NoParameterSetFoundException,
-			UnknownContextException, RNotAvailableException {
+			UnknownContextException, RNotAvailableException,
+			InterruptedException {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
 		Repository repo = new Repository(
@@ -466,7 +360,8 @@ public class TestParameterOptimizationMethod {
 			InternalAttributeException, RegisterException,
 			ParameterOptimizationException, FormatConversionException,
 			UnknownDistanceMeasureException, NoParameterSetFoundException,
-			UnknownContextException, RNotAvailableException {
+			UnknownContextException, RNotAvailableException,
+			InterruptedException {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
 		Repository repo = new Repository(
@@ -557,7 +452,8 @@ public class TestParameterOptimizationMethod {
 			InternalAttributeException, RegisterException,
 			ParameterOptimizationException, FormatConversionException,
 			UnknownDistanceMeasureException, NoParameterSetFoundException,
-			UnknownContextException, RNotAvailableException {
+			UnknownContextException, RNotAvailableException,
+			InterruptedException {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
 		Repository repo = new Repository(

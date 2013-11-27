@@ -246,7 +246,8 @@ public abstract class JARFinder<T extends RepositoryObject> extends Finder {
 	 * @see utils.Finder#findAndRegisterObjects()
 	 */
 	@Override
-	public void findAndRegisterObjects() throws RegisterException {
+	public void findAndRegisterObjects() throws RegisterException,
+			InterruptedException {
 		validateRegisteredObjects();
 		super.findAndRegisterObjects();
 	}

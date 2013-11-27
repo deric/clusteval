@@ -55,7 +55,7 @@ public class ClustQualityEval {
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException,
-			UnknownClusteringQualityMeasureException {
+			UnknownClusteringQualityMeasureException, InterruptedException {
 		super();
 		ClustevalBackendServer.logLevel(Level.INFO);
 		this.repo = new Repository(absRepoPath, null);
@@ -119,7 +119,7 @@ public class ClustQualityEval {
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException,
-			UnknownClusteringQualityMeasureException {
+			UnknownClusteringQualityMeasureException, InterruptedException {
 		new ClustQualityEval(args[0], args[1]);
 	}
 }

@@ -186,7 +186,6 @@ class RProgramURLClassLoader extends URLClassLoader {
 							rProgram.getSimpleName());
 					program.register();
 				} catch (UnknownRProgramException e) {
-					e.printStackTrace();
 				} catch (RegisterException e) {
 					e.printStackTrace();
 				}

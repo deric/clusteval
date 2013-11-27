@@ -139,6 +139,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 * @throws UnknownContextException
 	 * @throws IncompatibleContextException
 	 * @throws UnknownParameterType
+	 * @throws InterruptedException
 	 */
 	public static Run parseFromRunResultFolder(
 			final Repository parentRepository, final File runResultFolder,
@@ -171,7 +172,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
-			UnknownParameterType {
+			UnknownParameterType, InterruptedException {
 
 		Repository childRepository = new RunResultRepository(
 				runResultFolder.getAbsolutePath(), parentRepository);

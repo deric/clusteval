@@ -54,7 +54,7 @@ import de.clusteval.framework.repository.StubSQLCommunicator;
  */
 public class TestRepositoryObject {
 
-	protected Repository repository;
+	private Repository repository;
 	protected RepositoryObject repositoryObject;
 	protected Context context;
 
@@ -78,13 +78,16 @@ public class TestRepositoryObject {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		repository = new Repository(
+		this.repository = new Repository(
 				new File("testCaseRepository").getAbsolutePath(), null);
-		repository.setSQLCommunicator(new StubSQLCommunicator(repository));
-		repository.initialize();
-		repositoryObject = new StubRepositoryObject(this.repository, false,
-				System.currentTimeMillis(), new File("test"));
-		context = Context.parseFromString(repository, "ClusteringContext");
+		getRepository().setSQLCommunicator(
+				new StubSQLCommunicator(getRepository()));
+//		ClustevalBackendServer.getBackendServerConfiguration()
+//				.setCheckForRunResults(false);
+		getRepository().initialize();
+		repositoryObject = new StubRepositoryObject(this.getRepository(),
+				false, System.currentTimeMillis(), new File("test"));
+		context = Context.parseFromString(getRepository(), "ClusteringContext");
 	}
 
 	/**
@@ -93,8 +96,8 @@ public class TestRepositoryObject {
 	@After
 	public void tearDown() throws Exception {
 		this.repositoryObject = null;
-		repository.finalize();
-		Repository.unregister(repository);
+		getRepository().terminateSupervisorThread();
+		Repository.unregister(getRepository());
 	}
 
 	/**
@@ -108,7 +111,7 @@ public class TestRepositoryObject {
 		File f = new File(
 				"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard.txt")
 				.getAbsoluteFile();
-		this.repositoryObject = new StubRepositoryObject(this.repository,
+		this.repositoryObject = new StubRepositoryObject(this.getRepository(),
 				false, f.lastModified(), f);
 
 		Assert.assertEquals(f.getAbsolutePath(),
@@ -127,7 +130,7 @@ public class TestRepositoryObject {
 		File f = new File(
 				"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard.txt")
 				.getAbsoluteFile();
-		this.repositoryObject = new StubRepositoryObject(this.repository,
+		this.repositoryObject = new StubRepositoryObject(this.getRepository(),
 				false, f.lastModified(), f);
 		File f2 = new File(
 				"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard2.txt")
@@ -149,7 +152,7 @@ public class TestRepositoryObject {
 		File f = new File(
 				"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard.txt")
 				.getAbsoluteFile();
-		this.repositoryObject = new StubRepositoryObject(this.repository,
+		this.repositoryObject = new StubRepositoryObject(this.getRepository(),
 				false, f.lastModified(), f);
 		Assert.assertEquals(f.lastModified(),
 				this.repositoryObject.getChangeDate());
@@ -166,21 +169,19 @@ public class TestRepositoryObject {
 		File f = new File(
 				"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard.txt")
 				.getAbsoluteFile();
-		this.repositoryObject = new StubRepositoryObject(this.repository,
+		this.repositoryObject = new StubRepositoryObject(this.getRepository(),
 				false, f.lastModified(), f);
 
 		/*
 		 * Identity
 		 */
-		Assert.assertEquals(
-				new StubRepositoryObject(this.repository, false, f
-						.lastModified(), f), this.repositoryObject);
+		Assert.assertEquals(new StubRepositoryObject(this.getRepository(),
+				false, f.lastModified(), f), this.repositoryObject);
 		/*
 		 * Mod-date is ignored
 		 */
-		Assert.assertEquals(
-				new StubRepositoryObject(this.repository, false, f
-						.lastModified() - 1, f), this.repositoryObject);
+		Assert.assertEquals(new StubRepositoryObject(this.getRepository(),
+				false, f.lastModified() - 1, f), this.repositoryObject);
 
 		Repository repository2 = new Repository(
 				new File("repository2").getAbsolutePath(), null);
@@ -196,15 +197,15 @@ public class TestRepositoryObject {
 		File f2 = new File(
 				"testCaseRepository/data/goldstandards/sfld/sfld_brown_et_al_amidohydrolases_families_gold_standard.txt");
 		Assert.assertFalse(this.repositoryObject
-				.equals(new StubRepositoryObject(this.repository, false, f2
-						.lastModified(), f2)));
+				.equals(new StubRepositoryObject(this.getRepository(), false,
+						f2.lastModified(), f2)));
 
 		/*
 		 * Different classes
 		 */
 		Assert.assertFalse(this.repositoryObject
-				.equals(new StubRepositoryObject(this.repository, false, f2
-						.lastModified(), f2)));
+				.equals(new StubRepositoryObject(this.getRepository(), false,
+						f2.lastModified(), f2)));
 	};
 
 	/**
@@ -220,7 +221,7 @@ public class TestRepositoryObject {
 		File f = new File(
 				"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard.txt")
 				.getAbsoluteFile();
-		this.repositoryObject = new StubRepositoryObject(this.repository,
+		this.repositoryObject = new StubRepositoryObject(this.getRepository(),
 				false, f.lastModified(), f);
 		File destF = new File(
 				"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard_copy.txt")
@@ -247,7 +248,7 @@ public class TestRepositoryObject {
 		File f = new File(
 				"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard.txt")
 				.getAbsoluteFile();
-		this.repositoryObject = new StubRepositoryObject(this.repository,
+		this.repositoryObject = new StubRepositoryObject(this.getRepository(),
 				false, f.lastModified(), f);
 		File destFolder = new File(
 				"testCaseRepository/data/goldstandards/DS1/copy");
@@ -279,7 +280,7 @@ public class TestRepositoryObject {
 		Assert.assertFalse(this.repositoryObject
 				.addListener(this.repositoryObject));
 
-		RepositoryObject other = new StubRepositoryObject(this.repository,
+		RepositoryObject other = new StubRepositoryObject(this.getRepository(),
 				false, System.currentTimeMillis(), new File("test2"));
 
 		Assert.assertTrue(this.repositoryObject.addListener(other));
@@ -307,7 +308,7 @@ public class TestRepositoryObject {
 	@Test
 	public void testRemoveListener() throws RegisterException {
 
-		RepositoryObject other = new StubRepositoryObject(this.repository,
+		RepositoryObject other = new StubRepositoryObject(this.getRepository(),
 				false, System.currentTimeMillis(), new File("test2"));
 
 		/*
@@ -371,11 +372,12 @@ public class TestRepositoryObject {
 		/*
 		 * Create two stub repository objects
 		 */
-		this.repositoryObject = new StubRepositoryObject(this.repository,
+		this.repositoryObject = new StubRepositoryObject(this.getRepository(),
 				false, System.currentTimeMillis(), new File("test"));
 
-		StubRepositoryObject other = new StubRepositoryObject(this.repository,
-				false, System.currentTimeMillis(), new File("test2"));
+		StubRepositoryObject other = new StubRepositoryObject(
+				this.getRepository(), false, System.currentTimeMillis(),
+				new File("test2"));
 
 		/*
 		 * Add the "other" object as listener to the first one
@@ -395,5 +397,9 @@ public class TestRepositoryObject {
 
 		Assert.assertFalse(other.notified);
 		other.notified = false;
+	}
+
+	protected Repository getRepository() {
+		return repository;
 	}
 }

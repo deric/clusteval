@@ -85,7 +85,7 @@ public class TestPairwiseFMeasureClusteringQualityMeasure
 			clustering.addCluster(cluster1);
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
-					.parseFromString(repository,
+					.parseFromString(getRepository(),
 							"PairwiseF2ClusteringQualityMeasure");
 			double quality = measure.getQualityOfClustering(clustering,
 					goldStandard, null).getValue();
@@ -150,7 +150,7 @@ public class TestPairwiseFMeasureClusteringQualityMeasure
 			clustering.addCluster(cluster1);
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
-					.parseFromString(repository,
+					.parseFromString(getRepository(),
 							"PairwiseF2ClusteringQualityMeasure");
 			double quality = measure.getQualityOfClustering(clustering,
 					goldStandard, null).getValue();

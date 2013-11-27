@@ -129,6 +129,7 @@ public abstract class RunResult extends RepositoryObject {
 	 * @throws UnknownContextException
 	 * @throws IncompatibleContextException
 	 * @throws UnknownParameterType
+	 * @throws InterruptedException
 	 */
 	public static Run parseFromRunResultFolder(
 			final Repository parentRepository, final File runResultFolder,
@@ -160,7 +161,8 @@ public abstract class RunResult extends RepositoryObject {
 			UnknownRunDataStatisticException, RunResultParseException,
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
-			UnknownContextException, IncompatibleContextException, UnknownParameterType {
+			UnknownContextException, IncompatibleContextException,
+			UnknownParameterType, InterruptedException {
 
 		Logger log = LoggerFactory.getLogger(RunResult.class);
 		log.debug("Parsing run result from '" + runResultFolder + "'");

@@ -85,7 +85,7 @@ public class TestKMeansClusteringRProgram {
 			throws RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, IOException,
-			RunRunnableInitializationException {
+			RunRunnableInitializationException, InterruptedException {
 		ClustevalBackendServer.logLevel(Level.INFO);
 		Repository repo = new Repository(
 				new File("testCaseRepository").getAbsolutePath(), null);
@@ -105,7 +105,8 @@ public class TestKMeansClusteringRProgram {
 			Assert.assertEquals(1, exceptions.size());
 
 			Throwable t = exceptions.get(0);
-			Assert.assertEquals(IncompatibleDataSetFormatException.class, t.getClass());
+			Assert.assertEquals(IncompatibleDataSetFormatException.class,
+					t.getClass());
 		} finally {
 			FileUtils.delete(new File(FileUtils.buildPath(
 					repo.getRunResultBasePath(),

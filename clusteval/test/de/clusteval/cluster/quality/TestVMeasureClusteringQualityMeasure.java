@@ -103,12 +103,12 @@ public class TestVMeasureClusteringQualityMeasure extends TestRepositoryObject {
 			clustering.addCluster(cluster3);
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
-					.parseFromString(repository,
+					.parseFromString(getRepository(),
 							"VMeasureClusteringQualityMeasure");
 			double quality = measure.getQualityOfClustering(clustering,
 					goldStandard, null).getValue();
 			System.out.println("V-Measure: " + quality);
-			measure = ClusteringQualityMeasure.parseFromString(repository,
+			measure = ClusteringQualityMeasure.parseFromString(getRepository(),
 					"TransClustFClusteringQualityMeasure");
 			quality = measure.getQualityOfClustering(clustering, goldStandard,
 					null).getValue();
@@ -196,12 +196,12 @@ public class TestVMeasureClusteringQualityMeasure extends TestRepositoryObject {
 			clustering.addCluster(cluster3);
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
-					.parseFromString(repository,
+					.parseFromString(getRepository(),
 							"VMeasureClusteringQualityMeasure");
 			double quality = measure.getQualityOfClustering(clustering,
 					goldStandard, null).getValue();
 			System.out.println("V-Measure: " + quality);
-			measure = ClusteringQualityMeasure.parseFromString(repository,
+			measure = ClusteringQualityMeasure.parseFromString(getRepository(),
 					"TransClustFClusteringQualityMeasure");
 			quality = measure.getQualityOfClustering(clustering, goldStandard,
 					null).getValue();
@@ -269,7 +269,7 @@ public class TestVMeasureClusteringQualityMeasure extends TestRepositoryObject {
 			clustering.addCluster(cluster1);
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
-					.parseFromString(repository,
+					.parseFromString(getRepository(),
 							"VMeasureClusteringQualityMeasure");
 			double quality = measure.getQualityOfClustering(clustering,
 					goldStandard, null).getValue();
@@ -337,7 +337,7 @@ public class TestVMeasureClusteringQualityMeasure extends TestRepositoryObject {
 			clustering.addCluster(cluster2);
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
-					.parseFromString(repository,
+					.parseFromString(getRepository(),
 							"VMeasureClusteringQualityMeasure");
 			double quality = measure.getQualityOfClustering(clustering,
 					goldStandard, null).getValue();

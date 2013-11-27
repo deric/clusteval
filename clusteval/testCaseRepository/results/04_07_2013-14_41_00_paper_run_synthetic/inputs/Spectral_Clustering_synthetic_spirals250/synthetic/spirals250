@@ -1,6 +1,7 @@
 // dataSetFormat = MatrixDataSetFormat
 // dataSetType = SyntheticDataSetType
 // dataSetFormatVersion = 1
+// alias = spirals250
 1	1.2025109217488053	-0.4761077548055168
 2	-0.31107654449267075	-0.2639988323203332
 3	-0.3333333333333333	-0.0

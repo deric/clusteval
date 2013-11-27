@@ -76,7 +76,7 @@ public abstract class SupervisorThread extends Thread {
 	 * thread finds a thread in this map that terminated unexpectedly, he
 	 * creates a new thread of this class.
 	 */
-	protected Map<Class<? extends ClustevalThread>, ClustevalThread> threads;
+	final protected Map<Class<? extends ClustevalThread>, ClustevalThread> threads;
 
 	/**
 	 * The time between two checks of this thread.
@@ -127,38 +127,46 @@ public abstract class SupervisorThread extends Thread {
 
 		this.threads = new LinkedHashMap<Class<? extends ClustevalThread>, ClustevalThread>();
 
-		for (Class<? extends ClustevalThread> thread : threads) {
-			try {
-				this.threads.put(
-						thread,
-						(threadSleepTimes.containsKey(thread.getSimpleName())) ?
-						// if we have a specific sleep time for this thread use
-						// it
-								thread.getConstructor(SupervisorThread.class,
-										Repository.class, long.class,
-										boolean.class).newInstance(
-										this,
-										repository,
-										threadSleepTimes.get(thread
-												.getSimpleName()), checkOnce) :
-								// otherwise we use the default sleep time of
-								// the thread class
-								thread.getConstructor(SupervisorThread.class,
-										Repository.class, boolean.class)
-										.newInstance(this, repository,
-												checkOnce));
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
+		synchronized (this.threads) {
+			for (Class<? extends ClustevalThread> thread : threads) {
+				try {
+					this.threads.put(
+							thread,
+							(threadSleepTimes.containsKey(thread
+									.getSimpleName())) ?
+							// if we have a specific sleep time for this thread
+							// use
+							// it
+									thread.getConstructor(
+											SupervisorThread.class,
+											Repository.class, long.class,
+											boolean.class).newInstance(
+											this,
+											repository,
+											threadSleepTimes.get(thread
+													.getSimpleName()),
+											checkOnce) :
+									// otherwise we use the default sleep time
+									// of
+									// the thread class
+									thread.getConstructor(
+											SupervisorThread.class,
+											Repository.class, boolean.class)
+											.newInstance(this, repository,
+													checkOnce));
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				} catch (InstantiationException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -171,16 +179,8 @@ public abstract class SupervisorThread extends Thread {
 	@Override
 	public void run() {
 		// check, that all threads are running
-		while (true) {
+		while (!this.isInterrupted()) {
 			try {
-				if (this.isInterrupted()) {
-					for (Thread t : this.threads.values()) {
-						t.interrupt();
-						t.join();
-					}
-					return;
-				}
-
 				// changed at 08.05.2012
 				for (Class<? extends ClustevalThread> threadClass : this.threads
 						.keySet()) {
@@ -224,6 +224,29 @@ public abstract class SupervisorThread extends Thread {
 				// do nothing
 			}
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Thread#interrupt()
+	 */
+	@Override
+	public void interrupt() {
+		synchronized (this.threads) {
+			Map.Entry<Class<? extends ClustevalThread>, ClustevalThread>[] entries = this.threads
+					.entrySet().toArray(new Map.Entry[0]);
+			for (Map.Entry<Class<? extends ClustevalThread>, ClustevalThread> entry : entries) {
+				this.threads.remove(entry.getKey());
+				entry.getValue().interrupt();
+				try {
+					entry.getValue().join(0);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		super.interrupt();
 	}
 
 	/**

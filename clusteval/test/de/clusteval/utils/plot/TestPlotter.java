@@ -98,7 +98,8 @@ public class TestPlotter {
 			IOException, REngineException, FormatConversionException,
 			DataSetNotFoundException, DataSetConfigurationException,
 			NoDataSetException, NoRepositoryFoundException,
-			UnknownContextException, RNotAvailableException {
+			UnknownContextException, RNotAvailableException,
+			InterruptedException {
 		ClustevalBackendServer.logLevel(Level.INFO);
 		Repository parent = new Repository(
 				new File("testCaseRepository").getAbsolutePath(), null);
@@ -156,7 +157,8 @@ public class TestPlotter {
 			IOException, REngineException, FormatConversionException,
 			DataSetNotFoundException, DataSetConfigurationException,
 			NoDataSetException, NoRepositoryFoundException,
-			UnknownContextException, RNotAvailableException {
+			UnknownContextException, RNotAvailableException,
+			InterruptedException {
 		ClustevalBackendServer.logLevel(Level.INFO);
 		Repository parent = new Repository(
 				new File("testCaseRepository").getAbsolutePath(), null);

@@ -117,7 +117,9 @@ public abstract class FinderThread extends ClustevalThread {
 	@Override
 	public void interrupt() {
 		super.interrupt();
-		if (currentFinder != null)
+		if (currentFinder != null) {
 			currentFinder.interrupt();
+			currentFinder = null;
+		}
 	}
 }

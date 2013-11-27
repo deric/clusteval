@@ -64,6 +64,7 @@ public class RunResultFinderThread extends FinderThread {
 			while (!this.repository.isInitialized())
 				sleep(100);
 		} catch (InterruptedException e) {
+			this.interrupt();
 		}
 		this.log.debug("Checking for RunResults...");
 	}

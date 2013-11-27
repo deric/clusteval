@@ -60,7 +60,7 @@ public class TestGoldStandard extends TestRepositoryObject {
 		Assert.assertEquals(
 				newObject,
 				new GoldStandard(
-						repository,
+						getRepository(),
 						new File(
 								"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard.txt")
 								.lastModified(),
@@ -104,12 +104,12 @@ public class TestGoldStandard extends TestRepositoryObject {
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
 			GoldStandardNotFoundException, RegisterException,
-			NoSuchAlgorithmException {
-		repository.initialize();
+			NoSuchAlgorithmException, InterruptedException {
+		getRepository().initialize();
 		Repository runResultRepository = new RunResultRepository(
 				new File(
 						"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1")
-						.getAbsolutePath(), repository);
+						.getAbsolutePath(), getRepository());
 		runResultRepository.setSQLCommunicator(new StubSQLCommunicator(
 				runResultRepository));
 		runResultRepository.initialize();
@@ -132,7 +132,8 @@ public class TestGoldStandard extends TestRepositoryObject {
 		String absPath = new File(
 				"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard.txt")
 				.getAbsolutePath();
-		Assert.assertEquals((this.repository.toString() + absPath).hashCode(),
+		Assert.assertEquals(
+				(this.getRepository().toString() + absPath).hashCode(),
 				this.repositoryObject.hashCode());
 	}
 
@@ -147,7 +148,7 @@ public class TestGoldStandard extends TestRepositoryObject {
 				.parseFromFile(new File(
 						"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard.txt")
 						.getAbsoluteFile());
-		Assert.assertEquals(this.repository,
+		Assert.assertEquals(this.getRepository(),
 				this.repositoryObject.getRepository());
 	}
 
@@ -162,18 +163,19 @@ public class TestGoldStandard extends TestRepositoryObject {
 				.parseFromFile(new File(
 						"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard.txt")
 						.getAbsoluteFile());
-		Assert.assertEquals(this.repositoryObject, this.repository
+		Assert.assertEquals(this.repositoryObject, this.getRepository()
 				.getRegisteredObject((GoldStandard) this.repositoryObject));
 
 		// adding a gold standard equal to another one already registered does
 		// not register the second object.
 		this.repositoryObject = new GoldStandard(
 				(GoldStandard) this.repositoryObject);
-		Assert.assertEquals(this.repository
-				.getRegisteredObject((GoldStandard) this.repositoryObject),
+		Assert.assertEquals(
+				this.getRepository().getRegisteredObject(
+						(GoldStandard) this.repositoryObject),
 				this.repositoryObject);
-		Assert.assertFalse(this.repository
-				.getRegisteredObject((GoldStandard) this.repositoryObject) == this.repositoryObject);
+		Assert.assertFalse(this.getRepository().getRegisteredObject(
+				(GoldStandard) this.repositoryObject) == this.repositoryObject);
 	}
 
 	/*
@@ -187,12 +189,12 @@ public class TestGoldStandard extends TestRepositoryObject {
 				.parseFromFile(new File(
 						"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard.txt")
 						.getAbsoluteFile());
-		Assert.assertEquals(this.repositoryObject, this.repository
+		Assert.assertEquals(this.repositoryObject, this.getRepository()
 				.getRegisteredObject((GoldStandard) this.repositoryObject));
 		this.repositoryObject.unregister();
 		// is not registered anymore
-		Assert.assertTrue(this.repository
-				.getRegisteredObject((GoldStandard) this.repositoryObject) == null);
+		Assert.assertTrue(this.getRepository().getRegisteredObject(
+				(GoldStandard) this.repositoryObject) == null);
 	}
 
 	/*
@@ -205,15 +207,16 @@ public class TestGoldStandard extends TestRepositoryObject {
 		File f = new File(
 				"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard.txt")
 				.getAbsoluteFile();
-		this.repositoryObject = new GoldStandard(this.repository,
+		this.repositoryObject = new GoldStandard(this.getRepository(),
 				f.lastModified(), f);
-		Assert.assertEquals(new GoldStandard(this.repository, f.lastModified(),
-				f), this.repositoryObject);
+		Assert.assertEquals(
+				new GoldStandard(this.getRepository(), f.lastModified(), f),
+				this.repositoryObject);
 
 		File f2 = new File(
 				"testCaseRepository/data/goldstandards/sfld/sfld_brown_et_al_amidohydrolases_families_gold_standard.txt");
-		Assert.assertFalse(this.repositoryObject.equals(new GoldStandard(
-				this.repository, f2.lastModified(), f2)));
+		Assert.assertFalse(this.repositoryObject.equals(new GoldStandard(this
+				.getRepository(), f2.lastModified(), f2)));
 	}
 
 	/**

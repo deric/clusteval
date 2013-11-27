@@ -39,7 +39,7 @@ public class TestParameterOptimizationResult extends TestRepositoryObject {
 		List<ParameterOptimizationResult> result = new ArrayList<ParameterOptimizationResult>();
 		final Run run = ParameterOptimizationResult
 				.parseFromRunResultFolder(
-						repository,
+						getRepository(),
 						new File(
 								"testCaseRepository/results/11_20_2012-12_45_04_all_vs_DS1")
 								.getAbsoluteFile(), result, false, false, false);

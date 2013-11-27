@@ -1315,8 +1315,10 @@ public class Repository {
 		return result;
 	}
 
-	@Override
-	public void finalize() throws InterruptedException {
+	/**
+	 * @throws InterruptedException
+	 */
+	public void terminateSupervisorThread() throws InterruptedException {
 		if (this.supervisorThread == null)
 			return;
 		this.supervisorThread.interrupt();
@@ -3279,8 +3281,12 @@ public class Repository {
 	 * Initializes this repository by creating a supervisor thread
 	 * {@link #createSupervisorThread()} and waiting until
 	 * {@link #isInitialized()} returns true.
+	 * 
+	 * @throws InterruptedException
+	 *             Is thrown, if the current thread is interrupted while waiting
+	 *             for finishing the initialization process.
 	 */
-	public void initialize() {
+	public void initialize() throws InterruptedException {
 		if (isInitialized())
 			return;
 
@@ -3291,6 +3297,8 @@ public class Repository {
 			while (!this.isInitialized())
 				Thread.sleep(100);
 		} catch (InterruptedException e) {
+			this.terminateSupervisorThread();
+			throw e;
 		}
 
 		this.info("Repository initialization finished");
@@ -6854,46 +6862,41 @@ public class Repository {
 	 */
 	private boolean ensureRProgramRLibraries(
 			final Class<? extends RProgram> classObject) {
-		// create an instance
-		RProgram generator;
+		MyRengine rEngine;
 		try {
-			generator = RProgram.parseFromString(this,
-					classObject.getSimpleName());
-
-			if (generator.getRequiredRlibraries().isEmpty())
-				return true;
-			// ensure that all R libraries are available
-			MyRengine rEngine;
+			rEngine = new MyRengine("");
 			try {
-				rEngine = new MyRengine("");
-				try {
-					for (String libName : generator.getRequiredRlibraries())
-						try {
-							rEngine.loadLibrary(libName,
-									classObject.getSimpleName());
-							// first we clear the old exceptions for this class
-							this.clearMissingRLibraries(generator.getClass()
-									.getName());
-						} catch (RLibraryNotLoadedException e) {
-							if (this.addMissingRLibraryException(e))
-								this.warn("\""
-										+ generator
-										+ "\" could not be loaded due to an unsatisfied R library dependency: "
-										+ libName);
-						}
+				// create an instance
+				RProgram generator = RProgram.parseFromString(this,
+						classObject.getSimpleName());
+
+				if (generator.getRequiredRlibraries().isEmpty())
 					return true;
-				} finally {
-					rEngine.close();
-				}
-			} catch (RserveException e) {
-				if (this.addMissingRLibraryException(new RLibraryNotLoadedException(
-						generator.getClass().getName(), "R")))
-					this.warn("\""
-							+ generator
-							+ "\" could not be loaded since it requires R and no connection could be established.");
+				// ensure that all R libraries are available
+				for (String libName : generator.getRequiredRlibraries())
+					try {
+						rEngine.loadLibrary(libName,
+								classObject.getSimpleName());
+						// first we clear the old exceptions for this class
+						this.clearMissingRLibraries(generator.getClass()
+								.getName());
+					} catch (RLibraryNotLoadedException e) {
+						if (this.addMissingRLibraryException(e))
+							this.warn("\""
+									+ generator
+									+ "\" could not be loaded due to an unsatisfied R library dependency: "
+									+ libName);
+					}
+				return true;
+			} catch (UnknownRProgramException e1) {
+				e1.printStackTrace();
+			} finally {
+				rEngine.close();
 			}
-		} catch (UnknownRProgramException e1) {
-			e1.printStackTrace();
+		} catch (RserveException e) {
+			this.warn("\""
+					+ classObject.getSimpleName()
+					+ "\" could not be loaded since it requires R and no connection could be established.");
 		}
 		this.rProgramClasses.remove(classObject.getName());
 		return false;

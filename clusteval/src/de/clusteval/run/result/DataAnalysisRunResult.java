@@ -195,6 +195,7 @@ public class DataAnalysisRunResult
 	 * @throws UnknownContextException
 	 * @throws IncompatibleContextException
 	 * @throws UnknownParameterType
+	 * @throws InterruptedException
 	 */
 	public static DataAnalysisRunResult parseFromRunResultFolder(
 			final Repository parentRepository, final File runResultFolder)
@@ -224,7 +225,7 @@ public class DataAnalysisRunResult
 			UnknownRunDataStatisticException, UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
-			UnknownParameterType {
+			UnknownParameterType, InterruptedException {
 		Repository childRepository = new RunResultRepository(
 				runResultFolder.getAbsolutePath(), parentRepository);
 		childRepository.initialize();

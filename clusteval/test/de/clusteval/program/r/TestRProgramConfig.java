@@ -73,7 +73,7 @@ public class TestRProgramConfig {
 	public void testKMeansCompatibleDataSetFormats()
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException {
+			RepositoryConfigurationException, InterruptedException {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
 		Repository repo = new Repository(
@@ -93,7 +93,8 @@ public class TestRProgramConfig {
 	@Test
 	public void testKMeansRunResultFormat() throws FileNotFoundException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			RepositoryConfigNotFoundException, RepositoryConfigurationException {
+			RepositoryConfigNotFoundException,
+			RepositoryConfigurationException, InterruptedException {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
 		Repository repo = new Repository(

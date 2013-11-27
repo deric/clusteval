@@ -59,6 +59,8 @@ public abstract class FileFinder extends Finder {
 
 			// Clear the exceptions associated to this object
 			knownExceptions.remove(file.getAbsolutePath());
+		} catch (InterruptedException e) {
+			throw e;
 		} catch (Exception e) {
 			// check if we already logged a warning for this
 			boolean known = false;
@@ -133,7 +135,8 @@ public abstract class FileFinder extends Finder {
 	 * @see utils.Finder#findAndRegisterObjects()
 	 */
 	@Override
-	public void findAndRegisterObjects() throws RegisterException {
+	public void findAndRegisterObjects() throws RegisterException,
+			InterruptedException {
 		validateRegisteredObjects();
 		super.findAndRegisterObjects();
 	}

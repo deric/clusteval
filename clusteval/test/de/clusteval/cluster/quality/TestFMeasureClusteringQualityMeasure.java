@@ -83,13 +83,13 @@ public class TestFMeasureClusteringQualityMeasure extends TestRepositoryObject {
 			clustering.addCluster(cluster1);
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
-					.parseFromString(repository,
+					.parseFromString(getRepository(),
 							"TransClustFClusteringQualityMeasure");
 			double quality = measure.getQualityOfClustering(clustering,
 					goldStandard, null).getValue();
 			System.out.println(measure.getAlias() + " " + quality);
 
-			measure = ClusteringQualityMeasure.parseFromString(repository,
+			measure = ClusteringQualityMeasure.parseFromString(getRepository(),
 					"TransClustF2ClusteringQualityMeasure");
 			quality = measure.getQualityOfClustering(clustering, goldStandard,
 					null).getValue();
@@ -154,13 +154,13 @@ public class TestFMeasureClusteringQualityMeasure extends TestRepositoryObject {
 			clustering.addCluster(cluster1);
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
-					.parseFromString(repository,
+					.parseFromString(getRepository(),
 							"TransClustFClusteringQualityMeasure");
 			double quality = measure.getQualityOfClustering(clustering,
 					goldStandard, null).getValue();
 			System.out.println(measure.getAlias() + " " + quality);
 
-			measure = ClusteringQualityMeasure.parseFromString(repository,
+			measure = ClusteringQualityMeasure.parseFromString(getRepository(),
 					"TransClustF2ClusteringQualityMeasure");
 			quality = measure.getQualityOfClustering(clustering, goldStandard,
 					null).getValue();

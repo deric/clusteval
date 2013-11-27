@@ -65,7 +65,7 @@ public class TestClusteringEvalFramework {
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			ParseException, NoSuchAlgorithmException {
+			ParseException, NoSuchAlgorithmException, InterruptedException {
 		ClustevalBackendServer.logLevel(Level.INFO);
 		framework = new ClustevalBackendServer(new Repository(new File(
 				"testCaseRepository").getAbsolutePath(), null), false);
@@ -81,7 +81,7 @@ public class TestClusteringEvalFramework {
 		Assert.assertFalse(framework.isRunning());
 	}
 
-//	@Test
+	// @Test
 	public void testPerformNotExistingRun() throws ConnectException,
 			ParseException {
 		client = new BackendClient(new String[]{"-port", port + "",
@@ -89,7 +89,7 @@ public class TestClusteringEvalFramework {
 
 	}
 
-//	@Test
+	// @Test
 	public void testPerformParamOptimizationRun() throws ConnectException,
 			InterruptedException, ParseException {
 		String uniqueRunId = "11_20_2012-12_45_04_all_vs_DS1";
@@ -135,7 +135,7 @@ public class TestClusteringEvalFramework {
 
 	}
 
-//	@Test
+	// @Test
 	public void testPerformLayeredParamOptimizationRun()
 			throws ConnectException, InterruptedException, ParseException {
 		String uniqueRunId = "11_20_2012-12_46_12_tc_vs_DS1_layered";
@@ -189,7 +189,7 @@ public class TestClusteringEvalFramework {
 
 	}
 
-//	@Test
+	// @Test
 	public void testPerformInternalParamOptimizationRun()
 			throws ConnectException, InterruptedException, ParseException {
 		String uniqueRunId = "11_20_2012-12_46_37_tc_vs_DS1_internal";
@@ -234,7 +234,7 @@ public class TestClusteringEvalFramework {
 
 	}
 
-//	@Test
+	// @Test
 	public void testPerformClusteringRun() throws ConnectException,
 			InterruptedException, ParseException {
 		String uniqueRunId = "11_20_2012-12_46_58_all_vs_DS1_clustering";

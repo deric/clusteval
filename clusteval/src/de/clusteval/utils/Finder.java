@@ -117,7 +117,8 @@ public abstract class Finder extends RepositoryObject {
 	 * @throws RegisterException
 	 */
 	@SuppressWarnings("unused")
-	public void findAndRegisterObjects() throws RegisterException {
+	public void findAndRegisterObjects() throws RegisterException,
+			InterruptedException {
 		Iterator<File> fileIt = getIterator();
 
 		while (fileIt.hasNext()) {
@@ -129,6 +130,8 @@ public abstract class Finder extends RepositoryObject {
 			if (checkFile(programDir)) {
 				try {
 					doOnFileFound(programDir);
+				} catch (InterruptedException e) {
+					throw e;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
