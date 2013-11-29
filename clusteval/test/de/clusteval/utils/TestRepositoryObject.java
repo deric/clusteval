@@ -63,7 +63,7 @@ public class TestRepositoryObject {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		ClustevalBackendServer.logLevel(Level.WARN);
+		ClustevalBackendServer.logLevel(Level.INFO);
 	}
 
 	/**
@@ -82,8 +82,8 @@ public class TestRepositoryObject {
 				new File("testCaseRepository").getAbsolutePath(), null);
 		getRepository().setSQLCommunicator(
 				new StubSQLCommunicator(getRepository()));
-//		ClustevalBackendServer.getBackendServerConfiguration()
-//				.setCheckForRunResults(false);
+		// ClustevalBackendServer.getBackendServerConfiguration()
+		// .setCheckForRunResults(false);
 		getRepository().initialize();
 		repositoryObject = new StubRepositoryObject(this.getRepository(),
 				false, System.currentTimeMillis(), new File("test"));
@@ -97,6 +97,9 @@ public class TestRepositoryObject {
 	public void tearDown() throws Exception {
 		this.repositoryObject = null;
 		getRepository().terminateSupervisorThread();
+		while (getRepository().getSupervisorThread().isAlive()) {
+			Thread.sleep(100);
+		}
 		Repository.unregister(getRepository());
 	}
 

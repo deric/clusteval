@@ -14,7 +14,6 @@
 package de.clusteval.data.preprocessing;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.junit.After;
@@ -47,6 +46,8 @@ import de.clusteval.framework.repository.config.RepositoryConfigurationException
  */
 public class TestRangeNormalizationDataPreprocesser {
 
+	Repository repo;
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -66,6 +67,9 @@ public class TestRangeNormalizationDataPreprocesser {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		repo = new Repository(
+				new File("testCaseRepository").getAbsolutePath(), null);
+		repo.initialize();
 	}
 
 	/**
@@ -73,6 +77,7 @@ public class TestRangeNormalizationDataPreprocesser {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		repo.terminateSupervisorThread();
 	}
 
 	@Test
@@ -84,9 +89,6 @@ public class TestRangeNormalizationDataPreprocesser {
 			NoRepositoryFoundException, UnknownDataSetTypeException,
 			UnknownDataPreprocessorException, IOException, InterruptedException {
 		ClustevalBackendServer.logLevel(Level.INFO);
-		Repository repo = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		repo.initialize();
 
 		File f = new File(
 				"testCaseRepository/data/datasets/synthetic/cassini250");

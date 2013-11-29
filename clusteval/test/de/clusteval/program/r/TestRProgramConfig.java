@@ -41,6 +41,8 @@ import de.clusteval.run.result.format.RunResultFormat;
  */
 public class TestRProgramConfig {
 
+	Repository repo;
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -60,6 +62,10 @@ public class TestRProgramConfig {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		ClustevalBackendServer.logLevel(Level.INFO);
+		repo = new Repository(new File("testCaseRepository").getAbsolutePath(),
+				null);
+		repo.initialize();
 	}
 
 	/**
@@ -67,6 +73,7 @@ public class TestRProgramConfig {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		repo.terminateSupervisorThread();
 	}
 
 	@Test
@@ -74,11 +81,6 @@ public class TestRProgramConfig {
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, InterruptedException {
-
-		ClustevalBackendServer.logLevel(Level.INFO);
-		Repository repo = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		repo.initialize();
 
 		ProgramConfig programConfig = repo
 				.getProgramConfigWithName("KMeans_Clustering.config");
@@ -95,11 +97,6 @@ public class TestRProgramConfig {
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, InterruptedException {
-
-		ClustevalBackendServer.logLevel(Level.INFO);
-		Repository repo = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		repo.initialize();
 
 		ProgramConfig programConfig = repo
 				.getProgramConfigWithName("KMeans_Clustering.config");

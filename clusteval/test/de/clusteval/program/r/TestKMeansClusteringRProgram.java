@@ -44,6 +44,8 @@ import file.FileUtils;
  */
 public class TestKMeansClusteringRProgram {
 
+	Repository repo;
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -63,6 +65,9 @@ public class TestKMeansClusteringRProgram {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		repo = new Repository(new File("testCaseRepository").getAbsolutePath(),
+				null);
+		repo.initialize();
 	}
 
 	/**
@@ -70,6 +75,7 @@ public class TestKMeansClusteringRProgram {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		repo.terminateSupervisorThread();
 	}
 
 	/**
@@ -87,9 +93,6 @@ public class TestKMeansClusteringRProgram {
 			RepositoryConfigurationException, IOException,
 			RunRunnableInitializationException, InterruptedException {
 		ClustevalBackendServer.logLevel(Level.INFO);
-		Repository repo = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		repo.initialize();
 
 		RunSchedulerThread scheduler = repo.getSupervisorThread()
 				.getRunScheduler();

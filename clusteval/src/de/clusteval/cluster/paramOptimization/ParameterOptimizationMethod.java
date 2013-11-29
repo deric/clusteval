@@ -186,9 +186,9 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 * @param optimizationCriterion
 	 *            The quality measure used as the optimization criterion (see
 	 *            {@link #optimizationCriterion}).
-	 * @param iterationPerParameter
-	 *            This array holds the number of iterations that are to be
-	 *            performed for each optimization parameter.
+	 * @param totalIterationCount
+	 *            The total number of iterations to be performed by this
+	 *            parameter optimization.
 	 * @param isResume
 	 *            This boolean indiciates, whether the run is a resumption of a
 	 *            previous run execution or a completely new execution.
@@ -579,8 +579,8 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	/**
 	 * @return An array holding the number of iterations that should be
 	 *         performed for each optimization parameter. Keep in mind the hints
-	 *         in {@link #iterationPerParameter}.
-	 * @see #iterationPerParameter
+	 *         in {@link #totalIterationCount}.
+	 * @see #totalIterationCount
 	 */
 	public int getIterationPerParameter() {
 		return this.totalIterationCount;

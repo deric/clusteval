@@ -54,7 +54,7 @@ public class ClustevalThread extends Thread {
 				try {
 					this.initialized.wait();
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					this.interrupt();
 				}
 			}
 		}

@@ -82,8 +82,8 @@ public class TestDaviesBouldinIndexRClusteringQualityMeasure
 			cluster2.add(new ClusterItem("id3"), 1.0f);
 			clustering.addCluster(cluster2);
 
-			DataConfig dc = this.getRepository()
-					.getDataConfigWithName("dunnIndexMatrixTest.dataconfig");
+			DataConfig dc = this.getRepository().getDataConfigWithName(
+					"dunnIndexMatrixTest.dataconfig");
 			DataSetConfig dsc = dc.getDatasetConfig();
 			DataSet ds = dsc.getDataSet();
 			ds.preprocessAndConvertTo(
@@ -105,26 +105,8 @@ public class TestDaviesBouldinIndexRClusteringQualityMeasure
 			ds.getInStandardFormat().unloadFromMemory();
 			System.out.println("Davies Bouldin Index: " + quality);
 			Assert.assertEquals(0.49195985498493144, quality);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (UnknownGoldStandardFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnknownDataSetFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidDataSetFormatVersionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnknownClusteringQualityMeasureException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			Assert.assertTrue(false);
 		}
 
 	}

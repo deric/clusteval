@@ -120,7 +120,6 @@ public class TestDataSet extends TestRepositoryObject {
 			UnknownDataSetFormatException, RegisterException,
 			UnknownDataSetTypeException, NoDataSetException,
 			NoSuchAlgorithmException, InterruptedException {
-		getRepository().initialize();
 		Repository runResultRepository = new RunResultRepository(
 				new File(
 						"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1")
@@ -518,10 +517,9 @@ public class TestDataSet extends TestRepositoryObject {
 		/*
 		 * SimMatrixDataSetFormat.convertTo() is a special case
 		 */
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/nora_cancer/all_expression_spearman.txt")
-						.getAbsoluteFile());
+		this.repositoryObject = this.getRepository()
+				.getDataSetWithName("nora_cancer/all_expression_spearman.txt")
+				.clone();
 		DataSet newDataSet = ((DataSet) this.repositoryObject)
 				.preprocessAndConvertTo(
 						context,
@@ -539,10 +537,9 @@ public class TestDataSet extends TestRepositoryObject {
 		/*
 		 * SimMatrixDataSetFormat.convertTo(APRowSimDataSetFormat)
 		 */
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/nora_cancer/all_expression_spearman.txt")
-						.getAbsoluteFile());
+		this.repositoryObject = this.getRepository()
+				.getDataSetWithName("nora_cancer/all_expression_spearman.txt")
+				.clone();
 		newDataSet = ((DataSet) this.repositoryObject).preprocessAndConvertTo(
 				context,
 				DataSetFormat.parseFromString(getRepository(),
@@ -557,10 +554,8 @@ public class TestDataSet extends TestRepositoryObject {
 		/*
 		 * convertTo(SimMatrixDataSetFormat) is a special case
 		 */
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/rowSimTest/rowSimTestFile.sim")
-						.getAbsoluteFile());
+		this.repositoryObject = this.getRepository()
+				.getDataSetWithName("rowSimTest/rowSimTestFile.sim").clone();
 		((DataSet) this.repositoryObject).preprocessAndConvertTo(
 				context,
 				DataSetFormat.parseFromString(getRepository(),
@@ -578,10 +573,8 @@ public class TestDataSet extends TestRepositoryObject {
 		/*
 		 * Convert to a non standard format
 		 */
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/rowSimTest/rowSimTestFile.sim")
-						.getAbsoluteFile());
+		this.repositoryObject = this.getRepository()
+				.getDataSetWithName("rowSimTest/rowSimTestFile.sim").clone();
 		((DataSet) this.repositoryObject).preprocessAndConvertTo(
 				context,
 				DataSetFormat.parseFromString(getRepository(),
@@ -815,20 +808,18 @@ public class TestDataSet extends TestRepositoryObject {
 			UnknownDistanceMeasureException, RNotAvailableException,
 			InterruptedException {
 		ClustevalBackendServer.logLevel(Level.INFO);
-		Repository repo = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		repo.initialize();
 
-		DataConfig dataConfig = repo
-				.getDataConfigWithName("synthetic_cassini250.dataconfig");
+		DataConfig dataConfig = getRepository().getDataConfigWithName(
+				"synthetic_cassini250.dataconfig");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
-		DataSetFormat internal = DataSetFormat.parseFromString(repo,
+		DataSetFormat internal = DataSetFormat.parseFromString(getRepository(),
 				"SimMatrixDataSetFormat");
 		ds = ds.preprocessAndConvertTo(
 				context,
 				internal,
 				new ConversionInputToStandardConfiguration(DistanceMeasure
-						.parseFromString(repo, "EuclidianDistanceMeasure"),
+						.parseFromString(getRepository(),
+								"EuclidianDistanceMeasure"),
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());

@@ -48,7 +48,8 @@ public abstract class FileFinder extends Finder {
 	 * @see utils.Finder#doOnFileFound(java.io.File)
 	 */
 	@Override
-	protected void doOnFileFound(File file) throws Exception {
+	protected void doOnFileFound(File file) throws InterruptedException,
+			Exception {
 		try {
 			RepositoryObject newObject = parseObjectFromFile(file);
 			/*

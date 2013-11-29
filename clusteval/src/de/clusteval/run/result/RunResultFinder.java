@@ -61,7 +61,8 @@ public class RunResultFinder extends FileFinder {
 	 * @see utils.FileFinder#parseObjectFromFile(java.io.File)
 	 */
 	@Override
-	protected RepositoryObject parseObjectFromFile(File file) throws Exception {
+	protected RepositoryObject parseObjectFromFile(File file)
+			throws InterruptedException, Exception {
 		return RunResult.parseFromRunResultFolder(getRepository(), file,
 				new ArrayList<ExecutionRunResult>(), false, false);
 	}

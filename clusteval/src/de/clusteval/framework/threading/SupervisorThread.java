@@ -46,6 +46,8 @@ import de.clusteval.run.statistics.RunStatisticFinderThread;
  * 
  */
 public abstract class SupervisorThread extends Thread {
+	
+	protected boolean interrupted;
 
 	/**
 	 * @param classes
@@ -181,34 +183,35 @@ public abstract class SupervisorThread extends Thread {
 		// check, that all threads are running
 		while (!this.isInterrupted()) {
 			try {
-				// changed at 08.05.2012
-				for (Class<? extends ClustevalThread> threadClass : this.threads
-						.keySet()) {
-					if (this.threads.get(threadClass) == null
-							|| (this.threads.get(threadClass).getState()
-									.equals(State.TERMINATED) && !checkOnce)) {
-						this.log.warn("Restarting "
-								+ threadClass.getSimpleName());
-						Constructor<? extends ClustevalThread> constr;
-						try {
-							constr = threadClass.getConstructor(
-									SupervisorThread.class, Repository.class,
-									boolean.class);
-							this.threads
-									.put(threadClass, constr.newInstance(this,
-											repository, false));
-						} catch (NoSuchMethodException e) {
-							e.printStackTrace();
-						} catch (SecurityException e) {
-							e.printStackTrace();
-						} catch (InstantiationException e) {
-							e.printStackTrace();
-						} catch (IllegalAccessException e) {
-							e.printStackTrace();
-						} catch (IllegalArgumentException e) {
-							e.printStackTrace();
-						} catch (InvocationTargetException e) {
-							e.printStackTrace();
+				synchronized (this.threads) {
+					// changed at 08.05.2012
+					for (Class<? extends ClustevalThread> threadClass : this.threads
+							.keySet()) {
+						if (this.threads.get(threadClass) == null
+								|| (this.threads.get(threadClass).getState()
+										.equals(State.TERMINATED) && !checkOnce)) {
+							this.log.warn("Restarting "
+									+ threadClass.getSimpleName());
+							Constructor<? extends ClustevalThread> constr;
+							try {
+								constr = threadClass.getConstructor(
+										SupervisorThread.class,
+										Repository.class, boolean.class);
+								this.threads.put(threadClass, constr
+										.newInstance(this, repository, false));
+							} catch (NoSuchMethodException e) {
+								e.printStackTrace();
+							} catch (SecurityException e) {
+								e.printStackTrace();
+							} catch (InstantiationException e) {
+								e.printStackTrace();
+							} catch (IllegalAccessException e) {
+								e.printStackTrace();
+							} catch (IllegalArgumentException e) {
+								e.printStackTrace();
+							} catch (InvocationTargetException e) {
+								e.printStackTrace();
+							}
 						}
 					}
 				}
@@ -233,6 +236,7 @@ public abstract class SupervisorThread extends Thread {
 	 */
 	@Override
 	public void interrupt() {
+		this.interrupted = true;
 		synchronized (this.threads) {
 			Map.Entry<Class<? extends ClustevalThread>, ClustevalThread>[] entries = this.threads
 					.entrySet().toArray(new Map.Entry[0]);

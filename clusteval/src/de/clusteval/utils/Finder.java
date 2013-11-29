@@ -34,8 +34,6 @@ public abstract class Finder extends RepositoryObject {
 
 	protected Map<String, List<Throwable>> knownExceptions;
 
-	protected boolean interrupted;
-
 	/**
 	 * @param repository
 	 * @param changeDate
@@ -115,6 +113,7 @@ public abstract class Finder extends RepositoryObject {
 	 * found object is newer.
 	 * 
 	 * @throws RegisterException
+	 * @throws InterruptedException
 	 */
 	@SuppressWarnings("unused")
 	public void findAndRegisterObjects() throws RegisterException,
@@ -122,8 +121,8 @@ public abstract class Finder extends RepositoryObject {
 		Iterator<File> fileIt = getIterator();
 
 		while (fileIt.hasNext()) {
-			if (interrupted)
-				return;
+			if (Thread.interrupted())
+				throw new InterruptedException();
 
 			File programDir = fileIt.next();
 
@@ -190,12 +189,5 @@ public abstract class Finder extends RepositoryObject {
 	@Override
 	public int hashCode() {
 		return this.repository.hashCode();
-	}
-
-	/**
-	 * Invoke this method to interrupt this finder.
-	 */
-	public void interrupt() {
-		this.interrupted = true;
 	}
 }

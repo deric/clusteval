@@ -1066,6 +1066,7 @@ public abstract class Run extends RepositoryObject {
 				} catch (ExecutionException e) {
 				}
 			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}

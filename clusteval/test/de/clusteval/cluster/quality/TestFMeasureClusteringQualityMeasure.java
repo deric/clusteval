@@ -13,14 +13,12 @@
  */
 package de.clusteval.cluster.quality;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 import org.junit.Test;
 
 import ch.qos.logback.classic.Level;
-
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
@@ -54,67 +52,49 @@ public class TestFMeasureClusteringQualityMeasure extends TestRepositoryObject {
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
 			RegisterException, NoSuchAlgorithmException,
-			RNotAvailableException, RCalculationException {
-		try {
-			ClustevalBackendServer.logLevel(Level.WARN);
-			Clustering goldStandard = new Clustering();
-			Cluster gsCluster1 = new Cluster("1");
-			gsCluster1.add(new ClusterItem("square1"), 1.0f);
-			goldStandard.addCluster(gsCluster1);
+			RNotAvailableException, RCalculationException,
+			UnknownClusteringQualityMeasureException,
+			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
+			InvalidDataSetFormatVersionException, IOException {
+		ClustevalBackendServer.logLevel(Level.WARN);
+		Clustering goldStandard = new Clustering();
+		Cluster gsCluster1 = new Cluster("1");
+		gsCluster1.add(new ClusterItem("square1"), 1.0f);
+		goldStandard.addCluster(gsCluster1);
 
-			Cluster gsCluster2 = new Cluster("2");
-			gsCluster2.add(new ClusterItem("star1"), 1.0f);
-			gsCluster2.add(new ClusterItem("star2"), 1.0f);
-			gsCluster2.add(new ClusterItem("star3"), 1.0f);
-			gsCluster2.add(new ClusterItem("star4"), 1.0f);
-			gsCluster2.add(new ClusterItem("star5"), 1.0f);
-			gsCluster2.add(new ClusterItem("star6"), 1.0f);
-			goldStandard.addCluster(gsCluster2);
+		Cluster gsCluster2 = new Cluster("2");
+		gsCluster2.add(new ClusterItem("star1"), 1.0f);
+		gsCluster2.add(new ClusterItem("star2"), 1.0f);
+		gsCluster2.add(new ClusterItem("star3"), 1.0f);
+		gsCluster2.add(new ClusterItem("star4"), 1.0f);
+		gsCluster2.add(new ClusterItem("star5"), 1.0f);
+		gsCluster2.add(new ClusterItem("star6"), 1.0f);
+		goldStandard.addCluster(gsCluster2);
 
-			Clustering clustering = new Clustering();
-			Cluster cluster1 = new Cluster("1");
-			cluster1.add(new ClusterItem("square1"), 1.0f);
-			cluster1.add(new ClusterItem("star1"), 1.0f);
-			cluster1.add(new ClusterItem("star2"), 1.0f);
-			cluster1.add(new ClusterItem("star3"), 1.0f);
-			cluster1.add(new ClusterItem("star4"), 1.0f);
-			cluster1.add(new ClusterItem("star5"), 1.0f);
-			cluster1.add(new ClusterItem("star6"), 1.0f);
-			clustering.addCluster(cluster1);
+		Clustering clustering = new Clustering();
+		Cluster cluster1 = new Cluster("1");
+		cluster1.add(new ClusterItem("square1"), 1.0f);
+		cluster1.add(new ClusterItem("star1"), 1.0f);
+		cluster1.add(new ClusterItem("star2"), 1.0f);
+		cluster1.add(new ClusterItem("star3"), 1.0f);
+		cluster1.add(new ClusterItem("star4"), 1.0f);
+		cluster1.add(new ClusterItem("star5"), 1.0f);
+		cluster1.add(new ClusterItem("star6"), 1.0f);
+		clustering.addCluster(cluster1);
 
-			ClusteringQualityMeasure measure = ClusteringQualityMeasure
-					.parseFromString(getRepository(),
-							"TransClustFClusteringQualityMeasure");
-			double quality = measure.getQualityOfClustering(clustering,
-					goldStandard, null).getValue();
-			System.out.println(measure.getAlias() + " " + quality);
+		ClusteringQualityMeasure measure = ClusteringQualityMeasure
+				.parseFromString(getRepository(),
+						"TransClustFClusteringQualityMeasure");
+		double quality = measure.getQualityOfClustering(clustering,
+				goldStandard, null).getValue();
+		System.out.println(measure.getAlias() + " " + quality);
 
-			measure = ClusteringQualityMeasure.parseFromString(getRepository(),
-					"TransClustF2ClusteringQualityMeasure");
-			quality = measure.getQualityOfClustering(clustering, goldStandard,
-					null).getValue();
-			System.out.println(measure.getAlias() + " " + quality);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (UnknownGoldStandardFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnknownDataSetFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidDataSetFormatVersionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnknownClusteringQualityMeasureException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		measure = ClusteringQualityMeasure.parseFromString(getRepository(),
+				"TransClustF2ClusteringQualityMeasure");
+		quality = measure
+				.getQualityOfClustering(clustering, goldStandard, null)
+				.getValue();
+		System.out.println(measure.getAlias() + " " + quality);
 	}
 
 	@Test
@@ -123,68 +103,50 @@ public class TestFMeasureClusteringQualityMeasure extends TestRepositoryObject {
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
 			RegisterException, NoSuchAlgorithmException,
-			RNotAvailableException, RCalculationException {
-		try {
-			ClustevalBackendServer.logLevel(Level.WARN);
-			Clustering goldStandard = new Clustering();
-			Cluster gsCluster1 = new Cluster("1");
-			gsCluster1.add(new ClusterItem("square1"), 1.0f);
-			goldStandard.addCluster(gsCluster1);
+			RNotAvailableException, RCalculationException,
+			UnknownClusteringQualityMeasureException,
+			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
+			InvalidDataSetFormatVersionException, IOException {
+		ClustevalBackendServer.logLevel(Level.WARN);
+		Clustering goldStandard = new Clustering();
+		Cluster gsCluster1 = new Cluster("1");
+		gsCluster1.add(new ClusterItem("square1"), 1.0f);
+		goldStandard.addCluster(gsCluster1);
 
-			Cluster gsCluster2 = new Cluster("2");
-			gsCluster2.add(new ClusterItem("star1"), 1.0f);
-			gsCluster2.add(new ClusterItem("star2"), 1.0f);
-			gsCluster2.add(new ClusterItem("star3"), 1.0f);
-			gsCluster2.add(new ClusterItem("star4"), 1.0f);
-			gsCluster2.add(new ClusterItem("star5"), 1.0f);
-			gsCluster2.add(new ClusterItem("star6"), 1.0f);
-			gsCluster2.add(new ClusterItem("star7"), 1.0f);
-			goldStandard.addCluster(gsCluster2);
+		Cluster gsCluster2 = new Cluster("2");
+		gsCluster2.add(new ClusterItem("star1"), 1.0f);
+		gsCluster2.add(new ClusterItem("star2"), 1.0f);
+		gsCluster2.add(new ClusterItem("star3"), 1.0f);
+		gsCluster2.add(new ClusterItem("star4"), 1.0f);
+		gsCluster2.add(new ClusterItem("star5"), 1.0f);
+		gsCluster2.add(new ClusterItem("star6"), 1.0f);
+		gsCluster2.add(new ClusterItem("star7"), 1.0f);
+		goldStandard.addCluster(gsCluster2);
 
-			Clustering clustering = new Clustering();
-			Cluster cluster1 = new Cluster("1");
-			cluster1.add(new ClusterItem("square1"), 1.0f);
-			cluster1.add(new ClusterItem("star1"), 1.0f);
-			cluster1.add(new ClusterItem("star2"), 1.0f);
-			cluster1.add(new ClusterItem("star3"), 1.0f);
-			cluster1.add(new ClusterItem("star4"), 1.0f);
-			cluster1.add(new ClusterItem("star5"), 1.0f);
-			cluster1.add(new ClusterItem("star6"), 1.0f);
-			cluster1.add(new ClusterItem("star7"), 1.0f);
-			clustering.addCluster(cluster1);
+		Clustering clustering = new Clustering();
+		Cluster cluster1 = new Cluster("1");
+		cluster1.add(new ClusterItem("square1"), 1.0f);
+		cluster1.add(new ClusterItem("star1"), 1.0f);
+		cluster1.add(new ClusterItem("star2"), 1.0f);
+		cluster1.add(new ClusterItem("star3"), 1.0f);
+		cluster1.add(new ClusterItem("star4"), 1.0f);
+		cluster1.add(new ClusterItem("star5"), 1.0f);
+		cluster1.add(new ClusterItem("star6"), 1.0f);
+		cluster1.add(new ClusterItem("star7"), 1.0f);
+		clustering.addCluster(cluster1);
 
-			ClusteringQualityMeasure measure = ClusteringQualityMeasure
-					.parseFromString(getRepository(),
-							"TransClustFClusteringQualityMeasure");
-			double quality = measure.getQualityOfClustering(clustering,
-					goldStandard, null).getValue();
-			System.out.println(measure.getAlias() + " " + quality);
+		ClusteringQualityMeasure measure = ClusteringQualityMeasure
+				.parseFromString(getRepository(),
+						"TransClustFClusteringQualityMeasure");
+		double quality = measure.getQualityOfClustering(clustering,
+				goldStandard, null).getValue();
+		System.out.println(measure.getAlias() + " " + quality);
 
-			measure = ClusteringQualityMeasure.parseFromString(getRepository(),
-					"TransClustF2ClusteringQualityMeasure");
-			quality = measure.getQualityOfClustering(clustering, goldStandard,
-					null).getValue();
-			System.out.println(measure.getAlias() + " " + quality);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (UnknownGoldStandardFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnknownDataSetFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidDataSetFormatVersionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnknownClusteringQualityMeasureException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		measure = ClusteringQualityMeasure.parseFromString(getRepository(),
+				"TransClustF2ClusteringQualityMeasure");
+		quality = measure
+				.getQualityOfClustering(clustering, goldStandard, null)
+				.getValue();
+		System.out.println(measure.getAlias() + " " + quality);
 	}
 }

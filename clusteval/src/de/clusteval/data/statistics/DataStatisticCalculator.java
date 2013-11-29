@@ -26,7 +26,6 @@ import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethod
 import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.context.IncompatibleContextException;
 import de.clusteval.context.UnknownContextException;
-
 import de.clusteval.data.DataConfig;
 import de.clusteval.data.DataConfigNotFoundException;
 import de.clusteval.data.DataConfigurationException;
@@ -172,7 +171,8 @@ public abstract class DataStatisticCalculator<T extends DataStatistic>
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleContextException, UnknownContextException,
-			REngineException, RNotAvailableException, UnknownParameterType {
+			REngineException, RNotAvailableException, UnknownParameterType,
+			InterruptedException {
 		return super.calculate();
 	}
 

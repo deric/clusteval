@@ -86,40 +86,32 @@ public abstract class FinderThread extends ClustevalThread {
 		// this.lock.lock();
 		while (!this.isInterrupted()) {
 			try {
-				this.beforeFind();
-				currentFinder = getFinder();
-				currentFinder.findAndRegisterObjects();
-				this.afterFind();
 				try {
-					// try release the lock, if we still keep it (only
-					// before first finishing of finding)
-					this.setInitialized();
-				} catch (IllegalMonitorStateException e) {
+					this.beforeFind();
+					if (this.isInterrupted())
+						return;
+					currentFinder = getFinder();
+					currentFinder.findAndRegisterObjects();
+					if (this.isInterrupted())
+						return;
+					this.afterFind();
+					try {
+						// try release the lock, if we still keep it (only
+						// before first finishing of finding)
+						this.setInitialized();
+					} catch (IllegalMonitorStateException e) {
 
+					}
+					this.repository.commitDB();
+				} catch (RegisterException e) {
+					e.printStackTrace();
 				}
-				this.repository.commitDB();
 				if (checkOnce)
 					return;
 				sleep(sleepTime);
 			} catch (InterruptedException e) {
-				this.interrupt();
-			} catch (RegisterException e) {
-				e.printStackTrace();
+				return;
 			}
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Thread#interrupt()
-	 */
-	@Override
-	public void interrupt() {
-		super.interrupt();
-		if (currentFinder != null) {
-			currentFinder.interrupt();
-			currentFinder = null;
 		}
 	}
 }

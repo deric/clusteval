@@ -65,6 +65,8 @@ import de.clusteval.utils.RNotAvailableException;
  */
 public class TestParameterOptimizationMethod {
 
+	Repository repo;
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -84,6 +86,9 @@ public class TestParameterOptimizationMethod {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		repo = new Repository(new File("testCaseRepository").getAbsolutePath(),
+				null);
+		repo.initialize();
 	}
 
 	/**
@@ -91,6 +96,7 @@ public class TestParameterOptimizationMethod {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		repo.terminateSupervisorThread();
 	}
 
 	@Test
@@ -109,9 +115,6 @@ public class TestParameterOptimizationMethod {
 			InterruptedException {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
-		Repository repo = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		repo.initialize();
 
 		Context context = Context.parseFromString(repo, "ClusteringContext");
 
@@ -245,9 +248,6 @@ public class TestParameterOptimizationMethod {
 			InterruptedException {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
-		Repository repo = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		repo.initialize();
 
 		Context context = Context.parseFromString(repo, "ClusteringContext");
 
@@ -364,9 +364,6 @@ public class TestParameterOptimizationMethod {
 			InterruptedException {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
-		Repository repo = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		repo.initialize();
 
 		Context context = Context.parseFromString(repo, "ClusteringContext");
 
@@ -456,9 +453,6 @@ public class TestParameterOptimizationMethod {
 			InterruptedException {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
-		Repository repo = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		repo.initialize();
 
 		Context context = Context.parseFromString(repo, "ClusteringContext");
 

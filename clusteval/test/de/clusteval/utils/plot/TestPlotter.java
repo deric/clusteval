@@ -60,6 +60,8 @@ import de.clusteval.utils.RNotAvailableException;
  */
 public class TestPlotter {
 
+	Repository parent;
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -79,6 +81,11 @@ public class TestPlotter {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		ClustevalBackendServer.logLevel(Level.INFO);
+		parent = new Repository(
+				new File("testCaseRepository").getAbsolutePath(), null);
+		parent.initialize();
+
 	}
 
 	/**
@@ -86,6 +93,7 @@ public class TestPlotter {
 	 */
 	@After
 	public void tearDown() throws Exception {
+		parent.terminateSupervisorThread();
 	}
 
 	@Test
@@ -100,11 +108,6 @@ public class TestPlotter {
 			NoDataSetException, NoRepositoryFoundException,
 			UnknownContextException, RNotAvailableException,
 			InterruptedException {
-		ClustevalBackendServer.logLevel(Level.INFO);
-		Repository parent = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		parent.initialize();
-
 		Context context = Context.parseFromString(parent, "ClusteringContext");
 
 		DataSet ds = DataSet
@@ -159,11 +162,6 @@ public class TestPlotter {
 			NoDataSetException, NoRepositoryFoundException,
 			UnknownContextException, RNotAvailableException,
 			InterruptedException {
-		ClustevalBackendServer.logLevel(Level.INFO);
-		Repository parent = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		parent.initialize();
-
 		Context context = Context.parseFromString(parent, "ClusteringContext");
 
 		DataSet ds = DataSet

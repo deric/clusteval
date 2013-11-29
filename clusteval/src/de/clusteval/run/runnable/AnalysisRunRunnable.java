@@ -30,7 +30,6 @@ import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethod
 import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.context.IncompatibleContextException;
 import de.clusteval.context.UnknownContextException;
-
 import utils.ProgressPrinter;
 import de.clusteval.data.DataConfigNotFoundException;
 import de.clusteval.data.DataConfigurationException;
@@ -338,6 +337,9 @@ public abstract class AnalysisRunRunnable<T extends Statistic, R extends RunResu
 			} catch (REngineException e) {
 			} catch (UnknownParameterType e) {
 				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO: do we have to throw this exception?
 				e.printStackTrace();
 			} finally {
 				currentPos++;

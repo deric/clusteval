@@ -26,7 +26,6 @@ import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethod
 import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.context.IncompatibleContextException;
 import de.clusteval.context.UnknownContextException;
-
 import de.clusteval.data.DataConfigNotFoundException;
 import de.clusteval.data.DataConfigurationException;
 import de.clusteval.data.dataset.DataSetConfigNotFoundException;
@@ -170,7 +169,8 @@ public abstract class RunStatisticCalculator<T extends RunStatistic>
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleContextException, UnknownContextException,
-			RNotAvailableException, REngineException, UnknownParameterType {
+			RNotAvailableException, REngineException, UnknownParameterType,
+			InterruptedException {
 		return super.calculate();
 	}
 
@@ -210,7 +210,8 @@ public abstract class RunStatisticCalculator<T extends RunStatistic>
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
-			RNotAvailableException, REngineException, UnknownParameterType;
+			RNotAvailableException, REngineException, UnknownParameterType,
+			InterruptedException;
 
 	/*
 	 * (non-Javadoc)

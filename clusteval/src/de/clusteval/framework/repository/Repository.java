@@ -1322,7 +1322,7 @@ public class Repository {
 		if (this.supervisorThread == null)
 			return;
 		this.supervisorThread.interrupt();
-		this.supervisorThread.join(0);
+		this.supervisorThread.join();
 	}
 
 	/**
@@ -3287,9 +3287,9 @@ public class Repository {
 	 *             for finishing the initialization process.
 	 */
 	public void initialize() throws InterruptedException {
-		if (isInitialized())
+		if (isInitialized() || this.supervisorThread != null)
 			return;
-
+		
 		this.supervisorThread = createSupervisorThread();
 
 		// wait until repository initialized
