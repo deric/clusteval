@@ -127,9 +127,13 @@ public class TestDataSet extends TestRepositoryObject {
 		runResultRepository.setSQLCommunicator(new StubSQLCommunicator(
 				runResultRepository));
 		runResultRepository.initialize();
-		DataSet.parseFromFile(new File(
-				"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1/inputs/DS1/testCaseDataSetNotPresentInParent.txt")
-				.getAbsoluteFile());
+		try {
+			DataSet.parseFromFile(new File(
+					"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1/inputs/DS1/testCaseDataSetNotPresentInParent.txt")
+					.getAbsoluteFile());
+		} finally {
+			runResultRepository.terminateSupervisorThread();
+		}
 	}
 
 	/**

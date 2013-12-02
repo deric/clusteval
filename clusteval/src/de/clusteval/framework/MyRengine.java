@@ -13,6 +13,9 @@
  */
 package de.clusteval.framework;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.rosuda.REngine.REXP;
 import org.rosuda.REngine.REXPMismatchException;
 import org.rosuda.REngine.REngineException;
@@ -35,6 +38,8 @@ import org.slf4j.LoggerFactory;
 public class MyRengine extends RConnection {
 
 	protected Logger log;
+	
+	protected Set<String> loadedLibraries;
 
 	/**
 	 * @param string
@@ -44,6 +49,7 @@ public class MyRengine extends RConnection {
 	public MyRengine(String string) throws RserveException {
 		super(string);
 		this.log = LoggerFactory.getLogger(this.getClass());
+		this.loadedLibraries = new HashSet<String>();
 	}
 
 	/**
@@ -57,14 +63,17 @@ public class MyRengine extends RConnection {
 	 *            The name of the library.
 	 * @param requiredByClass
 	 *            The name of the class that requires the library.
-	 * @return True, if the library was loaded successfully.
+	 * @return True, if the library was loaded successfully or was loaded before.
 	 * @throws RLibraryNotLoadedException
 	 */
 	public boolean loadLibrary(final String name, final String requiredByClass)
 			throws RLibraryNotLoadedException {
 		try {
+			if (this.loadedLibraries.contains(name))
+				return true;
 			this.log.debug("Loading R library '" + name + "' ...");
 			this.eval("library(" + name + ")");
+			this.loadedLibraries.add(name);
 			this.log.debug("R library '" + name + "' loaded successfully");
 			return true;
 		} catch (RserveException e) {
