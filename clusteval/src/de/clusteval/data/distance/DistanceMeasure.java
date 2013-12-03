@@ -15,18 +15,20 @@ package de.clusteval.data.distance;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Set;
 
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
+import de.clusteval.program.r.RLibraryInferior;
 import de.clusteval.utils.RNotAvailableException;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public abstract class DistanceMeasure extends RepositoryObject {
+public abstract class DistanceMeasure extends RepositoryObject
+		implements
+			RLibraryInferior {
 
 	/**
 	 * @param repository
@@ -177,11 +179,6 @@ public abstract class DistanceMeasure extends RepositoryObject {
 	 */
 	public abstract double[][] getDistances(double[][] matrix)
 			throws RNotAvailableException;
-
-	/**
-	 * @return A set with names of all R libraries this class requires.
-	 */
-	public abstract Set<String> getRequiredRlibraries();
 
 	/*
 	 * (non-Javadoc)

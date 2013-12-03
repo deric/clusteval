@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import de.clusteval.cluster.Clustering;
 import de.clusteval.data.DataConfig;
@@ -28,6 +27,7 @@ import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
+import de.clusteval.program.r.RLibraryInferior;
 import de.clusteval.utils.RCalculationException;
 import de.clusteval.utils.RNotAvailableException;
 
@@ -46,7 +46,9 @@ import de.clusteval.utils.RNotAvailableException;
  * 
  * @author Christian Wiwie
  */
-public abstract class ClusteringQualityMeasure extends RepositoryObject {
+public abstract class ClusteringQualityMeasure extends RepositoryObject
+		implements
+			RLibraryInferior {
 
 	/**
 	 * Instantiates a new clustering quality measure.
@@ -278,11 +280,6 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject {
 	 *         measure.
 	 */
 	public abstract double getMaximum();
-
-	/**
-	 * @return A set with names of all R libraries this class requires.
-	 */
-	public abstract Set<String> getRequiredRlibraries();
 
 	/**
 	 * Override this method to indicate, whether the quality measure of your

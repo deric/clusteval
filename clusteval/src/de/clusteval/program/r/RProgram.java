@@ -39,6 +39,7 @@ import de.clusteval.program.Program;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.run.result.format.RunResultFormat;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.utils.RNotAvailableException;
 
 /**
  * A type of progam that encapsulates a program embedded in R.
@@ -53,7 +54,7 @@ import de.clusteval.run.result.format.UnknownRunResultFormatException;
  * @author Christian Wiwie
  * 
  */
-public abstract class RProgram extends Program {
+public abstract class RProgram extends Program implements RLibraryInferior {
 
 	/**
 	 * Attribute used to store an rengine instance during execution of this
@@ -201,11 +202,6 @@ public abstract class RProgram extends Program {
 	}
 
 	/**
-	 * @return A set with names of all R libraries this class requires.
-	 */
-	public abstract Set<String> getRequiredRlibraries();
-
-	/**
 	 * @return The format of the invocation line of this RProgram.
 	 */
 	public abstract String getInvocationFormat();
@@ -238,7 +234,8 @@ public abstract class RProgram extends Program {
 			ProgramConfig programConfig, String[] invocationLine,
 			Map<String, String> effectiveParams,
 			Map<String, String> internalParams) throws REngineException,
-			REXPMismatchException, IOException, RLibraryNotLoadedException {
+			REXPMismatchException, IOException, RLibraryNotLoadedException,
+			RNotAvailableException {
 		try {
 			beforeExec(dataConfig, programConfig, invocationLine,
 					effectiveParams, internalParams);
@@ -257,7 +254,7 @@ public abstract class RProgram extends Program {
 			ProgramConfig programConfig, String[] invocationLine,
 			Map<String, String> effectiveParams,
 			Map<String, String> internalParams) throws REngineException,
-			RLibraryNotLoadedException {
+			RLibraryNotLoadedException, RNotAvailableException {
 
 		rEngine = repository.getRengineForCurrentThread();
 

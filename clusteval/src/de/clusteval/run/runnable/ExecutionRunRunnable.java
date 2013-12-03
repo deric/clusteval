@@ -1268,9 +1268,6 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 											runThreadIdentString),
 							programConfig + "_" + dataConfig
 									+ ".results.qual.complete");
-
-		// init the program
-		this.programConfig.getProgram().init();
 	}
 
 	/*
@@ -1281,8 +1278,6 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	@Override
 	protected void afterRun() throws ProgramReleaseException {
 		super.afterRun();
-
-		this.programConfig.getProgram().release();
 
 		// unload the dataset from memory
 		DataSet dataSet = this.dataConfig.getDatasetConfig().getDataSet()

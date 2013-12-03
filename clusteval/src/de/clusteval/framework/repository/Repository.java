@@ -90,6 +90,7 @@ import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramConfigFinderThread;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.program.StringProgramParameter;
+import de.clusteval.program.r.RLibraryInferior;
 import de.clusteval.program.r.RProgram;
 import de.clusteval.program.r.RProgramFinderThread;
 import de.clusteval.program.r.UnknownRProgramException;
@@ -5190,48 +5191,12 @@ public class Repository {
 	private boolean ensureDataStatisticRLibraries(
 			final Class<? extends DataStatistic> classObject) {
 		// create an instance
-		DataStatistic generator;
+		RLibraryInferior rLibraryInferior;
 		try {
-			generator = DataStatistic.parseFromString(this,
+			rLibraryInferior = DataStatistic.parseFromString(this,
 					classObject.getSimpleName());
 
-			if (generator.getRequiredRlibraries().isEmpty())
-				return true;
-			// ensure that all R libraries are available
-			MyRengine rEngine;
-			try {
-				// rEngine = new MyRengine("");
-				// if (this.rEngineForLibraryInstalledChecks == null)
-				// throw this.rEngineException;
-				// rEngine =
-				// this.rEngineForLibraryInstalledChecks.retrieveAndLock();
-				rEngine = this.getRengineForCurrentThread();
-				synchronized (rEngine) {
-					try {
-						for (String libName : generator.getRequiredRlibraries())
-							try {
-								rEngine.loadLibrary(libName,
-										classObject.getSimpleName());
-								// first we clear the old exceptions for this
-								// class
-								this.clearMissingRLibraries(generator
-										.getClass().getName());
-							} catch (RLibraryNotLoadedException e) {
-								if (this.addMissingRLibraryException(e))
-									this.warn("\""
-											+ generator.getClass()
-													.getSimpleName()
-											+ "\" could not be loaded due to an unsatisfied R library dependency: "
-											+ libName);
-							}
-						return true;
-					} finally {
-						// rEngine.close();
-						//this.rEngineForLibraryInstalledChecks.release(rEngine);
-					}
-				}
-			} catch (RserveException e) {
-			}
+			return this.ensureRLibraries(rLibraryInferior);
 		} catch (UnknownDataStatisticException e1) {
 			e1.printStackTrace();
 		}
@@ -6768,6 +6733,43 @@ public class Repository {
 						.isDataSetGeneratorRegistered(dsGeneratorClassName));
 	}
 
+	private boolean ensureRLibraries(final RLibraryInferior rLibraryInferior) {
+		if (rLibraryInferior.getRequiredRlibraries().isEmpty())
+			return true;
+		// ensure that all R libraries are available
+		MyRengine rEngine;
+		try {
+			rEngine = this.getRengineForCurrentThread();
+
+			if (rLibraryInferior.getRequiredRlibraries().isEmpty())
+				return true;
+			// ensure that all R libraries are available
+			for (String libName : rLibraryInferior.getRequiredRlibraries())
+				try {
+					rEngine.loadLibrary(libName, rLibraryInferior.getClass()
+							.getSimpleName());
+					// first we clear the old exceptions for this
+					// class
+					this.clearMissingRLibraries(rLibraryInferior.getClass()
+							.getName());
+				} catch (RLibraryNotLoadedException e) {
+					if (this.addMissingRLibraryException(e))
+						this.warn("\""
+								+ rLibraryInferior.getClass().getSimpleName()
+								+ "\" could not be loaded due to an unsatisfied R library dependency: "
+								+ libName);
+				}
+			return true;
+		} catch (RserveException e) {
+			if (this.addMissingRLibraryException(new RLibraryNotLoadedException(
+					rLibraryInferior.getClass().getName(), "R")))
+				this.warn("\""
+						+ rLibraryInferior.getClass().getSimpleName()
+						+ "\" could not be loaded since it requires R and no connection could be established.");
+		}
+		return true;
+	}
+
 	/**
 	 * This method assumes, that the class that is passed is currently
 	 * registered in this repository.
@@ -6784,52 +6786,12 @@ public class Repository {
 	private boolean ensureDataSetGeneratorRLibraries(
 			final Class<? extends DataSetGenerator> classObject) {
 		// create an instance
-		DataSetGenerator generator;
+		RLibraryInferior rLibraryInferior;
 		try {
-			generator = DataSetGenerator.parseFromString(this,
+			rLibraryInferior = DataSetGenerator.parseFromString(this,
 					classObject.getSimpleName());
 
-			if (generator.getRequiredRlibraries().isEmpty())
-				return true;
-			// ensure that all R libraries are available
-			MyRengine rEngine;
-			try {
-				// rEngine = new MyRengine("");
-//				if (this.rEngineForLibraryInstalledChecks == null)
-//					throw this.rEngineException;
-//				rEngine = this.rEngineForLibraryInstalledChecks
-//						.retrieveAndLock();
-				rEngine = this.getRengineForCurrentThread();
-				synchronized (rEngine) {
-					try {
-						for (String libName : generator.getRequiredRlibraries())
-							try {
-								rEngine.loadLibrary(libName,
-										classObject.getSimpleName());
-								// first we clear the old exceptions for this
-								// class
-								this.clearMissingRLibraries(generator
-										.getClass().getName());
-							} catch (RLibraryNotLoadedException e) {
-								if (this.addMissingRLibraryException(e))
-									this.warn("\""
-											+ generator
-											+ "\" could not be loaded due to an unsatisfied R library dependency: "
-											+ libName);
-							}
-						return true;
-					} finally {
-						// rEngine.close();
-						//this.rEngineForLibraryInstalledChecks.release(rEngine);
-					}
-				}
-			} catch (RserveException e) {
-				if (this.addMissingRLibraryException(new RLibraryNotLoadedException(
-						generator.getClass().getName(), "R")))
-					this.warn("\""
-							+ generator
-							+ "\" could not be loaded since it requires R and no connection could be established.");
-			}
+			return this.ensureRLibraries(rLibraryInferior);
 		} catch (UnknownDataSetGeneratorException e1) {
 			e1.printStackTrace();
 		}
@@ -6853,53 +6815,11 @@ public class Repository {
 	private boolean ensureDataPreprocessorRLibraries(
 			final Class<? extends DataPreprocessor> classObject) {
 		// create an instance
-		DataPreprocessor preprocessor;
+		RLibraryInferior object;
 		try {
-			preprocessor = DataPreprocessor.parseFromString(this,
+			object = DataPreprocessor.parseFromString(this,
 					classObject.getSimpleName());
-
-			if (preprocessor.getRequiredRlibraries().isEmpty())
-				return true;
-			// ensure that all R libraries are available
-			MyRengine rEngine;
-			try {
-				// rEngine = new MyRengine("");
-//				if (this.rEngineForLibraryInstalledChecks == null)
-//					throw this.rEngineException;
-//				rEngine = this.rEngineForLibraryInstalledChecks
-//						.retrieveAndLock();
-				rEngine = this.getRengineForCurrentThread();
-				synchronized (rEngine) {
-					try {
-						for (String libName : preprocessor
-								.getRequiredRlibraries())
-							try {
-								rEngine.loadLibrary(libName,
-										classObject.getSimpleName());
-								// first we clear the old exceptions for this
-								// class
-								this.clearMissingRLibraries(preprocessor
-										.getClass().getName());
-							} catch (RLibraryNotLoadedException e) {
-								if (this.addMissingRLibraryException(e))
-									this.warn("\""
-											+ preprocessor
-											+ "\" could not be loaded due to an unsatisfied R library dependency: "
-											+ libName);
-							}
-						return true;
-					} finally {
-						// rEngine.close();
-						//this.rEngineForLibraryInstalledChecks.release(rEngine);
-					}
-				}
-			} catch (RserveException e) {
-				if (this.addMissingRLibraryException(new RLibraryNotLoadedException(
-						preprocessor.getClass().getName(), "R")))
-					this.warn("\""
-							+ preprocessor
-							+ "\" could not be loaded since it requires R and no connection could be established.");
-			}
+			return this.ensureRLibraries(object);
 		} catch (UnknownDataPreprocessorException e1) {
 			e1.printStackTrace();
 		}
@@ -6922,43 +6842,17 @@ public class Repository {
 	 */
 	private boolean ensureRProgramRLibraries(
 			final Class<? extends RProgram> classObject) {
-		MyRengine rEngine;
 		try {
-			// rEngine = new MyRengine("");
-//			if (this.rEngineForLibraryInstalledChecks == null)
-//				throw this.rEngineException;
-//			rEngine = this.rEngineForLibraryInstalledChecks.retrieveAndLock();
-			rEngine = this.getRengineForCurrentThread();
-			synchronized (rEngine) {
-				try {
-					// create an instance
-					RProgram generator = RProgram.parseFromString(this,
-							classObject.getSimpleName());
+			// check whether we have R available
+			this.getRengineForCurrentThread();
+			try {
+				// create an instance
+				RLibraryInferior rLibraryInferior = RProgram.parseFromString(
+						this, classObject.getSimpleName());
 
-					if (generator.getRequiredRlibraries().isEmpty())
-						return true;
-					// ensure that all R libraries are available
-					for (String libName : generator.getRequiredRlibraries())
-						try {
-							rEngine.loadLibrary(libName,
-									classObject.getSimpleName());
-							// first we clear the old exceptions for this class
-							this.clearMissingRLibraries(generator.getClass()
-									.getName());
-						} catch (RLibraryNotLoadedException e) {
-							if (this.addMissingRLibraryException(e))
-								this.warn("\""
-										+ generator
-										+ "\" could not be loaded due to an unsatisfied R library dependency: "
-										+ libName);
-						}
-					return true;
-				} catch (UnknownRProgramException e1) {
-					e1.printStackTrace();
-				} finally {
-					// rEngine.close();
-					//this.rEngineForLibraryInstalledChecks.release(rEngine);
-				}
+				return this.ensureRLibraries(rLibraryInferior);
+			} catch (UnknownRProgramException e1) {
+				e1.printStackTrace();
 			}
 		} catch (RserveException e) {
 			this.warn("\""
@@ -6985,52 +6879,12 @@ public class Repository {
 	private boolean ensureClusteringQualityMeasureRLibraries(
 			final Class<? extends ClusteringQualityMeasure> classObject) {
 		// create an instance
-		ClusteringQualityMeasure measure;
+		RLibraryInferior rLibraryInferior;
 		try {
-			measure = ClusteringQualityMeasure.parseFromString(this,
+			rLibraryInferior = ClusteringQualityMeasure.parseFromString(this,
 					classObject.getSimpleName());
 
-			if (measure.getRequiredRlibraries().isEmpty())
-				return true;
-			// ensure that all R libraries are available
-			MyRengine rEngine;
-			try {
-				// rEngine = new MyRengine("");
-//				if (this.rEngineForLibraryInstalledChecks == null)
-//					throw this.rEngineException;
-//				rEngine = this.rEngineForLibraryInstalledChecks
-//						.retrieveAndLock();
-				rEngine = this.getRengineForCurrentThread();
-				synchronized (rEngine) {
-					try {
-						for (String libName : measure.getRequiredRlibraries())
-							try {
-								rEngine.loadLibrary(libName,
-										classObject.getSimpleName());
-								// first we clear the old exceptions for this
-								// class
-								this.clearMissingRLibraries(measure.getClass()
-										.getName());
-							} catch (RLibraryNotLoadedException e) {
-								if (this.addMissingRLibraryException(e))
-									this.warn("\""
-											+ measure
-											+ "\" could not be loaded due to an unsatisfied R library dependency: "
-											+ libName);
-							}
-						return true;
-					} finally {
-						// rEngine.close();
-						//this.rEngineForLibraryInstalledChecks.release(rEngine);
-					}
-				}
-			} catch (RserveException e) {
-				if (this.addMissingRLibraryException(new RLibraryNotLoadedException(
-						measure.getClass().getName(), "R")))
-					this.warn("\""
-							+ measure
-							+ "\" could not be loaded since it requires R and no connection could be established.");
-			}
+			return this.ensureRLibraries(rLibraryInferior);
 		} catch (UnknownClusteringQualityMeasureException e1) {
 			e1.printStackTrace();
 		}
@@ -7054,52 +6908,12 @@ public class Repository {
 	private boolean ensureDistanceMeasureLibraries(
 			final Class<? extends DistanceMeasure> classObject) {
 		// create an instance
-		DistanceMeasure generator;
+		RLibraryInferior rLibraryInferior;
 		try {
-			generator = DistanceMeasure.parseFromString(this,
+			rLibraryInferior = DistanceMeasure.parseFromString(this,
 					classObject.getSimpleName());
 
-			if (generator.getRequiredRlibraries().isEmpty())
-				return true;
-			// ensure that all R libraries are available
-			MyRengine rEngine;
-			try {
-				// rEngine = new MyRengine("");
-//				if (this.rEngineForLibraryInstalledChecks == null)
-//					throw this.rEngineException;
-//				rEngine = this.rEngineForLibraryInstalledChecks
-//						.retrieveAndLock();
-				rEngine = this.getRengineForCurrentThread();
-				synchronized (rEngine) {
-					try {
-						for (String libName : generator.getRequiredRlibraries())
-							try {
-								rEngine.loadLibrary(libName,
-										classObject.getSimpleName());
-								// first we clear the old exceptions for this
-								// class
-								this.clearMissingRLibraries(generator
-										.getClass().getName());
-							} catch (RLibraryNotLoadedException e) {
-								if (this.addMissingRLibraryException(e))
-									this.warn("\""
-											+ generator
-											+ "\" could not be loaded due to an unsatisfied R library dependency: "
-											+ libName);
-							}
-						return true;
-					} finally {
-						// rEngine.close();
-						//this.rEngineForLibraryInstalledChecks.release(rEngine);
-					}
-				}
-			} catch (RserveException e) {
-				if (this.addMissingRLibraryException(new RLibraryNotLoadedException(
-						generator.getClass().getName(), "R")))
-					this.warn("\""
-							+ generator
-							+ "\" could not be loaded since it requires R and no connection could be established.");
-			}
+			return this.ensureRLibraries(rLibraryInferior);
 		} catch (UnknownDistanceMeasureException e1) {
 			e1.printStackTrace();
 		}
@@ -7122,54 +6936,11 @@ public class Repository {
 	 */
 	private boolean ensureRunDataStatisticRLibraries(
 			final Class<? extends RunDataStatistic> classObject) {
-		// create an instance
-		RunDataStatistic generator;
 		try {
-			generator = RunDataStatistic.parseFromString(this,
-					classObject.getSimpleName());
+			RLibraryInferior rLibraryInferior = RunDataStatistic
+					.parseFromString(this, classObject.getSimpleName());
 
-			if (generator.getRequiredRlibraries().isEmpty())
-				return true;
-			// ensure that all R libraries are available
-			MyRengine rEngine;
-			try {
-				// rEngine = new MyRengine("");
-//				if (this.rEngineForLibraryInstalledChecks == null)
-//					throw this.rEngineException;
-//				rEngine = this.rEngineForLibraryInstalledChecks
-//						.retrieveAndLock();
-				rEngine = this.getRengineForCurrentThread();
-				synchronized (rEngine) {
-					try {
-						for (String libName : generator.getRequiredRlibraries())
-							try {
-								rEngine.loadLibrary(libName,
-										classObject.getSimpleName());
-								// first we clear the old exceptions for this
-								// class
-								this.clearMissingRLibraries(generator
-										.getClass().getName());
-							} catch (RLibraryNotLoadedException e) {
-								if (this.addMissingRLibraryException(e))
-									this.warn("\""
-											+ generator.getClass()
-													.getSimpleName()
-											+ "\" could not be loaded due to an unsatisfied R library dependency: "
-											+ libName);
-							}
-						return true;
-					} finally {
-						// rEngine.close();
-						//this.rEngineForLibraryInstalledChecks.release(rEngine);
-					}
-				}
-			} catch (RserveException e) {
-				if (this.addMissingRLibraryException(new RLibraryNotLoadedException(
-						generator.getClass().getName(), "R")))
-					this.warn("\""
-							+ generator.getClass().getSimpleName()
-							+ "\" could not be loaded since it requires R and no connection could be established.");
-			}
+			return this.ensureRLibraries(rLibraryInferior);
 		} catch (UnknownRunDataStatisticException e1) {
 			e1.printStackTrace();
 		}
@@ -7189,58 +6960,14 @@ public class Repository {
 	 *            The class for which we want to ensure R library dependencies.
 	 * @return True, if all R library dependencies are fulfilled.
 	 * @throws UnsatisfiedRLibraryException
-	 * TODO: avoid code duplication in ensure methods
 	 */
 	private boolean ensureRunStatisticRLibraries(
 			final Class<? extends RunStatistic> classObject) {
-		// create an instance
-		RunStatistic generator;
 		try {
-			generator = RunStatistic.parseFromString(this,
-					classObject.getSimpleName());
+			RLibraryInferior rLibraryInferior = RunStatistic.parseFromString(
+					this, classObject.getSimpleName());
 
-			if (generator.getRequiredRlibraries().isEmpty())
-				return true;
-			// ensure that all R libraries are available
-			MyRengine rEngine;
-			try {
-				// rEngine = new MyRengine("");
-//				if (this.rEngineForLibraryInstalledChecks == null)
-//					throw this.rEngineException;
-//				rEngine = this.rEngineForLibraryInstalledChecks
-//						.retrieveAndLock();
-				rEngine = this.getRengineForCurrentThread();
-				synchronized (rEngine) {
-					try {
-						for (String libName : generator.getRequiredRlibraries())
-							try {
-								rEngine.loadLibrary(libName,
-										classObject.getSimpleName());
-								// first we clear the old exceptions for this
-								// class
-								this.clearMissingRLibraries(generator
-										.getClass().getName());
-							} catch (RLibraryNotLoadedException e) {
-								if (this.addMissingRLibraryException(e))
-									this.warn("\""
-											+ generator.getClass()
-													.getSimpleName()
-											+ "\" could not be loaded due to an unsatisfied R library dependency: "
-											+ libName);
-							}
-						return true;
-					} finally {
-						// rEngine.close();
-						//this.rEngineForLibraryInstalledChecks.release(rEngine);
-					}
-				}
-			} catch (RserveException e) {
-				if (this.addMissingRLibraryException(new RLibraryNotLoadedException(
-						generator.getClass().getName(), "R")))
-					this.warn("\""
-							+ generator.getClass().getSimpleName()
-							+ "\" could not be loaded since it requires R and no connection could be established.");
-			}
+			return this.ensureRLibraries(rLibraryInferior);
 		} catch (UnknownRunStatisticException e1) {
 			e1.printStackTrace();
 		}

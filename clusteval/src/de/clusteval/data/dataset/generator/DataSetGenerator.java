@@ -15,7 +15,6 @@ package de.clusteval.data.dataset.generator;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Set;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -30,13 +29,16 @@ import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
+import de.clusteval.program.r.RLibraryInferior;
 import file.FileUtils;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public abstract class DataSetGenerator extends RepositoryObject {
+public abstract class DataSetGenerator extends RepositoryObject
+		implements
+			RLibraryInferior {
 
 	/**
 	 * This attribute corresponds to the name of the folder located in
@@ -351,10 +353,4 @@ public abstract class DataSetGenerator extends RepositoryObject {
 		throw new UnknownDataSetGeneratorException("\"" + dataSetGenerator
 				+ "\" is not a known dataset generator.");
 	}
-
-	/**
-	 * @return A set with names of all R libraries this class requires.
-	 */
-	public abstract Set<String> getRequiredRlibraries();
-
 }

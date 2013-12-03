@@ -23,12 +23,15 @@ import de.clusteval.data.dataset.DataSet;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
+import de.clusteval.program.r.RLibraryInferior;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public abstract class DataPreprocessor extends RepositoryObject {
+public abstract class DataPreprocessor extends RepositoryObject
+		implements
+			RLibraryInferior {
 
 	/**
 	 * @param repository
@@ -164,11 +167,6 @@ public abstract class DataPreprocessor extends RepositoryObject {
 		throw new UnknownDataPreprocessorException("\"" + dataPreprocessor
 				+ "\" is not a known data preprocessor.");
 	}
-
-	/**
-	 * @return A set with names of all R libraries this class requires.
-	 */
-	public abstract Set<String> getRequiredRlibraries();
 
 	/**
 	 * @return A set with simple names of all classes, this preprocessor is

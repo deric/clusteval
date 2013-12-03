@@ -14,11 +14,11 @@
 package de.clusteval.utils;
 
 import java.io.File;
-import java.util.Set;
 
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
+import de.clusteval.program.r.RLibraryInferior;
 
 /**
  * An abstract class representing a property of some object, that can be
@@ -27,7 +27,9 @@ import de.clusteval.framework.repository.RepositoryObject;
  * @author Christian Wiwie
  * 
  */
-public abstract class Statistic extends RepositoryObject {
+public abstract class Statistic extends RepositoryObject
+		implements
+			RLibraryInferior {
 
 	/**
 	 * @param repository
@@ -71,11 +73,6 @@ public abstract class Statistic extends RepositoryObject {
 	}
 
 	/**
-	 * @return A set with names of all R libraries this class requires.
-	 */
-	public abstract Set<String> getRequiredRlibraries();
-
-	/**
 	 * Parses the values of a statistic from a string and stores them in the
 	 * local attributes of this object.
 	 * 
@@ -101,6 +98,6 @@ public abstract class Statistic extends RepositoryObject {
 	 *         for runs of the right context.
 	 */
 	// TODO
-//	public abstract Context getContext();
+	// public abstract Context getContext();
 
 }
