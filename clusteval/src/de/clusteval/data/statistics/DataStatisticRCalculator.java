@@ -80,7 +80,7 @@ public abstract class DataStatisticRCalculator<T extends DataStatistic>
 			InvalidDataSetFormatVersionException, RegisterException,
 			REngineException, RNotAvailableException {
 		try {
-			MyRengine rEngine = new MyRengine("");
+			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
 				try {
 					return calculateResultHelper(rEngine);
@@ -116,7 +116,7 @@ public abstract class DataStatisticRCalculator<T extends DataStatistic>
 	public final void writeOutputTo(File absFolderPath)
 			throws REngineException, RNotAvailableException {
 		try {
-			MyRengine rEngine = new MyRengine("");
+			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
 				try {
 					writeOutputToHelper(absFolderPath, rEngine);

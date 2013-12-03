@@ -121,4 +121,22 @@ public class StandaloneProgram extends Program {
 		return this.context;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.program.Program#init()
+	 */
+	@Override
+	public void init() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.program.Program#release()
+	 */
+	@Override
+	public void release() {
+	}
+
 }

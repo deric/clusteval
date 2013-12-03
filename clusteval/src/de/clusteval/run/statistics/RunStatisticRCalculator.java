@@ -132,7 +132,7 @@ public abstract class RunStatisticRCalculator<T extends RunStatistic>
 			UnknownRunDataStatisticException, RunResultParseException,
 			RNotAvailableException, REngineException {
 		try {
-			MyRengine rEngine = new MyRengine("");
+			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
 				try {
 					return calculateResultHelper(rEngine);

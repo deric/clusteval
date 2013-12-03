@@ -66,7 +66,7 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 	public final double getDistance(double[] point1, double[] point2)
 			throws RNotAvailableException {
 		try {
-			MyRengine rEngine = new MyRengine("");
+			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
 				try {
 					return getDistanceHelper(point1, point2, rEngine);
@@ -96,7 +96,7 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 	public double[][] getDistances(double[][] matrix)
 			throws RNotAvailableException {
 		try {
-			MyRengine rEngine = new MyRengine("");
+			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
 				try {
 					return getDistancesHelper(matrix, rEngine);

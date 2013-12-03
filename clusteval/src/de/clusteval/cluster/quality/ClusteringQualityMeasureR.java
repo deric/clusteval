@@ -86,7 +86,7 @@ public abstract class ClusteringQualityMeasureR
 			UnknownDataSetFormatException, IOException,
 			InvalidDataSetFormatVersionException, RNotAvailableException {
 		try {
-			MyRengine rEngine = new MyRengine("");
+			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
 				try {
 					return getQualityOfClusteringHelper(clustering,

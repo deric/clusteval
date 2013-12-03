@@ -75,7 +75,6 @@ import de.clusteval.data.statistics.DataStatisticFinderThread;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.MyRengine;
-import de.clusteval.framework.REnginePool;
 import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.repository.config.DefaultRepositoryConfig;
 import de.clusteval.framework.repository.config.RepositoryConfig;
@@ -958,9 +957,10 @@ public class Repository {
 	protected String contextBasePath;
 
 	// private MyRengine rEngineForLibraryInstalledChecks;
-	private REnginePool rEngineForLibraryInstalledChecks;
+	// private REnginePool rEngineForLibraryInstalledChecks;
+	private Map<Thread, MyRengine> rEngines;
 
-	private RserveException rEngineException;
+	// private RserveException rEngineException;
 
 	/**
 	 * Instantiates a new repository.
@@ -1046,13 +1046,14 @@ public class Repository {
 
 		this.sqlCommunicator = createSQLCommunicator();
 
-		try {
-			this.rEngineForLibraryInstalledChecks = new REnginePool(5);
-		} catch (RserveException e) {
-			// if there is no R, we will not be using this field in the future
-			this.rEngineForLibraryInstalledChecks = null;
-			this.rEngineException = e;
-		}
+		// try {
+		// this.rEngineForLibraryInstalledChecks = new REnginePool(5);
+		// } catch (RserveException e) {
+		// // if there is no R, we will not be using this field in the future
+		// this.rEngineForLibraryInstalledChecks = null;
+		// this.rEngineException = e;
+		// }
+		this.rEngines = new HashMap<Thread, MyRengine>();
 	}
 
 	/**
@@ -1334,8 +1335,10 @@ public class Repository {
 	 */
 	public void terminateSupervisorThread() throws InterruptedException {
 		// close Rengine pool
-		this.rEngineForLibraryInstalledChecks.close();
-		
+		// this.rEngineForLibraryInstalledChecks.close();
+		for (MyRengine rEngine : this.rEngines.values())
+			rEngine.close();
+
 		// terminate supervisor thread
 		if (this.supervisorThread == null)
 			return;
@@ -5198,9 +5201,11 @@ public class Repository {
 			MyRengine rEngine;
 			try {
 				// rEngine = new MyRengine("");
-				if (this.rEngineForLibraryInstalledChecks == null)
-					throw this.rEngineException;
-				rEngine = this.rEngineForLibraryInstalledChecks.retrieveAndLock();
+				// if (this.rEngineForLibraryInstalledChecks == null)
+				// throw this.rEngineException;
+				// rEngine =
+				// this.rEngineForLibraryInstalledChecks.retrieveAndLock();
+				rEngine = this.getRengineForCurrentThread();
 				synchronized (rEngine) {
 					try {
 						for (String libName : generator.getRequiredRlibraries())
@@ -5222,7 +5227,7 @@ public class Repository {
 						return true;
 					} finally {
 						// rEngine.close();
-						this.rEngineForLibraryInstalledChecks.release(rEngine);
+						//this.rEngineForLibraryInstalledChecks.release(rEngine);
 					}
 				}
 			} catch (RserveException e) {
@@ -5232,6 +5237,16 @@ public class Repository {
 		}
 		this.dataStatisticClasses.remove(classObject.getName());
 		return false;
+	}
+
+	/**
+	 * @return The MyRengine object corresponding to the current thread.
+	 * @throws RserveException
+	 */
+	public MyRengine getRengineForCurrentThread() throws RserveException {
+		if (!this.rEngines.containsKey(Thread.currentThread()))
+			this.rEngines.put(Thread.currentThread(), new MyRengine(""));
+		return this.rEngines.get(Thread.currentThread());
 	}
 
 	/**
@@ -6780,9 +6795,11 @@ public class Repository {
 			MyRengine rEngine;
 			try {
 				// rEngine = new MyRengine("");
-				if (this.rEngineForLibraryInstalledChecks == null)
-					throw this.rEngineException;
-				rEngine = this.rEngineForLibraryInstalledChecks.retrieveAndLock();
+//				if (this.rEngineForLibraryInstalledChecks == null)
+//					throw this.rEngineException;
+//				rEngine = this.rEngineForLibraryInstalledChecks
+//						.retrieveAndLock();
+				rEngine = this.getRengineForCurrentThread();
 				synchronized (rEngine) {
 					try {
 						for (String libName : generator.getRequiredRlibraries())
@@ -6803,7 +6820,7 @@ public class Repository {
 						return true;
 					} finally {
 						// rEngine.close();
-						this.rEngineForLibraryInstalledChecks.release(rEngine);
+						//this.rEngineForLibraryInstalledChecks.release(rEngine);
 					}
 				}
 			} catch (RserveException e) {
@@ -6847,9 +6864,11 @@ public class Repository {
 			MyRengine rEngine;
 			try {
 				// rEngine = new MyRengine("");
-				if (this.rEngineForLibraryInstalledChecks == null)
-					throw this.rEngineException;
-				rEngine = this.rEngineForLibraryInstalledChecks.retrieveAndLock();
+//				if (this.rEngineForLibraryInstalledChecks == null)
+//					throw this.rEngineException;
+//				rEngine = this.rEngineForLibraryInstalledChecks
+//						.retrieveAndLock();
+				rEngine = this.getRengineForCurrentThread();
 				synchronized (rEngine) {
 					try {
 						for (String libName : preprocessor
@@ -6871,7 +6890,7 @@ public class Repository {
 						return true;
 					} finally {
 						// rEngine.close();
-						this.rEngineForLibraryInstalledChecks.release(rEngine);
+						//this.rEngineForLibraryInstalledChecks.release(rEngine);
 					}
 				}
 			} catch (RserveException e) {
@@ -6906,9 +6925,10 @@ public class Repository {
 		MyRengine rEngine;
 		try {
 			// rEngine = new MyRengine("");
-			if (this.rEngineForLibraryInstalledChecks == null)
-				throw this.rEngineException;
-			rEngine = this.rEngineForLibraryInstalledChecks.retrieveAndLock();
+//			if (this.rEngineForLibraryInstalledChecks == null)
+//				throw this.rEngineException;
+//			rEngine = this.rEngineForLibraryInstalledChecks.retrieveAndLock();
+			rEngine = this.getRengineForCurrentThread();
 			synchronized (rEngine) {
 				try {
 					// create an instance
@@ -6937,7 +6957,7 @@ public class Repository {
 					e1.printStackTrace();
 				} finally {
 					// rEngine.close();
-					this.rEngineForLibraryInstalledChecks.release(rEngine);
+					//this.rEngineForLibraryInstalledChecks.release(rEngine);
 				}
 			}
 		} catch (RserveException e) {
@@ -6976,9 +6996,11 @@ public class Repository {
 			MyRengine rEngine;
 			try {
 				// rEngine = new MyRengine("");
-				if (this.rEngineForLibraryInstalledChecks == null)
-					throw this.rEngineException;
-				rEngine = this.rEngineForLibraryInstalledChecks.retrieveAndLock();
+//				if (this.rEngineForLibraryInstalledChecks == null)
+//					throw this.rEngineException;
+//				rEngine = this.rEngineForLibraryInstalledChecks
+//						.retrieveAndLock();
+				rEngine = this.getRengineForCurrentThread();
 				synchronized (rEngine) {
 					try {
 						for (String libName : measure.getRequiredRlibraries())
@@ -6999,7 +7021,7 @@ public class Repository {
 						return true;
 					} finally {
 						// rEngine.close();
-						this.rEngineForLibraryInstalledChecks.release(rEngine);
+						//this.rEngineForLibraryInstalledChecks.release(rEngine);
 					}
 				}
 			} catch (RserveException e) {
@@ -7043,9 +7065,11 @@ public class Repository {
 			MyRengine rEngine;
 			try {
 				// rEngine = new MyRengine("");
-				if (this.rEngineForLibraryInstalledChecks == null)
-					throw this.rEngineException;
-				rEngine = this.rEngineForLibraryInstalledChecks.retrieveAndLock();
+//				if (this.rEngineForLibraryInstalledChecks == null)
+//					throw this.rEngineException;
+//				rEngine = this.rEngineForLibraryInstalledChecks
+//						.retrieveAndLock();
+				rEngine = this.getRengineForCurrentThread();
 				synchronized (rEngine) {
 					try {
 						for (String libName : generator.getRequiredRlibraries())
@@ -7066,7 +7090,7 @@ public class Repository {
 						return true;
 					} finally {
 						// rEngine.close();
-						this.rEngineForLibraryInstalledChecks.release(rEngine);
+						//this.rEngineForLibraryInstalledChecks.release(rEngine);
 					}
 				}
 			} catch (RserveException e) {
@@ -7110,9 +7134,11 @@ public class Repository {
 			MyRengine rEngine;
 			try {
 				// rEngine = new MyRengine("");
-				if (this.rEngineForLibraryInstalledChecks == null)
-					throw this.rEngineException;
-				rEngine = this.rEngineForLibraryInstalledChecks.retrieveAndLock();
+//				if (this.rEngineForLibraryInstalledChecks == null)
+//					throw this.rEngineException;
+//				rEngine = this.rEngineForLibraryInstalledChecks
+//						.retrieveAndLock();
+				rEngine = this.getRengineForCurrentThread();
 				synchronized (rEngine) {
 					try {
 						for (String libName : generator.getRequiredRlibraries())
@@ -7134,7 +7160,7 @@ public class Repository {
 						return true;
 					} finally {
 						// rEngine.close();
-						this.rEngineForLibraryInstalledChecks.release(rEngine);
+						//this.rEngineForLibraryInstalledChecks.release(rEngine);
 					}
 				}
 			} catch (RserveException e) {
@@ -7163,6 +7189,7 @@ public class Repository {
 	 *            The class for which we want to ensure R library dependencies.
 	 * @return True, if all R library dependencies are fulfilled.
 	 * @throws UnsatisfiedRLibraryException
+	 * TODO: avoid code duplication in ensure methods
 	 */
 	private boolean ensureRunStatisticRLibraries(
 			final Class<? extends RunStatistic> classObject) {
@@ -7178,9 +7205,11 @@ public class Repository {
 			MyRengine rEngine;
 			try {
 				// rEngine = new MyRengine("");
-				if (this.rEngineForLibraryInstalledChecks == null)
-					throw this.rEngineException;
-				rEngine = this.rEngineForLibraryInstalledChecks.retrieveAndLock();
+//				if (this.rEngineForLibraryInstalledChecks == null)
+//					throw this.rEngineException;
+//				rEngine = this.rEngineForLibraryInstalledChecks
+//						.retrieveAndLock();
+				rEngine = this.getRengineForCurrentThread();
 				synchronized (rEngine) {
 					try {
 						for (String libName : generator.getRequiredRlibraries())
@@ -7202,7 +7231,7 @@ public class Repository {
 						return true;
 					} finally {
 						// rEngine.close();
-						this.rEngineForLibraryInstalledChecks.release(rEngine);
+						//this.rEngineForLibraryInstalledChecks.release(rEngine);
 					}
 				}
 			} catch (RserveException e) {

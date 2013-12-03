@@ -37,7 +37,9 @@ import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
+import de.clusteval.program.ProgramInitException;
 import de.clusteval.program.ProgramParameter;
+import de.clusteval.program.ProgramReleaseException;
 import de.clusteval.run.ParameterOptimizationRun;
 import de.clusteval.run.Run;
 import de.clusteval.run.result.NoRunResultFormatParserException;
@@ -166,7 +168,8 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			UnknownDataSetFormatException, IOException,
 			InvalidDataSetFormatVersionException, RegisterException,
 			InternalAttributeException, IncompatibleDataSetFormatException,
-			UnknownGoldStandardFormatException, IncompleteGoldStandardException {
+			UnknownGoldStandardFormatException,
+			IncompleteGoldStandardException, ProgramInitException {
 		super.beforeRun();
 		if (!new File(completeQualityOutput).exists() || !isResume)
 			writeHeaderIntoCompleteFile(completeQualityOutput);
@@ -201,7 +204,7 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	 * @see run.runnable.ExecutionRunRunnable#endRun()
 	 */
 	@Override
-	protected void afterRun() {
+	protected void afterRun() throws ProgramReleaseException {
 		super.afterRun();
 
 		if (this.optimizationMethod != null

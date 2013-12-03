@@ -39,7 +39,6 @@ import de.clusteval.program.Program;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.run.result.format.RunResultFormat;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
-import de.clusteval.utils.RNotAvailableException;
 
 /**
  * A type of progam that encapsulates a program embedded in R.
@@ -238,9 +237,8 @@ public abstract class RProgram extends Program {
 	public final Process exec(DataConfig dataConfig,
 			ProgramConfig programConfig, String[] invocationLine,
 			Map<String, String> effectiveParams,
-			Map<String, String> internalParams) throws RNotAvailableException,
-			RLibraryNotLoadedException, REngineException,
-			REXPMismatchException, IOException {
+			Map<String, String> internalParams) throws REngineException,
+			REXPMismatchException, IOException, RLibraryNotLoadedException {
 		try {
 			beforeExec(dataConfig, programConfig, invocationLine,
 					effectiveParams, internalParams);
@@ -258,17 +256,10 @@ public abstract class RProgram extends Program {
 	protected void beforeExec(DataConfig dataConfig,
 			ProgramConfig programConfig, String[] invocationLine,
 			Map<String, String> effectiveParams,
-			Map<String, String> internalParams)
-			throws RLibraryNotLoadedException, REngineException,
-			RNotAvailableException {
-		// create a connection to R
-		try {
-			rEngine = new MyRengine("");
-		} catch (REngineException e) {
-			throw new RNotAvailableException("The RProgram "
-					+ this.getMajorName()
-					+ " could not establish a connection to R");
-		}
+			Map<String, String> internalParams) throws REngineException,
+			RLibraryNotLoadedException {
+
+		rEngine = repository.getRengineForCurrentThread();
 
 		// load the required R libraries
 		for (String library : getRequiredRlibraries())
@@ -304,19 +295,18 @@ public abstract class RProgram extends Program {
 			Map<String, String> effectiveParams,
 			Map<String, String> internalParams) throws RserveException,
 			REXPMismatchException, IOException {
-		try {
-			final String resultAsString = execResultToString(dataConfig,
-					programConfig, invocationLine, effectiveParams,
-					internalParams);
+		// try {
+		final String resultAsString = execResultToString(dataConfig,
+				programConfig, invocationLine, effectiveParams, internalParams);
 
-			File output = new File(internalParams.get("o"));
+		File output = new File(internalParams.get("o"));
 
-			BufferedWriter bw = new BufferedWriter(new FileWriter(output));
-			bw.append(resultAsString);
-			bw.close();
-		} finally {
-			rEngine.close();
-		}
+		BufferedWriter bw = new BufferedWriter(new FileWriter(output));
+		bw.append(resultAsString);
+		bw.close();
+		// } finally {
+		// rEngine.close();
+		// }
 	}
 
 	@SuppressWarnings("unused")

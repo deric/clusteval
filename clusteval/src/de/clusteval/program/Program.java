@@ -219,7 +219,8 @@ public abstract class Program extends RepositoryObject {
 			final ProgramConfig programConfig, final String[] invocationLine,
 			final Map<String, String> effectiveParams,
 			final Map<String, String> internalParams) throws IOException,
-			RNotAvailableException, RLibraryNotLoadedException, REngineException, REXPMismatchException;
+			RNotAvailableException, RLibraryNotLoadedException,
+			REngineException, REXPMismatchException;
 
 	/**
 	 * @return The context of this program. A run can only perform this program,
@@ -227,4 +228,20 @@ public abstract class Program extends RepositoryObject {
 	 * @throws UnknownContextException
 	 */
 	public abstract Context getContext() throws UnknownContextException;
+
+	/**
+	 * This method initializes this program. The program can only be executed
+	 * after invocing this method.
+	 * 
+	 * @throws ProgramInitException 
+	 */
+	public abstract void init() throws ProgramInitException;
+
+	/**
+	 * This method releases this program, such that ressources are freed. The
+	 * program cannot be executed after invocating this method.
+	 * 
+	 * @throws ProgramReleaseException 
+	 */
+	public abstract void release() throws ProgramReleaseException;
 }

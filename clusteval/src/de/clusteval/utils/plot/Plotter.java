@@ -45,7 +45,7 @@ public abstract class Plotter {
 
 		MyRengine rEngine;
 		try {
-			rEngine = new MyRengine("");
+			rEngine = result.getRepository().getRengineForCurrentThread();
 			try {
 				rEngine.eval("Sys.setlocale(category='LC_NUMERIC',locale='C')");
 				/*
@@ -100,7 +100,8 @@ public abstract class Plotter {
 			IOException, REngineException {
 
 		try {
-			MyRengine rEngine = new MyRengine("");
+			MyRengine rEngine = dataConfig.getRepository()
+					.getRengineForCurrentThread();
 			try {
 				DataSet absStandard = dataConfig.getDatasetConfig()
 						.getDataSet().getInStandardFormat();
@@ -175,7 +176,8 @@ public abstract class Plotter {
 			IllegalArgumentException, IOException, REngineException {
 
 		try {
-			MyRengine rEngine = new MyRengine("");
+			MyRengine rEngine = dataConfig.getRepository()
+					.getRengineForCurrentThread();
 			try {
 				DataSet standard = dataConfig.getDatasetConfig().getDataSet()
 						.getOriginalDataSet();

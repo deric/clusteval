@@ -25,7 +25,6 @@ import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.program.ProgramConfig;
-import de.clusteval.utils.RNotAvailableException;
 
 /**
  * @author Christian Wiwie
@@ -71,9 +70,8 @@ public abstract class RelativeDataRProgram extends RProgram {
 	protected void beforeExec(DataConfig dataConfig,
 			ProgramConfig programConfig, String[] invocationLine,
 			Map<String, String> effectiveParams,
-			Map<String, String> internalParams)
-			throws RLibraryNotLoadedException, REngineException,
-			RNotAvailableException {
+			Map<String, String> internalParams) throws REngineException,
+			RLibraryNotLoadedException {
 		super.beforeExec(dataConfig, programConfig, invocationLine,
 				effectiveParams, internalParams);
 

@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 public class MyRengine extends RConnection {
 
 	protected Logger log;
-	
+
 	protected Set<String> loadedLibraries;
 
 	/**
@@ -63,7 +63,8 @@ public class MyRengine extends RConnection {
 	 *            The name of the library.
 	 * @param requiredByClass
 	 *            The name of the class that requires the library.
-	 * @return True, if the library was loaded successfully or was loaded before.
+	 * @return True, if the library was loaded successfully or was loaded
+	 *         before.
 	 * @throws RLibraryNotLoadedException
 	 */
 	public boolean loadLibrary(final String name, final String requiredByClass)
@@ -80,6 +81,16 @@ public class MyRengine extends RConnection {
 			this.log.debug("R library '" + name + "' loading failed");
 			throw new RLibraryNotLoadedException(requiredByClass, name);
 		}
+	}
+
+	/**
+	 * This method clears all variables stored in the session corresponding to
+	 * this rengine.
+	 * 
+	 * @throws RserveException
+	 */
+	public void clear() throws RserveException {
+		this.eval("rm(list=ls(all=TRUE))");
 	}
 
 	/**

@@ -55,7 +55,9 @@ import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
+import de.clusteval.program.ProgramInitException;
 import de.clusteval.program.ProgramParameter;
+import de.clusteval.program.ProgramReleaseException;
 import de.clusteval.program.r.RProgram;
 import de.clusteval.run.ExecutionRun;
 import de.clusteval.run.MissingParameterValueException;
@@ -1136,7 +1138,8 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			InvalidDataSetFormatVersionException, IllegalArgumentException,
 			IOException, RegisterException, InternalAttributeException,
 			IncompatibleDataSetFormatException,
-			UnknownGoldStandardFormatException, IncompleteGoldStandardException {
+			UnknownGoldStandardFormatException,
+			IncompleteGoldStandardException, ProgramInitException {
 		this.log.info("Run " + this.getRun() + " (" + this.programConfig + ","
 				+ this.dataConfig + ") " + (!isResume ? "started" : "RESUMED")
 				+ " (asynchronously)");
@@ -1265,6 +1268,9 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 											runThreadIdentString),
 							programConfig + "_" + dataConfig
 									+ ".results.qual.complete");
+
+		// init the program
+		this.programConfig.getProgram().init();
 	}
 
 	/*
@@ -1273,8 +1279,11 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 * @see run.runnable.RunRunnable#afterRun()
 	 */
 	@Override
-	protected void afterRun() {
+	protected void afterRun() throws ProgramReleaseException {
 		super.afterRun();
+
+		this.programConfig.getProgram().release();
+
 		// unload the dataset from memory
 		DataSet dataSet = this.dataConfig.getDatasetConfig().getDataSet()
 				.getInStandardFormat();

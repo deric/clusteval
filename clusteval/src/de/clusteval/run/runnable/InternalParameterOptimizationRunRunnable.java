@@ -27,6 +27,7 @@ import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ProgramConfig;
+import de.clusteval.program.ProgramInitException;
 import de.clusteval.run.Run;
 import de.clusteval.run.result.NoRunResultFormatParserException;
 import de.clusteval.utils.InternalAttributeException;
@@ -78,7 +79,8 @@ public class InternalParameterOptimizationRunRunnable
 			UnknownDataSetFormatException, IOException,
 			InvalidDataSetFormatVersionException, RegisterException,
 			InternalAttributeException, IncompatibleDataSetFormatException,
-			UnknownGoldStandardFormatException, IncompleteGoldStandardException {
+			UnknownGoldStandardFormatException,
+			IncompleteGoldStandardException, ProgramInitException {
 		super.beforeRun();
 		if (!new File(completeQualityOutput).exists() || !isResume)
 			writeHeaderIntoCompleteFile(completeQualityOutput);
