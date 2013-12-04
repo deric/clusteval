@@ -27,7 +27,6 @@ import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ProgramConfig;
-import de.clusteval.program.ProgramInitException;
 import de.clusteval.run.ClusteringRun;
 import de.clusteval.run.Run;
 import de.clusteval.run.result.NoRunResultFormatParserException;
@@ -81,8 +80,7 @@ public class ClusteringRunRunnable extends ExecutionRunRunnable {
 			UnknownDataSetFormatException, IOException,
 			InvalidDataSetFormatVersionException, RegisterException,
 			InternalAttributeException, IncompatibleDataSetFormatException,
-			UnknownGoldStandardFormatException,
-			IncompleteGoldStandardException, ProgramInitException {
+			UnknownGoldStandardFormatException, IncompleteGoldStandardException {
 		super.beforeRun();
 
 		if (!new File(completeQualityOutput).exists() || !isResume)

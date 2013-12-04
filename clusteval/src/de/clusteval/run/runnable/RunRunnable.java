@@ -39,8 +39,6 @@ import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.threading.RunSchedulerThread;
-import de.clusteval.program.ProgramInitException;
-import de.clusteval.program.ProgramReleaseException;
 import de.clusteval.run.RUN_STATUS;
 import de.clusteval.run.Run;
 import de.clusteval.run.result.NoRunResultFormatParserException;
@@ -184,11 +182,7 @@ public abstract class RunRunnable implements Runnable {
 		} catch (Throwable e) {
 			this.exceptions.add(e);
 		} finally {
-			try {
-				afterRun();
-			} catch (ProgramReleaseException e) {
-				this.exceptions.add(e);
-			}
+			afterRun();
 		}
 	}
 
@@ -206,7 +200,6 @@ public abstract class RunRunnable implements Runnable {
 	 * @throws IncompatibleDataSetFormatException
 	 * @throws UnknownGoldStandardFormatException
 	 * @throws IncompleteGoldStandardException
-	 * @throws ProgramInitException
 	 */
 
 	@SuppressWarnings("unused")
@@ -214,7 +207,7 @@ public abstract class RunRunnable implements Runnable {
 			InvalidDataSetFormatVersionException, IllegalArgumentException,
 			IOException, RegisterException, InternalAttributeException,
 			IncompatibleDataSetFormatException,
-			UnknownGoldStandardFormatException, IncompleteGoldStandardException, ProgramInitException {
+			UnknownGoldStandardFormatException, IncompleteGoldStandardException {
 
 	}
 
@@ -242,11 +235,9 @@ public abstract class RunRunnable implements Runnable {
 	 * This method is invoked by {@link #run()} after {@link #doRun()} has
 	 * finished. It is responsible for cleaning up all files, folders and for
 	 * doing all kinds of postcalculations.
-	 * 
-	 * @throws ProgramReleaseException
 	 */
 	@SuppressWarnings("unused")
-	protected void afterRun() throws ProgramReleaseException {
+	protected void afterRun() {
 		// print exceptions
 		if (this.exceptions.size() > 0) {
 			this.log.warn("During the execution of this run runnable exceptions were thrown:");
