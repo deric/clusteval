@@ -20,24 +20,19 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import de.clusteval.data.goldstandard.GoldStandard;
-import de.clusteval.data.goldstandard.GoldStandardConfig;
-import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
-import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
-import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.RepositoryRemoveEvent;
 import de.clusteval.framework.repository.RepositoryReplaceEvent;
+import de.clusteval.utils.AbstractClustEvalTest;
 import de.clusteval.utils.StubRepositoryObject;
-import de.clusteval.utils.TestRepositoryObject;
 
 
 /**
  * @author Christian Wiwie
  * 
  */
-public class TestGoldStandardConfig extends TestRepositoryObject {
+public class TestGoldStandardConfig extends AbstractClustEvalTest {
 
 	/**
 	 * Test method for {@link data.goldstandard.GoldStandardConfig#register()}.
@@ -111,7 +106,7 @@ public class TestGoldStandardConfig extends TestRepositoryObject {
 	 * @throws GoldStandardConfigurationException
 	 * @throws RegisterException
 	 */
-	@Override
+	@Test
 	public void testNotifyRepositoryEvent() throws IOException,
 			NoRepositoryFoundException, GoldStandardNotFoundException,
 			GoldStandardConfigurationException,

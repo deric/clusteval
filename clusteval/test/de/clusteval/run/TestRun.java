@@ -22,20 +22,17 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
-
 import de.clusteval.data.DataConfig;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
-import de.clusteval.run.ClusteringRun;
-import de.clusteval.run.Run;
-import de.clusteval.utils.TestRepositoryObject;
+import de.clusteval.utils.AbstractClustEvalTest;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public class TestRun extends TestRepositoryObject {
+public class TestRun extends AbstractClustEvalTest {
 
 	@Test
 	public void testRun() throws RegisterException {

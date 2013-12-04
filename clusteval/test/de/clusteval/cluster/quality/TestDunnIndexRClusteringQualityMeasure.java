@@ -45,10 +45,10 @@ import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.utils.AbstractClustEvalTest;
 import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.RCalculationException;
 import de.clusteval.utils.RNotAvailableException;
-import de.clusteval.utils.TestRepositoryObject;
 
 /**
  * @author Christian Wiwie
@@ -56,7 +56,7 @@ import de.clusteval.utils.TestRepositoryObject;
  */
 public class TestDunnIndexRClusteringQualityMeasure
 		extends
-			TestRepositoryObject {
+		AbstractClustEvalTest {
 
 	@Test
 	public void test() throws InstantiationException, IllegalAccessException,

@@ -32,14 +32,14 @@ import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.RepositoryRemoveEvent;
 import de.clusteval.framework.repository.RepositoryReplaceEvent;
+import de.clusteval.utils.AbstractClustEvalTest;
 import de.clusteval.utils.StubRepositoryObject;
-import de.clusteval.utils.TestRepositoryObject;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public class TestDataSetConfig extends TestRepositoryObject {
+public class TestDataSetConfig extends AbstractClustEvalTest {
 
 	/**
 	 * Test method for {@link data.dataset.DataSetConfig#register()}.
@@ -126,7 +126,7 @@ public class TestDataSetConfig extends TestRepositoryObject {
 	 * @throws NumberFormatException
 	 * @throws IncompatibleDataSetConfigPreprocessorException
 	 */
-	@Override
+	@Test
 	public void testNotifyRepositoryEvent() throws NoRepositoryFoundException,
 			DataSetNotFoundException, DataSetConfigurationException,
 			UnknownDataSetFormatException, DataSetConfigNotFoundException,

@@ -20,7 +20,6 @@ import java.security.NoSuchAlgorithmException;
 import org.junit.Test;
 
 import ch.qos.logback.classic.Level;
-
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
@@ -34,9 +33,9 @@ import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.utils.AbstractClustEvalTest;
 import de.clusteval.utils.RCalculationException;
 import de.clusteval.utils.RNotAvailableException;
-import de.clusteval.utils.TestRepositoryObject;
 
 /**
  * @author Christian Wiwie
@@ -44,7 +43,7 @@ import de.clusteval.utils.TestRepositoryObject;
  */
 public class TestPairwiseFMeasureClusteringQualityMeasure
 		extends
-			TestRepositoryObject {
+		AbstractClustEvalTest {
 
 	static {
 		ClustevalBackendServer.logLevel(Level.WARN);

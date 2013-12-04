@@ -52,56 +52,7 @@ import de.clusteval.framework.repository.StubSQLCommunicator;
  * @author Christian Wiwie
  * 
  */
-public class TestRepositoryObject {
-
-	private Repository repository;
-	protected RepositoryObject repositoryObject;
-	protected Context context;
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		ClustevalBackendServer.logLevel(Level.INFO);
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		this.repository = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		getRepository().setSQLCommunicator(
-				new StubSQLCommunicator(getRepository()));
-		// ClustevalBackendServer.getBackendServerConfiguration()
-		// .setCheckForRunResults(false);
-		getRepository().initialize();
-		repositoryObject = new StubRepositoryObject(this.getRepository(),
-				false, System.currentTimeMillis(), new File("test"));
-		context = Context.parseFromString(getRepository(), "ClusteringContext");
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-		this.repositoryObject = null;
-		getRepository().terminateSupervisorThread();
-		while (getRepository().getSupervisorThread().isAlive()) {
-			Thread.sleep(100);
-		}
-		Repository.unregister(getRepository());
-	}
+public final class TestRepositoryObject extends AbstractClustEvalTest {
 
 	/**
 	 * Test method for
@@ -400,9 +351,5 @@ public class TestRepositoryObject {
 
 		Assert.assertFalse(other.notified);
 		other.notified = false;
-	}
-
-	protected Repository getRepository() {
-		return repository;
 	}
 }

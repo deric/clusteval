@@ -32,15 +32,15 @@ import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.utils.AbstractClustEvalTest;
 import de.clusteval.utils.RCalculationException;
 import de.clusteval.utils.RNotAvailableException;
-import de.clusteval.utils.TestRepositoryObject;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public class TestFMeasureClusteringQualityMeasure extends TestRepositoryObject {
+public class TestFMeasureClusteringQualityMeasure extends AbstractClustEvalTest {
 
 	static {
 		ClustevalBackendServer.logLevel(Level.WARN);

@@ -19,17 +19,16 @@ import java.util.List;
 
 import org.junit.Test;
 
-import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.run.Run;
 import de.clusteval.run.result.ParameterOptimizationResult;
-import de.clusteval.utils.TestRepositoryObject;
+import de.clusteval.utils.AbstractClustEvalTest;
 import de.clusteval.utils.plot.Plotter;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public class TestParameterOptimizationResult extends TestRepositoryObject {
+public class TestParameterOptimizationResult extends AbstractClustEvalTest {
 
 	/**
 	 * @throws Exception

@@ -24,9 +24,6 @@ import org.junit.Test;
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
-
-import de.clusteval.data.goldstandard.GoldStandard;
-import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
@@ -37,13 +34,13 @@ import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.StubSQLCommunicator;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
-import de.clusteval.utils.TestRepositoryObject;
+import de.clusteval.utils.AbstractClustEvalTest;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public class TestGoldStandard extends TestRepositoryObject {
+public class TestGoldStandard extends AbstractClustEvalTest {
 
 	/**
 	 * @throws NoRepositoryFoundException
@@ -202,7 +199,7 @@ public class TestGoldStandard extends TestRepositoryObject {
 	 * 
 	 * @see utils.TestRepositoryObject#testEqualsObject()
 	 */
-	@Override
+	@Test
 	public void testEqualsObject() throws RegisterException {
 		File f = new File(
 				"testCaseRepository/data/goldstandards/DS1/Zachary_karate_club_gold_standard.txt")

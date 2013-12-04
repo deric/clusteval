@@ -25,9 +25,9 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import ch.qos.logback.classic.Level;
-
 import utils.SimilarityMatrix;
+import ch.qos.logback.classic.Level;
+import de.clusteval.context.UnknownContextException;
 import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
 import de.clusteval.data.dataset.format.ConversionStandardToInputConfiguration;
@@ -50,16 +50,15 @@ import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.StubSQLCommunicator;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
-import de.clusteval.run.ParameterOptimizationRun;
+import de.clusteval.utils.AbstractClustEvalTest;
 import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.RNotAvailableException;
-import de.clusteval.utils.TestRepositoryObject;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public class TestDataSet extends TestRepositoryObject {
+public class TestDataSet extends AbstractClustEvalTest {
 
 	/**
 	 * Test method for {@link data.dataset.DataSet#register()}.

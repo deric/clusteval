@@ -13,8 +13,6 @@
  */
 package de.clusteval.cluster.quality;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
@@ -33,11 +31,8 @@ import de.clusteval.data.dataset.DataSetConfig;
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
 import de.clusteval.data.dataset.format.ConversionStandardToInputConfiguration;
 import de.clusteval.data.dataset.format.DataSetFormat;
-import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
-import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.distance.DistanceMeasure;
 import de.clusteval.data.distance.UnknownDistanceMeasureException;
-import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.data.preprocessing.DataPreprocessor;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
@@ -45,10 +40,10 @@ import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.utils.AbstractClustEvalTest;
 import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.RCalculationException;
 import de.clusteval.utils.RNotAvailableException;
-import de.clusteval.utils.TestRepositoryObject;
 
 /**
  * @author Christian Wiwie
@@ -56,7 +51,7 @@ import de.clusteval.utils.TestRepositoryObject;
  */
 public class TestDaviesBouldinIndexRClusteringQualityMeasure
 		extends
-			TestRepositoryObject {
+			AbstractClustEvalTest {
 
 	@Test
 	public void test() throws InstantiationException, IllegalAccessException,
