@@ -52,7 +52,6 @@ import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
-import de.clusteval.framework.repository.ParseException;
 import de.clusteval.framework.repository.Parser;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
@@ -197,7 +196,6 @@ public abstract class Run extends RepositoryObject {
 	 * @throws UnknownContextException
 	 * @throws IncompatibleContextException
 	 * @throws UnknownParameterType
-	 * @throws ParseException
 	 */
 	@SuppressWarnings("unused")
 	public static Run parseFromFile(final File absPath) throws IOException,
