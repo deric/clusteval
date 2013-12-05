@@ -596,7 +596,7 @@ public abstract class ExecutionRun extends Run {
 	 *             An exception that indicates, that some quality measures and
 	 *             data configurations are not compatible.
 	 */
-	protected static void checkCompatibilityQualityMeasuresDataConfigs(
+	public static void checkCompatibilityQualityMeasuresDataConfigs(
 			final List<DataConfig> dataConfigs,
 			final List<ClusteringQualityMeasure> qualityMeasures)
 			throws RunException {

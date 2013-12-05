@@ -108,7 +108,7 @@ public class ParameterOptimizationRun extends ExecutionRun {
 	 * @throws IncompatibleParameterOptimizationMethodException
 	 * 
 	 */
-	protected static void checkCompatibilityParameterOptimizationMethod(
+	public static void checkCompatibilityParameterOptimizationMethod(
 			final List<ParameterOptimizationMethod> optimizationMethods,
 			final List<ProgramConfig> programConfigs,
 			final List<DataConfig> dataConfigs)
@@ -401,6 +401,8 @@ public class ParameterOptimizationRun extends ExecutionRun {
 	 * @throws IncompatibleContextException
 	 * @throws UnknownParameterType
 	 */
+	@Deprecated
+	// TOOD: remove
 	public static Run parseFromFile(final File absPath)
 			throws ConfigurationException, IOException,
 			UnknownRunResultFormatException, UnknownDataSetFormatException,
@@ -569,7 +571,6 @@ public class ParameterOptimizationRun extends ExecutionRun {
 							boolean optParam = false;
 							for (String optPa : optimizationParas)
 								if (optPa.equals(param)) {
-									optParaList.add(p);
 									optParam = true;
 									break;
 								}

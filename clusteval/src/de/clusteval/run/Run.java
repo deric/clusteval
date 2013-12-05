@@ -52,6 +52,7 @@ import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
+import de.clusteval.framework.repository.Parser;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryEvent;
@@ -246,7 +247,8 @@ public abstract class Run extends RepositoryObject {
 			if (runMode == null || runMode.equals("clustering"))
 				r = ClusteringRun.parseFromFile(absPath);
 			else if (runMode.equals("parameter_optimization"))
-				r = ParameterOptimizationRun.parseFromFile(absPath);
+				// r = ParameterOptimizationRun.parseFromFile(absPath);
+				r = Parser.parseParameterOptimizationRunFromFile(absPath);
 			/*
 			 * Added at 3rd of july 2012
 			 */

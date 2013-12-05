@@ -195,7 +195,9 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		return this.getClass().equals(obj.getClass());
+		// TODO: changed 05.12.2013
+		return this.getClass().getSimpleName()
+				.equals(obj.getClass().getSimpleName());
 	}
 
 	/*
