@@ -235,6 +235,7 @@ public class ClusteringRun extends ExecutionRun {
 	 * @throws IncompatibleContextException
 	 * @throws UnknownParameterType
 	 */
+	@Deprecated
 	public static Run parseFromFile(final File absPath)
 			throws ConfigurationException, IOException,
 			UnknownRunResultFormatException, UnknownDataSetFormatException,

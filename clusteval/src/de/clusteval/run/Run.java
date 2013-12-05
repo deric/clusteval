@@ -52,6 +52,7 @@ import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
+import de.clusteval.framework.repository.ParseException;
 import de.clusteval.framework.repository.Parser;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
@@ -196,6 +197,7 @@ public abstract class Run extends RepositoryObject {
 	 * @throws UnknownContextException
 	 * @throws IncompatibleContextException
 	 * @throws UnknownParameterType
+	 * @throws ParseException
 	 */
 	@SuppressWarnings("unused")
 	public static Run parseFromFile(final File absPath) throws IOException,
@@ -245,30 +247,30 @@ public abstract class Run extends RepositoryObject {
 			 * If none is defined, default mode is clustering.
 			 */
 			if (runMode == null || runMode.equals("clustering"))
-				r = ClusteringRun.parseFromFile(absPath);
+				r = Parser.parseClusteringRunFromFile(absPath);
 			else if (runMode.equals("parameter_optimization"))
-				// r = ParameterOptimizationRun.parseFromFile(absPath);
 				r = Parser.parseParameterOptimizationRunFromFile(absPath);
 			/*
 			 * Added at 3rd of july 2012
 			 */
 			else if (runMode.equals("internal_parameter_optimization"))
-				r = InternalParameterOptimizationRun.parseFromFile(absPath);
+				r = Parser
+						.parseInternalParameterOptimizationRunFromFile(absPath);
 			/*
 			 * Added 29 of july 2012
 			 */
 			else if (runMode.equals("dataAnalysis"))
-				r = DataAnalysisRun.parseFromFile(absPath);
+				r = Parser.parseDataAnalysisRunFromFile(absPath);
 			/*
 			 * Added 20 of august 2012
 			 */
 			else if (runMode.equals("runAnalysis"))
-				r = RunAnalysisRun.parseFromFile(absPath);
+				r = Parser.parseRunAnalysisRunFromFile(absPath);
 			/*
 			 * Added 22 of august 2012
 			 */
 			else if (runMode.equals("runDataAnalysis"))
-				r = RunDataAnalysisRun.parseFromFile(absPath);
+				r = Parser.parseRunDataAnalysisRunFromFile(absPath);
 			else
 				throw new InvalidRunModeException("The given mode is invalid: "
 						+ runMode);

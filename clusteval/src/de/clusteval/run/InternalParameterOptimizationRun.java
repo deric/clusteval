@@ -211,6 +211,7 @@ public class InternalParameterOptimizationRun extends ExecutionRun {
 	 * @throws UnknownContextException
 	 * @throws UnknownParameterType
 	 */
+	@Deprecated
 	public static Run parseFromFile(final File absPath)
 			throws ConfigurationException, IOException,
 			UnknownRunResultFormatException, UnknownDataSetFormatException,

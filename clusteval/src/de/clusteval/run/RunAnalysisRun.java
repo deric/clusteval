@@ -59,6 +59,7 @@ public class RunAnalysisRun extends AnalysisRun<RunStatistic> {
 	/**
 	 * @param repository
 	 *            The repository this run should be registered at.
+	 * @param context
 	 * @param changeDate
 	 *            The date this run was performed.
 	 * @param absPath
@@ -72,7 +73,7 @@ public class RunAnalysisRun extends AnalysisRun<RunStatistic> {
 	 *            analysis.
 	 * @throws RegisterException
 	 */
-	protected RunAnalysisRun(Repository repository, final Context context,
+	public RunAnalysisRun(Repository repository, final Context context,
 			long changeDate, File absPath, List<String> uniqueRunIdentifiers,
 			List<RunStatistic> statistics) throws RegisterException {
 		super(repository, context, changeDate, absPath, statistics);
@@ -242,6 +243,7 @@ public class RunAnalysisRun extends AnalysisRun<RunStatistic> {
 	 * @throws RegisterException
 	 * @throws UnknownContextException
 	 */
+	@Deprecated
 	public static Run parseFromFile(final File absPath)
 			throws ConfigurationException, NoRepositoryFoundException,
 			UnknownRunStatisticException, RegisterException,

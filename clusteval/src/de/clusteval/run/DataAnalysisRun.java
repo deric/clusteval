@@ -414,6 +414,7 @@ public class DataAnalysisRun extends AnalysisRun<DataStatistic> {
 	 * @throws IncompatibleDataSetConfigPreprocessorException
 	 * @throws UnknownContextException
 	 */
+	@Deprecated
 	public static Run parseFromFile(final File absPath)
 			throws ConfigurationException, UnknownDataSetFormatException,
 			NoRepositoryFoundException, GoldStandardNotFoundException,

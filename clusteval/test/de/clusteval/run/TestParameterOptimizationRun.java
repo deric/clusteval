@@ -33,6 +33,7 @@ import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
 import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.Parser;
@@ -48,6 +49,8 @@ import de.clusteval.program.UnknownProgramParameterException;
 import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.statistics.UnknownRunDataStatisticException;
+import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.AbstractClustEvalTest;
 
 /**
@@ -128,6 +131,9 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws InvalidRepositoryException
 	 * @throws RepositoryAlreadyExistsException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
 	 */
 	@Test
 	public void testNewParser() throws UnknownDataSetFormatException,
@@ -151,7 +157,8 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 			IncompatibleDataSetConfigPreprocessorException, IOException,
 			InterruptedException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException {
+			RepositoryConfigurationException, UnknownDataStatisticException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		ParameterOptimizationRun run = Parser
 				.parseParameterOptimizationRunFromFile(new File(
 						"/home/chris/git/clusteval/clusteval/testCaseRepository/runs/baechler2003.run"));
@@ -165,12 +172,10 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 				"/home/chris/git/clusteval/clusteval/testCaseRepository", null)
 				.initialize();
 
-		ParameterOptimizationRun run2 = (ParameterOptimizationRun)ParameterOptimizationRun
+		ParameterOptimizationRun run2 = (ParameterOptimizationRun) ParameterOptimizationRun
 				.parseFromFile(new File(
 						"/home/chris/git/clusteval/clusteval/testCaseRepository/runs/baechler2003.run"));
-		System.out.println(run);
-		System.out.println(run2);
-		
+
 		Assert.assertEquals(run2.logFilePath, run.logFilePath);
 		Assert.assertEquals(run2.runIdentString, run.runIdentString);
 		Assert.assertEquals(run2.startTime, run.startTime);
@@ -180,7 +185,8 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 		Assert.assertEquals(run2.runnables, run.runnables);
 		Assert.assertEquals(run2.dataConfigs, run.dataConfigs);
 		Assert.assertEquals(run2.optimizationMethods, run.optimizationMethods);
-		Assert.assertEquals(run2.optimizationParameters, run.optimizationParameters);
+		Assert.assertEquals(run2.optimizationParameters,
+				run.optimizationParameters);
 		Assert.assertEquals(run2.parameterValues, run.parameterValues);
 		Assert.assertEquals(run2.programConfigs, run.programConfigs);
 		Assert.assertEquals(run2.qualityMeasures, run.qualityMeasures);

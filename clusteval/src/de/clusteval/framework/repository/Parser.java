@@ -6,6 +6,7 @@ package de.clusteval.framework.repository;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -41,6 +42,8 @@ import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
 import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.statistics.DataStatistic;
+import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
@@ -48,10 +51,19 @@ import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
 import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
+import de.clusteval.run.ClusteringRun;
+import de.clusteval.run.DataAnalysisRun;
 import de.clusteval.run.ExecutionRun;
+import de.clusteval.run.InternalParameterOptimizationRun;
 import de.clusteval.run.ParameterOptimizationRun;
+import de.clusteval.run.RunAnalysisRun;
+import de.clusteval.run.RunDataAnalysisRun;
 import de.clusteval.run.RunException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.statistics.RunDataStatistic;
+import de.clusteval.run.statistics.RunStatistic;
+import de.clusteval.run.statistics.UnknownRunDataStatisticException;
+import de.clusteval.run.statistics.UnknownRunStatisticException;
 import file.FileUtils;
 
 /**
@@ -95,12 +107,16 @@ public abstract class Parser {
 	 * @throws UnknownDataSetTypeException
 	 * @throws UnknownDataPreprocessorException
 	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownRunDataStatisticException
 	 */
 	public static ParameterOptimizationRun parseParameterOptimizationRunFromFile(
 			final File absPath) throws UnknownDataSetFormatException,
 			GoldStandardNotFoundException, GoldStandardConfigurationException,
 			DataSetConfigurationException, DataSetNotFoundException,
 			DataSetConfigNotFoundException,
+
 			GoldStandardConfigNotFoundException, NoDataSetException,
 			NumberFormatException, DataConfigurationException,
 			DataConfigNotFoundException, RegisterException,
@@ -115,8 +131,340 @@ public abstract class Parser {
 			UnknownProgramTypeException, UnknownRProgramException,
 			IncompatibleContextException, UnknownDistanceMeasureException,
 			UnknownDataSetTypeException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
+			IncompatibleDataSetConfigPreprocessorException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
 		ParameterOptimizationRunParser p = new ParameterOptimizationRunParser();
+		p.parseFromFile(absPath);
+		return p.result;
+	}
+
+	/**
+	 * @param absPath
+	 * @return
+	 * @throws UnknownDataSetFormatException
+	 * @throws GoldStandardNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws DataSetConfigurationException
+	 * @throws DataSetNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws NoDataSetException
+	 * @throws DataConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws NumberFormatException
+	 * @throws ConfigurationException
+	 * @throws UnknownContextException
+	 * @throws FileNotFoundException
+	 * @throws RegisterException
+	 * @throws UnknownParameterType
+	 * @throws NoRepositoryFoundException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws RunException
+	 * @throws IncompatibleContextException
+	 * @throws UnknownRunResultFormatException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownProgramParameterException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownDataSetTypeException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownRunDataStatisticException
+	 */
+	public static ClusteringRun parseClusteringRunFromFile(final File absPath)
+			throws UnknownDataSetFormatException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigurationException, DataSetNotFoundException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, ConfigurationException,
+			UnknownContextException, FileNotFoundException, RegisterException,
+			UnknownParameterType, NoRepositoryFoundException,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		ClusteringRunParser p = new ClusteringRunParser();
+		p.parseFromFile(absPath);
+		return p.result;
+	}
+
+	/**
+	 * @param absPath
+	 * @return
+	 * @throws UnknownDataSetFormatException
+	 * @throws GoldStandardNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws DataSetConfigurationException
+	 * @throws DataSetNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws NoDataSetException
+	 * @throws DataConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws NumberFormatException
+	 * @throws ConfigurationException
+	 * @throws UnknownContextException
+	 * @throws FileNotFoundException
+	 * @throws RegisterException
+	 * @throws UnknownParameterType
+	 * @throws NoRepositoryFoundException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws RunException
+	 * @throws IncompatibleContextException
+	 * @throws UnknownRunResultFormatException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownProgramParameterException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownDataSetTypeException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownRunDataStatisticException
+	 */
+	public static InternalParameterOptimizationRun parseInternalParameterOptimizationRunFromFile(
+			final File absPath) throws UnknownDataSetFormatException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigurationException, DataSetNotFoundException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, ConfigurationException,
+			UnknownContextException, FileNotFoundException, RegisterException,
+			UnknownParameterType, NoRepositoryFoundException,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		InternalParameterOptimizationRunParser p = new InternalParameterOptimizationRunParser();
+		p.parseFromFile(absPath);
+		return p.result;
+	}
+
+	/**
+	 * @param absPath
+	 * @return
+	 * @throws UnknownDataSetFormatException
+	 * @throws GoldStandardNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws DataSetConfigurationException
+	 * @throws DataSetNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws NoDataSetException
+	 * @throws DataConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws NumberFormatException
+	 * @throws ConfigurationException
+	 * @throws UnknownContextException
+	 * @throws FileNotFoundException
+	 * @throws RegisterException
+	 * @throws UnknownParameterType
+	 * @throws NoRepositoryFoundException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws RunException
+	 * @throws IncompatibleContextException
+	 * @throws UnknownRunResultFormatException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownProgramParameterException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownDataSetTypeException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownRunDataStatisticException
+	 */
+	public static DataAnalysisRun parseDataAnalysisRunFromFile(
+			final File absPath) throws UnknownDataSetFormatException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigurationException, DataSetNotFoundException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, ConfigurationException,
+			UnknownContextException, FileNotFoundException, RegisterException,
+			UnknownParameterType, NoRepositoryFoundException,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		DataAnalysisRunParser p = new DataAnalysisRunParser();
+		p.parseFromFile(absPath);
+		return p.result;
+	}
+
+	/**
+	 * @param absPath
+	 * @return
+	 * @throws UnknownDataSetFormatException
+	 * @throws GoldStandardNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws DataSetConfigurationException
+	 * @throws DataSetNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws NoDataSetException
+	 * @throws DataConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws NumberFormatException
+	 * @throws ConfigurationException
+	 * @throws UnknownContextException
+	 * @throws FileNotFoundException
+	 * @throws RegisterException
+	 * @throws UnknownParameterType
+	 * @throws NoRepositoryFoundException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws RunException
+	 * @throws IncompatibleContextException
+	 * @throws UnknownRunResultFormatException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownProgramParameterException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownDataSetTypeException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownRunDataStatisticException
+	 */
+	public static RunAnalysisRun parseRunAnalysisRunFromFile(final File absPath)
+			throws UnknownDataSetFormatException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigurationException, DataSetNotFoundException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, ConfigurationException,
+			UnknownContextException, FileNotFoundException, RegisterException,
+			UnknownParameterType, NoRepositoryFoundException,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		RunAnalysisRunParser p = new RunAnalysisRunParser();
+		p.parseFromFile(absPath);
+		return p.result;
+	}
+
+	/**
+	 * @param absPath
+	 * @return
+	 * @throws UnknownDataSetFormatException
+	 * @throws GoldStandardNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws DataSetConfigurationException
+	 * @throws DataSetNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws NoDataSetException
+	 * @throws DataConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws NumberFormatException
+	 * @throws ConfigurationException
+	 * @throws UnknownContextException
+	 * @throws FileNotFoundException
+	 * @throws RegisterException
+	 * @throws UnknownParameterType
+	 * @throws NoRepositoryFoundException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws RunException
+	 * @throws IncompatibleContextException
+	 * @throws UnknownRunResultFormatException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownProgramParameterException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownDataSetTypeException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownRunDataStatisticException
+	 */
+	public static RunDataAnalysisRun parseRunDataAnalysisRunFromFile(
+			final File absPath) throws UnknownDataSetFormatException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigurationException, DataSetNotFoundException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, ConfigurationException,
+			UnknownContextException, FileNotFoundException, RegisterException,
+			UnknownParameterType, NoRepositoryFoundException,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		RunDataAnalysisRunParser p = new RunDataAnalysisRunParser();
 		p.parseFromFile(absPath);
 		return p.result;
 	}
@@ -151,7 +499,9 @@ class RepositoryObjectParser {
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
-			NoOptimizableProgramParameterException {
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
 
 		this.props = new HierarchicalINIConfiguration(absPath.getAbsolutePath());
 		this.repo = Repository.getRepositoryForPath(absPath.getAbsolutePath());
@@ -185,7 +535,9 @@ class RunParser extends RepositoryObjectParser {
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
-			NoOptimizableProgramParameterException {
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
 		super.parseFromFile(absPath);
 
 		// by default we are in a clustering context
@@ -224,7 +576,9 @@ class ExecutionRunParser extends RunParser {
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
-			NoOptimizableProgramParameterException {
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
 		super.parseFromFile(absPath);
 
 		/*
@@ -252,26 +606,6 @@ class ExecutionRunParser extends RunParser {
 
 		ExecutionRun.checkCompatibilityQualityMeasuresDataConfigs(dataConfigs,
 				qualityMeasures);
-	}
-
-	protected void parseDataConfigurations() throws RunException,
-			UnknownDataSetFormatException, GoldStandardNotFoundException,
-			GoldStandardConfigurationException, DataSetConfigurationException,
-			DataSetNotFoundException, DataSetConfigNotFoundException,
-			GoldStandardConfigNotFoundException, NoDataSetException,
-			DataConfigurationException, DataConfigNotFoundException,
-			NumberFormatException, RegisterException,
-			NoRepositoryFoundException, UnknownDistanceMeasureException,
-			UnknownDataSetTypeException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
-		if (props.getStringArray("dataConfig").length == 0)
-			throw new RunException("At least one data config must be specified");
-		for (String dataConfig : props.getStringArray("dataConfig")) {
-			dataConfigs.add(repo.getRegisteredObject(DataConfig
-					.parseFromFile(new File(FileUtils.buildPath(
-							repo.getDataConfigBasePath(), dataConfig
-									+ ".dataconfig")))));
-		}
 	}
 
 	protected void parseProgramConfigurations() throws RunException,
@@ -376,6 +710,111 @@ class ExecutionRunParser extends RunParser {
 			throw thrownExceptions.get(0);
 		}
 	}
+
+	protected void parseDataConfigurations() throws RunException,
+			UnknownDataSetFormatException, GoldStandardNotFoundException,
+			GoldStandardConfigurationException, DataSetConfigurationException,
+			DataSetNotFoundException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, RegisterException,
+			NoRepositoryFoundException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException {
+		if (props.getStringArray("dataConfig").length == 0)
+			throw new RunException("At least one data config must be specified");
+		for (String dataConfig : props.getStringArray("dataConfig")) {
+			dataConfigs.add(repo.getRegisteredObject(DataConfig
+					.parseFromFile(new File(FileUtils.buildPath(
+							repo.getDataConfigBasePath(), dataConfig
+									+ ".dataconfig")))));
+		}
+	}
+}
+
+class ClusteringRunParser extends ExecutionRunParser {
+
+	protected ClusteringRun result;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.ExecutionRunParser#parseFromFile(java
+	 * .io.File)
+	 */
+	@Override
+	public void parseFromFile(File absPath) throws ConfigurationException,
+			UnknownContextException, NoRepositoryFoundException,
+			UnknownClusteringQualityMeasureException, RunException,
+			UnknownDataSetFormatException, FileNotFoundException,
+			RegisterException, UnknownParameterType,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, GoldStandardNotFoundException,
+			GoldStandardConfigurationException, DataSetConfigurationException,
+			DataSetNotFoundException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		super.parseFromFile(absPath);
+
+		result = new ClusteringRun(repo, context, changeDate, absPath,
+				programConfigs, dataConfigs, qualityMeasures, runParamValues);
+		result = (ClusteringRun) repo.getRegisteredObject(result, false);
+	}
+}
+
+class InternalParameterOptimizationRunParser extends ExecutionRunParser {
+
+	protected InternalParameterOptimizationRun result;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.ExecutionRunParser#parseFromFile(java
+	 * .io.File)
+	 */
+	@Override
+	public void parseFromFile(File absPath) throws ConfigurationException,
+			UnknownContextException, NoRepositoryFoundException,
+			UnknownClusteringQualityMeasureException, RunException,
+			UnknownDataSetFormatException, FileNotFoundException,
+			RegisterException, UnknownParameterType,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, GoldStandardNotFoundException,
+			GoldStandardConfigurationException, DataSetConfigurationException,
+			DataSetNotFoundException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		super.parseFromFile(absPath);
+
+		result = new InternalParameterOptimizationRun(repo, context,
+				changeDate, absPath, programConfigs, dataConfigs,
+				qualityMeasures, runParamValues);
+		result = (InternalParameterOptimizationRun) repo.getRegisteredObject(
+				result, false);
+
+	}
 }
 
 class ParameterOptimizationRunParser extends ExecutionRunParser {
@@ -408,7 +847,9 @@ class ParameterOptimizationRunParser extends ExecutionRunParser {
 			DataConfigurationException, DataConfigNotFoundException,
 			UnknownDistanceMeasureException, UnknownDataSetTypeException,
 			UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
+			IncompatibleDataSetConfigPreprocessorException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
 
 		this.optimizationParameters = new ArrayList<List<ProgramParameter<?>>>();
 		/*
@@ -604,4 +1045,202 @@ class ParameterOptimizationRunParser extends ExecutionRunParser {
 
 		optimizationParameters.add(optParaList);
 	}
+}
+
+class AnalysisRunParser extends RunParser {
+}
+
+class DataAnalysisRunParser extends AnalysisRunParser {
+
+	protected DataAnalysisRun result;
+
+	@Override
+	public void parseFromFile(File absPath) throws NoRepositoryFoundException,
+			ConfigurationException, UnknownContextException,
+			UnknownClusteringQualityMeasureException, RunException,
+			UnknownDataSetFormatException, FileNotFoundException,
+			RegisterException, UnknownParameterType,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, GoldStandardNotFoundException,
+			GoldStandardConfigurationException, DataSetConfigurationException,
+			DataSetNotFoundException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		super.parseFromFile(absPath);
+
+		/*
+		 * An analysis run consists of a set of dataconfigs
+		 */
+		List<DataConfig> dataConfigs = new LinkedList<DataConfig>();
+
+		List<DataStatistic> dataStatistics = new LinkedList<DataStatistic>();
+
+		for (String dataConfig : props.getStringArray("dataConfig")) {
+			dataConfigs.add(repo.getRegisteredObject(DataConfig
+					.parseFromFile(new File(FileUtils.buildPath(
+							repo.getDataConfigBasePath(), dataConfig
+									+ ".dataconfig")))));
+		}
+
+		/**
+		 * We catch the exceptions such that all statistics are tried to be
+		 * loaded once so that they are ALL registered as missing in the
+		 * repository.
+		 */
+		List<UnknownDataStatisticException> thrownExceptions = new ArrayList<UnknownDataStatisticException>();
+		for (String dataStatistic : props.getStringArray("dataStatistics")) {
+			try {
+				dataStatistics.add(DataStatistic.parseFromString(repo,
+						dataStatistic));
+			} catch (UnknownDataStatisticException e) {
+				thrownExceptions.add(e);
+			}
+		}
+		if (thrownExceptions.size() > 0) {
+			// just throw the first exception
+			throw thrownExceptions.get(0);
+		}
+
+		result = new DataAnalysisRun(repo, context, changeDate, absPath,
+				dataConfigs, dataStatistics);
+		result = (DataAnalysisRun) repo.getRegisteredObject(result, false);
+	};
+}
+
+class RunAnalysisRunParser extends AnalysisRunParser {
+
+	protected RunAnalysisRun result;
+
+	@Override
+	public void parseFromFile(File absPath) throws NoRepositoryFoundException,
+			ConfigurationException, UnknownContextException,
+			UnknownClusteringQualityMeasureException, RunException,
+			UnknownDataSetFormatException, FileNotFoundException,
+			RegisterException, UnknownParameterType,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, GoldStandardNotFoundException,
+			GoldStandardConfigurationException, DataSetConfigurationException,
+			DataSetNotFoundException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		super.parseFromFile(absPath);
+
+		/*
+		 * An analysis run consists of a set of dataconfigs
+		 */
+		List<String> uniqueRunIdentifiers = new LinkedList<String>();
+
+		List<RunStatistic> runStatistics = new LinkedList<RunStatistic>();
+
+		uniqueRunIdentifiers.addAll(Arrays.asList(props
+				.getStringArray("uniqueRunIdentifiers")));
+
+		/**
+		 * We catch the exceptions such that all statistics are tried to be
+		 * loaded once so that they are ALL registered as missing in the
+		 * repository.
+		 */
+		List<UnknownRunStatisticException> thrownExceptions = new ArrayList<UnknownRunStatisticException>();
+		for (String runStatistic : props.getStringArray("runStatistics")) {
+			try {
+				runStatistics.add(RunStatistic.parseFromString(repo,
+						runStatistic));
+			} catch (UnknownRunStatisticException e) {
+				thrownExceptions.add(e);
+			}
+		}
+		if (thrownExceptions.size() > 0) {
+			// just throw the first exception
+			throw thrownExceptions.get(0);
+		}
+
+		result = new RunAnalysisRun(repo, context, changeDate, absPath,
+				uniqueRunIdentifiers, runStatistics);
+		result = (RunAnalysisRun) repo.getRegisteredObject(result, false);
+	};
+}
+
+class RunDataAnalysisRunParser extends AnalysisRunParser {
+
+	protected RunDataAnalysisRun result;
+
+	@Override
+	public void parseFromFile(File absPath) throws NoRepositoryFoundException,
+			ConfigurationException, UnknownContextException,
+			UnknownClusteringQualityMeasureException, RunException,
+			UnknownDataSetFormatException, FileNotFoundException,
+			RegisterException, UnknownParameterType,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, GoldStandardNotFoundException,
+			GoldStandardConfigurationException, DataSetConfigurationException,
+			DataSetNotFoundException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		super.parseFromFile(absPath);
+
+		List<String> uniqueRunAnalysisRunIdentifiers = new LinkedList<String>();
+		List<String> uniqueDataAnalysisRunIdentifiers = new LinkedList<String>();
+
+		List<RunDataStatistic> runDataStatistics = new LinkedList<RunDataStatistic>();
+
+		uniqueRunAnalysisRunIdentifiers.addAll(Arrays.asList(props
+				.getStringArray("uniqueRunIdentifiers")));
+		uniqueDataAnalysisRunIdentifiers.addAll(Arrays.asList(props
+				.getStringArray("uniqueDataIdentifiers")));
+
+		/**
+		 * We catch the exceptions such that all statistics are tried to be
+		 * loaded once so that they are ALL registered as missing in the
+		 * repository.
+		 */
+		List<UnknownRunDataStatisticException> thrownExceptions = new ArrayList<UnknownRunDataStatisticException>();
+		for (String runStatistic : props.getStringArray("runDataStatistics")) {
+			try {
+				runDataStatistics.add(RunDataStatistic.parseFromString(repo,
+						runStatistic));
+			} catch (UnknownRunDataStatisticException e) {
+				thrownExceptions.add(e);
+			}
+		}
+		if (thrownExceptions.size() > 0) {
+			// just throw the first exception
+			throw thrownExceptions.get(0);
+		}
+
+		result = new RunDataAnalysisRun(repo, context, changeDate, absPath,
+				uniqueRunAnalysisRunIdentifiers,
+				uniqueDataAnalysisRunIdentifiers, runDataStatistics);
+		result = (RunDataAnalysisRun) repo.getRegisteredObject(result, false);
+
+	};
 }
