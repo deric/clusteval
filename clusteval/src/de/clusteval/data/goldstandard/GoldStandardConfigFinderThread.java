@@ -75,7 +75,7 @@ public class GoldStandardConfigFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		this.repository.setGoldStandardConfigsInitialized();
+		this.repository.setInitialized(GoldStandardConfig.class);
 	}
 
 	/*

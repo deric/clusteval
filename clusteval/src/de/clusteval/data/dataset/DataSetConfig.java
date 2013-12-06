@@ -228,7 +228,7 @@ public class DataSetConfig extends RepositoryObject {
 						"EuclidianDistanceMeasure");
 
 			DataSet dataSet = DataSet.parseFromFile(new File(FileUtils
-					.buildPath(repo.getDataSetBasePath(), datasetName,
+					.buildPath(repo.getBasePath(DataSet.class), datasetName,
 							datasetFile)));
 
 			// added 12.04.2013

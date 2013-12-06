@@ -88,7 +88,7 @@ public class ProgramConfigFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		this.repository.setProgramConfigsInitialized();
+		this.repository.setInitialized(ProgramConfig.class);
 	}
 
 	/*

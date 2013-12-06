@@ -54,6 +54,7 @@ import de.clusteval.framework.repository.config.RepositoryConfigNotFoundExceptio
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
+import de.clusteval.run.Run;
 import de.clusteval.run.result.RunResultParseException;
 import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.InternalAttributeException;
@@ -118,8 +119,8 @@ public class TestParameterOptimizationMethod {
 
 		Context context = Context.parseFromString(repo, "ClusteringContext");
 
-		DataConfig dataConfig = repo
-				.getDataConfigWithName("synthetic_cassini250.dataconfig");
+		DataConfig dataConfig = repo.getObjectWithName(DataConfig.class,
+				"synthetic_cassini250");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
 		DataSetFormat internal = DataSetFormat.parseFromString(repo,
 				"SimMatrixDataSetFormat");
@@ -171,15 +172,16 @@ public class TestParameterOptimizationMethod {
 								+ ":numberOfElements)")
 				.setValue(ds.getIds().size());
 		ds.unloadFromMemory();
-		ProgramConfig programConfig = repo
-				.getProgramConfigWithName("TransClust_2.config");
+		ProgramConfig programConfig = repo.getObjectWithName(
+				ProgramConfig.class, "TransClust_2");
 
 		ClusteringQualityMeasure f2 = ClusteringQualityMeasure.parseFromString(
 				repo, "TransClustF2ClusteringQualityMeasure");
 		ParameterOptimizationMethod method = ParameterOptimizationMethod
 				.parseFromString(repo,
-						"LayeredDivisiveParameterOptimizationMethod",
-						repo.getRun("paper_run_synthetic"), programConfig,
+						"LayeredDivisiveParameterOptimizationMethod", repo
+								.getObjectWithName(Run.class,
+										"paper_run_synthetic"), programConfig,
 						dataConfig, programConfig.getOptimizableParams(), f2,
 						1001, false);
 		method.reset(new File(
@@ -251,8 +253,8 @@ public class TestParameterOptimizationMethod {
 
 		Context context = Context.parseFromString(repo, "ClusteringContext");
 
-		DataConfig dataConfig = repo
-				.getDataConfigWithName("synthetic_cassini250.dataconfig");
+		DataConfig dataConfig = repo.getObjectWithName(DataConfig.class,
+				"synthetic_cassini250");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
 		DataSetFormat internal = DataSetFormat.parseFromString(repo,
 				"SimMatrixDataSetFormat");
@@ -304,15 +306,16 @@ public class TestParameterOptimizationMethod {
 								+ ":numberOfElements)")
 				.setValue(ds.getIds().size());
 		ds.unloadFromMemory();
-		ProgramConfig programConfig = repo
-				.getProgramConfigWithName("TransClust_2.config");
+		ProgramConfig programConfig = repo.getObjectWithName(
+				ProgramConfig.class, "TransClust_2");
 
 		ClusteringQualityMeasure f2 = ClusteringQualityMeasure.parseFromString(
 				repo, "TransClustF2ClusteringQualityMeasure");
 		ParameterOptimizationMethod method = ParameterOptimizationMethod
 				.parseFromString(repo,
-						"LayeredDivisiveParameterOptimizationMethod",
-						repo.getRun("paper_run_synthetic"), programConfig,
+						"LayeredDivisiveParameterOptimizationMethod", repo
+								.getObjectWithName(Run.class,
+										"paper_run_synthetic"), programConfig,
 						dataConfig, programConfig.getOptimizableParams(), f2,
 						1001, true);
 		method.reset(new File(
@@ -367,8 +370,8 @@ public class TestParameterOptimizationMethod {
 
 		Context context = Context.parseFromString(repo, "ClusteringContext");
 
-		DataConfig dataConfig = repo
-				.getDataConfigWithName("synthetic_cassini250.dataconfig");
+		DataConfig dataConfig = repo.getObjectWithName(DataConfig.class,
+				"synthetic_cassini250");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
 		DataSetFormat internal = DataSetFormat.parseFromString(repo,
 				"SimMatrixDataSetFormat");
@@ -420,15 +423,16 @@ public class TestParameterOptimizationMethod {
 								+ ":numberOfElements)")
 				.setValue(ds.getIds().size());
 		ds.unloadFromMemory();
-		ProgramConfig programConfig = repo
-				.getProgramConfigWithName("TransClust_2.config");
+		ProgramConfig programConfig = repo.getObjectWithName(
+				ProgramConfig.class, "TransClust_2");
 
 		ClusteringQualityMeasure f2 = ClusteringQualityMeasure.parseFromString(
 				repo, "TransClustF2ClusteringQualityMeasure");
 		ParameterOptimizationMethod method = ParameterOptimizationMethod
 				.parseFromString(repo,
-						"LayeredDivisiveParameterOptimizationMethod",
-						repo.getRun("paper_run_synthetic"), programConfig,
+						"LayeredDivisiveParameterOptimizationMethod", repo
+								.getObjectWithName(Run.class,
+										"paper_run_synthetic"), programConfig,
 						dataConfig, programConfig.getOptimizableParams(), f2,
 						1001, true);
 		method.reset(new File(
@@ -456,8 +460,8 @@ public class TestParameterOptimizationMethod {
 
 		Context context = Context.parseFromString(repo, "ClusteringContext");
 
-		DataConfig dataConfig = repo
-				.getDataConfigWithName("baechler2003.dataconfig");
+		DataConfig dataConfig = repo.getObjectWithName(DataConfig.class,
+				"baechler2003");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
 		DataSetFormat internal = DataSetFormat.parseFromString(repo,
 				"SimMatrixDataSetFormat");
@@ -510,15 +514,16 @@ public class TestParameterOptimizationMethod {
 								+ ":numberOfElements)")
 				.setValue(ds.getIds().size());
 		ds.unloadFromMemory();
-		ProgramConfig programConfig = repo
-				.getProgramConfigWithName("TransClust_2.config");
+		ProgramConfig programConfig = repo.getObjectWithName(
+				ProgramConfig.class, "TransClust_2");
 
 		ClusteringQualityMeasure f2 = ClusteringQualityMeasure.parseFromString(
 				repo, "TransClustF2ClusteringQualityMeasure");
 		ParameterOptimizationMethod method = ParameterOptimizationMethod
 				.parseFromString(repo,
 						"LayeredDivisiveParameterOptimizationMethod",
-						repo.getRun("baechler2003"), programConfig, dataConfig,
+						repo.getObjectWithName(Run.class, "baechler2003"),
+						programConfig, dataConfig,
 						programConfig.getOptimizableParams(), f2, 1001, true);
 		method.reset(new File(
 				"testCaseRepository/results/04_15_2013-16_39_59_baechler2003/clusters/TransClust_2_baechler2003.results.qual.complete.test"));

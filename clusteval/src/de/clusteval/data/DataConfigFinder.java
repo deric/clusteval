@@ -42,7 +42,7 @@ public class DataConfigFinder extends FileFinder {
 	public DataConfigFinder(final Repository repository)
 			throws RegisterException {
 		super(repository, System.currentTimeMillis(), new File(
-				repository.getDataConfigBasePath()));
+				repository.getBasePath(DataConfig.class)));
 	}
 
 	/*
@@ -52,7 +52,7 @@ public class DataConfigFinder extends FileFinder {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getDataConfigBasePath());
+		return new File(this.repository.getBasePath(DataConfig.class));
 	}
 
 	/*
@@ -92,7 +92,7 @@ public class DataConfigFinder extends FileFinder {
 	 */
 	@Override
 	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.repository.getDataConfigs();
+		return this.repository.getCollection(DataConfig.class);
 	}
 
 	/*

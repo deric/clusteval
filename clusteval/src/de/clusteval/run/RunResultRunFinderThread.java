@@ -15,11 +15,14 @@ package de.clusteval.run;
 
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethodFinderThread;
 import de.clusteval.context.ContextFinderThread;
+import de.clusteval.data.dataset.DataSetConfig;
 import de.clusteval.data.dataset.RunResultDataSetConfigFinderThread;
+import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.data.goldstandard.GoldStandardConfigFinderThread;
 import de.clusteval.data.statistics.DataStatisticFinderThread;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.SupervisorThread;
+import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramConfigFinderThread;
 
 /**
@@ -68,15 +71,15 @@ public class RunResultRunFinderThread extends RunFinderThread {
 	@Override
 	protected void beforeFind() {
 
-		if (!this.repository.getDataSetConfigsInitialized())
+		if (!this.repository.isInitialized(DataSetConfig.class))
 			this.supervisorThread.getThread(RunResultDataSetConfigFinderThread.class)
 					.waitFor();
 
-		if (!this.repository.getGoldStandardConfigsInitialized())
+		if (!this.repository.isInitialized(GoldStandardConfig.class))
 			this.supervisorThread.getThread(
 					GoldStandardConfigFinderThread.class).waitFor();
 
-		if (!this.repository.getProgramConfigsInitialized())
+		if (!this.repository.isInitialized(ProgramConfig.class))
 			this.supervisorThread.getThread(ProgramConfigFinderThread.class)
 					.waitFor();
 

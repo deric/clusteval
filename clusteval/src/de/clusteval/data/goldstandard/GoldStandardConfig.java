@@ -157,7 +157,7 @@ public class GoldStandardConfig extends RepositoryObject {
 
 			result = new GoldStandardConfig(repo, changeDate, absConfigPath,
 					GoldStandard.parseFromFile(new File(FileUtils.buildPath(
-							repo.getGoldStandardBasePath(), gsName, gsFile))));
+							repo.getBasePath(GoldStandard.class), gsName, gsFile))));
 			result = repo.getRegisteredObject(result);
 			log.debug("Goldstandard config parsed");
 			return result;

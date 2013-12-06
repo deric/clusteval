@@ -273,12 +273,7 @@ public class GoldStandard extends RepositoryObject {
 	 */
 	@Override
 	public String toString() {
-		return "[GoldStandard \""
-				+ this.absPath.getName()
-				+ "\": "
-				+ (clustering != null
-						? clustering.toString()
-						: "Clustering not loaded") + "]";
+		return this.getFullName();
 	}
 
 	/**

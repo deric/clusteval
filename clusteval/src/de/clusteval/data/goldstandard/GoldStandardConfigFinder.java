@@ -43,7 +43,7 @@ public class GoldStandardConfigFinder extends FileFinder {
 	public GoldStandardConfigFinder(final Repository repository)
 			throws RegisterException {
 		super(repository, System.currentTimeMillis(), new File(
-				repository.getGoldStandardConfigBasePath()));
+				repository.getBasePath(GoldStandardConfig.class)));
 	}
 
 	/*
@@ -63,7 +63,7 @@ public class GoldStandardConfigFinder extends FileFinder {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getGoldStandardConfigBasePath());
+		return new File(this.repository.getBasePath(GoldStandardConfig.class));
 	}
 
 	/*
@@ -93,7 +93,7 @@ public class GoldStandardConfigFinder extends FileFinder {
 	 */
 	@Override
 	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.repository.getGoldStandardConfigs();
+		return this.repository.getCollection(GoldStandardConfig.class);
 	}
 
 	/*

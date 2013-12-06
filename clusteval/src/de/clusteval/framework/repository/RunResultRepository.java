@@ -90,11 +90,68 @@ public class RunResultRepository extends Repository {
 	 */
 	@Override
 	protected void initAttributes() {
+
+		this.repositoryObjectEntities = new RepositoryObjectEntityMap();
+
+		this.repositoryObjectEntities.put(
+				DataConfig.class,
+				new RepositoryObjectEntity<DataConfig>(this,
+						this.parent != null
+								? this.parent.repositoryObjectEntities
+										.get(DataConfig.class) : null,
+						FileUtils.buildPath(this.basePath, "data", "configs")));
+
+		this.repositoryObjectEntities.put(
+				DataSetConfig.class,
+				new RepositoryObjectEntity<DataSetConfig>(this,
+						this.parent != null
+								? this.parent.repositoryObjectEntities
+										.get(DataSetConfig.class) : null,
+						FileUtils.buildPath(this.basePath, "data", "datasets",
+								"configs")));
+
+		this.repositoryObjectEntities.put(
+				DataSet.class,
+				new RunResultRepositoryDataSetObjectEntity(this,
+						this.parent != null
+								? this.parent.repositoryObjectEntities
+										.get(DataSet.class) : null, FileUtils
+								.buildPath(this.basePath, "data", "datasets")));
+
+		this.repositoryObjectEntities.put(
+				GoldStandardConfig.class,
+				new RepositoryObjectEntity<GoldStandardConfig>(this,
+						this.parent != null
+								? this.parent.repositoryObjectEntities
+										.get(GoldStandardConfig.class) : null,
+						FileUtils.buildPath(this.basePath, "data",
+								"goldstandards", "configs")));
+
+		this.repositoryObjectEntities.put(
+				GoldStandard.class,
+				new RunResultRepositoryGoldStandardObjectEntity(this,
+						this.parent != null
+								? this.parent.repositoryObjectEntities
+										.get(GoldStandard.class) : null,
+						FileUtils.buildPath(this.basePath, "data",
+								"goldstandards")));
+
+		this.repositoryObjectEntities.put(
+				ProgramConfig.class,
+				new RepositoryObjectEntity<ProgramConfig>(this,
+						this.parent != null
+								? this.parent.repositoryObjectEntities
+										.get(ProgramConfig.class) : null,
+						FileUtils.buildPath(this.basePath, "programs",
+								"configs")));
+
+		this.repositoryObjectEntities.put(Run.class,
+				new RepositoryObjectEntity<Run>(this, this.parent != null
+						? this.parent.repositoryObjectEntities.get(Run.class)
+						: null, FileUtils.buildPath(this.basePath, "runs")));
+
 		this.contextClasses = this.parent.contextClasses;
 		this.contextInstances = this.parent.contextInstances;
-		this.dataConfigs = new ConcurrentHashMap<DataConfig, DataConfig>();
-		this.dataSetConfigs = new ConcurrentHashMap<DataSetConfig, DataSetConfig>();
-		this.dataSets = new ConcurrentHashMap<DataSet, DataSet>();
 		this.dataSetFormatInstances = this.parent.dataSetFormatInstances;
 		this.dataSetFormatClasses = this.parent.dataSetFormatClasses;
 		this.dataSetGeneratorClasses = this.parent.dataSetGeneratorClasses;
@@ -118,15 +175,10 @@ public class RunResultRepository extends Repository {
 		this.runDataStatisticCalculatorClasses = this.parent.runDataStatisticCalculatorClasses;
 		this.clusteringQualityMeasureClasses = this.parent.clusteringQualityMeasureClasses;
 		this.clusteringQualityMeasureInstances = this.parent.clusteringQualityMeasureInstances;
-		this.goldStandardConfigs = new ConcurrentHashMap<GoldStandardConfig, GoldStandardConfig>();
-		this.goldStandards = new ConcurrentHashMap<GoldStandard, GoldStandard>();
 		this.goldStandardFormats = new ConcurrentHashMap<GoldStandardFormat, GoldStandardFormat>();
 		this.programs = this.parent.programs;
 		this.rProgramClasses = this.parent.rProgramClasses;
 		this.rProgramInstances = this.parent.rProgramInstances;
-		this.programConfigs = new ConcurrentHashMap<ProgramConfig, ProgramConfig>();
-		this.runs = new ConcurrentHashMap<Run, Run>();
-		this.runs = new ConcurrentHashMap<Run, Run>();
 		this.runResults = this.parent.runResults;
 		this.runResultIdentifier = this.parent.runResultIdentifier;
 		this.runResultFormatClasses = this.parent.runResultFormatClasses;
@@ -163,19 +215,8 @@ public class RunResultRepository extends Repository {
 			throw new InvalidRepositoryException(
 					"A RunResultRepository needs a valid parent repository");
 		this.dataBasePath = this.parent.dataBasePath;
-		this.dataConfigBasePath = FileUtils.buildPath(this.basePath, "configs");
-		this.dataSetBasePath = FileUtils.buildPath(this.basePath, "inputs");
-		this.dataSetConfigBasePath = FileUtils.buildPath(this.basePath,
-				"configs");
-		this.goldStandardBasePath = FileUtils.buildPath(this.basePath,
-				"goldstandards");
-		this.goldStandardConfigBasePath = FileUtils.buildPath(this.basePath,
-				"configs");
+
 		this.programBasePath = this.parent.programBasePath;
-		this.programConfigBasePath = FileUtils.buildPath(this.basePath,
-				"configs");
-		this.runBasePath = FileUtils.buildPath(this.basePath, "configs");
-		// TODO: verify
 		this.runResultBasePath = this.parent.runResultBasePath;
 		// does not work in case of resume run
 		this.clusterResultsBasePath = FileUtils.buildPath(this.basePath,
@@ -405,39 +446,6 @@ public class RunResultRepository extends Repository {
 				this.getParent().repositoryConfig.getThreadSleepTimes());
 	}
 
-	/**
-	 * A dataset in a RunResultRepository needs to be present in the parent
-	 * repository.
-	 * 
-	 * @throws RegisterException
-	 */
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see framework.repository.Repository#register(data.dataset.DataSet)
-	 */
-	@Override
-	public boolean register(DataSet object) throws RegisterException {
-		DataSet dataSetInParentRepository = object.getRepository().getParent()
-				.getDataSetWithName(object.getFullName());
-		if (dataSetInParentRepository != null)
-			return super.register(object);
-		throw new DataSetRegisterException("The dataset '"
-				+ object.getAbsolutePath()
-				+ "' of a runresult is missing in its parent repository.");
-	}
-
-	@Override
-	public boolean register(GoldStandard object) throws RegisterException {
-		GoldStandard gsInParentRepository = object.getRepository().getParent()
-				.getGoldStandardWithName(object.getFullName());
-		if (gsInParentRepository != null)
-			return super.register(object);
-		throw new DataSetRegisterException("The goldstandard '"
-				+ object.getAbsolutePath()
-				+ "' of a runresult is missing in its parent repository.");
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -446,5 +454,71 @@ public class RunResultRepository extends Repository {
 	@Override
 	public boolean getDataSetTypesInitialized() {
 		return this.parent.getDataSetTypesInitialized();
+	}
+}
+
+class RunResultRepositoryDataSetObjectEntity
+		extends
+			RepositoryObjectEntity<DataSet> {
+
+	/**
+	 * @param repository
+	 * @param parent
+	 * @param basePath
+	 */
+	public RunResultRepositoryDataSetObjectEntity(Repository repository,
+			RepositoryObjectEntity<DataSet> parent, String basePath) {
+		super(repository, parent, basePath);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.RepositoryObjectEntity#register(de.
+	 * clusteval.framework.repository.RepositoryObject)
+	 */
+	@Override
+	public boolean register(DataSet object) throws RegisterException {
+		DataSet dataSetInParentRepository = object.getRepository().getParent()
+				.getObjectWithName(DataSet.class, object.getFullName());
+		if (dataSetInParentRepository != null)
+			return super.register(object);
+		throw new DataSetRegisterException("The dataset '"
+				+ object.getAbsolutePath()
+				+ "' of a runresult is missing in its parent repository.");
+	}
+}
+
+class RunResultRepositoryGoldStandardObjectEntity
+		extends
+			RepositoryObjectEntity<GoldStandard> {
+
+	/**
+	 * @param repository
+	 * @param parent
+	 * @param basePath
+	 */
+	public RunResultRepositoryGoldStandardObjectEntity(Repository repository,
+			RepositoryObjectEntity<GoldStandard> parent, String basePath) {
+		super(repository, parent, basePath);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.RepositoryObjectEntity#register(de.
+	 * clusteval.framework.repository.RepositoryObject)
+	 */
+	@Override
+	public boolean register(GoldStandard object) throws RegisterException {
+		GoldStandard gsInParentRepository = object.getRepository().getParent()
+				.getObjectWithName(GoldStandard.class, object.toString());
+		if (gsInParentRepository != null)
+			return super.register(object);
+		throw new DataSetRegisterException("The goldstandard '"
+				+ object.getAbsolutePath()
+				+ "' of a runresult is missing in its parent repository.");
 	}
 }

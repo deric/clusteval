@@ -197,7 +197,7 @@ public abstract class DataSetGenerator extends RepositoryObject
 
 		// Ensure, that the dataset target file does not exist yet
 		File targetFile = new File(FileUtils.buildPath(
-				this.repository.getDataSetBasePath(), this.folderName,
+				this.repository.getBasePath(DataSet.class), this.folderName,
 				this.fileName));
 
 		if (targetFile.exists())
@@ -210,7 +210,7 @@ public abstract class DataSetGenerator extends RepositoryObject
 		if (this.generatesGoldStandard()) {
 			// Ensure, that the goldstandard target file does not exist yet
 			targetFile = new File(FileUtils.buildPath(
-					this.repository.getGoldStandardBasePath(), this.folderName,
+					this.repository.getBasePath(GoldStandard.class), this.folderName,
 					this.fileName));
 
 			if (targetFile.exists())

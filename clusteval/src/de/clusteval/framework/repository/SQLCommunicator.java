@@ -436,6 +436,21 @@ public abstract class SQLCommunicator {
 	protected abstract boolean register(final Program object,
 			final boolean updateOnly);
 
+	// TODO
+	protected boolean register(final RepositoryObject object,
+			final boolean updateOnly) {
+		if (object instanceof DataSet)
+			return this.register((DataSet) object, updateOnly);
+		return false;
+	}
+
+	// TODO
+	protected boolean unregister(final RepositoryObject object) {
+		if (object instanceof DataSet)
+			return this.unregister((DataSet) object);
+		return false;
+	}
+
 	protected abstract boolean register(final GoldStandardConfig object,
 			final boolean updateOnly);
 

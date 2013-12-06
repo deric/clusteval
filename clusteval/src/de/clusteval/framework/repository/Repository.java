@@ -45,11 +45,8 @@ import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.context.Context;
 import de.clusteval.context.ContextFinderThread;
 import de.clusteval.data.DataConfig;
-import de.clusteval.data.DataConfigFinderThread;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.data.dataset.DataSetConfig;
-import de.clusteval.data.dataset.DataSetConfigFinderThread;
-import de.clusteval.data.dataset.DataSetFinderThread;
 import de.clusteval.data.dataset.format.DataSetFormat;
 import de.clusteval.data.dataset.format.DataSetFormatFinderThread;
 import de.clusteval.data.dataset.format.DataSetFormatParser;
@@ -64,7 +61,6 @@ import de.clusteval.data.distance.DistanceMeasureFinderThread;
 import de.clusteval.data.distance.UnknownDistanceMeasureException;
 import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
-import de.clusteval.data.goldstandard.GoldStandardConfigFinderThread;
 import de.clusteval.data.goldstandard.format.GoldStandardFormat;
 import de.clusteval.data.preprocessing.DataPreprocessor;
 import de.clusteval.data.preprocessing.DataPreprocessorFinderThread;
@@ -87,23 +83,13 @@ import de.clusteval.program.DoubleProgramParameter;
 import de.clusteval.program.IntegerProgramParameter;
 import de.clusteval.program.Program;
 import de.clusteval.program.ProgramConfig;
-import de.clusteval.program.ProgramConfigFinderThread;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.program.StringProgramParameter;
 import de.clusteval.program.r.RLibraryInferior;
 import de.clusteval.program.r.RProgram;
 import de.clusteval.program.r.RProgramFinderThread;
 import de.clusteval.program.r.UnknownRProgramException;
-import de.clusteval.run.AnalysisRun;
-import de.clusteval.run.ClusteringRun;
-import de.clusteval.run.DataAnalysisRun;
-import de.clusteval.run.ExecutionRun;
-import de.clusteval.run.InternalParameterOptimizationRun;
-import de.clusteval.run.ParameterOptimizationRun;
 import de.clusteval.run.Run;
-import de.clusteval.run.RunAnalysisRun;
-import de.clusteval.run.RunDataAnalysisRun;
-import de.clusteval.run.RunFinderThread;
 import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.format.RunResultFormat;
@@ -120,7 +106,6 @@ import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.Finder;
 import de.clusteval.utils.InternalAttributeException;
-import de.clusteval.utils.NamedAttribute;
 import de.clusteval.utils.NamedDoubleAttribute;
 import de.clusteval.utils.NamedIntegerAttribute;
 import de.clusteval.utils.NamedStringAttribute;
@@ -276,36 +261,6 @@ public class Repository {
 	protected Repository parent;
 
 	/**
-	 * A boolean attribute indicating whether the data configurations have been
-	 * initialized by the {@link DataConfigFinderThread}.
-	 */
-	private boolean dataConfigsInitialized;
-
-	/**
-	 * A boolean attribute indicating whether the datasets have been initialized
-	 * by the {@link DataSetFinderThread}.
-	 */
-	private boolean dataSetsInitialized;
-
-	/**
-	 * A boolean attribute indicating whether the dataset configurations have
-	 * been initialized by the {@link DataSetConfigFinderThread}.
-	 */
-	private boolean datasetConfigsInitialized;
-
-	/**
-	 * A boolean attribute indicating whether the goldstandard configurations
-	 * have been initialized by the {@link GoldStandardConfigFinderThread}.
-	 */
-	private boolean goldStandardConfigsInitialized;
-
-	/**
-	 * A boolean attribute indicating whether the program configurations have
-	 * been initialized by the {@link ProgramConfigFinderThread}.
-	 */
-	private boolean programConfigsInitialized;
-
-	/**
 	 * A boolean attribute indicating whether the dataset formats have been
 	 * initialized by the {@link DataSetFormatFinderThread}.
 	 */
@@ -354,12 +309,6 @@ public class Repository {
 	private boolean runResultFormatsInitialized;
 
 	/**
-	 * A boolean attribute indicating whether the runs have been initialized by
-	 * the {@link RunFinderThread}.
-	 */
-	private boolean runsInitialized;
-
-	/**
 	 * A boolean attribute indicating whether the clustering quality measures
 	 * have been initialized by the {@link ClusteringQualityMeasureFinderThread}
 	 * .
@@ -389,18 +338,6 @@ public class Repository {
 	 * related files are stored.
 	 */
 	protected String dataBasePath;
-
-	/**
-	 * The absolute path to the directory within this repository, where all data
-	 * configurations are stored.
-	 */
-	protected String dataConfigBasePath;
-
-	/**
-	 * The absolute path to the directory within this repository, where all
-	 * datasets are stored.
-	 */
-	protected String dataSetBasePath;
 
 	/**
 	 * This map holds the current versions of the available dataset formats.
@@ -438,12 +375,6 @@ public class Repository {
 	protected String distanceMeasureBasePath;
 
 	/**
-	 * The absolute path to the directory within this repository, where all
-	 * dataset configurations are stored.
-	 */
-	protected String dataSetConfigBasePath;
-
-	/**
 	 * The absolute path to the directory within this repository, where all data
 	 * statistics are stored.
 	 */
@@ -463,33 +394,9 @@ public class Repository {
 
 	/**
 	 * The absolute path to the directory within this repository, where all
-	 * goldstandards are stored.
-	 */
-	protected String goldStandardBasePath;
-
-	/**
-	 * The absolute path to the directory within this repository, where all
-	 * goldstandard configurations are stored.
-	 */
-	protected String goldStandardConfigBasePath;
-
-	/**
-	 * The absolute path to the directory within this repository, where all
 	 * programs are stored.
 	 */
 	protected String programBasePath;
-
-	/**
-	 * The absolute path to the directory within this repository, where all
-	 * program configurations are stored.
-	 */
-	protected String programConfigBasePath;
-
-	/**
-	 * The absolute path to the directory within this repository, where all runs
-	 * are stored.
-	 */
-	protected String runBasePath;
 
 	/**
 	 * The absolute path to the directory within this repository, where all run
@@ -576,39 +483,14 @@ public class Repository {
 	 */
 	protected Map<File, RepositoryObject> pathToRepositoryObject;
 
-	/**
-	 * A map containing all data configurations registered in this repository.
-	 */
-	protected Map<DataConfig, DataConfig> dataConfigs;
-
-	/**
-	 * A map containing all dataset configurations registered in this
-	 * repository.
-	 */
-	protected Map<DataSetConfig, DataSetConfig> dataSetConfigs;
-
-	/**
-	 * A map containing all datasets registered in this repository.
-	 */
-	protected Map<DataSet, DataSet> dataSets;
-
-	/**
-	 * A map containing all classes of dataset formats registered in this
-	 * repository. Mapping from Class.getName() to the class.
-	 */
-	protected Map<String, Class<? extends DataSetFormat>> dataSetFormatClasses;
+	// TODO: test
+	protected RepositoryObjectEntityMap repositoryObjectEntities;
 
 	/**
 	 * A map containing all classes of dataset generators registered in this
 	 * repository. Mapping from Class.getName() to the class.
 	 */
 	protected Map<String, Class<? extends DataSetGenerator>> dataSetGeneratorClasses;
-
-	/**
-	 * A map mapping from the simple name of the class to all of its
-	 * instances.Mapping from Class.getSimpleName() to the instances.
-	 */
-	protected Map<String, List<DataSetFormat>> dataSetFormatInstances;
 
 	/**
 	 * A map mapping from the simple name of the class to all of its
@@ -661,6 +543,7 @@ public class Repository {
 	/**
 	 * A map containing all statistic calculators registered in this repository.
 	 */
+	// TODO
 	protected Map<StatisticCalculator<? extends Statistic>, StatisticCalculator<? extends Statistic>> statisticCalculators;
 
 	/**
@@ -682,6 +565,18 @@ public class Repository {
 	protected Map<String, Class<? extends ParameterOptimizationMethod>> parameterOptimizationMethodClasses;
 
 	/**
+	 * A map containing all classes of dataset formats registered in this
+	 * repository. Mapping from Class.getName() to the class.
+	 */
+	protected Map<String, Class<? extends DataSetFormat>> dataSetFormatClasses;
+
+	/**
+	 * A map mapping from the simple name of the class to all of its
+	 * instances.Mapping from Class.getSimpleName() to the instances.
+	 */
+	protected Map<String, List<DataSetFormat>> dataSetFormatInstances;
+
+	/**
 	 * A map containing all classes of dataset format parsers registered in this
 	 * repository.
 	 */
@@ -691,6 +586,7 @@ public class Repository {
 	 * A map mapping from the simple name of the class to all of its
 	 * instances.Mapping from Class.getSimpleName() to the instances.
 	 */
+	// TODO
 	protected Map<String, Map<ParameterOptimizationMethod, ParameterOptimizationMethod>> parameterOptimizationMethodInstances;
 	/**
 	 * A map containing all classes of run statistics registered in this
@@ -729,17 +625,6 @@ public class Repository {
 	protected Map<String, Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>>> runDataStatisticCalculatorClasses;
 
 	/**
-	 * A map containing all goldstandard configurations registered in this
-	 * repository.
-	 */
-	protected Map<GoldStandardConfig, GoldStandardConfig> goldStandardConfigs;
-
-	/**
-	 * A map containing all goldstandards registered in this repository.
-	 */
-	protected Map<GoldStandard, GoldStandard> goldStandards;
-
-	/**
 	 * A map containing all goldstandard formats registered in this repository.
 	 */
 	protected Map<GoldStandardFormat, GoldStandardFormat> goldStandardFormats;
@@ -760,17 +645,6 @@ public class Repository {
 	 * instances.Mapping from Class.getSimpleName() to the instances.
 	 */
 	protected Map<String, List<RProgram>> rProgramInstances;
-
-	/**
-	 * A map containing all program configurations registered in this
-	 * repository.
-	 */
-	protected Map<ProgramConfig, ProgramConfig> programConfigs;
-
-	/**
-	 * A map containing all runs registered in this repository.
-	 */
-	protected Map<Run, Run> runs;
 
 	/**
 	 * A map containing all runresults registered in this repository.
@@ -951,17 +825,13 @@ public class Repository {
 	private boolean contextsInitialized;
 
 	/**
-	 * <<<<<<< .working The absolute path to the directory within this
-	 * repository, where all contexts are stored.
+	 * The absolute path to the directory within this repository, where all
+	 * contexts are stored.
 	 */
 	// TODO: initialize
 	protected String contextBasePath;
 
-	// private MyRengine rEngineForLibraryInstalledChecks;
-	// private REnginePool rEngineForLibraryInstalledChecks;
 	private Map<Thread, MyRengine> rEngines;
-
-	// private RserveException rEngineException;
 
 	/**
 	 * Instantiates a new repository.
@@ -1172,18 +1042,19 @@ public class Repository {
 	 * @throws FileNotFoundException
 	 */
 	private boolean ensureFolderStructure() throws FileNotFoundException {
+		// TODO: replace by for loop over entries of #repositoryObjectEntities
 		this.ensureFolder(this.basePath);
 		this.ensureFolder(this.dataBasePath);
-		this.ensureFolder(this.dataConfigBasePath);
-		this.ensureFolder(this.dataSetBasePath);
+		this.ensureFolder(this.getBasePath(DataConfig.class));
+		this.ensureFolder(this.getBasePath(DataSet.class));
 		this.ensureFolder(this.dataSetFormatBasePath);
 		this.ensureFolder(this.dataSetTypeBasePath);
-		this.ensureFolder(this.dataSetConfigBasePath);
-		this.ensureFolder(this.goldStandardBasePath);
-		this.ensureFolder(this.goldStandardConfigBasePath);
+		this.ensureFolder(this.getBasePath(DataSetConfig.class));
+		this.ensureFolder(this.getBasePath(GoldStandard.class));
+		this.ensureFolder(this.getBasePath(GoldStandardConfig.class));
 		this.ensureFolder(this.programBasePath);
-		this.ensureFolder(this.programConfigBasePath);
-		this.ensureFolder(this.runBasePath);
+		this.ensureFolder(this.getBasePath(ProgramConfig.class));
+		this.ensureFolder(this.getBasePath(Run.class));
 		this.ensureFolder(this.runResultBasePath);
 		this.ensureFolder(this.runResultFormatBasePath);
 		this.ensureFolder(this.supplementaryBasePath);
@@ -1454,122 +1325,50 @@ public class Repository {
 
 	/**
 	 * @return The absolute path to the directory within this repository, where
-	 *         all data configurations are stored.
-	 */
-	public String getDataConfigBasePath() {
-		return this.dataConfigBasePath;
-	}
-
-	/**
-	 * @return A map containing all data configurations registered in this
-	 *         repository and its parents.
-	 */
-	public Collection<DataConfig> getDataConfigs() {
-		Collection<DataConfig> result = new HashSet<DataConfig>(
-				this.dataConfigs.values());
-		if (parent != null)
-			result.addAll(parent.getDataConfigs());
-		return result;
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the data configurations
-	 *         have been initialized by the {@link DataConfigFinderThread}.
-	 * 
-	 */
-	public boolean getDataConfigsInitialized() {
-		return this.dataConfigsInitialized;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the data configuration
-	 * with the given name. TODO: right now this method looks for
-	 * name.dataconfig
-	 * 
-	 * @param name
-	 *            The name of the data configuration.
-	 * @return The data configuration with the given name or null, if it does
-	 *         not exist.
-	 */
-	public DataConfig getDataConfigWithName(final String name) {
-		for (DataConfig dataConfig : this.dataConfigs.values()) {
-			String split = dataConfig.getAbsolutePath().substring(
-					dataConfig.getAbsolutePath().lastIndexOf("/") + 1);
-			if (split.equals(name))
-				return dataConfig;
-		}
-		// added 07.01.2013
-		if (parent != null)
-			return parent.getDataConfigWithName(name);
-		return null;
-	}
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
 	 *         all dataset formats are stored.
 	 */
 	public String getDataFormatsBasePath() {
 		return this.dataSetFormatBasePath;
 	}
 
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all datasets are stored.
-	 */
-	public String getDataSetBasePath() {
-		return this.dataSetBasePath;
+	public String getBasePath(final Class<? extends RepositoryObject> c) {
+		return this.repositoryObjectEntities.get(c).getBasePath();
 	}
 
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all dataset configurations are stored.
-	 */
-	public String getDataSetConfigBasePath() {
-		return this.dataSetConfigBasePath;
+	public <T extends RepositoryObject> Collection<T> getCollection(
+			final Class<T> c) {
+		return this.repositoryObjectEntities.get(c).asCollection();
 	}
 
-	/**
-	 * 
-	 * @return A collection with all dataset configurations that have been
-	 *         registered in this repository or its parents.
-	 */
-	public Collection<DataSetConfig> getDataSetConfigs() {
-		Collection<DataSetConfig> result = new HashSet<DataSetConfig>(
-				this.dataSetConfigs.values());
-		if (parent != null)
-			result.addAll(parent.getDataSetConfigs());
-		return result;
+	public <T extends RepositoryObject> T getObjectWithName(final Class<T> c,
+			final String name) {
+		return this.repositoryObjectEntities.get(c).findByString(name);
 	}
 
-	/**
-	 * @return A boolean attribute indicating whether the dataset configurations
-	 *         have been initialized by the {@link DataSetConfigFinderThread}.
-	 * 
-	 */
-	public boolean getDataSetConfigsInitialized() {
-		return this.datasetConfigsInitialized;
+	public boolean isInitialized(final Class<? extends RepositoryObject> c) {
+		return this.repositoryObjectEntities.get(c).isInitialized();
 	}
 
-	/**
-	 * This method looks up and returns (if it exists) the dataset configuration
-	 * with the given name.
-	 * 
-	 * @param name
-	 *            The name of the dataset configuration.
-	 * @return The dataset configuration with the given name or null, if it does
-	 *         not exist.
-	 */
-	public DataSetConfig getDataSetConfigWithName(final String name) {
-		for (DataSetConfig dsConfig : this.dataSetConfigs.values()) {
-			String split = dsConfig.getAbsolutePath().substring(
-					dsConfig.getAbsolutePath().lastIndexOf("/") + 1);
-			if (split.equals(name))
-				return dsConfig;
-		}
-		// added 07.01.2013
-		if (parent != null)
-			return parent.getDataSetConfigWithName(name);
-		return null;
+	public <T extends RepositoryObject> T getRegisteredObject(final T object) {
+		return this.getRegisteredObject(object, true);
+	}
+
+	public <T extends RepositoryObject> T getRegisteredObject(final T object,
+			final boolean ignoreChangeDate) {
+		@SuppressWarnings("unchecked")
+		Class<T> c = (Class<T>) object.getClass();
+		return this.repositoryObjectEntities.get(c).getRegisteredObject(object,
+				ignoreChangeDate);
+	}
+
+	public <T extends RepositoryObject> boolean unregister(final T object) {
+		@SuppressWarnings("unchecked")
+		Class<T> c = (Class<T>) object.getClass();
+		return this.repositoryObjectEntities.get(c).unregister(object);
+	}
+
+	public <T extends RepositoryObject> void setInitialized(final Class<T> c) {
+		this.repositoryObjectEntities.get(c).setInitialized();
 	}
 
 	/**
@@ -1682,27 +1481,6 @@ public class Repository {
 	}
 
 	/**
-	 * @return A collection with all datasets that have been registered in this
-	 *         repository and its parents.
-	 */
-	public Collection<DataSet> getDataSets() {
-		Collection<DataSet> result = new HashSet<DataSet>(
-				this.dataSets.values());
-		if (parent != null)
-			result.addAll(parent.getDataSets());
-		return result;
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the datasets have been
-	 *         initialized by the {@link DataSetFinderThread}.
-	 * 
-	 */
-	public boolean getDataSetsInitialized() {
-		return this.dataSetsInitialized;
-	}
-
-	/**
 	 * @return The absolute path to the directory within this repository, where
 	 *         all dataset types are stored.
 	 */
@@ -1742,26 +1520,6 @@ public class Repository {
 	 */
 	public boolean getDataSetTypesInitialized() {
 		return this.dataSetTypesInitialized;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the dataset with the
-	 * given full name.
-	 * 
-	 * @param name
-	 *            The full name of the dataset.
-	 * @return The dataset with the given full name or null, if it does not
-	 *         exist.
-	 */
-	public DataSet getDataSetWithName(final String name) {
-		for (DataSet ds : this.dataSets.values()) {
-			if (ds.getFullName().equals(name))
-				return ds;
-		}
-		// added 07.01.2013
-		if (parent != null)
-			return parent.getDataSetWithName(name);
-		return null;
 	}
 
 	/**
@@ -1868,87 +1626,6 @@ public class Repository {
 	 */
 	public boolean getDistanceMeasuresInitialized() {
 		return this.distanceMeasuresInitialized;
-	}
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all goldstandards are stored.
-	 */
-	public String getGoldStandardBasePath() {
-		return this.goldStandardBasePath;
-	}
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all goldstandard configurations are stored.
-	 */
-	public String getGoldStandardConfigBasePath() {
-		return this.goldStandardConfigBasePath;
-	}
-
-	/**
-	 * @return A collection with all goldstandard configurations registered in
-	 *         this repository or its parents.
-	 */
-	public Collection<GoldStandardConfig> getGoldStandardConfigs() {
-		Collection<GoldStandardConfig> result = new HashSet<GoldStandardConfig>(
-				this.goldStandardConfigs.values());
-		if (parent != null)
-			result.addAll(parent.getGoldStandardConfigs());
-		return result;
-	}
-
-	/**
-	 * 
-	 * @return A boolean attribute indicating whether the goldstandard
-	 *         configurations have been initialized by the
-	 *         {@link GoldStandardConfigFinderThread}.
-	 */
-	public boolean getGoldStandardConfigsInitialized() {
-		return this.goldStandardConfigsInitialized;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the goldstandard
-	 * configuration with the given name.
-	 * 
-	 * @param name
-	 *            The name of the goldstandard configuration.
-	 * @return The goldstandard configuration with the given name or null, if it
-	 *         does not exist.
-	 */
-	public GoldStandardConfig getGoldStandardConfigWithName(final String name) {
-		for (GoldStandardConfig gsConfig : this.goldStandardConfigs.values()) {
-			String split = gsConfig.getAbsolutePath().substring(
-					gsConfig.getAbsolutePath().lastIndexOf("/") + 1);
-			if (split.equals(name))
-				return gsConfig;
-		}
-		// added 07.01.2013
-		if (parent != null)
-			return parent.getGoldStandardConfigWithName(name);
-		return null;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the goldstandard with the
-	 * given name.
-	 * 
-	 * @param name
-	 *            The name of the goldstandard.
-	 * @return The goldstandard with the given name or null, if it does not
-	 *         exist.
-	 */
-	public GoldStandard getGoldStandardWithName(final String name) {
-		for (GoldStandard gs : this.goldStandards.values()) {
-			String split = gs.getFullName();
-			if (split.equals(name))
-				return gs;
-		}
-		// added 07.01.2013
-		if (parent != null)
-			return parent.getGoldStandardWithName(name);
-		return null;
 	}
 
 	/**
@@ -2085,54 +1762,6 @@ public class Repository {
 	}
 
 	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all program configurations are stored.
-	 */
-	public String getProgramConfigBasePath() {
-		return this.programConfigBasePath;
-	}
-
-	/**
-	 * @return A collection with all program configurations that have been
-	 *         registered in this repository or its parents.
-	 */
-	public Collection<ProgramConfig> getProgramConfigs() {
-		Collection<ProgramConfig> result = this.programConfigs.values();
-		if (parent != null)
-			result.addAll(parent.getProgramConfigs());
-		return result;
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the program configurations
-	 *         have been initialized by the {@link ProgramConfigFinderThread}.
-	 */
-	public boolean getProgramConfigsInitialized() {
-		return this.programConfigsInitialized;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the program configuration
-	 * with the given name.
-	 * 
-	 * @param name
-	 *            The name of the program configuration.
-	 * @return The program configuration with the given name.
-	 */
-	public ProgramConfig getProgramConfigWithName(final String name) {
-		for (ProgramConfig pConfig : this.programConfigs.values()) {
-			String split = pConfig.getAbsolutePath().substring(
-					pConfig.getAbsolutePath().lastIndexOf("/") + 1);
-			if (split.equals(name))
-				return pConfig;
-		}
-		// added 07.01.2013
-		if (parent != null)
-			return parent.getProgramConfigWithName(name);
-		return null;
-	}
-
-	/**
 	 * @return A collection of all programs registered in this repository or its
 	 *         parents.
 	 */
@@ -2141,99 +1770,6 @@ public class Repository {
 		if (parent != null)
 			result.addAll(parent.getPrograms());
 		return result;
-	}
-
-	/**
-	 * This method checks, whether there is a data configuration registered,
-	 * that is equal to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public DataConfig getRegisteredObject(final DataConfig object) {
-		DataConfig other = this.dataConfigs.get(object);
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
-	}
-
-	/**
-	 * This method checks, whether there is a dataset registered, that is equal
-	 * to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public DataSet getRegisteredObject(final DataSet object) {
-		DataSet other = this.dataSets.get(object);
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
-	}
-
-	/**
-	 * This method checks, whether there is a dataset configuration registered,
-	 * that is equal to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public DataSetConfig getRegisteredObject(final DataSetConfig object) {
-		DataSetConfig other = this.dataSetConfigs.get(object);
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
 	}
 
 	/**
@@ -2307,69 +1843,6 @@ public class Repository {
 	 */
 	public Finder getRegisteredObject(final Finder object) {
 		Finder other = this.finder.get(object);
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
-	}
-
-	/**
-	 * This method checks, whether there is a goldstandard registered, that is
-	 * equal to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public GoldStandard getRegisteredObject(final GoldStandard object) {
-		GoldStandard other = this.goldStandards.get(object);
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
-	}
-
-	/**
-	 * This method checks, whether there is a goldstandard configuration
-	 * registered, that is equal to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public GoldStandardConfig getRegisteredObject(
-			final GoldStandardConfig object) {
-		GoldStandardConfig other = this.goldStandardConfigs.get(object);
 		if (other == null && parent != null)
 			return parent.getRegisteredObject(object);
 		return other;
@@ -2604,113 +2077,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method checks, whether there is a program configuration registered,
-	 * that is equal to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public ProgramConfig getRegisteredObject(final ProgramConfig object) {
-		ProgramConfig other = this.programConfigs.get(object);
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
-	}
-
-	/**
-	 * This method checks, whether there is a run registered, that is equal to
-	 * the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public Run getRegisteredObject(final Run object) {
-		// changed 07.01.2013
-		return this.getRegisteredObject(object, true);
-	}
-
-	/**
-	 * This method checks, whether there is a run registered, that is equal to
-	 * the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * <li><b>object.changedate == other.changedate</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures. In case the
-	 * change dates of the two objects are different, the method returns the
-	 * passed object.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @param ignoreChangeDate
-	 *            A boolean indicating whether we ignore (default) or consider
-	 *            the changedates of the two runs.
-	 * @return The registered object equal to the passed object, or in case we
-	 *         find another object with differing changedate we return the
-	 *         passed object.
-	 */
-	public Run getRegisteredObject(final Run object,
-			final boolean ignoreChangeDate) {
-		// get object without changedate
-		Run other = this.runs.get(object);
-		// inserted parent, 02.06.2012
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object, ignoreChangeDate);
-		else if (ignoreChangeDate || other == null)
-			return other;
-		else if (other.changeDate == object.changeDate) {
-			return other;
-		}
-		return object;
-	}
-
-	/**
 	 * This method checks, whether there is a runresult registered, that is
 	 * equal to the passed object and returns it.
 	 * 
@@ -2856,29 +2222,6 @@ public class Repository {
 	 */
 	public boolean getRProgramsInitialized() {
 		return this.rProgramsInitialized;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the run with the given
-	 * name.
-	 * 
-	 * @param runId
-	 *            The name of the run.
-	 * @return The run with the given name.
-	 */
-	public Run getRun(String runId) {
-		for (Run run : this.runs.values())
-			if (run.getName().equals(runId))
-				return run;
-		return null;
-	}
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all runs are stored.
-	 */
-	public String getRunBasePath() {
-		return this.runBasePath;
 	}
 
 	/**
@@ -3068,22 +2411,16 @@ public class Repository {
 		return result;
 	}
 
-	/**
-	 * @return A collection with all runs registered in this repository.
-	 */
-	public Collection<Run> getRuns() {
-		synchronized (this.runs) {
-			return new HashSet<Run>(this.runs.values());
-		}
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the runs have been
-	 *         initialized by the {@link RunFinderThread}.
-	 */
-	public boolean getRunsInitialized() {
-		return this.runsInitialized;
-	}
+	// /**
+	// * @return A collection with all runs registered in this repository.
+	// */
+	// TODO: differs from getCollection(Run.class) in that it does not include
+	// parent runs -> check
+	// public Collection<Run> getRuns() {
+	// synchronized (this.runs) {
+	// return new HashSet<Run>(this.runs.values());
+	// }
+	// }
 
 	/**
 	 * @return The absolute path to the directory within this repository, where
@@ -3144,25 +2481,6 @@ public class Repository {
 	 */
 	public boolean getRunStatisticsInitialized() {
 		return this.runStatisticsInitialized;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the run with the given
-	 * name. The passed name needs to be equal to the result of the
-	 * run.getName(), that means it corresponds to the filename without file
-	 * extension.
-	 * 
-	 * @param name
-	 *            The name of the run.
-	 * @return The run with the given name.
-	 */
-	public Run getRunWithName(final String name) {
-		// changed 07.01.2013: use run.getName() method
-		for (Run run : this.runs.values()) {
-			if (run.getName().equals(name))
-				return run;
-		}
-		return null;
 	}
 
 	/**
@@ -3233,11 +2551,74 @@ public class Repository {
 	 * {@link #Repository(String, Repository, long, long, long, long, long, long, long)}.
 	 */
 	protected void initAttributes() {
+
+		this.repositoryObjectEntities = new RepositoryObjectEntityMap();
+
+		this.repositoryObjectEntities.put(
+				DataSet.class,
+				new RepositoryObjectEntity<DataSet>(this, this.parent != null
+						? this.parent.repositoryObjectEntities
+								.get(DataSet.class) : null, FileUtils
+						.buildPath(this.basePath, "data", "datasets")));
+
+		this.repositoryObjectEntities.put(
+				DataSetConfig.class,
+				new RepositoryObjectEntity<DataSetConfig>(this,
+						this.parent != null
+								? this.parent.repositoryObjectEntities
+										.get(DataSetConfig.class) : null,
+						FileUtils.buildPath(this.basePath, "data", "datasets",
+								"configs")));
+
+		this.repositoryObjectEntities.put(
+				GoldStandard.class,
+				new RepositoryObjectEntity<GoldStandard>(this,
+						this.parent != null
+								? this.parent.repositoryObjectEntities
+										.get(GoldStandard.class) : null,
+						FileUtils.buildPath(this.basePath, "data",
+								"goldstandards")));
+
+		this.repositoryObjectEntities.put(
+				GoldStandardConfig.class,
+				new RepositoryObjectEntity<GoldStandardConfig>(this,
+						this.parent != null
+								? this.parent.repositoryObjectEntities
+										.get(GoldStandardConfig.class) : null,
+						FileUtils.buildPath(this.basePath, "data",
+								"goldstandards", "configs")));
+
+		this.repositoryObjectEntities.put(
+				DataConfig.class,
+				new RepositoryObjectEntity<DataConfig>(this,
+						this.parent != null
+								? this.parent.repositoryObjectEntities
+										.get(DataConfig.class) : null,
+						FileUtils.buildPath(this.basePath, "data", "configs")));
+
+		this.repositoryObjectEntities.put(Run.class,
+				new RepositoryObjectEntity<Run>(this, this.parent != null
+						? this.parent.repositoryObjectEntities.get(Run.class)
+						: null, FileUtils.buildPath(this.basePath, "runs")));
+
+		this.repositoryObjectEntities.put(
+				ProgramConfig.class,
+				new RepositoryObjectEntity<ProgramConfig>(this,
+						this.parent != null
+								? this.parent.repositoryObjectEntities
+										.get(ProgramConfig.class) : null,
+						FileUtils.buildPath(this.basePath, "programs",
+								"configs")));
+
+		this.repositoryObjectEntities.put(
+				Program.class,
+				new RepositoryObjectEntity<Program>(this, this.parent != null
+						? this.parent.repositoryObjectEntities
+								.get(Program.class) : null, FileUtils
+						.buildPath(this.basePath, "programs")));
+
 		this.contextClasses = new ConcurrentHashMap<String, Class<? extends Context>>();
 		this.contextInstances = new ConcurrentHashMap<String, List<Context>>();
-		this.dataConfigs = new ConcurrentHashMap<DataConfig, DataConfig>();
-		this.dataSetConfigs = new ConcurrentHashMap<DataSetConfig, DataSetConfig>();
-		this.dataSets = new ConcurrentHashMap<DataSet, DataSet>();
 		this.dataSetFormatInstances = new ConcurrentHashMap<String, List<DataSetFormat>>();
 		this.dataSetFormatClasses = new ConcurrentHashMap<String, Class<? extends DataSetFormat>>();
 		this.dataSetGeneratorInstances = new ConcurrentHashMap<String, List<DataSetGenerator>>();
@@ -3261,15 +2642,10 @@ public class Repository {
 		this.runDataStatisticCalculatorClasses = new ConcurrentHashMap<String, Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>>>();
 		this.clusteringQualityMeasureClasses = new ConcurrentHashMap<String, Class<? extends ClusteringQualityMeasure>>();
 		this.clusteringQualityMeasureInstances = new ConcurrentHashMap<String, List<ClusteringQualityMeasure>>();
-		this.goldStandardConfigs = new ConcurrentHashMap<GoldStandardConfig, GoldStandardConfig>();
-		this.goldStandards = new ConcurrentHashMap<GoldStandard, GoldStandard>();
 		this.goldStandardFormats = new ConcurrentHashMap<GoldStandardFormat, GoldStandardFormat>();
 		this.programs = new ConcurrentHashMap<Program, Program>();
 		this.rProgramClasses = new ConcurrentHashMap<String, Class<? extends RProgram>>();
 		this.rProgramInstances = new ConcurrentHashMap<String, List<RProgram>>();
-		this.programConfigs = new ConcurrentHashMap<ProgramConfig, ProgramConfig>();
-		this.runs = new ConcurrentHashMap<Run, Run>();
-		this.runs = new ConcurrentHashMap<Run, Run>();
 		this.runResults = new ConcurrentHashMap<RunResult, RunResult>();
 		this.runResultIdentifier = new ConcurrentHashMap<String, RunResult>();
 		this.runResultFormatClasses = new ConcurrentHashMap<String, Class<? extends RunResultFormat>>();
@@ -3360,20 +2736,7 @@ public class Repository {
 	@SuppressWarnings("unused")
 	protected void initializePaths() throws InvalidRepositoryException {
 		this.dataBasePath = FileUtils.buildPath(this.basePath, "data");
-		this.dataConfigBasePath = FileUtils.buildPath(this.dataBasePath,
-				"configs");
-		this.dataSetBasePath = FileUtils.buildPath(this.dataBasePath,
-				"datasets");
-		this.dataSetConfigBasePath = FileUtils.buildPath(this.dataSetBasePath,
-				"configs");
-		this.goldStandardBasePath = FileUtils.buildPath(this.dataBasePath,
-				"goldstandards");
-		this.goldStandardConfigBasePath = FileUtils.buildPath(
-				this.goldStandardBasePath, "configs");
 		this.programBasePath = FileUtils.buildPath(this.basePath, "programs");
-		this.programConfigBasePath = FileUtils.buildPath(this.programBasePath,
-				"configs");
-		this.runBasePath = FileUtils.buildPath(this.basePath, "runs");
 		this.runResultBasePath = FileUtils.buildPath(this.basePath, "results");
 		this.clusterResultsBasePath = FileUtils.buildPath(
 				this.runResultBasePath, "%RUNIDENTSTRING", "clusters");
@@ -3575,6 +2938,7 @@ public class Repository {
 	 * @return True, if this repository is initialized.
 	 */
 	public boolean isInitialized() {
+		// TODO: for loop?
 		return getDataSetFormatsInitialized() && getDataSetTypesInitialized()
 				&& getDataStatisticsInitialized()
 				&& getRunStatisticsInitialized()
@@ -3582,11 +2946,12 @@ public class Repository {
 				&& getRunResultFormatsInitialized()
 				&& getClusteringQualityMeasuresInitialized()
 				&& getParameterOptimizationMethodsInitialized()
-				&& getRunsInitialized() && getRProgramsInitialized()
-				&& getDataSetConfigsInitialized()
-				&& getGoldStandardConfigsInitialized()
-				&& getDataConfigsInitialized()
-				&& getProgramConfigsInitialized()
+				&& isInitialized(Run.class) && getRProgramsInitialized()
+				&& isInitialized(DataSetConfig.class)
+				&& isInitialized(DataSet.class)
+				&& isInitialized(GoldStandardConfig.class)
+				&& isInitialized(DataConfig.class)
+				&& isInitialized(ProgramConfig.class)
 				&& getDataSetGeneratorsInitialized()
 				&& getContextsInitialized()
 				&& getDataPreprocessorsInitialized()
@@ -3617,20 +2982,6 @@ public class Repository {
 				.containsKey(parameterOptimizationMethodClass)
 				|| (this.parent != null && this.parent
 						.isParameterOptimizationMethodRegistered(parameterOptimizationMethodClass));
-	}
-
-	/**
-	 * This method checks whether a run equalling the given run is registered in
-	 * this repository.
-	 * 
-	 * @param object
-	 *            The run for which we want to know whether an equalling run
-	 *            object is already registered in the repository.
-	 * @return True, if an equalling run object was registered.
-	 */
-	public boolean isRegistered(final Run object) {
-		return this.runs.containsKey(object)
-				|| (this.parent != null && this.parent.isRegistered(object));
 	}
 
 	/**
@@ -3772,387 +3123,15 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers a new analysis run.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(Run)} the method checks,
-	 * whether another object equalling the new object has been registered
-	 * before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
 	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
+	 * @return
 	 * @throws RegisterException
 	 */
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	public boolean register(final AnalysisRun object) throws RegisterException {
-		Run old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.runs.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-
-			this.sqlCommunicator.register(object, true);
-			return true;
-		}
-		this.runs.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		this.info("New Run: " + object.toString());
-
-		this.sqlCommunicator.register(object, false);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new clustering run.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(Run)} the method checks,
-	 * whether another object equalling the new object has been registered
-	 * before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final ClusteringRun object)
+	public <T extends RepositoryObject> boolean register(final T object)
 			throws RegisterException {
-		Run old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.runs.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-
-			this.sqlCommunicator.register(object, true);
-			return true;
-		}
-		this.runs.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		this.info("New Run: " + object.toString());
-
-		this.sqlCommunicator.register(object, false);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new data analysis run.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(Run)} the method checks,
-	 * whether another object equalling the new object has been registered
-	 * before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final DataAnalysisRun object)
-			throws RegisterException {
-		Run old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.runs.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-
-			this.sqlCommunicator.register(object, true);
-			return true;
-		}
-		this.runs.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		this.info("New Run: " + object.toString());
-
-		this.sqlCommunicator.register(object, false);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new data configuration.
-	 * 
-	 * <p>
-	 * <b>Hint:</b> In contrast to other register methods, this method
-	 * additionally creates and registers four internal attributes (
-	 * {@link NamedAttribute}) if the data configuration is registered:
-	 * <ul>
-	 * <li><b>dataConfigAbsPath:meanSimilarity</b>: The mean similarity of the
-	 * data wrapped by the data configuration.</li>
-	 * <li><b>dataConfigAbsPath:minSimilarity</b>: The minimal similarity of the
-	 * data wrapped by the data configuration.</li>
-	 * <li><b>dataConfigAbsPath:maxSimilarity</b>: The maximal similarity of the
-	 * data wrapped by the data configuration.</li>
-	 * <li><b>dataConfigAbsPath:numberOfElements</b>: The number of
-	 * objects/elements contained in the dataset wrapped by the data
-	 * configuration.</li>
-	 * </ul>
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(DataConfig)} the method
-	 * checks, whether another object equalling the new object has been
-	 * registered before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final DataConfig object) throws RegisterException {
-		DataConfig old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.dataConfigs.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-			this.sqlCommunicator.register(object, true);
-			return true;
-		}
-		this.dataConfigs.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		this.info("New dataconfig: " + object.toString());
-
-		this.sqlCommunicator.register(object, false);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new dataset.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(DataSet)} the method
-	 * checks, whether another object equalling the new object has been
-	 * registered before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final DataSet object) throws RegisterException {
-		DataSet old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.dataSets.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-
-			return true;
-		}
-		this.dataSets.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		this.info("New dataset: " + object.getFullName());
-
-		this.sqlCommunicator.register(object, false);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new dataset configuration.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(DataSetConfig)} the method
-	 * checks, whether another object equalling the new object has been
-	 * registered before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final DataSetConfig object)
-			throws RegisterException {
-		DataSetConfig old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.dataSetConfigs.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-
-			this.sqlCommunicator.register(object, true);
-			return true;
-		}
-		this.dataSetConfigs.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-
-		this.info("New DataSetConfig: " + object.toString());
-
-		this.sqlCommunicator.register(object, false);
-
-		return true;
+		@SuppressWarnings("unchecked")
+		Class<T> c = (Class<T>) object.getClass();
+		return this.repositoryObjectEntities.get(c).register(object);
 	}
 
 	/**
@@ -4354,67 +3333,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers a new execution run.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(Run)} the method checks,
-	 * whether another object equalling the new object has been registered
-	 * before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final ExecutionRun object) throws RegisterException {
-		Run old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.runs.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-
-			this.sqlCommunicator.register(object, true);
-			return true;
-		}
-		this.runs.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		this.info("New Run: " + object.toString());
-
-		this.sqlCommunicator.register(object, false);
-
-		return true;
-	}
-
-	/**
 	 * This method registers a new finder. In case an old object is already
 	 * registered that equals the new object, the new object is not registered.
 	 * 
@@ -4427,128 +3345,6 @@ public class Repository {
 			return false;
 		this.finder.put(object, object);
 		this.pathToRepositoryObject.put(object.absPath, object);
-		return true;
-	}
-
-	/**
-	 * This method registers a new goldstandard.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(GoldStandard)} the method
-	 * checks, whether another object equalling the new object has been
-	 * registered before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final GoldStandard object) throws RegisterException {
-		GoldStandard old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.goldStandards.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-			return true;
-		}
-		this.goldStandards.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		this.info("New goldstandard: "
-				+ object.absPath.getName().replace(".gsconfig", ""));
-
-		this.sqlCommunicator.register(object, false);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new goldstandard configuration.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(GoldStandardConfig)} the
-	 * method checks, whether another object equalling the new object has been
-	 * registered before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final GoldStandardConfig object)
-			throws RegisterException {
-		GoldStandardConfig old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.goldStandardConfigs.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-
-			this.sqlCommunicator.register(object, true);
-			return true;
-		}
-		this.goldStandardConfigs.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		this.info("New GoldStandardConfig: " + object.toString());
-
-		this.sqlCommunicator.register(object, false);
-
 		return true;
 	}
 
@@ -4568,68 +3364,6 @@ public class Repository {
 		this.pathToRepositoryObject.put(object.absPath, object);
 
 		this.sqlCommunicator.register(object);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new internal parameter optimization run.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(Run)} the method checks,
-	 * whether another object equalling the new object has been registered
-	 * before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final InternalParameterOptimizationRun object)
-			throws RegisterException {
-		Run old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.runs.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-
-			this.sqlCommunicator.register(object, true);
-			return true;
-		}
-		this.runs.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		this.info("New Run: " + object.toString());
-
-		this.sqlCommunicator.register(object, false);
 
 		return true;
 	}
@@ -4686,70 +3420,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers a new parameter optimization run.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(Run)} the method checks,
-	 * whether another object equalling the new object has been registered
-	 * before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final ParameterOptimizationRun object)
-			throws RegisterException {
-		Run old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.runs.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-
-			this.info("Run changed: " + object.toString());
-
-			this.sqlCommunicator.register(object, true);
-			return true;
-		}
-		this.runs.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		this.info("New Run: " + object.toString());
-
-		this.sqlCommunicator.register(object, false);
-
-		return true;
-	}
-
-	/**
 	 * This method registers a new program.
 	 * 
 	 * <p>
@@ -4802,256 +3472,6 @@ public class Repository {
 		this.programs.put(object, object);
 		this.pathToRepositoryObject.put(object.absPath, object);
 		this.info("New program: " + object.getMajorName());
-
-		this.sqlCommunicator.register(object, false);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new program configuration.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(ProgramConfig)} the method
-	 * checks, whether another object equalling the new object has been
-	 * registered before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final ProgramConfig object)
-			throws RegisterException {
-		ProgramConfig old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.programConfigs.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-
-			this.sqlCommunicator.register(object, true);
-			return true;
-		}
-		this.programConfigs.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-
-		this.info("New ProgramConfig: " + object.toString());
-
-		this.sqlCommunicator.register(object, false);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new run.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(Run)} the method checks,
-	 * whether another object equalling the new object has been registered
-	 * before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final Run object) throws RegisterException {
-		Run old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.runs.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-
-			this.info("Run changed: " + object.toString());
-
-			this.sqlCommunicator.register(object, true);
-			return true;
-		}
-		this.runs.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		this.info("New Run: " + object.toString());
-
-		this.sqlCommunicator.register(object, false);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new run analysis run.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(Run)} the method checks,
-	 * whether another object equalling the new object has been registered
-	 * before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final RunAnalysisRun object)
-			throws RegisterException {
-		Run old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.runs.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-
-			this.sqlCommunicator.register(object, true);
-			return true;
-		}
-		this.runs.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		this.info("New Run: " + object.toString());
-
-		this.sqlCommunicator.register(object, false);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new run-data analysis run.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(Run)} the method checks,
-	 * whether another object equalling the new object has been registered
-	 * before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final RunDataAnalysisRun object)
-			throws RegisterException {
-		Run old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.runs.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-
-			this.sqlCommunicator.register(object, true);
-			return true;
-		}
-		this.runs.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		this.info("New Run: " + object.toString());
 
 		this.sqlCommunicator.register(object, false);
 
@@ -5609,22 +4029,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method sets the data configurations as initialized. It should only
-	 * be invoked by {@link DataConfigFinderThread#afterFind()}.
-	 */
-	public void setDataConfigsInitialized() {
-		this.dataConfigsInitialized = true;
-	}
-
-	/**
-	 * This method sets the dataset configurations as initialized. It should
-	 * only be invoked by {@link DataSetConfigFinderThread#afterFind()}.
-	 */
-	public void setDataSetConfigsInitialized() {
-		this.datasetConfigsInitialized = true;
-	}
-
-	/**
 	 * This method sets the dataset formats as initialized. It should only be
 	 * invoked by {@link DataSetFormatFinderThread#afterFind()}.
 	 */
@@ -5638,14 +4042,6 @@ public class Repository {
 	 */
 	public void setDataSetGeneratorsInitialized() {
 		this.dataSetGeneratorsInitialized = true;
-	}
-
-	/**
-	 * This method sets the datasets as initialized. It should only be invoked
-	 * by {@link DataSetFinderThread#afterFind()}.
-	 */
-	public void setDataSetInitialized() {
-		this.dataSetsInitialized = true;
 	}
 
 	/**
@@ -5673,29 +4069,12 @@ public class Repository {
 	}
 
 	/**
-	 * This method sets the goldstandard configurations as initialized. It
-	 * should only be invoked by
-	 * {@link GoldStandardConfigFinderThread#afterFind()}.
-	 */
-	public void setGoldStandardConfigsInitialized() {
-		this.goldStandardConfigsInitialized = true;
-	}
-
-	/**
 	 * This method sets the parameter optimization methods as initialized. It
 	 * should only be invoked by
 	 * {@link ParameterOptimizationMethodFinderThread#afterFind()}.
 	 */
 	public void setParameterOptimizationMethodsInitialized() {
 		this.parameterOptimizationMethodsInitialized = true;
-	}
-
-	/**
-	 * This method sets the program configurations as initialized. It should
-	 * only be invoked by {@link ProgramConfigFinderThread#afterFind()}.
-	 */
-	public void setProgramConfigsInitialized() {
-		this.programConfigsInitialized = true;
 	}
 
 	/**
@@ -5723,14 +4102,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method sets the runs as initialized. It should only be invoked by
-	 * {@link RunFinderThread#afterFind()}.
-	 */
-	public void setRunsInitialized() {
-		this.runsInitialized = true;
-	}
-
-	/**
 	 * This method sets the run statistics as initialized. It should only be
 	 * invoked by {@link RunStatisticFinderThread#afterFind()}.
 	 */
@@ -5754,72 +4125,6 @@ public class Repository {
 	@Override
 	public String toString() {
 		return this.basePath;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregister(final DataConfig object) {
-		boolean result = this.dataConfigs.remove(object) != null;
-		if (result) {
-			this.info("DataConfig removed: " + object);
-
-			this.sqlCommunicator.unregister(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregister(final DataSet object) {
-		boolean result = this.dataSets.remove(object) != null;
-		if (result) {
-			this.info("DataSet removed: " + object);
-
-			this.sqlCommunicator.unregister(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregister(final DataSetConfig object) {
-		boolean result = this.dataSetConfigs.remove(object) != null;
-		if (result) {
-			this.info("DataSetConfig removed: " + object);
-
-			this.sqlCommunicator.unregister(object);
-		}
-		return result;
 	}
 
 	/**
@@ -6088,50 +4393,6 @@ public class Repository {
 	 *            The object to be removed.
 	 * @return True, if the object was remved successfully
 	 */
-	public boolean unregister(final GoldStandard object) {
-		boolean result = this.goldStandards.remove(object) != null;
-		if (result) {
-			this.info("GoldStandard removed: " + object);
-
-			this.sqlCommunicator.unregister(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregister(final GoldStandardConfig object) {
-		boolean result = this.goldStandardConfigs.remove(object) != null;
-		if (result) {
-			this.info("GoldStandardConfig removed: " + object);
-
-			this.sqlCommunicator.unregister(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
 	public boolean unregister(IntegerProgramParameter object) {
 		boolean result = this.integerProgramParameters.remove(object) != null;
 
@@ -6191,51 +4452,6 @@ public class Repository {
 		if (result) {
 			this.info("Program removed: " + object.getMajorName());
 
-			this.sqlCommunicator.unregister(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregister(final ProgramConfig object) {
-		boolean result = this.programConfigs.remove(object) != null;
-		if (result) {
-			this.info("ProgramConfig removed: " + object);
-
-			this.sqlCommunicator.unregister(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregister(final Run object) {
-		boolean result = this.runs.remove(object) != null;
-		if (result) {
-			this.info("Run removed: " + object.getName());
-
-			// added 07.01.2013: add unregister
 			this.sqlCommunicator.unregister(object);
 		}
 		return result;
@@ -7308,3 +5524,29 @@ public class Repository {
 		this.contextsInitialized = true;
 	}
 }
+
+
+
+// class RepositoryJarEntity<T extends RepositoryObject>
+// extends
+// RepositoryEntity<T> {
+//
+// /**
+// * @param basePath
+// */
+// public RepositoryJarEntity(String basePath) {
+// super(basePath);
+// }
+//
+// /**
+// * A map containing all classes of dataset formats registered in this
+// * repository. Mapping from Class.getName() to the class.
+// */
+// protected Map<String, Class<? extends T>> dataSetFormatClasses;
+//
+// /**
+// * A map mapping from the simple name of the class to all of its
+// * instances.Mapping from Class.getSimpleName() to the instances.
+// */
+// protected Map<String, List<T>> dataSetFormatInstances;
+// }

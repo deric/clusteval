@@ -52,7 +52,7 @@ public class DataSetFinder extends FileFinder {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getDataSetBasePath());
+		return new File(this.repository.getBasePath(DataSet.class));
 	}
 
 	/*
@@ -98,7 +98,7 @@ public class DataSetFinder extends FileFinder {
 	 */
 	@Override
 	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.repository.getDataSets();
+		return this.repository.getCollection(DataSet.class);
 	}
 
 	/*

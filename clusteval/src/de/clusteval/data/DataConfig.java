@@ -253,11 +253,11 @@ public class DataConfig extends RepositoryObject {
 			DataSetConfig dataSetConfig;
 			if (repo instanceof RunResultRepository)
 				dataSetConfig = RunResultDataSetConfig.parseFromFile(new File(
-						FileUtils.buildPath(repo.getDataSetConfigBasePath(),
+						FileUtils.buildPath(repo.getBasePath(DataSetConfig.class),
 								datasetConfigName + ".dsconfig")));
 			else
 				dataSetConfig = DataSetConfig.parseFromFile(new File(FileUtils
-						.buildPath(repo.getDataSetConfigBasePath(),
+						.buildPath(repo.getBasePath(DataSetConfig.class),
 								datasetConfigName + ".dsconfig")));
 
 			GoldStandardConfig goldStandardConfig = null;
@@ -265,7 +265,7 @@ public class DataConfig extends RepositoryObject {
 				String gsConfigName = props.getString("goldstandardConfig");
 				goldStandardConfig = GoldStandardConfig.parseFromFile(new File(
 						FileUtils.buildPath(
-								repo.getGoldStandardConfigBasePath(),
+								repo.getBasePath(GoldStandardConfig.class),
 								gsConfigName + ".gsconfig")));
 			} catch (NoSuchElementException e) {
 				// No goldstandard config given

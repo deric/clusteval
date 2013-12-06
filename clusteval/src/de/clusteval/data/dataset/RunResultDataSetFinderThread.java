@@ -63,7 +63,7 @@ public class RunResultDataSetFinderThread extends DataSetFinderThread {
 	protected Finder getFinder() throws RegisterException {
 		return new RunResultDataSetFinder(repository,
 				System.currentTimeMillis(), new File(
-						repository.getDataSetBasePath()));
+						repository.getBasePath(DataSet.class)));
 	}
 
 	/*
@@ -73,7 +73,7 @@ public class RunResultDataSetFinderThread extends DataSetFinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		this.repository.setDataSetInitialized();
+		this.repository.setInitialized(DataSet.class);
 	}
 
 	/*

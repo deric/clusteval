@@ -77,8 +77,8 @@ public class TestDaviesBouldinIndexRClusteringQualityMeasure
 			cluster2.add(new ClusterItem("id3"), 1.0f);
 			clustering.addCluster(cluster2);
 
-			DataConfig dc = this.getRepository().getDataConfigWithName(
-					"dunnIndexMatrixTest.dataconfig");
+			DataConfig dc = this.getRepository().getObjectWithName(DataConfig.class,
+					"dunnIndexMatrixTest");
 			DataSetConfig dsc = dc.getDatasetConfig();
 			DataSet ds = dsc.getDataSet();
 			ds.preprocessAndConvertTo(

@@ -97,7 +97,7 @@ public class TestKMeansClusteringRProgram {
 		RunSchedulerThread scheduler = repo.getSupervisorThread()
 				.getRunScheduler();
 
-		Run run = repo.getRunWithName("test_kmeans_sfld_layered_f2");
+		Run run = repo.getObjectWithName(Run.class,"test_kmeans_sfld_layered_f2");
 		try {
 			run.perform(scheduler);
 

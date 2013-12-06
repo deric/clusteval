@@ -456,7 +456,7 @@ public class DataAnalysisRun extends AnalysisRun<DataStatistic> {
 		for (String dataConfig : props.getStringArray("dataConfig")) {
 			dataConfigs.add(repo.getRegisteredObject(DataConfig
 					.parseFromFile(new File(FileUtils.buildPath(
-							repo.getDataConfigBasePath(), dataConfig
+							repo.getBasePath(DataConfig.class), dataConfig
 									+ ".dataconfig")))));
 		}
 

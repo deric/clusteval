@@ -65,7 +65,7 @@ public class DataSetConfigFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void beforeFind() {
-		if (!this.repository.getDataSetsInitialized())
+		if (!this.repository.isInitialized(DataSet.class))
 			this.supervisorThread.getThread(DataSetFinderThread.class)
 					.waitFor();
 
@@ -86,7 +86,7 @@ public class DataSetConfigFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		this.repository.setDataSetConfigsInitialized();
+		this.repository.setInitialized(DataSetConfig.class);
 	}
 
 	/*

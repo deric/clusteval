@@ -68,7 +68,7 @@ import de.clusteval.run.statistics.RunStatisticFinderThread;
  * {@link Repository#dataSetTypeBasePath} for new dataset types (see
  * {@link DataSetType}).</li>
  * <li><b>DataSetFinderThread</b>: A thread which checks
- * {@link Repository#dataSetBasePath} for new datasets (see {@link DataSet}).</li>
+ * {@link Repository#basePath} for new datasets (see {@link DataSet}).</li>
  * <li><b>DistanceMeasureFinderThread</b>: A thread which checks
  * {@link Repository#distanceMeasureBasePath} for new distance measures (see
  * {@link DistanceMeasure}).</li>

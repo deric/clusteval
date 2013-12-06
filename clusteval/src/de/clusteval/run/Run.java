@@ -981,7 +981,7 @@ public abstract class Run extends RepositoryObject {
 	 */
 	@Override
 	public String toString() {
-		return "[Run:" + this.getName() + "]";
+		return this.getName();
 	}
 
 	/*

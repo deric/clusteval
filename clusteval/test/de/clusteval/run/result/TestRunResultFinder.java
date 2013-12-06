@@ -40,7 +40,6 @@ import de.clusteval.run.RUN_STATUS;
 import de.clusteval.run.Run;
 import de.clusteval.run.result.RunResult;
 
-
 /**
  * @author Christian Wiwie
  * 
@@ -75,7 +74,7 @@ public class TestRunResultFinder {
 	public void tearDown() throws Exception {
 	}
 
-//	@Test
+	// @Test
 	public void testRunInProgressNotFound() throws FileNotFoundException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
@@ -87,14 +86,14 @@ public class TestRunResultFinder {
 		ClustevalBackendServer framework = new ClustevalBackendServer(
 				repository, false);
 		framework.performRun("1", "tc_vs_DS1");
-		Run run = repository.getRun("tc_vs_DS1");
+		Run run = repository.getObjectWithName(Run.class,"tc_vs_DS1");
 		while (!run.getStatus().equals(RUN_STATUS.FINISHED)) {
 			Thread.sleep(100);
 		}
 		Assert.assertFalse(repository.assertionFailed);
 	}
 
-//	@Test
+	// @Test
 	public void testRunNotInProgressNotFound() throws FileNotFoundException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
@@ -163,7 +162,7 @@ class TestRepository extends Repository {
 
 	public boolean register(RunResult object) {
 		String runIdent = object.runIdentString;
-		Run run = this.getRunWithName(object.run.getName());
+		Run run = this.getObjectWithName(Run.class,object.run.toString());
 		if (!assertionFailed)
 			assertionFailed = !(run.getStatus().equals(RUN_STATUS.FINISHED) || run
 					.getStatus().equals(RUN_STATUS.INACTIVE))

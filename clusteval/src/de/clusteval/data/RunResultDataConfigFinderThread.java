@@ -13,7 +13,9 @@
  */
 package de.clusteval.data;
 
+import de.clusteval.data.dataset.DataSetConfig;
 import de.clusteval.data.dataset.RunResultDataSetConfigFinderThread;
+import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.data.goldstandard.GoldStandardConfigFinderThread;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.SupervisorThread;
@@ -63,11 +65,11 @@ public class RunResultDataConfigFinderThread extends DataConfigFinderThread {
 	 */
 	@Override
 	protected void beforeFind() {
-		if (!this.repository.getDataSetConfigsInitialized())
+		if (!this.repository.isInitialized(DataSetConfig.class))
 			this.supervisorThread.getThread(
 					RunResultDataSetConfigFinderThread.class).waitFor();
 
-		if (!this.repository.getGoldStandardConfigsInitialized())
+		if (!this.repository.isInitialized(GoldStandardConfig.class))
 			this.supervisorThread.getThread(
 					GoldStandardConfigFinderThread.class).waitFor();
 		this.log.debug("Checking for DataConfigs...");

@@ -673,7 +673,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	@Override
 	public Collection<String> getRuns() {
 		Collection<String> result = new HashSet<String>();
-		for (Run run : this.repository.getRuns())
+		for (Run run : this.repository.getCollection(Run.class))
 			result.add(run.getName());
 		return result;
 	}
@@ -686,7 +686,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	@Override
 	public Collection<String> getDataSets() {
 		Collection<String> result = new HashSet<String>();
-		for (DataSet dataSet : this.repository.getDataSets())
+		for (DataSet dataSet : this.repository.getCollection(DataSet.class))
 			result.add(dataSet.getFullName());
 		return result;
 	}

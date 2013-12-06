@@ -749,9 +749,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 									.replace(".run", ""),
 							"" + run_type_id,
 							""
-									+ getRunId(object.getRepository()
+									+ getRunId(object
+											.getRepository()
 											.getParent()
-											.getRunWithName(object.getName())),
+											.getObjectWithName(Run.class,
+													object.toString())),
 							"" + object.getStatus()};
 				} else {
 					columns = new String[]{"repository_id", "absPath", "name",
@@ -1222,7 +1224,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	// + getRunId(object
 	// .getRepository()
 	// .getParent()
-	// .getRunWithName(
+	// .getObjectWithName(Run.class,
 	// object.getAbsolutePath()
 	// .substring(
 	// object.getAbsolutePath()
@@ -1301,12 +1303,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								+ getProgramConfigId(object
 										.getRepository()
 										.getParent()
-										.getProgramConfigWithName(
-												object.getAbsolutePath()
-														.substring(
-																object.getAbsolutePath()
-																		.lastIndexOf(
-																				"/") + 1)))};
+										.getObjectWithName(ProgramConfig.class,
+												object.toString()))};
 			} else {
 				columns = new String[]{
 						"repository_id",
@@ -2042,12 +2040,9 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								+ getGoldStandardConfigId(object
 										.getRepository()
 										.getParent()
-										.getGoldStandardConfigWithName(
-												object.getAbsolutePath()
-														.substring(
-																object.getAbsolutePath()
-																		.lastIndexOf(
-																				"/") + 1)))};
+										.getObjectWithName(
+												GoldStandardConfig.class,
+												object.toString()))};
 			} else {
 				columns = new String[]{"repository_id", "absPath", "name",
 						"goldstandard_id"};
@@ -2091,8 +2086,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								+ getGoldStandardId(object
 										.getRepository()
 										.getParent()
-										.getGoldStandardWithName(
-												object.getFullName()))};
+										.getObjectWithName(GoldStandard.class,
+												object.toString()))};
 			} else {
 				columns = new String[]{"repository_id", "absPath"};
 				values = new String[]{"" + this.updateRepositoryId(),
@@ -2541,7 +2536,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								+ getDataSetId(object
 										.getRepository()
 										.getParent()
-										.getDataSetWithName(
+										.getObjectWithName(DataSet.class,
 												object.getFullName())),
 						object.getChecksum() + "",
 						getDataSetTypeId(object.getDataSetType().getClass()
@@ -2605,12 +2600,9 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 									+ getDataConfigId(object
 											.getRepository()
 											.getParent()
-											.getDataConfigWithName(
-													object.getAbsolutePath()
-															.substring(
-																	object.getAbsolutePath()
-																			.lastIndexOf(
-																					"/") + 1)))};
+											.getObjectWithName(
+													DataConfig.class,
+													object.getName()))};
 
 				} else {
 					columns = new String[]{"repository_id", "absPath", "name",
@@ -2625,12 +2617,9 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 									+ getDataConfigId(object
 											.getRepository()
 											.getParent()
-											.getDataConfigWithName(
-													object.getAbsolutePath()
-															.substring(
-																	object.getAbsolutePath()
-																			.lastIndexOf(
-																					"/") + 1)))};
+											.getObjectWithName(
+													DataConfig.class,
+													object.getName()))};
 				}
 			} else {
 				if (object.hasGoldStandardConfig()) {
@@ -2697,12 +2686,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								+ getDataSetConfigId(object
 										.getRepository()
 										.getParent()
-										.getDataSetConfigWithName(
-												object.getAbsolutePath()
-														.substring(
-																object.getAbsolutePath()
-																		.lastIndexOf(
-																				"/") + 1)))};
+										.getObjectWithName(DataSetConfig.class,
+												object.toString()))};
 			} else {
 				columns = new String[]{"repository_id", "absPath", "name",
 						"dataset_id"};

@@ -269,7 +269,7 @@ public class InternalParameterOptimizationRun extends ExecutionRun {
 		for (String programConfig : props.getStringArray("programConfig")) {
 			ProgramConfig newProgramConfig = ProgramConfig
 					.parseFromFile(new File(FileUtils.buildPath(
-							repo.getProgramConfigBasePath(), programConfig
+							repo.getBasePath(ProgramConfig.class), programConfig
 									+ ".config")));
 			newProgramConfig = repo.getRegisteredObject(newProgramConfig);
 			programConfigs.add(newProgramConfig);
@@ -334,7 +334,7 @@ public class InternalParameterOptimizationRun extends ExecutionRun {
 		for (String dataConfig : props.getStringArray("dataConfig")) {
 			dataConfigs.add(repo.getRegisteredObject(DataConfig
 					.parseFromFile(new File(FileUtils.buildPath(
-							repo.getDataConfigBasePath(), dataConfig
+							repo.getBasePath(DataConfig.class), dataConfig
 									+ ".dataconfig")))));
 		}
 

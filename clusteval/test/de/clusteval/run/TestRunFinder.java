@@ -33,14 +33,12 @@ import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
+import de.clusteval.framework.repository.RepositoryObjectEntity;
 import de.clusteval.framework.repository.StubSQLCommunicator;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.framework.threading.RepositorySupervisorThread;
 import de.clusteval.framework.threading.SupervisorThread;
-import de.clusteval.run.ParameterOptimizationRun;
-import de.clusteval.run.Run;
-
 import file.FileUtils;
 
 /**
@@ -115,7 +113,7 @@ public class TestRunFinder {
 
 		new ClustevalBackendServer(repo, false);
 
-		Run run = repo.getRunWithName("testCase");
+		Run run = repo.getObjectWithName(Run.class, "testCase");
 		Assert.assertEquals(100, ((ParameterOptimizationRun) run)
 				.getOptimizationMethods().get(0).getTotalIterationCount());
 
@@ -138,7 +136,7 @@ public class TestRunFinder {
 		while (repo.registeredTestCaseRun < 2)
 			Thread.sleep(100);
 
-		run = repo.getRunWithName("testCase");
+		run = repo.getObjectWithName(Run.class, "testCase");
 		Assert.assertEquals(1000, ((ParameterOptimizationRun) run)
 				.getOptimizationMethods().get(0).getTotalIterationCount());
 
@@ -158,30 +156,12 @@ class TestRepository extends Repository {
 	 * @throws InvalidRepositoryException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws RepositoryConfigurationException
-	 * @throws NoRepositoryFoundException
-	 * @throws NoSuchAlgorithmException
 	 */
 	public TestRepository(String basePath, Repository parent)
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, NoRepositoryFoundException,
-			NoSuchAlgorithmException {
+			RepositoryConfigurationException {
 		super(basePath, parent);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * framework.repository.Repository#register(run.ParameterOptimizationRun)
-	 */
-	@Override
-	public boolean register(ParameterOptimizationRun object)
-			throws RegisterException {
-		boolean result = super.register(object);
-		if (object.getAbsolutePath().contains("testCase.run") && result)
-			registeredTestCaseRun++;
-		return result;
 	}
 
 	/*
@@ -196,4 +176,36 @@ class TestRepository extends Repository {
 				this.repositoryConfig.getThreadSleepTimes(), false, false);
 	}
 
+}
+
+class TestCaseRepositoryObjectEntity
+		extends
+			RepositoryObjectEntity<ParameterOptimizationRun> {
+
+	/**
+	 * @param repository
+	 * @param parent
+	 * @param basePath
+	 */
+	public TestCaseRepositoryObjectEntity(Repository repository,
+			RepositoryObjectEntity<ParameterOptimizationRun> parent,
+			String basePath) {
+		super(repository, parent, basePath);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.RepositoryObjectEntity#register(de.
+	 * clusteval.framework.repository.RepositoryObject)
+	 */
+	@Override
+	public boolean register(ParameterOptimizationRun object)
+			throws RegisterException {
+		boolean result = super.register(object);
+		if (object.getAbsolutePath().contains("testCase.run") && result)
+			((TestRepository) repository).registeredTestCaseRun++;
+		return result;
+	}
 }

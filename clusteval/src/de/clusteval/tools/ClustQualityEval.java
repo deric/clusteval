@@ -61,8 +61,7 @@ public class ClustQualityEval {
 		this.repo = new Repository(absRepoPath, null);
 		this.repo.initialize();
 
-		this.dataConfig = this.repo.getDataConfigWithName(dataConfigName
-				+ ".dataconfig");
+		this.dataConfig = this.repo.getObjectWithName(DataConfig.class,dataConfigName);
 
 		List<ClusteringQualityMeasure> measures = new ArrayList<ClusteringQualityMeasure>();
 

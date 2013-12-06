@@ -42,7 +42,7 @@ public class ProgramConfigFinder extends FileFinder {
 	public ProgramConfigFinder(final Repository repository)
 			throws RegisterException {
 		super(repository, System.currentTimeMillis(), new File(
-				repository.getProgramConfigBasePath()));
+				repository.getBasePath(ProgramConfig.class)));
 	}
 
 	/*
@@ -62,7 +62,7 @@ public class ProgramConfigFinder extends FileFinder {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getProgramConfigBasePath());
+		return new File(this.repository.getBasePath(ProgramConfig.class));
 	}
 
 	/*
@@ -92,7 +92,7 @@ public class ProgramConfigFinder extends FileFinder {
 	 */
 	@Override
 	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.repository.getDataSetConfigs();
+		return this.repository.getCollection(ProgramConfig.class);
 	}
 
 	/*

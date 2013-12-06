@@ -41,7 +41,7 @@ public class RunFinder extends FileFinder {
 	 */
 	public RunFinder(final Repository repository) throws RegisterException {
 		super(repository, System.currentTimeMillis(), new File(
-				repository.getRunBasePath()));
+				repository.getBasePath(Run.class)));
 	}
 
 	/*
@@ -61,7 +61,7 @@ public class RunFinder extends FileFinder {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getRunBasePath());
+		return new File(this.repository.getBasePath(Run.class));
 	}
 
 	/*
@@ -91,7 +91,7 @@ public class RunFinder extends FileFinder {
 	 */
 	@Override
 	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.repository.getRuns();
+		return this.repository.getCollection(Run.class);
 	}
 
 	/*

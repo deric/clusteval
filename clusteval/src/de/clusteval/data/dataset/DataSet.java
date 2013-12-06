@@ -51,7 +51,7 @@ import de.clusteval.utils.RNotAvailableException;
  * <p>
  * A dataset corresponds to and is parsed from a file on the filesystem in the
  * corresponding folder of the repository (see
- * {@link Repository#dataSetBasePath} and {@link DataSetFinder}).
+ * {@link Repository#basePath} and {@link DataSetFinder}).
  * 
  * <p>
  * When a program should be applied to a certain dataset during a run, the
@@ -269,9 +269,9 @@ public abstract class DataSet extends RepositoryObject {
 			// throw exception
 			Collection<DataSet> dataSets;
 			if (repo instanceof RunResultRepository)
-				dataSets = repo.getParent().getDataSets();
+				dataSets = repo.getParent().getCollection(DataSet.class);
 			else
-				dataSets = repo.getDataSets();
+				dataSets = repo.getCollection(DataSet.class);
 
 			for (DataSet ds : dataSets)
 				if (!(repo instanceof RunResultRepository)
