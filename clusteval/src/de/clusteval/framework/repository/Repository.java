@@ -1357,14 +1357,58 @@ public class Repository {
 			final boolean ignoreChangeDate) {
 		@SuppressWarnings("unchecked")
 		Class<T> c = (Class<T>) object.getClass();
+//		return this.getRegisteredObject(c, object, ignoreChangeDate);
+//	}
+//
+//	public <T extends RepositoryObject, S extends T> S getRegisteredObject(
+//			final Class<T> c, final S object, final boolean ignoreChangeDate) {
+//		if (!this.repositoryObjectEntities.containsKey(c)
+//				&& object.getClass().getSuperclass() != null
+//				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
+//			return this.getRegisteredObject(c.getSuperclass(), object);
+//		}
 		return this.repositoryObjectEntities.get(c).getRegisteredObject(object,
 				ignoreChangeDate);
 	}
 
-	public <T extends RepositoryObject> boolean unregister(final T object) {
+	public <T extends RepositoryObject, S extends T> boolean unregister(
+			final S object) {
 		@SuppressWarnings("unchecked")
-		Class<T> c = (Class<T>) object.getClass();
+		Class<S> c = (Class<S>) object.getClass();
+		return this.unregister(c, object);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends RepositoryObject, S extends T> boolean unregister(
+			final Class<T> c, final S object) {
+		if (!this.repositoryObjectEntities.containsKey(c)
+				&& object.getClass().getSuperclass() != null
+				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
+			return this.unregister(
+					(Class<? extends RepositoryObject>) c.getSuperclass(),
+					object);
+		}
 		return this.repositoryObjectEntities.get(c).unregister(object);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends RepositoryObject, S extends T> boolean register(
+			final S object) throws RegisterException {
+		Class<S> c = (Class<S>) object.getClass();
+		return this.register(c, object);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends RepositoryObject, S extends T> boolean register(
+			final Class<T> c, final S object) throws RegisterException {
+		if (!this.repositoryObjectEntities.containsKey(c)
+				&& object.getClass().getSuperclass() != null
+				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
+			return this.register(
+					(Class<? extends RepositoryObject>) c.getSuperclass(),
+					object);
+		}
+		return this.repositoryObjectEntities.get(c).register(object);
 	}
 
 	public <T extends RepositoryObject> void setInitialized(final Class<T> c) {
@@ -2511,10 +2555,10 @@ public class Repository {
 						? this.parent.repositoryObjectEntities
 								.get(DataSet.class) : null, FileUtils
 						.buildPath(this.basePath, "data", "datasets")));
-		this.repositoryObjectEntities.put(AbsoluteDataSet.class,
-				this.repositoryObjectEntities.get(DataSet.class));
-		this.repositoryObjectEntities.put(RelativeDataSet.class,
-				this.repositoryObjectEntities.get(DataSet.class));
+		// this.repositoryObjectEntities.put(AbsoluteDataSet.class,
+		// this.repositoryObjectEntities.get(DataSet.class));
+		// this.repositoryObjectEntities.put(RelativeDataSet.class,
+		// this.repositoryObjectEntities.get(DataSet.class));
 
 		this.repositoryObjectEntities.put(
 				DataSetConfig.class,
@@ -2524,8 +2568,8 @@ public class Repository {
 										.get(DataSetConfig.class) : null,
 						FileUtils.buildPath(this.basePath, "data", "datasets",
 								"configs")));
-		this.repositoryObjectEntities.put(RunResultDataSetConfig.class,
-				this.repositoryObjectEntities.get(DataSetConfig.class));
+		// this.repositoryObjectEntities.put(RunResultDataSetConfig.class,
+		// this.repositoryObjectEntities.get(DataSetConfig.class));
 
 		this.repositoryObjectEntities.put(
 				GoldStandard.class,
@@ -2557,19 +2601,19 @@ public class Repository {
 				new RepositoryObjectEntity<Run>(this, this.parent != null
 						? this.parent.repositoryObjectEntities.get(Run.class)
 						: null, FileUtils.buildPath(this.basePath, "runs")));
-		this.repositoryObjectEntities.put(ClusteringRun.class,
-				this.repositoryObjectEntities.get(Run.class));
-		this.repositoryObjectEntities.put(ParameterOptimizationRun.class,
-				this.repositoryObjectEntities.get(Run.class));
-		this.repositoryObjectEntities.put(
-				InternalParameterOptimizationRun.class,
-				this.repositoryObjectEntities.get(Run.class));
-		this.repositoryObjectEntities.put(DataAnalysisRun.class,
-				this.repositoryObjectEntities.get(Run.class));
-		this.repositoryObjectEntities.put(RunAnalysisRun.class,
-				this.repositoryObjectEntities.get(Run.class));
-		this.repositoryObjectEntities.put(RunDataAnalysisRun.class,
-				this.repositoryObjectEntities.get(Run.class));
+		// this.repositoryObjectEntities.put(ClusteringRun.class,
+		// this.repositoryObjectEntities.get(Run.class));
+		// this.repositoryObjectEntities.put(ParameterOptimizationRun.class,
+		// this.repositoryObjectEntities.get(Run.class));
+		// this.repositoryObjectEntities.put(
+		// InternalParameterOptimizationRun.class,
+		// this.repositoryObjectEntities.get(Run.class));
+		// this.repositoryObjectEntities.put(DataAnalysisRun.class,
+		// this.repositoryObjectEntities.get(Run.class));
+		// this.repositoryObjectEntities.put(RunAnalysisRun.class,
+		// this.repositoryObjectEntities.get(Run.class));
+		// this.repositoryObjectEntities.put(RunDataAnalysisRun.class,
+		// this.repositoryObjectEntities.get(Run.class));
 
 		this.repositoryObjectEntities.put(
 				ProgramConfig.class,
@@ -2579,8 +2623,8 @@ public class Repository {
 										.get(ProgramConfig.class) : null,
 						FileUtils.buildPath(this.basePath, "programs",
 								"configs")));
-		this.repositoryObjectEntities.put(RProgramConfig.class,
-				this.repositoryObjectEntities.get(ProgramConfig.class));
+		// this.repositoryObjectEntities.put(RProgramConfig.class,
+		// this.repositoryObjectEntities.get(ProgramConfig.class));
 
 		this.repositoryObjectEntities.put(
 				Program.class,
@@ -2588,10 +2632,10 @@ public class Repository {
 						? this.parent.repositoryObjectEntities
 								.get(Program.class) : null, FileUtils
 						.buildPath(this.basePath, "programs")));
-		this.repositoryObjectEntities.put(RProgram.class,
-				this.repositoryObjectEntities.get(Program.class));
-		this.repositoryObjectEntities.put(StandaloneProgram.class,
-				this.repositoryObjectEntities.get(Program.class));
+		// this.repositoryObjectEntities.put(RProgram.class,
+		// this.repositoryObjectEntities.get(Program.class));
+		// this.repositoryObjectEntities.put(StandaloneProgram.class,
+		// this.repositoryObjectEntities.get(Program.class));
 
 		this.contextClasses = new ConcurrentHashMap<String, Class<? extends Context>>();
 		this.contextInstances = new ConcurrentHashMap<String, List<Context>>();
@@ -3094,25 +3138,6 @@ public class Repository {
 		return this.runStatisticClasses.containsKey(runStatisticClassName)
 				|| (this.parent != null && this.parent
 						.isRunStatisticRegistered(runStatisticClassName));
-	}
-
-	/**
-	 * @param object
-	 * @return
-	 * @throws RegisterException
-	 */
-	@SuppressWarnings("unchecked")
-	public <T extends RepositoryObject> boolean register(final T object)
-			throws RegisterException {
-		Class<T> c = (Class<T>) object.getClass();
-		// if (!this.repositoryObjectEntities.containsKey(c)
-		// && object.getClass().getSuperclass() != null
-		// && RepositoryObject.class.isAssignableFrom(object.getClass()
-		// .getSuperclass())) {
-		// return this.register(((Class<? extends RepositoryObject>) c
-		// .getSuperclass()).cast(object));
-		// }
-		return this.repositoryObjectEntities.get(c).register(object);
 	}
 
 	/**

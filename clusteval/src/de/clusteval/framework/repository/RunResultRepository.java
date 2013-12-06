@@ -120,8 +120,8 @@ public class RunResultRepository extends Repository {
 								? this.parent.repositoryObjectEntities
 										.get(DataSetConfig.class) : null,
 						FileUtils.buildPath(this.basePath, "configs")));
-		this.repositoryObjectEntities.put(RunResultDataSetConfig.class,
-				this.repositoryObjectEntities.get(DataSetConfig.class));
+//		this.repositoryObjectEntities.put(RunResultDataSetConfig.class,
+//				this.repositoryObjectEntities.get(DataSetConfig.class));
 
 		this.repositoryObjectEntities.put(
 				DataSet.class,
@@ -130,10 +130,10 @@ public class RunResultRepository extends Repository {
 								? this.parent.repositoryObjectEntities
 										.get(DataSet.class) : null, FileUtils
 								.buildPath(this.basePath, "inputs")));
-		this.repositoryObjectEntities.put(AbsoluteDataSet.class,
-				this.repositoryObjectEntities.get(DataSet.class));
-		this.repositoryObjectEntities.put(RelativeDataSet.class,
-				this.repositoryObjectEntities.get(DataSet.class));
+//		this.repositoryObjectEntities.put(AbsoluteDataSet.class,
+//				this.repositoryObjectEntities.get(DataSet.class));
+//		this.repositoryObjectEntities.put(RelativeDataSet.class,
+//				this.repositoryObjectEntities.get(DataSet.class));
 
 		this.repositoryObjectEntities.put(
 				GoldStandardConfig.class,
@@ -163,26 +163,26 @@ public class RunResultRepository extends Repository {
 				new RepositoryObjectEntity<Run>(this, this.parent != null
 						? this.parent.repositoryObjectEntities.get(Run.class)
 						: null, FileUtils.buildPath(this.basePath, "configs")));
-		this.repositoryObjectEntities.put(ClusteringRun.class,
-				this.repositoryObjectEntities.get(Run.class));
-		this.repositoryObjectEntities.put(ParameterOptimizationRun.class,
-				this.repositoryObjectEntities.get(Run.class));
-		this.repositoryObjectEntities.put(
-				InternalParameterOptimizationRun.class,
-				this.repositoryObjectEntities.get(Run.class));
-		this.repositoryObjectEntities.put(DataAnalysisRun.class,
-				this.repositoryObjectEntities.get(Run.class));
-		this.repositoryObjectEntities.put(RunAnalysisRun.class,
-				this.repositoryObjectEntities.get(Run.class));
-		this.repositoryObjectEntities.put(RunDataAnalysisRun.class,
-				this.repositoryObjectEntities.get(Run.class));
+//		this.repositoryObjectEntities.put(ClusteringRun.class,
+//				this.repositoryObjectEntities.get(Run.class));
+//		this.repositoryObjectEntities.put(ParameterOptimizationRun.class,
+//				this.repositoryObjectEntities.get(Run.class));
+//		this.repositoryObjectEntities.put(
+//				InternalParameterOptimizationRun.class,
+//				this.repositoryObjectEntities.get(Run.class));
+//		this.repositoryObjectEntities.put(DataAnalysisRun.class,
+//				this.repositoryObjectEntities.get(Run.class));
+//		this.repositoryObjectEntities.put(RunAnalysisRun.class,
+//				this.repositoryObjectEntities.get(Run.class));
+//		this.repositoryObjectEntities.put(RunDataAnalysisRun.class,
+//				this.repositoryObjectEntities.get(Run.class));
 
 		this.repositoryObjectEntities.put(Program.class,
 				this.parent.repositoryObjectEntities.get(Program.class));
-		this.repositoryObjectEntities.put(RProgram.class,
-				this.repositoryObjectEntities.get(Program.class));
-		this.repositoryObjectEntities.put(StandaloneProgram.class,
-				this.repositoryObjectEntities.get(Program.class));
+//		this.repositoryObjectEntities.put(RProgram.class,
+//				this.repositoryObjectEntities.get(Program.class));
+//		this.repositoryObjectEntities.put(StandaloneProgram.class,
+//				this.repositoryObjectEntities.get(Program.class));
 
 		this.contextClasses = this.parent.contextClasses;
 		this.contextInstances = this.parent.contextInstances;

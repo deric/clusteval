@@ -126,7 +126,7 @@ public class RepositoryObjectEntity<T extends RepositoryObject>
 	 * @return
 	 * @throws RegisterException
 	 */
-	public boolean register(final T object) throws RegisterException {
+	public <S extends T> boolean register(final S object) throws RegisterException {
 		T old = this.getRegisteredObject(object);
 		if (old != null) {
 			// check, whether the changeDate is equal
@@ -170,7 +170,7 @@ public class RepositoryObjectEntity<T extends RepositoryObject>
 	 * @param object
 	 * @return
 	 */
-	public boolean unregister(final T object) {
+	public <S extends T> boolean unregister(final S object) {
 		boolean result = this.objects.remove(object) != null;
 		if (result) {
 			this.repository.info(object.getClass().getSimpleName()
