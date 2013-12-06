@@ -53,6 +53,7 @@ public class TestRangeNormalizationDataPreprocesser {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		ClustevalBackendServer.logLevel(Level.INFO);
 	}
 
 	/**
@@ -88,7 +89,6 @@ public class TestRangeNormalizationDataPreprocesser {
 			NoDataSetException, NumberFormatException, RegisterException,
 			NoRepositoryFoundException, UnknownDataSetTypeException,
 			UnknownDataPreprocessorException, IOException, InterruptedException {
-		ClustevalBackendServer.logLevel(Level.INFO);
 
 		File f = new File(
 				"testCaseRepository/data/datasets/synthetic/cassini250");

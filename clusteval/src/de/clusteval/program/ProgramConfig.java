@@ -392,8 +392,9 @@ public class ProgramConfig extends RepositoryObject {
 		List<DataSetFormat> compatibleDataSetFormats;
 		boolean expectsNormalizedDataSet = false;
 		if (type.equals("standalone")) {
-			String program = FileUtils.buildPath(repo.getProgramBasePath(),
-					props.getString("program"));
+			String program = FileUtils
+					.buildPath(repo.getBasePath(Program.class),
+							props.getString("program"));
 
 			File programFile = new File(program);
 			if (!(programFile).exists())

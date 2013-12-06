@@ -67,6 +67,7 @@ public class TestPlotter {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		ClustevalBackendServer.logLevel(Level.INFO);
 	}
 
 	/**
@@ -81,7 +82,6 @@ public class TestPlotter {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		ClustevalBackendServer.logLevel(Level.INFO);
 		parent = new Repository(
 				new File("testCaseRepository").getAbsolutePath(), null);
 		parent.initialize();

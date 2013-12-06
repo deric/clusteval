@@ -17,12 +17,12 @@ import java.net.URLClassLoader;
 import java.util.Collection;
 import java.util.Iterator;
 
+import utils.ArrayIterator;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
+import de.clusteval.program.Program;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.utils.JARFinder;
-
-import utils.ArrayIterator;
 
 /**
  * Objects of this class look for new RPrograms in the program-directory defined
@@ -75,7 +75,7 @@ public class RProgramFinder extends JARFinder<RProgram> {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getProgramBasePath());
+		return new File(this.repository.getBasePath(Program.class));
 	}
 
 	/*

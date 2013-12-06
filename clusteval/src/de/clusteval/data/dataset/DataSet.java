@@ -50,8 +50,8 @@ import de.clusteval.utils.RNotAvailableException;
  * 
  * <p>
  * A dataset corresponds to and is parsed from a file on the filesystem in the
- * corresponding folder of the repository (see
- * {@link Repository#basePath} and {@link DataSetFinder}).
+ * corresponding folder of the repository (see {@link Repository#basePath} and
+ * {@link DataSetFinder}).
  * 
  * <p>
  * When a program should be applied to a certain dataset during a run, the
@@ -423,7 +423,7 @@ public abstract class DataSet extends RepositoryObject {
 	 */
 	@Override
 	public String toString() {
-		return "[DataSet:" + getFullName() + "]";
+		return getFullName();
 	}
 
 	/*

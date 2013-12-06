@@ -45,8 +45,11 @@ import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.context.Context;
 import de.clusteval.context.ContextFinderThread;
 import de.clusteval.data.DataConfig;
+import de.clusteval.data.dataset.AbsoluteDataSet;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.data.dataset.DataSetConfig;
+import de.clusteval.data.dataset.RelativeDataSet;
+import de.clusteval.data.dataset.RunResultDataSetConfig;
 import de.clusteval.data.dataset.format.DataSetFormat;
 import de.clusteval.data.dataset.format.DataSetFormatFinderThread;
 import de.clusteval.data.dataset.format.DataSetFormatParser;
@@ -84,12 +87,20 @@ import de.clusteval.program.IntegerProgramParameter;
 import de.clusteval.program.Program;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
+import de.clusteval.program.StandaloneProgram;
 import de.clusteval.program.StringProgramParameter;
 import de.clusteval.program.r.RLibraryInferior;
 import de.clusteval.program.r.RProgram;
+import de.clusteval.program.r.RProgramConfig;
 import de.clusteval.program.r.RProgramFinderThread;
 import de.clusteval.program.r.UnknownRProgramException;
+import de.clusteval.run.ClusteringRun;
+import de.clusteval.run.DataAnalysisRun;
+import de.clusteval.run.InternalParameterOptimizationRun;
+import de.clusteval.run.ParameterOptimizationRun;
 import de.clusteval.run.Run;
+import de.clusteval.run.RunAnalysisRun;
+import de.clusteval.run.RunDataAnalysisRun;
 import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.format.RunResultFormat;
@@ -393,12 +404,6 @@ public class Repository {
 	protected String runDataStatisticBasePath;
 
 	/**
-	 * The absolute path to the directory within this repository, where all
-	 * programs are stored.
-	 */
-	protected String programBasePath;
-
-	/**
 	 * The absolute path to the directory within this repository, where all run
 	 * results are stored.
 	 */
@@ -628,11 +633,6 @@ public class Repository {
 	 * A map containing all goldstandard formats registered in this repository.
 	 */
 	protected Map<GoldStandardFormat, GoldStandardFormat> goldStandardFormats;
-
-	/**
-	 * A map containing all programs registered in this repository.
-	 */
-	protected Map<Program, Program> programs;
 
 	/**
 	 * A map containing all classes of RPrograms registered in this repository.
@@ -889,9 +889,9 @@ public class Repository {
 
 		this.initializePaths();
 
-		this.ensureFolderStructure();
-
 		this.initAttributes();
+
+		this.ensureFolderStructure();
 
 		this.pathToRepositoryObject = new ConcurrentHashMap<File, RepositoryObject>();
 
@@ -1052,7 +1052,7 @@ public class Repository {
 		this.ensureFolder(this.getBasePath(DataSetConfig.class));
 		this.ensureFolder(this.getBasePath(GoldStandard.class));
 		this.ensureFolder(this.getBasePath(GoldStandardConfig.class));
-		this.ensureFolder(this.programBasePath);
+		this.ensureFolder(this.getBasePath(Program.class));
 		this.ensureFolder(this.getBasePath(ProgramConfig.class));
 		this.ensureFolder(this.getBasePath(Run.class));
 		this.ensureFolder(this.runResultBasePath);
@@ -1754,25 +1754,6 @@ public class Repository {
 	}
 
 	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all programs are stored.
-	 */
-	public String getProgramBasePath() {
-		return this.programBasePath;
-	}
-
-	/**
-	 * @return A collection of all programs registered in this repository or its
-	 *         parents.
-	 */
-	public Collection<Program> getPrograms() {
-		Collection<Program> result = this.programs.values();
-		if (parent != null)
-			result.addAll(parent.getPrograms());
-		return result;
-	}
-
-	/**
 	 * This method checks, whether there is a double program parameter
 	 * registered, that is equal to the passed object and returns it.
 	 * 
@@ -2040,37 +2021,6 @@ public class Repository {
 			final ParameterOptimizationMethod object) {
 		ParameterOptimizationMethod other = this.parameterOptimizationMethodInstances
 				.get(object.getClass().getSimpleName()).get(object);
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
-	}
-
-	/**
-	 * This method checks, whether there is a program registered, that is equal
-	 * to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public Program getRegisteredObject(final Program object) {
-		Program other = this.programs.get(object);
 		if (other == null && parent != null)
 			return parent.getRegisteredObject(object);
 		return other;
@@ -2550,6 +2500,7 @@ public class Repository {
 	 * A helper method for and invoked by
 	 * {@link #Repository(String, Repository, long, long, long, long, long, long, long)}.
 	 */
+	// TODO: find another way, instead of using the same objects
 	protected void initAttributes() {
 
 		this.repositoryObjectEntities = new RepositoryObjectEntityMap();
@@ -2560,6 +2511,10 @@ public class Repository {
 						? this.parent.repositoryObjectEntities
 								.get(DataSet.class) : null, FileUtils
 						.buildPath(this.basePath, "data", "datasets")));
+		this.repositoryObjectEntities.put(AbsoluteDataSet.class,
+				this.repositoryObjectEntities.get(DataSet.class));
+		this.repositoryObjectEntities.put(RelativeDataSet.class,
+				this.repositoryObjectEntities.get(DataSet.class));
 
 		this.repositoryObjectEntities.put(
 				DataSetConfig.class,
@@ -2569,6 +2524,8 @@ public class Repository {
 										.get(DataSetConfig.class) : null,
 						FileUtils.buildPath(this.basePath, "data", "datasets",
 								"configs")));
+		this.repositoryObjectEntities.put(RunResultDataSetConfig.class,
+				this.repositoryObjectEntities.get(DataSetConfig.class));
 
 		this.repositoryObjectEntities.put(
 				GoldStandard.class,
@@ -2600,6 +2557,19 @@ public class Repository {
 				new RepositoryObjectEntity<Run>(this, this.parent != null
 						? this.parent.repositoryObjectEntities.get(Run.class)
 						: null, FileUtils.buildPath(this.basePath, "runs")));
+		this.repositoryObjectEntities.put(ClusteringRun.class,
+				this.repositoryObjectEntities.get(Run.class));
+		this.repositoryObjectEntities.put(ParameterOptimizationRun.class,
+				this.repositoryObjectEntities.get(Run.class));
+		this.repositoryObjectEntities.put(
+				InternalParameterOptimizationRun.class,
+				this.repositoryObjectEntities.get(Run.class));
+		this.repositoryObjectEntities.put(DataAnalysisRun.class,
+				this.repositoryObjectEntities.get(Run.class));
+		this.repositoryObjectEntities.put(RunAnalysisRun.class,
+				this.repositoryObjectEntities.get(Run.class));
+		this.repositoryObjectEntities.put(RunDataAnalysisRun.class,
+				this.repositoryObjectEntities.get(Run.class));
 
 		this.repositoryObjectEntities.put(
 				ProgramConfig.class,
@@ -2609,6 +2579,8 @@ public class Repository {
 										.get(ProgramConfig.class) : null,
 						FileUtils.buildPath(this.basePath, "programs",
 								"configs")));
+		this.repositoryObjectEntities.put(RProgramConfig.class,
+				this.repositoryObjectEntities.get(ProgramConfig.class));
 
 		this.repositoryObjectEntities.put(
 				Program.class,
@@ -2616,6 +2588,10 @@ public class Repository {
 						? this.parent.repositoryObjectEntities
 								.get(Program.class) : null, FileUtils
 						.buildPath(this.basePath, "programs")));
+		this.repositoryObjectEntities.put(RProgram.class,
+				this.repositoryObjectEntities.get(Program.class));
+		this.repositoryObjectEntities.put(StandaloneProgram.class,
+				this.repositoryObjectEntities.get(Program.class));
 
 		this.contextClasses = new ConcurrentHashMap<String, Class<? extends Context>>();
 		this.contextInstances = new ConcurrentHashMap<String, List<Context>>();
@@ -2643,7 +2619,6 @@ public class Repository {
 		this.clusteringQualityMeasureClasses = new ConcurrentHashMap<String, Class<? extends ClusteringQualityMeasure>>();
 		this.clusteringQualityMeasureInstances = new ConcurrentHashMap<String, List<ClusteringQualityMeasure>>();
 		this.goldStandardFormats = new ConcurrentHashMap<GoldStandardFormat, GoldStandardFormat>();
-		this.programs = new ConcurrentHashMap<Program, Program>();
 		this.rProgramClasses = new ConcurrentHashMap<String, Class<? extends RProgram>>();
 		this.rProgramInstances = new ConcurrentHashMap<String, List<RProgram>>();
 		this.runResults = new ConcurrentHashMap<RunResult, RunResult>();
@@ -2736,7 +2711,6 @@ public class Repository {
 	@SuppressWarnings("unused")
 	protected void initializePaths() throws InvalidRepositoryException {
 		this.dataBasePath = FileUtils.buildPath(this.basePath, "data");
-		this.programBasePath = FileUtils.buildPath(this.basePath, "programs");
 		this.runResultBasePath = FileUtils.buildPath(this.basePath, "results");
 		this.clusterResultsBasePath = FileUtils.buildPath(
 				this.runResultBasePath, "%RUNIDENTSTRING", "clusters");
@@ -3127,10 +3101,17 @@ public class Repository {
 	 * @return
 	 * @throws RegisterException
 	 */
+	@SuppressWarnings("unchecked")
 	public <T extends RepositoryObject> boolean register(final T object)
 			throws RegisterException {
-		@SuppressWarnings("unchecked")
 		Class<T> c = (Class<T>) object.getClass();
+		// if (!this.repositoryObjectEntities.containsKey(c)
+		// && object.getClass().getSuperclass() != null
+		// && RepositoryObject.class.isAssignableFrom(object.getClass()
+		// .getSuperclass())) {
+		// return this.register(((Class<? extends RepositoryObject>) c
+		// .getSuperclass()).cast(object));
+		// }
 		return this.repositoryObjectEntities.get(c).register(object);
 	}
 
@@ -3416,65 +3397,6 @@ public class Repository {
 			return false;
 		this.internalStringAttributes.put(object.getName(), object);
 		this.pathToRepositoryObject.put(object.absPath, object);
-		return true;
-	}
-
-	/**
-	 * This method registers a new program.
-	 * 
-	 * <p>
-	 * First by invoking {@link #getRegisteredObject(Program)} the method
-	 * checks, whether another object equalling the new object has been
-	 * registered before.
-	 * 
-	 * <p>
-	 * If there is no old equalling object, the new object is simply registered
-	 * at the repository.
-	 * 
-	 * <p>
-	 * If there is an old equalling object, their <b>changedates</b> are
-	 * compared. The new object is only registered, if the changedate of the new
-	 * object is newer than the changedate of the old object. If the changedate
-	 * is newer, the new object is registered at the repository and a
-	 * {@link RepositoryReplaceEvent} is being thrown. This event tells the old
-	 * object and all its listeners in {@link RepositoryObject#listener}, that
-	 * it has been replaced by the new object. This allows all objects to update
-	 * their references to the old object to the new object.
-	 * 
-	 * <p>
-	 * The method also tells the {@link #sqlCommunicator} of the repository,
-	 * that a new object has been registered and causes him, to handle the new
-	 * object.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered at the repository
-	 * @return True, if the new object is registered at the repository, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final Program object) throws RegisterException {
-		Program old = this.getRegisteredObject(object);
-		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.programs.put(object, object);
-			this.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-			return true;
-		}
-		this.programs.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		this.info("New program: " + object.getMajorName());
-
-		this.sqlCommunicator.register(object, false);
-
 		return true;
 	}
 
@@ -4433,28 +4355,6 @@ public class Repository {
 	 */
 	public boolean unregister(NamedStringAttribute object) {
 		return this.internalStringAttributes.remove(object) != null;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregister(final Program object) {
-		boolean result = this.programs.remove(object) != null;
-		if (result) {
-			this.info("Program removed: " + object.getMajorName());
-
-			this.sqlCommunicator.unregister(object);
-		}
-		return result;
 	}
 
 	/**
@@ -5524,8 +5424,6 @@ public class Repository {
 		this.contextsInitialized = true;
 	}
 }
-
-
 
 // class RepositoryJarEntity<T extends RepositoryObject>
 // extends

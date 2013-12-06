@@ -699,7 +699,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	@Override
 	public Collection<String> getPrograms() {
 		Collection<String> result = new HashSet<String>();
-		for (Program program : this.repository.getPrograms())
+		for (Program program : this.repository.getCollection(Program.class))
 			result.add(program.getMajorName());
 		return result;
 	}

@@ -18,6 +18,7 @@ import java.io.File;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.SupervisorThread;
+import de.clusteval.program.Program;
 import de.clusteval.utils.Finder;
 import de.clusteval.utils.FinderThread;
 
@@ -79,6 +80,6 @@ public class RProgramFinderThread extends FinderThread {
 	@Override
 	protected Finder getFinder() throws RegisterException {
 		return new RProgramFinder(repository, System.currentTimeMillis(),
-				new File(repository.getProgramBasePath()));
+				new File(repository.getBasePath(Program.class)));
 	}
 }
