@@ -27,6 +27,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ch.qos.logback.classic.Level;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
@@ -52,6 +53,7 @@ public class TestRunFinder {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		ClustevalBackendServer.logLevel(Level.INFO);
 	}
 
 	/**
@@ -162,6 +164,11 @@ class TestRepository extends Repository {
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException {
 		super(basePath, parent);
+
+		this.repositoryObjectEntities.put(
+				Run.class,
+				new TestCaseRepositoryObjectEntity(this, null, this
+						.getBasePath(Run.class)));
 	}
 
 	/*
@@ -178,9 +185,7 @@ class TestRepository extends Repository {
 
 }
 
-class TestCaseRepositoryObjectEntity
-		extends
-			RepositoryObjectEntity<ParameterOptimizationRun> {
+class TestCaseRepositoryObjectEntity extends RepositoryObjectEntity<Run> {
 
 	/**
 	 * @param repository
@@ -188,8 +193,7 @@ class TestCaseRepositoryObjectEntity
 	 * @param basePath
 	 */
 	public TestCaseRepositoryObjectEntity(Repository repository,
-			RepositoryObjectEntity<ParameterOptimizationRun> parent,
-			String basePath) {
+			RepositoryObjectEntity<Run> parent, String basePath) {
 		super(repository, parent, basePath);
 	}
 
@@ -201,8 +205,7 @@ class TestCaseRepositoryObjectEntity
 	 * clusteval.framework.repository.RepositoryObject)
 	 */
 	@Override
-	public boolean register(ParameterOptimizationRun object)
-			throws RegisterException {
+	public boolean register(Run object) throws RegisterException {
 		boolean result = super.register(object);
 		if (object.getAbsolutePath().contains("testCase.run") && result)
 			((TestRepository) repository).registeredTestCaseRun++;
