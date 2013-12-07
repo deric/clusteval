@@ -77,13 +77,14 @@ public class RepositoryObjectEntity<T extends RepositoryObject>
 	 * @return
 	 * 
 	 */
-	public T getRegisteredObject(final T obj) {
+	public <S extends T> S getRegisteredObject(final S obj) {
 		return this.getRegisteredObject(obj, true);
 	}
 
-	public T getRegisteredObject(final T object, final boolean ignoreChangeDate) {
+	public <S extends T> S getRegisteredObject(final S object,
+			final boolean ignoreChangeDate) {
 		// get object without changedate
-		T other = this.objects.get(object);
+		S other = (S) this.objects.get(object);
 		// inserted parent, 02.06.2012
 		if (other == null && parent != null)
 			return parent.getRegisteredObject(object, ignoreChangeDate);
@@ -126,8 +127,9 @@ public class RepositoryObjectEntity<T extends RepositoryObject>
 	 * @return
 	 * @throws RegisterException
 	 */
-	public <S extends T> boolean register(final S object) throws RegisterException {
-		T old = this.getRegisteredObject(object);
+	public <S extends T> boolean register(final S object)
+			throws RegisterException {
+		S old = this.getRegisteredObject(object);
 		if (old != null) {
 			// check, whether the changeDate is equal
 			if (old.changeDate >= object.changeDate)

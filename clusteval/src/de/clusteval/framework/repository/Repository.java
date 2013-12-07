@@ -1357,16 +1357,18 @@ public class Repository {
 			final boolean ignoreChangeDate) {
 		@SuppressWarnings("unchecked")
 		Class<T> c = (Class<T>) object.getClass();
-//		return this.getRegisteredObject(c, object, ignoreChangeDate);
-//	}
-//
-//	public <T extends RepositoryObject, S extends T> S getRegisteredObject(
-//			final Class<T> c, final S object, final boolean ignoreChangeDate) {
-//		if (!this.repositoryObjectEntities.containsKey(c)
-//				&& object.getClass().getSuperclass() != null
-//				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
-//			return this.getRegisteredObject(c.getSuperclass(), object);
-//		}
+		return this.getRegisteredObject(c, object, ignoreChangeDate);
+	}
+
+	public <T extends RepositoryObject, S extends T> S getRegisteredObject(
+			final Class<T> c, final S object, final boolean ignoreChangeDate) {
+		if (!this.repositoryObjectEntities.containsKey(c)
+				&& object.getClass().getSuperclass() != null
+				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
+			return this.getRegisteredObject(
+					(Class<? extends RepositoryObject>) c.getSuperclass(),
+					object, ignoreChangeDate);
+		}
 		return this.repositoryObjectEntities.get(c).getRegisteredObject(object,
 				ignoreChangeDate);
 	}
