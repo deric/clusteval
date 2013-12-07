@@ -110,7 +110,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownDataSetTypeException
 	 * @throws NoSuchAlgorithmException
 	 */
-	@Test(expected = DataSetNotFoundException.class)
+	@Test(expected = DataSetRegisterException.class)
 	public void testRegisterRunResultRepositoryNotPresentInParent()
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
@@ -331,8 +331,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 				.parseFromFile(new File(
 						"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
 						.getAbsoluteFile());
-		Assert.assertEquals(
-				"[DataSet:DS1/Zachary_karate_club_similarities.txt]",
+		Assert.assertEquals("DS1/Zachary_karate_club_similarities.txt",
 				((DataSet) this.repositoryObject).toString());
 	}
 
@@ -520,9 +519,10 @@ public class TestDataSet extends AbstractClustEvalTest {
 		/*
 		 * SimMatrixDataSetFormat.convertTo() is a special case
 		 */
-		this.repositoryObject = this.getRepository()
-				.getObjectWithName(DataSet.class,"nora_cancer/all_expression_spearman.txt")
-				.clone();
+		this.repositoryObject = this
+				.getRepository()
+				.getObjectWithName(DataSet.class,
+						"nora_cancer/all_expression_spearman.txt").clone();
 		DataSet newDataSet = ((DataSet) this.repositoryObject)
 				.preprocessAndConvertTo(
 						context,
@@ -540,9 +540,10 @@ public class TestDataSet extends AbstractClustEvalTest {
 		/*
 		 * SimMatrixDataSetFormat.convertTo(APRowSimDataSetFormat)
 		 */
-		this.repositoryObject = this.getRepository()
-				.getObjectWithName(DataSet.class,"nora_cancer/all_expression_spearman.txt")
-				.clone();
+		this.repositoryObject = this
+				.getRepository()
+				.getObjectWithName(DataSet.class,
+						"nora_cancer/all_expression_spearman.txt").clone();
 		newDataSet = ((DataSet) this.repositoryObject).preprocessAndConvertTo(
 				context,
 				DataSetFormat.parseFromString(getRepository(),
@@ -557,8 +558,10 @@ public class TestDataSet extends AbstractClustEvalTest {
 		/*
 		 * convertTo(SimMatrixDataSetFormat) is a special case
 		 */
-		this.repositoryObject = this.getRepository()
-				.getObjectWithName(DataSet.class,"rowSimTest/rowSimTestFile.sim").clone();
+		this.repositoryObject = this
+				.getRepository()
+				.getObjectWithName(DataSet.class,
+						"rowSimTest/rowSimTestFile.sim").clone();
 		((DataSet) this.repositoryObject).preprocessAndConvertTo(
 				context,
 				DataSetFormat.parseFromString(getRepository(),
@@ -576,8 +579,10 @@ public class TestDataSet extends AbstractClustEvalTest {
 		/*
 		 * Convert to a non standard format
 		 */
-		this.repositoryObject = this.getRepository()
-				.getObjectWithName(DataSet.class,"rowSimTest/rowSimTestFile.sim").clone();
+		this.repositoryObject = this
+				.getRepository()
+				.getObjectWithName(DataSet.class,
+						"rowSimTest/rowSimTestFile.sim").clone();
 		((DataSet) this.repositoryObject).preprocessAndConvertTo(
 				context,
 				DataSetFormat.parseFromString(getRepository(),
@@ -812,8 +817,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			InterruptedException {
 		ClustevalBackendServer.logLevel(Level.INFO);
 
-		DataConfig dataConfig = getRepository().getObjectWithName(DataConfig.class,
-				"synthetic_cassini250");
+		DataConfig dataConfig = getRepository().getObjectWithName(
+				DataConfig.class, "synthetic_cassini250");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
 		DataSetFormat internal = DataSetFormat.parseFromString(getRepository(),
 				"SimMatrixDataSetFormat");
