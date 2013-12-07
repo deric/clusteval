@@ -623,8 +623,8 @@ class ExecutionRunParser extends RunParser {
 		for (String programConfig : props.getStringArray("programConfig")) {
 			ProgramConfig newProgramConfig = ProgramConfig
 					.parseFromFile(new File(FileUtils.buildPath(
-							repo.getBasePath(ProgramConfig.class), programConfig
-									+ ".config")));
+							repo.getBasePath(ProgramConfig.class),
+							programConfig + ".config")));
 
 			if (!newProgramConfig.getProgram().getContext().equals(context))
 				throw new IncompatibleContextException(
@@ -975,8 +975,6 @@ class ParameterOptimizationRunParser extends ExecutionRunParser {
 			throws NoOptimizableProgramParameterException,
 			UnknownProgramParameterException, RunException {
 
-		super.parseProgramConfigParams(programConfig);
-
 		optParaList = new ArrayList<ProgramParameter<?>>();
 
 		if (props.getSections().contains(programConfig.getName())) {
@@ -986,9 +984,8 @@ class ParameterOptimizationRunParser extends ExecutionRunParser {
 			 * in parameter optimization mode and there are concrete values for
 			 * this parameters in this section, they will be ignored.
 			 */
-			final String[] optimizationParas = props.getSection(
-					programConfig.getName()).getStringArray(
-					"optimizationParameters");
+			optimizationParas = props.getSection(programConfig.getName())
+					.getStringArray("optimizationParameters");
 
 			/*
 			 * Check whether the given optimization parameter are indeed defined
@@ -1044,6 +1041,8 @@ class ParameterOptimizationRunParser extends ExecutionRunParser {
 							+ programConfig);
 
 		optimizationParameters.add(optParaList);
+
+		super.parseProgramConfigParams(programConfig);
 	}
 }
 

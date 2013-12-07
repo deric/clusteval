@@ -83,7 +83,6 @@ public abstract class FinderThread extends ClustevalThread {
 	 */
 	@Override
 	public void run() {
-		// this.lock.lock();
 		while (!this.isInterrupted()) {
 			try {
 				try {

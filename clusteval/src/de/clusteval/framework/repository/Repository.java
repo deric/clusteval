@@ -312,6 +312,8 @@ public class Repository {
 	 * initialized by the {@link RunDataStatisticFinderThread}.
 	 */
 	private boolean runDataStatisticsInitialized;
+	
+	private boolean runResultsInitialized;
 
 	/**
 	 * A boolean attribute indicating whether the runresult formats have been
@@ -4049,6 +4051,10 @@ public class Repository {
 	public void setRunResultFormatsInitialized() {
 		this.runResultFormatsInitialized = true;
 	}
+	
+	public void setRunResultsInitialized() {
+		this.runResultsInitialized = true;
+	}
 
 	/**
 	 * This method sets the run statistics as initialized. It should only be
@@ -5167,6 +5173,10 @@ public class Repository {
 	 */
 	public boolean getDataPreprocessorsInitialized() {
 		return this.dataPreprocessorsInitialized;
+	}
+	
+	public boolean getRunResultsInitialized() {
+		return this.runResultsInitialized;
 	}
 
 	/**

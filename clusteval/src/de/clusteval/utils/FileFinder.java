@@ -89,11 +89,14 @@ public abstract class FileFinder extends Finder {
 				if (e.getMessage() != null)
 					message = e.getMessage();
 				else if (e.getCause() != null) {
-					PrintWriter writer = new PrintWriter(new StringWriter());
-					e.getCause().printStackTrace(writer);
+					StringWriter writer = new StringWriter();
+					e.getCause().printStackTrace(new PrintWriter(writer));
 					message = writer.toString();
-				} else
-					message = "";
+				} else {
+					StringWriter writer = new StringWriter();
+					e.printStackTrace(new PrintWriter(writer));
+					message = writer.toString();
+				}
 				this.getLog().warn(
 						"Could not parse " + getClassToFind().getSimpleName()
 								+ " " + file + ": " + message);

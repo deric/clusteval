@@ -86,6 +86,12 @@ public class TestPlotter {
 				new File("testCaseRepository").getAbsolutePath(), null);
 		parent.initialize();
 
+		if (ClustevalBackendServer.getBackendServerConfiguration()
+				.getCheckForRunResults()) {
+			while (!parent.getRunResultsInitialized()) {
+				Thread.sleep(100);
+			}
+		}
 	}
 
 	/**

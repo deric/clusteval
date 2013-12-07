@@ -64,6 +64,14 @@ public abstract class AbstractClustEvalTest {
 		// ClustevalBackendServer.getBackendServerConfiguration()
 		// .setCheckForRunResults(false);
 		getRepository().initialize();
+
+		if (ClustevalBackendServer.getBackendServerConfiguration()
+				.getCheckForRunResults()) {
+			while (!getRepository().getRunResultsInitialized()) {
+				Thread.sleep(100);
+			}
+		}
+
 		repositoryObject = new StubRepositoryObject(this.getRepository(),
 				false, System.currentTimeMillis(), new File("test"));
 		context = Context.parseFromString(getRepository(), "ClusteringContext");

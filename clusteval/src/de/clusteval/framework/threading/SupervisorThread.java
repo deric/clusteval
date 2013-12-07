@@ -31,6 +31,7 @@ import de.clusteval.data.dataset.format.DataSetFormatFinderThread;
 import de.clusteval.data.statistics.DataStatisticFinderThread;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.run.RunFinderThread;
+import de.clusteval.run.result.RunResultFinderThread;
 import de.clusteval.run.result.format.RunResultFormatFinderThread;
 import de.clusteval.run.statistics.RunStatisticFinderThread;
 
@@ -46,7 +47,7 @@ import de.clusteval.run.statistics.RunStatisticFinderThread;
  * 
  */
 public abstract class SupervisorThread extends Thread {
-	
+
 	protected boolean interrupted;
 
 	/**

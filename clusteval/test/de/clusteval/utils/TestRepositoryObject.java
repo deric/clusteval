@@ -19,15 +19,8 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ch.qos.logback.classic.Level;
-
-import de.clusteval.context.Context;
 import de.clusteval.data.dataset.DataSetConfigNotFoundException;
 import de.clusteval.data.dataset.DataSetConfigurationException;
 import de.clusteval.data.dataset.DataSetNotFoundException;
@@ -40,13 +33,11 @@ import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
 import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
-import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.RepositoryReplaceEvent;
-import de.clusteval.framework.repository.StubSQLCommunicator;
 
 /**
  * @author Christian Wiwie

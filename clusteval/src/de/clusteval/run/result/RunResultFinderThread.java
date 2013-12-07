@@ -86,6 +86,7 @@ public class RunResultFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
+		repository.setRunResultsInitialized();
 	}
 
 }
