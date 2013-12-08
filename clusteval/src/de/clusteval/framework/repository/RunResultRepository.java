@@ -220,7 +220,6 @@ public class RunResultRepository extends Repository {
 					"A RunResultRepository needs a valid parent repository");
 		this.dataBasePath = this.parent.dataBasePath;
 
-		this.logsBasePath = FileUtils.buildPath(this.basePath, "logs");
 		this.supplementaryBasePath = this.parent.supplementaryBasePath;
 		this.contextBasePath = this.parent.contextBasePath;
 		this.suppClusteringBasePath = this.parent.suppClusteringBasePath;

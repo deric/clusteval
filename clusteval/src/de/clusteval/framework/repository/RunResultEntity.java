@@ -111,4 +111,9 @@ public class RunResultEntity extends RepositoryObjectEntity<RunResult> {
 		return FileUtils.buildPath(this.getBasePath(), "%RUNIDENTSTRING",
 				"analyses");
 	}
+
+	public String getResultLogBasePath() {
+		return FileUtils.buildPath(this.getBasePath(), "%RUNIDENTSTRING",
+				"logs");
+	}
 }

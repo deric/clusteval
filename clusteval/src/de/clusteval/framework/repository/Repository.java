@@ -407,12 +407,6 @@ public class Repository {
 	protected String analysisResultsBasePath;
 
 	/**
-	 * The absolute path to the directory, where for a certain runresult
-	 * (identified by its unique run identifier) all log files are stored.
-	 */
-	protected String logsBasePath;
-
-	/**
 	 * The absolute path to the directory within this repository, where all
 	 * supplementary materials are stored.
 	 * 
@@ -1675,7 +1669,8 @@ public class Repository {
 	 *         stored.
 	 */
 	public String getLogBasePath() {
-		return this.logsBasePath;
+		return ((RunResultEntity) this.repositoryObjectEntities
+				.get(RunResult.class)).getResultLogBasePath();
 	}
 
 	/**
@@ -2625,8 +2620,6 @@ public class Repository {
 	@SuppressWarnings("unused")
 	protected void initializePaths() throws InvalidRepositoryException {
 		this.dataBasePath = FileUtils.buildPath(this.basePath, "data");
-		this.logsBasePath = FileUtils.buildPath(
-				this.getBasePath(RunResult.class), "%RUNIDENTSTRING", "logs");
 		this.supplementaryBasePath = FileUtils.buildPath(this.basePath, "supp");
 		this.contextBasePath = FileUtils.buildPath(this.supplementaryBasePath,
 				"contexts");

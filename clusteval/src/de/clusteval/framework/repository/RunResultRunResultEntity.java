@@ -66,4 +66,15 @@ public class RunResultRunResultEntity extends RunResultEntity {
 	public String getAnalysisResultsBasePath() {
 		return FileUtils.buildPath(this.getBasePath(), "analyses");
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.RunResultEntity#getResultLogBasePath()
+	 */
+	@Override
+	public String getResultLogBasePath() {
+		return FileUtils.buildPath(this.getBasePath(), "logs");
+	}
 }
