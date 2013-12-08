@@ -91,7 +91,7 @@ public class RunFinder extends FileFinder {
 	 */
 	@Override
 	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.repository.getCollection(Run.class);
+		return this.repository.getCollectionStaticEntities(Run.class);
 	}
 
 	/*

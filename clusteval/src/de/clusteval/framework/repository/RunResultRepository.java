@@ -21,6 +21,7 @@ import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.data.dataset.DataSetConfig;
 import de.clusteval.data.dataset.DataSetRegisterException;
+import de.clusteval.data.distance.DistanceMeasure;
 import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.data.goldstandard.format.GoldStandardFormat;
@@ -93,43 +94,47 @@ public class RunResultRepository extends Repository {
 	@Override
 	protected void initAttributes() {
 
-		this.repositoryObjectEntities = new RepositoryEntityMap();
+		this.staticRepositoryEntities = new StaticRepositoryEntityMap();
 
-		this.createAndAddEntity(DataConfig.class,
+		this.createAndAddStaticEntity(DataConfig.class,
 				FileUtils.buildPath(this.basePath, "configs"));
-		this.createAndAddEntity(DataSetConfig.class,
+		this.createAndAddStaticEntity(DataSetConfig.class,
 				FileUtils.buildPath(this.basePath, "configs"));
-		this.createAndAddEntity(GoldStandardConfig.class,
+		this.createAndAddStaticEntity(GoldStandardConfig.class,
 				FileUtils.buildPath(this.basePath, "configs"));
-		this.createAndAddEntity(ProgramConfig.class,
+		this.createAndAddStaticEntity(ProgramConfig.class,
 				FileUtils.buildPath(this.basePath, "configs"));
-		this.createAndAddEntity(Run.class,
+		this.createAndAddStaticEntity(Run.class,
 				FileUtils.buildPath(this.basePath, "configs"));
 
-		this.repositoryObjectEntities.put(
+		this.staticRepositoryEntities.put(
 				DataSet.class,
 				new RunResultRepositoryDataSetObjectEntity(this,
 						this.parent != null
-								? this.parent.repositoryObjectEntities
+								? this.parent.staticRepositoryEntities
 										.get(DataSet.class) : null, FileUtils
 								.buildPath(this.basePath, "inputs")));
 
-		this.repositoryObjectEntities.put(
+		this.staticRepositoryEntities.put(
 				GoldStandard.class,
 				new RunResultRepositoryGoldStandardObjectEntity(this,
 						this.parent != null
-								? this.parent.repositoryObjectEntities
+								? this.parent.staticRepositoryEntities
 										.get(GoldStandard.class) : null,
 						FileUtils.buildPath(this.basePath, "goldstandards")));
 
-		this.repositoryObjectEntities.put(Program.class,
-				this.parent.repositoryObjectEntities.get(Program.class));
+		this.staticRepositoryEntities.put(Program.class,
+				this.parent.staticRepositoryEntities.get(Program.class));
 
-		this.repositoryObjectEntities.put(
+		this.staticRepositoryEntities.put(
 				RunResult.class,
 				new RunResultRunResultRepositoryEntity(this,
-						this.parent.repositoryObjectEntities
+						this.parent.staticRepositoryEntities
 								.get(RunResult.class), this.getBasePath()));
+
+		this.dynamicRepositoryEntities.put(DistanceMeasure.class,
+				this.parent.dynamicRepositoryEntities
+						.get(DistanceMeasure.class));
 
 		this.contextClasses = this.parent.contextClasses;
 		this.contextInstances = this.parent.contextInstances;
@@ -141,8 +146,6 @@ public class RunResultRepository extends Repository {
 		this.dataPreprocessorClasses = this.parent.dataPreprocessorClasses;
 		this.dataSetTypeInstances = this.parent.dataSetTypeInstances;
 		this.dataSetTypeClasses = this.parent.dataSetTypeClasses;
-		this.distanceMeasureClasses = this.parent.distanceMeasureClasses;
-		this.distanceMeasureInstances = this.parent.distanceMeasureInstances;
 		this.dataStatisticClasses = this.parent.dataStatisticClasses;
 		this.dataStatisticInstances = this.parent.dataStatisticInstances;
 		this.statisticCalculators = this.parent.statisticCalculators;
@@ -192,7 +195,6 @@ public class RunResultRepository extends Repository {
 		if (this.parent == null)
 			throw new InvalidRepositoryException(
 					"A RunResultRepository needs a valid parent repository");
-		this.dataBasePath = this.parent.dataBasePath;
 
 		this.supplementaryBasePath = this.parent.supplementaryBasePath;
 		this.contextBasePath = this.parent.contextBasePath;
@@ -209,7 +211,6 @@ public class RunResultRepository extends Repository {
 		this.dataStatisticBasePath = this.parent.dataStatisticBasePath;
 		this.runStatisticBasePath = this.parent.runStatisticBasePath;
 		this.runDataStatisticBasePath = this.parent.runDataStatisticBasePath;
-		this.distanceMeasureBasePath = this.parent.distanceMeasureBasePath;
 		this.dataPreprocessorBasePath = this.parent.dataPreprocessorBasePath;
 	}
 
@@ -231,16 +232,6 @@ public class RunResultRepository extends Repository {
 	@Override
 	public boolean getDataStatisticsInitialized() {
 		return this.parent.getDataStatisticsInitialized();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Repository#getDistanceMeasuresInitialized()
-	 */
-	@Override
-	public boolean getDistanceMeasuresInitialized() {
-		return this.parent.getDistanceMeasuresInitialized();
 	}
 
 	/*
@@ -451,7 +442,7 @@ class RunResultRepositoryDataSetObjectEntity
 	@Override
 	public boolean register(DataSet object) throws RegisterException {
 		DataSet dataSetInParentRepository = object.getRepository().getParent()
-				.getObjectWithName(DataSet.class, object.getFullName());
+				.getStaticObjectWithName(DataSet.class, object.getFullName());
 		if (dataSetInParentRepository != null)
 			return super.register(object);
 		throw new DataSetRegisterException("The dataset '"
@@ -484,7 +475,7 @@ class RunResultRepositoryGoldStandardObjectEntity
 	@Override
 	public boolean register(GoldStandard object) throws RegisterException {
 		GoldStandard gsInParentRepository = object.getRepository().getParent()
-				.getObjectWithName(GoldStandard.class, object.toString());
+				.getStaticObjectWithName(GoldStandard.class, object.toString());
 		if (gsInParentRepository != null)
 			return super.register(object);
 		throw new DataSetRegisterException("The goldstandard '"

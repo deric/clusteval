@@ -674,7 +674,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	@Override
 	public Collection<String> getRuns() {
 		Collection<String> result = new HashSet<String>();
-		for (Run run : this.repository.getCollection(Run.class))
+		for (Run run : this.repository.getCollectionStaticEntities(Run.class))
 			result.add(run.getName());
 		return result;
 	}
@@ -687,7 +687,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	@Override
 	public Collection<String> getDataSets() {
 		Collection<String> result = new HashSet<String>();
-		for (DataSet dataSet : this.repository.getCollection(DataSet.class))
+		for (DataSet dataSet : this.repository.getCollectionStaticEntities(DataSet.class))
 			result.add(dataSet.getFullName());
 		return result;
 	}
@@ -700,7 +700,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	@Override
 	public Collection<String> getPrograms() {
 		Collection<String> result = new HashSet<String>();
-		for (Program program : this.repository.getCollection(Program.class))
+		for (Program program : this.repository.getCollectionStaticEntities(Program.class))
 			result.add(program.getMajorName());
 		return result;
 	}

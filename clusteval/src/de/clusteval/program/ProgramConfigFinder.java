@@ -92,7 +92,7 @@ public class ProgramConfigFinder extends FileFinder {
 	 */
 	@Override
 	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.repository.getCollection(ProgramConfig.class);
+		return this.repository.getCollectionStaticEntities(ProgramConfig.class);
 	}
 
 	/*

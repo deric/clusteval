@@ -145,7 +145,7 @@ public class RunResultDataSetConfig extends DataSetConfig {
 			ConversionStandardToInputConfiguration configStandardToInput = new ConversionStandardToInputConfiguration();
 
 			// we take the dataset from the runresult repository
-			DataSet dataSet = repo.getObjectWithName(DataSet.class,datasetName + "/"
+			DataSet dataSet = repo.getStaticObjectWithName(DataSet.class,datasetName + "/"
 					+ datasetFile);
 
 			DataSetConfig result = new DataSetConfig(repo, changeDate,

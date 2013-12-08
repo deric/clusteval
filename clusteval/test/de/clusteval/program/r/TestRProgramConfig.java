@@ -83,7 +83,7 @@ public class TestRProgramConfig {
 			RepositoryConfigurationException, InterruptedException {
 
 		ProgramConfig programConfig = repo
-				.getObjectWithName(ProgramConfig.class,"KMeans_Clustering");
+				.getStaticObjectWithName(ProgramConfig.class,"KMeans_Clustering");
 		List<DataSetFormat> dataSetFormats = programConfig
 				.getCompatibleDataSetFormats();
 		Assert.assertEquals(1, dataSetFormats.size());
@@ -99,7 +99,7 @@ public class TestRProgramConfig {
 			RepositoryConfigurationException, InterruptedException {
 
 		ProgramConfig programConfig = repo
-				.getObjectWithName(ProgramConfig.class,"KMeans_Clustering");
+				.getStaticObjectWithName(ProgramConfig.class,"KMeans_Clustering");
 		RunResultFormat format = programConfig.getOutputFormat();
 		Assert.assertEquals("TabSeparatedRunResultFormat", format.getClass()
 				.getSimpleName());

@@ -68,7 +68,7 @@ public class DistanceMeasureFinderThread extends FinderThread {
 	protected Finder getFinder() throws RegisterException {
 		return new DistanceMeasureFinder(repository,
 				System.currentTimeMillis(), new File(
-						repository.getDistanceMeasureBasePath()));
+						repository.getBasePath(DistanceMeasure.class)));
 	}
 
 	/*
@@ -78,7 +78,7 @@ public class DistanceMeasureFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		repository.setDistanceMeasuresInitialized();
+		repository.setInitialized(DistanceMeasure.class);
 	}
 
 }

@@ -521,7 +521,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 		 */
 		this.repositoryObject = this
 				.getRepository()
-				.getObjectWithName(DataSet.class,
+				.getStaticObjectWithName(DataSet.class,
 						"nora_cancer/all_expression_spearman.txt").clone();
 		DataSet newDataSet = ((DataSet) this.repositoryObject)
 				.preprocessAndConvertTo(
@@ -542,7 +542,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 		 */
 		this.repositoryObject = this
 				.getRepository()
-				.getObjectWithName(DataSet.class,
+				.getStaticObjectWithName(DataSet.class,
 						"nora_cancer/all_expression_spearman.txt").clone();
 		newDataSet = ((DataSet) this.repositoryObject).preprocessAndConvertTo(
 				context,
@@ -560,7 +560,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 		 */
 		this.repositoryObject = this
 				.getRepository()
-				.getObjectWithName(DataSet.class,
+				.getStaticObjectWithName(DataSet.class,
 						"rowSimTest/rowSimTestFile.sim").clone();
 		((DataSet) this.repositoryObject).preprocessAndConvertTo(
 				context,
@@ -581,7 +581,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 		 */
 		this.repositoryObject = this
 				.getRepository()
-				.getObjectWithName(DataSet.class,
+				.getStaticObjectWithName(DataSet.class,
 						"rowSimTest/rowSimTestFile.sim").clone();
 		((DataSet) this.repositoryObject).preprocessAndConvertTo(
 				context,
@@ -817,7 +817,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 			InterruptedException {
 		ClustevalBackendServer.logLevel(Level.INFO);
 
-		DataConfig dataConfig = getRepository().getObjectWithName(
+		DataConfig dataConfig = getRepository().getStaticObjectWithName(
 				DataConfig.class, "synthetic_cassini250");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
 		DataSetFormat internal = DataSetFormat.parseFromString(getRepository(),

@@ -88,7 +88,7 @@ public abstract class DistanceMeasure extends RepositoryObject
 	 * @see framework.repository.RepositoryObject#register()
 	 */
 	@Override
-	public boolean register() {
+	public boolean register() throws RegisterException {
 		return this.repository.register(this);
 	}
 
@@ -114,8 +114,8 @@ public abstract class DistanceMeasure extends RepositoryObject
 	 */
 	public static DistanceMeasure parseFromString(final Repository repository,
 			String distanceMeasure) throws UnknownDistanceMeasureException {
-		Class<? extends DistanceMeasure> c = repository
-				.getDistanceMeasureClass("de.clusteval.data.distance."
+		Class<? extends DistanceMeasure> c = repository.getRegisteredClass(
+				DistanceMeasure.class, "de.clusteval.data.distance."
 						+ distanceMeasure);
 		try {
 			DistanceMeasure measure = c.getConstructor(Repository.class,

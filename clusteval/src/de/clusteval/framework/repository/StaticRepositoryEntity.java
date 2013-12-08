@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-// TODO: rename
 public class StaticRepositoryEntity<T extends RepositoryObject>
 		extends
 			RepositoryEntity<T> {
@@ -128,6 +127,7 @@ public class StaticRepositoryEntity<T extends RepositoryObject>
 	 * @return
 	 * @throws RegisterException
 	 */
+	@Override
 	public <S extends T> boolean register(final S object)
 			throws RegisterException {
 		S old = this.getRegisteredObject(object);
@@ -181,6 +181,7 @@ public class StaticRepositoryEntity<T extends RepositoryObject>
 	 * @param object
 	 * @return
 	 */
+	@Override
 	public <S extends T> boolean unregister(final S object) {
 		boolean result = this.objects.remove(object) != null;
 		if (result) {

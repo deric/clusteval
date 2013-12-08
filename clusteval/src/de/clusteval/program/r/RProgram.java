@@ -33,6 +33,7 @@ import de.clusteval.data.dataset.format.DataSetFormat;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.framework.MyRengine;
 import de.clusteval.framework.RLibraryNotLoadedException;
+import de.clusteval.framework.RLibraryRequirement;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.program.Program;
@@ -259,7 +260,14 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 		rEngine = repository.getRengineForCurrentThread();
 
 		// load the required R libraries
-		for (String library : getRequiredRlibraries())
+		String[] requiredLibraries;
+		if (this.getClass().isAnnotationPresent(RLibraryRequirement.class))
+			requiredLibraries = this.getClass()
+					.getAnnotation(RLibraryRequirement.class)
+					.requiredRLibraries();
+		else
+			requiredLibraries = new String[0];
+		for (String library : requiredLibraries)
 			rEngine.loadLibrary(library, this.getClass().getSimpleName());
 
 		// this will init the ids attribute

@@ -87,7 +87,7 @@ public class TestRunResultFinder {
 		ClustevalBackendServer framework = new ClustevalBackendServer(
 				repository, false);
 		framework.performRun("1", "tc_vs_DS1");
-		Run run = repository.getObjectWithName(Run.class, "tc_vs_DS1");
+		Run run = repository.getStaticObjectWithName(Run.class, "tc_vs_DS1");
 		while (!run.getStatus().equals(RUN_STATUS.FINISHED)) {
 			Thread.sleep(100);
 		}
@@ -163,7 +163,7 @@ class TestRepository extends Repository {
 
 	public boolean register(RunResult object) throws RegisterException {
 		String runIdent = object.runIdentString;
-		Run run = this.getObjectWithName(Run.class, object.run.toString());
+		Run run = this.getStaticObjectWithName(Run.class, object.run.toString());
 		if (!assertionFailed)
 			assertionFailed = !(run.getStatus().equals(RUN_STATUS.FINISHED) || run
 					.getStatus().equals(RUN_STATUS.INACTIVE))

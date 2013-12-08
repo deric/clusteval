@@ -281,12 +281,6 @@ public class Repository {
 	private boolean dataSetTypesInitialized;
 
 	/**
-	 * A boolean attribute indicating whether the distance measures have been
-	 * initialized by the {@link DistanceMeasureFinderThread}.
-	 */
-	private boolean distanceMeasuresInitialized;
-
-	/**
 	 * A boolean attribute indicating whether the data statistics have been
 	 * initialized by the {@link DataStatisticFinderThread}.
 	 */
@@ -336,12 +330,6 @@ public class Repository {
 	protected String basePath;
 
 	/**
-	 * The absolute path to the directory within this repository, where all data
-	 * related files are stored.
-	 */
-	protected String dataBasePath;
-
-	/**
 	 * This map holds the current versions of the available dataset formats.
 	 */
 	protected Map<String, Integer> dataSetFormatCurrentVersions;
@@ -369,12 +357,6 @@ public class Repository {
 	 * dataset types are stored.
 	 */
 	protected String dataSetTypeBasePath;
-
-	/**
-	 * The absolute path to the directory within this repository, where all
-	 * distance measures are stored.
-	 */
-	protected String distanceMeasureBasePath;
 
 	/**
 	 * The absolute path to the directory within this repository, where all data
@@ -453,8 +435,9 @@ public class Repository {
 	 */
 	protected Map<File, RepositoryObject> pathToRepositoryObject;
 
-	// TODO: test
-	protected RepositoryEntityMap repositoryObjectEntities;
+	protected StaticRepositoryEntityMap staticRepositoryEntities;
+
+	protected DynamicRepositoryEntityMap dynamicRepositoryEntities;
 
 	/**
 	 * A map containing all classes of dataset generators registered in this
@@ -479,18 +462,6 @@ public class Repository {
 	 * Mapping from Class.getSimpleName() to the instances.
 	 */
 	protected Map<String, List<DataSetType>> dataSetTypeInstances;
-
-	/**
-	 * A map containing all classes of distance measures registered in this
-	 * repository. Mapping from Class.getName() to the class.
-	 */
-	protected Map<String, Class<? extends DistanceMeasure>> distanceMeasureClasses;
-
-	/**
-	 * A map mapping from the simple name of the class to all of its
-	 * instances.Mapping from Class.getSimpleName() to the instances.
-	 */
-	protected Map<String, List<DistanceMeasure>> distanceMeasureInstances;
 
 	/**
 	 * A map containing all classes of data statistics registered in this
@@ -998,7 +969,6 @@ public class Repository {
 	private boolean ensureFolderStructure() throws FileNotFoundException {
 		// TODO: replace by for loop over entries of #repositoryObjectEntities
 		this.ensureFolder(this.basePath);
-		this.ensureFolder(this.dataBasePath);
 		this.ensureFolder(this.getBasePath(DataConfig.class));
 		this.ensureFolder(this.getBasePath(DataSet.class));
 		this.ensureFolder(this.dataSetFormatBasePath);
@@ -1018,7 +988,7 @@ public class Repository {
 		this.ensureFolder(this.dataStatisticBasePath);
 		this.ensureFolder(this.runStatisticBasePath);
 		this.ensureFolder(this.runDataStatisticBasePath);
-		this.ensureFolder(this.distanceMeasureBasePath);
+		this.ensureFolder(this.getBasePath(DistanceMeasure.class));
 		this.ensureFolder(this.generatorBasePath);
 		this.ensureFolder(this.dataSetGeneratorBasePath);
 		this.ensureFolder(this.dataPreprocessorBasePath);
@@ -1244,14 +1214,6 @@ public class Repository {
 
 	/**
 	 * @return The absolute path to the directory within this repository, where
-	 *         all data related files are stored.
-	 */
-	public String getDataBasePath() {
-		return this.dataBasePath;
-	}
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
 	 *         all dataset formats are stored.
 	 */
 	public String getDataFormatsBasePath() {
@@ -1259,21 +1221,25 @@ public class Repository {
 	}
 
 	public String getBasePath(final Class<? extends RepositoryObject> c) {
-		return this.repositoryObjectEntities.get(c).getBasePath();
+		if (this.staticRepositoryEntities.containsKey(c))
+			return this.staticRepositoryEntities.get(c).getBasePath();
+		return this.dynamicRepositoryEntities.get(c).getBasePath();
 	}
 
-	public <T extends RepositoryObject> Collection<T> getCollection(
+	public <T extends RepositoryObject> Collection<T> getCollectionStaticEntities(
 			final Class<T> c) {
-		return this.repositoryObjectEntities.get(c).asCollection();
+		return this.staticRepositoryEntities.get(c).asCollection();
 	}
 
-	public <T extends RepositoryObject> T getObjectWithName(final Class<T> c,
-			final String name) {
-		return this.repositoryObjectEntities.get(c).findByString(name);
+	public <T extends RepositoryObject> T getStaticObjectWithName(
+			final Class<T> c, final String name) {
+		return this.staticRepositoryEntities.get(c).findByString(name);
 	}
 
 	public boolean isInitialized(final Class<? extends RepositoryObject> c) {
-		return this.repositoryObjectEntities.get(c).isInitialized();
+		if (this.staticRepositoryEntities.containsKey(c))
+			return this.staticRepositoryEntities.get(c).isInitialized();
+		return this.dynamicRepositoryEntities.get(c).isInitialized();
 	}
 
 	public <T extends RepositoryObject> T getRegisteredObject(final T object) {
@@ -1289,14 +1255,14 @@ public class Repository {
 
 	public <T extends RepositoryObject, S extends T> S getRegisteredObject(
 			final Class<T> c, final S object, final boolean ignoreChangeDate) {
-		if (!this.repositoryObjectEntities.containsKey(c)
+		if (!this.staticRepositoryEntities.containsKey(c)
 				&& object.getClass().getSuperclass() != null
 				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
 			return this.getRegisteredObject(
 					(Class<? extends RepositoryObject>) c.getSuperclass(),
 					object, ignoreChangeDate);
 		}
-		return this.repositoryObjectEntities.get(c).getRegisteredObject(object,
+		return this.staticRepositoryEntities.get(c).getRegisteredObject(object,
 				ignoreChangeDate);
 	}
 
@@ -1310,14 +1276,22 @@ public class Repository {
 	@SuppressWarnings("unchecked")
 	public <T extends RepositoryObject, S extends T> boolean unregister(
 			final Class<T> c, final S object) {
-		if (!this.repositoryObjectEntities.containsKey(c)
+		boolean staticEntityFound = false;
+		boolean dynamicEntityFound = false;
+		if (!((staticEntityFound = this.staticRepositoryEntities.containsKey(c)) || (dynamicEntityFound = this.dynamicRepositoryEntities
+				.containsKey(c)))
 				&& object.getClass().getSuperclass() != null
 				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
 			return this.unregister(
 					(Class<? extends RepositoryObject>) c.getSuperclass(),
 					object);
 		}
-		return this.repositoryObjectEntities.get(c).unregister(object);
+
+		if (staticEntityFound)
+			return this.staticRepositoryEntities.get(c).unregister(object);
+		else if (dynamicEntityFound)
+			return this.dynamicRepositoryEntities.get(c).unregister(object);
+		return false;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1330,18 +1304,97 @@ public class Repository {
 	@SuppressWarnings("unchecked")
 	public <T extends RepositoryObject, S extends T> boolean register(
 			final Class<T> c, final S object) throws RegisterException {
-		if (!this.repositoryObjectEntities.containsKey(c)
+		boolean staticEntityFound = false;
+		boolean dynamicEntityFound = false;
+		if (!((staticEntityFound = this.staticRepositoryEntities.containsKey(c)) || (dynamicEntityFound = this.dynamicRepositoryEntities
+				.containsKey(c)))
 				&& object.getClass().getSuperclass() != null
 				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
+			// we only return, if we found the right class
 			return this.register(
 					(Class<? extends RepositoryObject>) c.getSuperclass(),
 					object);
 		}
-		return this.repositoryObjectEntities.get(c).register(object);
+
+		if (staticEntityFound)
+			return this.staticRepositoryEntities.get(c).register(object);
+		else if (dynamicEntityFound)
+			return this.dynamicRepositoryEntities.get(c).register(object);
+		return false;
 	}
 
 	public <T extends RepositoryObject> void setInitialized(final Class<T> c) {
-		this.repositoryObjectEntities.get(c).setInitialized();
+		this.staticRepositoryEntities.get(c).setInitialized();
+	}
+
+	public <T extends RepositoryObject> boolean isClassRegistered(
+			final Class<T> c) {
+		return this.isClassRegistered(c, c.getSimpleName());
+	}
+
+	public <T extends RepositoryObject> boolean isClassRegistered(
+			final String classFullName) {
+		return DynamicRepositoryEntity.isClassAvailable(classFullName);
+	}
+
+	public <T extends RepositoryObject> boolean isClassRegistered(
+			final Class<T> base, final String classSimpleName) {
+		if (!this.dynamicRepositoryEntities.containsKey(base)
+				&& base.getSuperclass() != null
+				&& RepositoryObject.class
+						.isAssignableFrom(base.getSuperclass())) {
+			return this.isClassRegistered(
+					(Class<? extends RepositoryObject>) base.getSuperclass(),
+					classSimpleName);
+		}
+		return this.dynamicRepositoryEntities.get(base).isClassRegistered(
+				classSimpleName);
+	}
+
+	public <T extends RepositoryObject> boolean registerClass(final Class<T> c) {
+		return this.registerClass(c, c);
+	}
+
+	public <T extends RepositoryObject, S extends T> boolean registerClass(
+			final Class<T> base, final Class<S> c) {
+		if (!this.dynamicRepositoryEntities.containsKey(base)
+				&& base.getSuperclass() != null
+				&& RepositoryObject.class
+						.isAssignableFrom(base.getSuperclass())) {
+			return this
+					.registerClass((Class<? extends RepositoryObject>) base
+							.getSuperclass(), c);
+		}
+		return this.dynamicRepositoryEntities.get(base).registerClass(c);
+	}
+
+	public <T extends RepositoryObject> boolean unregisterClass(final Class<T> c) {
+		return this.unregisterClass(c, c);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends RepositoryObject, S extends T> boolean unregisterClass(
+			final Class<T> base, final Class<S> c) {
+		if (!this.dynamicRepositoryEntities.containsKey(base)
+				&& base.getSuperclass() != null
+				&& RepositoryObject.class
+						.isAssignableFrom(base.getSuperclass())) {
+			return this
+					.unregisterClass((Class<? extends RepositoryObject>) base
+							.getSuperclass(), c);
+		}
+		return this.dynamicRepositoryEntities.get(base).unregisterClass(c);
+	}
+
+	public <T extends RepositoryObject> Class<? extends T> getRegisteredClass(
+			final Class<T> c, final String className) {
+		return this.dynamicRepositoryEntities.get(c).getRegisteredClass(
+				className);
+	}
+
+	public <T extends RepositoryObject> Collection<Class<? extends T>> getClasses(
+			Class<T> c) {
+		return this.dynamicRepositoryEntities.get(c).getClasses();
 	}
 
 	/**
@@ -1559,49 +1612,6 @@ public class Repository {
 	}
 
 	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all distance measures are stored.
-	 */
-	public String getDistanceMeasureBasePath() {
-		return this.distanceMeasureBasePath;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the distance
-	 * measure with the given name.
-	 * 
-	 * @param distanceMeasureClassName
-	 *            The name of the class of the distance measure.
-	 * @return The class of the distance measure with the given name or null, if
-	 *         it does not exist.
-	 */
-	public Class<? extends DistanceMeasure> getDistanceMeasureClass(
-			final String distanceMeasureClassName) {
-		Class<? extends DistanceMeasure> result = this.distanceMeasureClasses
-				.get(distanceMeasureClassName);
-		if (result == null && parent != null)
-			result = this.parent
-					.getDistanceMeasureClass(distanceMeasureClassName);
-		return result;
-	}
-
-	/**
-	 * 
-	 * @return The set of all registered distance measure classes.
-	 */
-	public Collection<Class<? extends DistanceMeasure>> getDistanceMeasureClasses() {
-		return this.distanceMeasureClasses.values();
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the distance measures have
-	 *         been initialized by the {@link DistanceMeasureFinderThread}.
-	 */
-	public boolean getDistanceMeasuresInitialized() {
-		return this.distanceMeasuresInitialized;
-	}
-
-	/**
 	 * This method checks whether the given string is a valid and internal
 	 * double attribute by invoking {@link #isInternalAttribute(String)}. Then
 	 * the internal double attribute is looked up and returned if it exists.
@@ -1670,7 +1680,7 @@ public class Repository {
 	 *         stored.
 	 */
 	public String getLogBasePath() {
-		return ((RunResultRepositoryEntity) this.repositoryObjectEntities
+		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
 				.get(RunResult.class)).getResultLogBasePath();
 	}
 
@@ -1798,38 +1808,6 @@ public class Repository {
 	 */
 	public Finder getRegisteredObject(final Finder object) {
 		Finder other = this.finder.get(object);
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
-	}
-
-	/**
-	 * This method checks, whether there is a goldstandard format registered,
-	 * that is equal to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public GoldStandardFormat getRegisteredObject(
-			final GoldStandardFormat object) {
-		GoldStandardFormat other = this.goldStandardFormats.get(object);
 		if (other == null && parent != null)
 			return parent.getRegisteredObject(object);
 		return other;
@@ -2074,7 +2052,7 @@ public class Repository {
 	 * @return The runresult with the given identifier.
 	 */
 	public RunResult getRegisteredRunResult(final String runIdentifier) {
-		return ((RunResultRepositoryEntity) this.repositoryObjectEntities
+		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
 				.get(RunResult.class)).runResultIdentifier.get(runIdentifier);
 	}
 
@@ -2423,11 +2401,19 @@ public class Repository {
 		this.log.info(message);
 	}
 
-	protected <T extends RepositoryObject> void createAndAddEntity(
+	protected <T extends RepositoryObject> void createAndAddStaticEntity(
 			final Class<T> c, final String basePath) {
-		this.repositoryObjectEntities.put(c, new StaticRepositoryEntity<T>(
+		this.staticRepositoryEntities.put(c, new StaticRepositoryEntity<T>(
 				this, this.parent != null
-						? this.parent.repositoryObjectEntities.get(c)
+						? this.parent.staticRepositoryEntities.get(c)
+						: null, basePath));
+	}
+
+	protected <T extends RepositoryObject> void createAndAddDynamicEntity(
+			final Class<T> c, final String basePath) {
+		this.dynamicRepositoryEntities.put(c, new DynamicRepositoryEntity<T>(
+				this, this.parent != null
+						? this.parent.dynamicRepositoryEntities.get(c)
 						: null, basePath));
 	}
 
@@ -2441,31 +2427,36 @@ public class Repository {
 	 */
 	protected void initAttributes() {
 
-		this.repositoryObjectEntities = new RepositoryEntityMap();
+		this.staticRepositoryEntities = new StaticRepositoryEntityMap();
 
-		this.createAndAddEntity(DataSet.class,
+		this.dynamicRepositoryEntities = new DynamicRepositoryEntityMap();
+
+		this.createAndAddStaticEntity(DataSet.class,
 				FileUtils.buildPath(this.basePath, "data", "datasets"));
-		this.createAndAddEntity(DataSetConfig.class, FileUtils.buildPath(
+		this.createAndAddStaticEntity(DataSetConfig.class, FileUtils.buildPath(
 				this.basePath, "data", "datasets", "configs"));
-		this.createAndAddEntity(GoldStandard.class,
+		this.createAndAddStaticEntity(GoldStandard.class,
 				FileUtils.buildPath(this.basePath, "data", "goldstandards"));
-		this.createAndAddEntity(GoldStandardConfig.class, FileUtils.buildPath(
-				this.basePath, "data", "goldstandards", "configs"));
-		this.createAndAddEntity(DataConfig.class,
+		this.createAndAddStaticEntity(GoldStandardConfig.class, FileUtils
+				.buildPath(this.basePath, "data", "goldstandards", "configs"));
+		this.createAndAddStaticEntity(DataConfig.class,
 				FileUtils.buildPath(this.basePath, "data", "configs"));
-		this.createAndAddEntity(Run.class,
+		this.createAndAddStaticEntity(Run.class,
 				FileUtils.buildPath(this.basePath, "runs"));
-		this.createAndAddEntity(ProgramConfig.class,
+		this.createAndAddStaticEntity(ProgramConfig.class,
 				FileUtils.buildPath(this.basePath, "programs", "configs"));
-		this.createAndAddEntity(Program.class,
+		this.createAndAddStaticEntity(Program.class,
 				FileUtils.buildPath(this.basePath, "programs"));
 
-		this.repositoryObjectEntities.put(
+		this.staticRepositoryEntities.put(
 				RunResult.class,
 				new RunResultRepositoryEntity(this, this.parent != null
-						? this.parent.repositoryObjectEntities
+						? this.parent.staticRepositoryEntities
 								.get(RunResult.class) : null, FileUtils
 						.buildPath(this.basePath, "results")));
+
+		this.createAndAddDynamicEntity(DistanceMeasure.class, FileUtils
+				.buildPath(this.supplementaryBasePath, "distanceMeasures"));
 
 		this.contextClasses = new ConcurrentHashMap<String, Class<? extends Context>>();
 		this.contextInstances = new ConcurrentHashMap<String, List<Context>>();
@@ -2477,8 +2468,6 @@ public class Repository {
 		this.dataPreprocessorClasses = new ConcurrentHashMap<String, Class<? extends DataPreprocessor>>();
 		this.dataSetTypeInstances = new ConcurrentHashMap<String, List<DataSetType>>();
 		this.dataSetTypeClasses = new ConcurrentHashMap<String, Class<? extends DataSetType>>();
-		this.distanceMeasureClasses = new ConcurrentHashMap<String, Class<? extends DistanceMeasure>>();
-		this.distanceMeasureInstances = new ConcurrentHashMap<String, List<DistanceMeasure>>();
 		this.dataStatisticClasses = new ConcurrentHashMap<String, Class<? extends DataStatistic>>();
 		this.dataStatisticInstances = new ConcurrentHashMap<String, List<DataStatistic>>();
 		this.statisticCalculators = new ConcurrentHashMap<StatisticCalculator<? extends Statistic>, StatisticCalculator<? extends Statistic>>();
@@ -2582,7 +2571,6 @@ public class Repository {
 	 */
 	@SuppressWarnings("unused")
 	protected void initializePaths() throws InvalidRepositoryException {
-		this.dataBasePath = FileUtils.buildPath(this.basePath, "data");
 		this.supplementaryBasePath = FileUtils.buildPath(this.basePath, "supp");
 		this.contextBasePath = FileUtils.buildPath(this.supplementaryBasePath,
 				"contexts");
@@ -2614,8 +2602,6 @@ public class Repository {
 				this.supplementaryBasePath, "statistics", "run");
 		this.runDataStatisticBasePath = FileUtils.buildPath(
 				this.supplementaryBasePath, "statistics", "rundata");
-		this.distanceMeasureBasePath = FileUtils.buildPath(
-				this.supplementaryBasePath, "distanceMeasures");
 	}
 
 	/**
@@ -2723,33 +2709,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method checks whether a distance measure class is registered in this
-	 * repository.
-	 * 
-	 * @param distanceMeasure
-	 *            The class of the distance measure to look up.
-	 * @return True, if the distance measure class was registered.
-	 */
-	public boolean isDistanceMeasureRegistered(
-			final Class<? extends DistanceMeasure> distanceMeasure) {
-		return this.isDistanceMeasureRegistered(distanceMeasure.getName());
-	}
-
-	/**
-	 * This method checks whether a distance measure with the given class name
-	 * is registered in this repository.
-	 * 
-	 * @param distMeasureClassName
-	 *            The class name of the distance measure to look up.
-	 * @return True, if the distance measure was registered.
-	 */
-	public boolean isDistanceMeasureRegistered(final String distMeasureClassName) {
-		return this.distanceMeasureClasses.containsKey(distMeasureClassName)
-				|| (this.parent != null && this.parent
-						.isDistanceMeasureRegistered(distMeasureClassName));
-	}
-
-	/**
 	 * This method checks, whether this repository has been initialized. A
 	 * repository is initialized, if the following invocations return true:
 	 * 
@@ -2792,7 +2751,7 @@ public class Repository {
 				&& getDataSetGeneratorsInitialized()
 				&& getContextsInitialized()
 				&& getDataPreprocessorsInitialized()
-				&& getDistanceMeasuresInitialized();
+				&& isInitialized(DistanceMeasure.class);
 	}
 
 	/**
@@ -3023,22 +2982,6 @@ public class Repository {
 		this.clusteringQualityMeasureInstances.get(
 				clusteringQualityMeasure.getClass().getSimpleName()).add(
 				clusteringQualityMeasure);
-
-		return true;
-	}
-
-	/**
-	 * This method registers instances of a distance measure.
-	 * 
-	 * @param distanceMeasure
-	 *            The distance measure instance to register.
-	 * @return True, if the distance measure method was registered successfully,
-	 *         false otherwise.
-	 */
-	public boolean register(final DistanceMeasure distanceMeasure) {
-		this.distanceMeasureInstances.get(
-				distanceMeasure.getClass().getSimpleName())
-				.add(distanceMeasure);
 
 		return true;
 	}
@@ -3499,43 +3442,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers a new distance measure class. It is only
-	 * registered, if it was not before.
-	 * 
-	 * @param object
-	 *            The new object to register.
-	 * @return True, if the new object has been registered.
-	 */
-	public boolean registerDistanceMeasureClass(
-			final Class<? extends DistanceMeasure> object) {
-		if (isDistanceMeasureRegistered(object)) {
-			// first remove the old class
-			unregisterDistanceMeasureClass(this.distanceMeasureClasses
-					.get(object.getName()));
-
-			// // register the new class
-			// this.distanceMeasureClasses.put(object.getName(), object);
-			//
-			// if (!ensureDistanceMeasureLibraries(object))
-			// return false;
-			//
-			// return true;
-		}
-		this.distanceMeasureClasses.put(object.getName(), object);
-
-		this.distanceMeasureInstances.put(object.getSimpleName(),
-				Collections.synchronizedList(new ArrayList<DistanceMeasure>()));
-
-		if (!ensureDistanceMeasureLibraries(object))
-			return false;
-
-		this.log.info("New Distance Measure Class registered: "
-				+ object.getSimpleName());
-
-		return true;
-	}
-
-	/**
 	 * This method registers a new parameter optimization method class. It is
 	 * only registered, if it was not before.
 	 * 
@@ -3805,14 +3711,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method sets the distance measures as initialized. It should only be
-	 * invoked by {@link DistanceMeasureFinderThread#afterFind()}.
-	 */
-	public void setDistanceMeasuresInitialized() {
-		this.distanceMeasuresInitialized = true;
-	}
-
-	/**
 	 * This method sets the parameter optimization methods as initialized. It
 	 * should only be invoked by
 	 * {@link ParameterOptimizationMethodFinderThread#afterFind()}.
@@ -3946,26 +3844,6 @@ public class Repository {
 			try {
 				clusteringQualityMeasure.notify(new RepositoryRemoveEvent(
 						clusteringQualityMeasure));
-			} catch (RegisterException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * @param distanceMeasure
-	 *            The distance measure to unregister.
-	 * @return True, if the distance measure has been unregistered successfully.
-	 */
-	public boolean unregister(final DistanceMeasure distanceMeasure) {
-		boolean result = this.distanceMeasureInstances.get(
-				distanceMeasure.getClass().getSimpleName()).remove(
-				distanceMeasure);
-		if (result) {
-			try {
-				distanceMeasure.notify(new RepositoryRemoveEvent(
-						distanceMeasure));
 			} catch (RegisterException e) {
 				e.printStackTrace();
 			}
@@ -4355,36 +4233,6 @@ public class Repository {
 	 *            The object to be removed.
 	 * @return True, if the object was remved successfully
 	 */
-	public boolean unregisterDistanceMeasureClass(
-			final Class<? extends DistanceMeasure> object) {
-		boolean result = this.distanceMeasureClasses.remove(object.getName()) != null;
-		if (result) {
-			this.info("DistanceMeasure class removed: "
-					+ object.getSimpleName());
-			// we inform all listeners about the new class. that
-			// means those objects are deleted such that new instances instances
-			// can be created using the new class.
-			for (DistanceMeasure distanceMeasure : Collections
-					.synchronizedList(new ArrayList<DistanceMeasure>(
-							distanceMeasureInstances.get(object.getSimpleName())))) {
-				distanceMeasure.unregister();
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
 	public boolean unregisterRunStatisticClass(
 			final Class<? extends RunStatistic> object) {
 		boolean result = this.runStatisticClasses.remove(object.getName()) != null;
@@ -4634,43 +4482,6 @@ public class Repository {
 						.isDataSetGeneratorRegistered(dsGeneratorClassName));
 	}
 
-	private boolean ensureRLibraries(final RLibraryInferior rLibraryInferior) {
-		if (rLibraryInferior.getRequiredRlibraries().isEmpty())
-			return true;
-		// ensure that all R libraries are available
-		MyRengine rEngine;
-		try {
-			rEngine = this.getRengineForCurrentThread();
-
-			if (rLibraryInferior.getRequiredRlibraries().isEmpty())
-				return true;
-			// ensure that all R libraries are available
-			for (String libName : rLibraryInferior.getRequiredRlibraries())
-				try {
-					rEngine.loadLibrary(libName, rLibraryInferior.getClass()
-							.getSimpleName());
-					// first we clear the old exceptions for this
-					// class
-					this.clearMissingRLibraries(rLibraryInferior.getClass()
-							.getName());
-				} catch (RLibraryNotLoadedException e) {
-					if (this.addMissingRLibraryException(e))
-						this.warn("\""
-								+ rLibraryInferior.getClass().getSimpleName()
-								+ "\" could not be loaded due to an unsatisfied R library dependency: "
-								+ libName);
-				}
-			return true;
-		} catch (RserveException e) {
-			if (this.addMissingRLibraryException(new RLibraryNotLoadedException(
-					rLibraryInferior.getClass().getName(), "R")))
-				this.warn("\""
-						+ rLibraryInferior.getClass().getSimpleName()
-						+ "\" could not be loaded since it requires R and no connection could be established.");
-		}
-		return true;
-	}
-
 	/**
 	 * This method assumes, that the class that is passed is currently
 	 * registered in this repository.
@@ -4790,35 +4601,6 @@ public class Repository {
 			e1.printStackTrace();
 		}
 		this.clusteringQualityMeasureClasses.remove(classObject.getName());
-		return false;
-	}
-
-	/**
-	 * This method assumes, that the class that is passed is currently
-	 * registered in this repository.
-	 * 
-	 * <p>
-	 * If the R libraries are not satisfied, the class is removed from the
-	 * repository.
-	 * 
-	 * @param classObject
-	 *            The class for which we want to ensure R library dependencies.
-	 * @return True, if all R library dependencies are fulfilled.
-	 * @throws UnsatisfiedRLibraryException
-	 */
-	private boolean ensureDistanceMeasureLibraries(
-			final Class<? extends DistanceMeasure> classObject) {
-		// create an instance
-		RLibraryInferior rLibraryInferior;
-		try {
-			rLibraryInferior = DistanceMeasure.parseFromString(this,
-					classObject.getSimpleName());
-
-			return this.ensureRLibraries(rLibraryInferior);
-		} catch (UnknownDistanceMeasureException e1) {
-			e1.printStackTrace();
-		}
-		this.distanceMeasureClasses.remove(classObject.getName());
 		return false;
 	}
 
@@ -5210,17 +4992,17 @@ public class Repository {
 	}
 
 	public String getAnalysisResultsBasePath() {
-		return ((RunResultRepositoryEntity) this.repositoryObjectEntities
+		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
 				.get(RunResult.class)).getAnalysisResultsBasePath();
 	}
 
 	public String getClusterResultsBasePath() {
-		return ((RunResultRepositoryEntity) this.repositoryObjectEntities
+		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
 				.get(RunResult.class)).getClusterResultsBasePath();
 	}
 
 	public String getClusterResultsQualityBasePath() {
-		return ((RunResultRepositoryEntity) this.repositoryObjectEntities
+		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
 				.get(RunResult.class)).getClusterResultsQualityBasePath();
 	}
 }

@@ -592,11 +592,6 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	public abstract int getTotalIterationCount();
 
 	/**
-	 * @return A set with names of all R libraries this class requires.
-	 */
-	public abstract Set<String> getRequiredRlibraries();
-
-	/**
 	 * This method returns the results of this parameter optimization run. Keep
 	 * in mind, that this method returns an incomplete object, before the run is
 	 * finished.

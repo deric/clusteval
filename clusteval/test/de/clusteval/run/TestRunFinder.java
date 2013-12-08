@@ -115,7 +115,7 @@ public class TestRunFinder {
 
 		new ClustevalBackendServer(repo, false);
 
-		Run run = repo.getObjectWithName(Run.class, "testCase");
+		Run run = repo.getStaticObjectWithName(Run.class, "testCase");
 		Assert.assertEquals(100, ((ParameterOptimizationRun) run)
 				.getOptimizationMethods().get(0).getTotalIterationCount());
 
@@ -138,7 +138,7 @@ public class TestRunFinder {
 		while (repo.registeredTestCaseRun < 2)
 			Thread.sleep(100);
 
-		run = repo.getObjectWithName(Run.class, "testCase");
+		run = repo.getStaticObjectWithName(Run.class, "testCase");
 		Assert.assertEquals(1000, ((ParameterOptimizationRun) run)
 				.getOptimizationMethods().get(0).getTotalIterationCount());
 
@@ -165,7 +165,7 @@ class TestRepository extends Repository {
 			RepositoryConfigurationException {
 		super(basePath, parent);
 
-		this.repositoryObjectEntities.put(
+		this.staticRepositoryEntities.put(
 				Run.class,
 				new TestCaseRepositoryObjectEntity(this, null, this
 						.getBasePath(Run.class)));

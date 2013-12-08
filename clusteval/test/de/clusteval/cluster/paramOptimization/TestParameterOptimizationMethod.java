@@ -119,7 +119,7 @@ public class TestParameterOptimizationMethod {
 
 		Context context = Context.parseFromString(repo, "ClusteringContext");
 
-		DataConfig dataConfig = repo.getObjectWithName(DataConfig.class,
+		DataConfig dataConfig = repo.getStaticObjectWithName(DataConfig.class,
 				"synthetic_cassini250");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
 		DataSetFormat internal = DataSetFormat.parseFromString(repo,
@@ -172,7 +172,7 @@ public class TestParameterOptimizationMethod {
 								+ ":numberOfElements)")
 				.setValue(ds.getIds().size());
 		ds.unloadFromMemory();
-		ProgramConfig programConfig = repo.getObjectWithName(
+		ProgramConfig programConfig = repo.getStaticObjectWithName(
 				ProgramConfig.class, "TransClust_2");
 
 		ClusteringQualityMeasure f2 = ClusteringQualityMeasure.parseFromString(
@@ -180,7 +180,7 @@ public class TestParameterOptimizationMethod {
 		ParameterOptimizationMethod method = ParameterOptimizationMethod
 				.parseFromString(repo,
 						"LayeredDivisiveParameterOptimizationMethod", repo
-								.getObjectWithName(Run.class,
+								.getStaticObjectWithName(Run.class,
 										"paper_run_synthetic"), programConfig,
 						dataConfig, programConfig.getOptimizableParams(), f2,
 						1001, false);
@@ -253,7 +253,7 @@ public class TestParameterOptimizationMethod {
 
 		Context context = Context.parseFromString(repo, "ClusteringContext");
 
-		DataConfig dataConfig = repo.getObjectWithName(DataConfig.class,
+		DataConfig dataConfig = repo.getStaticObjectWithName(DataConfig.class,
 				"synthetic_cassini250");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
 		DataSetFormat internal = DataSetFormat.parseFromString(repo,
@@ -306,7 +306,7 @@ public class TestParameterOptimizationMethod {
 								+ ":numberOfElements)")
 				.setValue(ds.getIds().size());
 		ds.unloadFromMemory();
-		ProgramConfig programConfig = repo.getObjectWithName(
+		ProgramConfig programConfig = repo.getStaticObjectWithName(
 				ProgramConfig.class, "TransClust_2");
 
 		ClusteringQualityMeasure f2 = ClusteringQualityMeasure.parseFromString(
@@ -314,7 +314,7 @@ public class TestParameterOptimizationMethod {
 		ParameterOptimizationMethod method = ParameterOptimizationMethod
 				.parseFromString(repo,
 						"LayeredDivisiveParameterOptimizationMethod", repo
-								.getObjectWithName(Run.class,
+								.getStaticObjectWithName(Run.class,
 										"paper_run_synthetic"), programConfig,
 						dataConfig, programConfig.getOptimizableParams(), f2,
 						1001, true);
@@ -370,7 +370,7 @@ public class TestParameterOptimizationMethod {
 
 		Context context = Context.parseFromString(repo, "ClusteringContext");
 
-		DataConfig dataConfig = repo.getObjectWithName(DataConfig.class,
+		DataConfig dataConfig = repo.getStaticObjectWithName(DataConfig.class,
 				"synthetic_cassini250");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
 		DataSetFormat internal = DataSetFormat.parseFromString(repo,
@@ -423,7 +423,7 @@ public class TestParameterOptimizationMethod {
 								+ ":numberOfElements)")
 				.setValue(ds.getIds().size());
 		ds.unloadFromMemory();
-		ProgramConfig programConfig = repo.getObjectWithName(
+		ProgramConfig programConfig = repo.getStaticObjectWithName(
 				ProgramConfig.class, "TransClust_2");
 
 		ClusteringQualityMeasure f2 = ClusteringQualityMeasure.parseFromString(
@@ -431,7 +431,7 @@ public class TestParameterOptimizationMethod {
 		ParameterOptimizationMethod method = ParameterOptimizationMethod
 				.parseFromString(repo,
 						"LayeredDivisiveParameterOptimizationMethod", repo
-								.getObjectWithName(Run.class,
+								.getStaticObjectWithName(Run.class,
 										"paper_run_synthetic"), programConfig,
 						dataConfig, programConfig.getOptimizableParams(), f2,
 						1001, true);
@@ -460,7 +460,7 @@ public class TestParameterOptimizationMethod {
 
 		Context context = Context.parseFromString(repo, "ClusteringContext");
 
-		DataConfig dataConfig = repo.getObjectWithName(DataConfig.class,
+		DataConfig dataConfig = repo.getStaticObjectWithName(DataConfig.class,
 				"baechler2003");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
 		DataSetFormat internal = DataSetFormat.parseFromString(repo,
@@ -514,7 +514,7 @@ public class TestParameterOptimizationMethod {
 								+ ":numberOfElements)")
 				.setValue(ds.getIds().size());
 		ds.unloadFromMemory();
-		ProgramConfig programConfig = repo.getObjectWithName(
+		ProgramConfig programConfig = repo.getStaticObjectWithName(
 				ProgramConfig.class, "TransClust_2");
 
 		ClusteringQualityMeasure f2 = ClusteringQualityMeasure.parseFromString(
@@ -522,7 +522,7 @@ public class TestParameterOptimizationMethod {
 		ParameterOptimizationMethod method = ParameterOptimizationMethod
 				.parseFromString(repo,
 						"LayeredDivisiveParameterOptimizationMethod",
-						repo.getObjectWithName(Run.class, "baechler2003"),
+						repo.getStaticObjectWithName(Run.class, "baechler2003"),
 						programConfig, dataConfig,
 						programConfig.getOptimizableParams(), f2, 1001, true);
 		method.reset(new File(

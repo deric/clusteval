@@ -49,7 +49,7 @@ public class DistanceMeasureFinder extends JARFinder<DistanceMeasure> {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.getRepository().getDistanceMeasureBasePath());
+		return new File(this.getRepository().getBasePath(DistanceMeasure.class));
 	}
 
 	/*
@@ -114,7 +114,7 @@ public class DistanceMeasureFinder extends JARFinder<DistanceMeasure> {
 	protected boolean isJARLoaded(File f) {
 		return super.isJARLoaded(f)
 				&& this.repository
-						.isDistanceMeasureRegistered("de.clusteval.data.distance."
+						.isClassRegistered("de.clusteval.data.distance."
 								+ f.getName().replace(".jar", ""));
 	}
 
@@ -125,7 +125,7 @@ public class DistanceMeasureFinder extends JARFinder<DistanceMeasure> {
 	 */
 	@Override
 	protected Collection<Class<? extends DistanceMeasure>> getRegisteredObjectSet() {
-		return this.repository.getDistanceMeasureClasses();
+		return this.repository.getClasses(DistanceMeasure.class);
 	}
 
 	/*
@@ -135,7 +135,7 @@ public class DistanceMeasureFinder extends JARFinder<DistanceMeasure> {
 	 */
 	@Override
 	protected void removeOldObject(Class<? extends DistanceMeasure> object) {
-		this.repository.unregisterDistanceMeasureClass(object);
+		this.repository.unregisterClass(object);
 	}
 
 }
@@ -172,7 +172,7 @@ class DistanceMeasureURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends DistanceMeasure> distanceMeasure = (Class<? extends DistanceMeasure>) result;
 
-				if (this.parent.getRepository().registerDistanceMeasureClass(
+				if (this.parent.getRepository().registerClass(
 						(Class<? extends DistanceMeasure>) distanceMeasure))
 					this.parent.getLog().info(
 							"DistanceMeasure " + name + " loaded");

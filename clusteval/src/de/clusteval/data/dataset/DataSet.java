@@ -269,9 +269,9 @@ public abstract class DataSet extends RepositoryObject {
 			// throw exception
 			Collection<DataSet> dataSets;
 			if (repo instanceof RunResultRepository)
-				dataSets = repo.getParent().getCollection(DataSet.class);
+				dataSets = repo.getParent().getCollectionStaticEntities(DataSet.class);
 			else
-				dataSets = repo.getCollection(DataSet.class);
+				dataSets = repo.getCollectionStaticEntities(DataSet.class);
 
 			for (DataSet ds : dataSets)
 				if (!(repo instanceof RunResultRepository)

@@ -752,7 +752,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 									+ getRunId(object
 											.getRepository()
 											.getParent()
-											.getObjectWithName(Run.class,
+											.getStaticObjectWithName(Run.class,
 													object.toString())),
 							"" + object.getStatus()};
 				} else {
@@ -1303,7 +1303,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								+ getProgramConfigId(object
 										.getRepository()
 										.getParent()
-										.getObjectWithName(ProgramConfig.class,
+										.getStaticObjectWithName(ProgramConfig.class,
 												object.toString()))};
 			} else {
 				columns = new String[]{
@@ -2040,7 +2040,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								+ getGoldStandardConfigId(object
 										.getRepository()
 										.getParent()
-										.getObjectWithName(
+										.getStaticObjectWithName(
 												GoldStandardConfig.class,
 												object.toString()))};
 			} else {
@@ -2086,7 +2086,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								+ getGoldStandardId(object
 										.getRepository()
 										.getParent()
-										.getObjectWithName(GoldStandard.class,
+										.getStaticObjectWithName(GoldStandard.class,
 												object.toString()))};
 			} else {
 				columns = new String[]{"repository_id", "absPath"};
@@ -2536,7 +2536,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								+ getDataSetId(object
 										.getRepository()
 										.getParent()
-										.getObjectWithName(DataSet.class,
+										.getStaticObjectWithName(DataSet.class,
 												object.getFullName())),
 						object.getChecksum() + "",
 						getDataSetTypeId(object.getDataSetType().getClass()
@@ -2600,7 +2600,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 									+ getDataConfigId(object
 											.getRepository()
 											.getParent()
-											.getObjectWithName(
+											.getStaticObjectWithName(
 													DataConfig.class,
 													object.getName()))};
 
@@ -2617,7 +2617,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 									+ getDataConfigId(object
 											.getRepository()
 											.getParent()
-											.getObjectWithName(
+											.getStaticObjectWithName(
 													DataConfig.class,
 													object.getName()))};
 				}
@@ -2686,7 +2686,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								+ getDataSetConfigId(object
 										.getRepository()
 										.getParent()
-										.getObjectWithName(DataSetConfig.class,
+										.getStaticObjectWithName(DataSetConfig.class,
 												object.toString()))};
 			} else {
 				columns = new String[]{"repository_id", "absPath", "name",

@@ -93,7 +93,7 @@ public class GoldStandardConfigFinder extends FileFinder {
 	 */
 	@Override
 	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.repository.getCollection(GoldStandardConfig.class);
+		return this.repository.getCollectionStaticEntities(GoldStandardConfig.class);
 	}
 
 	/*

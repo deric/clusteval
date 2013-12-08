@@ -52,7 +52,7 @@ public class RunResultFinder extends FileFinder {
 	 */
 	@Override
 	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.getRepository().getCollection(RunResult.class);
+		return this.getRepository().getCollectionStaticEntities(RunResult.class);
 	}
 
 	/*

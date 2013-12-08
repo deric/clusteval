@@ -5,7 +5,6 @@ package de.clusteval.framework.repository;
 
 import de.clusteval.data.dataset.DataSetFinderThread;
 
-//TODO: rename
 public abstract class RepositoryEntity<T extends RepositoryObject> {
 
 	protected Repository repository;
@@ -40,4 +39,9 @@ public abstract class RepositoryEntity<T extends RepositoryObject> {
 	public String getBasePath() {
 		return this.basePath;
 	}
+
+	public abstract <S extends T> boolean register(final S object)
+			throws RegisterException;
+
+	public abstract <S extends T> boolean unregister(final S object);
 }

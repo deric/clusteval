@@ -81,7 +81,7 @@ public class TestDunnIndexRClusteringQualityMeasure
 			clustering.addCluster(cluster2);
 
 			DataConfig dc = this.getRepository()
-					.getObjectWithName(DataConfig.class,"dunnIndexMatrixTest");
+					.getStaticObjectWithName(DataConfig.class,"dunnIndexMatrixTest");
 			DataSetConfig dsc = dc.getDatasetConfig();
 			DataSet ds = dsc.getDataSet();
 			ds.preprocessAndConvertTo(

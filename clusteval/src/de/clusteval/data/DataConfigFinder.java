@@ -92,7 +92,7 @@ public class DataConfigFinder extends FileFinder {
 	 */
 	@Override
 	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.repository.getCollection(DataConfig.class);
+		return this.repository.getCollectionStaticEntities(DataConfig.class);
 	}
 
 	/*
