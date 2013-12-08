@@ -454,7 +454,7 @@ public class Repository {
 	protected Map<File, RepositoryObject> pathToRepositoryObject;
 
 	// TODO: test
-	protected RepositoryObjectEntityMap repositoryObjectEntities;
+	protected RepositoryEntityMap repositoryObjectEntities;
 
 	/**
 	 * A map containing all classes of dataset generators registered in this
@@ -1670,7 +1670,7 @@ public class Repository {
 	 *         stored.
 	 */
 	public String getLogBasePath() {
-		return ((RunResultEntity) this.repositoryObjectEntities
+		return ((RunResultRepositoryEntity) this.repositoryObjectEntities
 				.get(RunResult.class)).getResultLogBasePath();
 	}
 
@@ -2074,7 +2074,7 @@ public class Repository {
 	 * @return The runresult with the given identifier.
 	 */
 	public RunResult getRegisteredRunResult(final String runIdentifier) {
-		return ((RunResultEntity) this.repositoryObjectEntities
+		return ((RunResultRepositoryEntity) this.repositoryObjectEntities
 				.get(RunResult.class)).runResultIdentifier.get(runIdentifier);
 	}
 
@@ -2425,7 +2425,7 @@ public class Repository {
 
 	protected <T extends RepositoryObject> void createAndAddEntity(
 			final Class<T> c, final String basePath) {
-		this.repositoryObjectEntities.put(c, new RepositoryObjectEntity<T>(
+		this.repositoryObjectEntities.put(c, new StaticRepositoryEntity<T>(
 				this, this.parent != null
 						? this.parent.repositoryObjectEntities.get(c)
 						: null, basePath));
@@ -2441,7 +2441,7 @@ public class Repository {
 	 */
 	protected void initAttributes() {
 
-		this.repositoryObjectEntities = new RepositoryObjectEntityMap();
+		this.repositoryObjectEntities = new RepositoryEntityMap();
 
 		this.createAndAddEntity(DataSet.class,
 				FileUtils.buildPath(this.basePath, "data", "datasets"));
@@ -2462,7 +2462,7 @@ public class Repository {
 
 		this.repositoryObjectEntities.put(
 				RunResult.class,
-				new RunResultEntity(this, this.parent != null
+				new RunResultRepositoryEntity(this, this.parent != null
 						? this.parent.repositoryObjectEntities
 								.get(RunResult.class) : null, FileUtils
 						.buildPath(this.basePath, "results")));
@@ -5210,17 +5210,17 @@ public class Repository {
 	}
 
 	public String getAnalysisResultsBasePath() {
-		return ((RunResultEntity) this.repositoryObjectEntities
+		return ((RunResultRepositoryEntity) this.repositoryObjectEntities
 				.get(RunResult.class)).getAnalysisResultsBasePath();
 	}
 
 	public String getClusterResultsBasePath() {
-		return ((RunResultEntity) this.repositoryObjectEntities
+		return ((RunResultRepositoryEntity) this.repositoryObjectEntities
 				.get(RunResult.class)).getClusterResultsBasePath();
 	}
 
 	public String getClusterResultsQualityBasePath() {
-		return ((RunResultEntity) this.repositoryObjectEntities
+		return ((RunResultRepositoryEntity) this.repositoryObjectEntities
 				.get(RunResult.class)).getClusterResultsQualityBasePath();
 	}
 }

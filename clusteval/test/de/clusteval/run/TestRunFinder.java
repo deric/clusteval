@@ -34,7 +34,7 @@ import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
-import de.clusteval.framework.repository.RepositoryObjectEntity;
+import de.clusteval.framework.repository.StaticRepositoryEntity;
 import de.clusteval.framework.repository.StubSQLCommunicator;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
@@ -185,7 +185,7 @@ class TestRepository extends Repository {
 
 }
 
-class TestCaseRepositoryObjectEntity extends RepositoryObjectEntity<Run> {
+class TestCaseRepositoryObjectEntity extends StaticRepositoryEntity<Run> {
 
 	/**
 	 * @param repository
@@ -193,7 +193,7 @@ class TestCaseRepositoryObjectEntity extends RepositoryObjectEntity<Run> {
 	 * @param basePath
 	 */
 	public TestCaseRepositoryObjectEntity(Repository repository,
-			RepositoryObjectEntity<Run> parent, String basePath) {
+			StaticRepositoryEntity<Run> parent, String basePath) {
 		super(repository, parent, basePath);
 	}
 

@@ -93,7 +93,7 @@ public class RunResultRepository extends Repository {
 	@Override
 	protected void initAttributes() {
 
-		this.repositoryObjectEntities = new RepositoryObjectEntityMap();
+		this.repositoryObjectEntities = new RepositoryEntityMap();
 
 		this.createAndAddEntity(DataConfig.class,
 				FileUtils.buildPath(this.basePath, "configs"));
@@ -127,7 +127,7 @@ public class RunResultRepository extends Repository {
 
 		this.repositoryObjectEntities.put(
 				RunResult.class,
-				new RunResultRunResultEntity(this,
+				new RunResultRunResultRepositoryEntity(this,
 						this.parent.repositoryObjectEntities
 								.get(RunResult.class), this.getBasePath()));
 
@@ -429,7 +429,7 @@ public class RunResultRepository extends Repository {
 
 class RunResultRepositoryDataSetObjectEntity
 		extends
-			RepositoryObjectEntity<DataSet> {
+			StaticRepositoryEntity<DataSet> {
 
 	/**
 	 * @param repository
@@ -437,7 +437,7 @@ class RunResultRepositoryDataSetObjectEntity
 	 * @param basePath
 	 */
 	public RunResultRepositoryDataSetObjectEntity(Repository repository,
-			RepositoryObjectEntity<DataSet> parent, String basePath) {
+			StaticRepositoryEntity<DataSet> parent, String basePath) {
 		super(repository, parent, basePath);
 	}
 
@@ -462,7 +462,7 @@ class RunResultRepositoryDataSetObjectEntity
 
 class RunResultRepositoryGoldStandardObjectEntity
 		extends
-			RepositoryObjectEntity<GoldStandard> {
+			StaticRepositoryEntity<GoldStandard> {
 
 	/**
 	 * @param repository
@@ -470,7 +470,7 @@ class RunResultRepositoryGoldStandardObjectEntity
 	 * @param basePath
 	 */
 	public RunResultRepositoryGoldStandardObjectEntity(Repository repository,
-			RepositoryObjectEntity<GoldStandard> parent, String basePath) {
+			StaticRepositoryEntity<GoldStandard> parent, String basePath) {
 		super(repository, parent, basePath);
 	}
 
