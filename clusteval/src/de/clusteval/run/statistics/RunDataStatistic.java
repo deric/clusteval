@@ -23,7 +23,6 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.run.RunAnalysisRun;
 import de.clusteval.utils.Statistic;
 
-
 /**
  * A run-data statistic is a type of {@link Statistic}, which corresponds to
  * relationships between data analysis runresults and run analysis runresults.
@@ -94,7 +93,7 @@ public abstract class RunDataStatistic extends Statistic {
 	 * @see framework.repository.RepositoryObject#register()
 	 */
 	@Override
-	public boolean register() {
+	public boolean register() throws RegisterException {
 		return this.repository.register(this);
 	}
 
@@ -121,8 +120,9 @@ public abstract class RunDataStatistic extends Statistic {
 	 */
 	public static RunDataStatistic parseFromString(final Repository repository,
 			String runDataStatistic) throws UnknownRunDataStatisticException {
-		Class<? extends RunDataStatistic> c = repository
-				.getRunDataStatisticClass("de.clusteval.run.statistics." + runDataStatistic);
+		Class<? extends RunDataStatistic> c = repository.getRegisteredClass(
+				RunDataStatistic.class, "de.clusteval.run.statistics."
+						+ runDataStatistic);
 
 		try {
 			RunDataStatistic statistic = c.getConstructor(Repository.class,

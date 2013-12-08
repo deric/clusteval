@@ -13,7 +13,6 @@ import java.util.Map;
 
 import org.rosuda.REngine.Rserve.RserveException;
 
-import de.clusteval.data.distance.DistanceMeasure;
 import de.clusteval.framework.MyRengine;
 import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.RLibraryRequirement;
@@ -30,14 +29,14 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 	/**
 	 * A map containing all objects registered in this entity.
 	 */
-	protected Map<String, List<? extends T>> objects;
+	protected Map<String, List<T>> objects;
 	protected Map<String, Class<? extends T>> classes;
 
 	public DynamicRepositoryEntity(final Repository repository,
 			final DynamicRepositoryEntity<T> parent, final String basePath) {
 		super(repository, basePath);
 		this.parent = parent;
-		this.objects = new HashMap<String, List<? extends T>>();
+		this.objects = new HashMap<String, List<T>>();
 		this.classes = new HashMap<String, Class<? extends T>>();
 	}
 
@@ -117,7 +116,7 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 		this.classes.put(object.getName(), object);
 
 		this.objects.put(object.getSimpleName(),
-				Collections.synchronizedList(new ArrayList<S>()));
+				Collections.synchronizedList(new ArrayList<T>()));
 
 		if (!ensureLibraries(object))
 			return false;
@@ -185,12 +184,10 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 	 * @return
 	 * @throws RegisterException
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public <S extends T> boolean register(final S object)
 			throws RegisterException {
-		((List<S>) this.objects.get(object.getClass().getSimpleName()))
-				.add(object);
+		this.objects.get(object.getClass().getSimpleName()).add(object);
 		// TODO: check duplicates in list?
 
 		return true;
@@ -245,6 +242,8 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 					(List<S>) objects.get(c.getSimpleName())))) {
 				object.unregister();
 			}
+
+			this.repository.sqlCommunicator.unregister(c);
 		}
 		return result;
 	}

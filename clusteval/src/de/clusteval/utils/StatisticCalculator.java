@@ -121,7 +121,7 @@ public abstract class StatisticCalculator<T extends Statistic>
 	 * @see utils.RepositoryObject#register()
 	 */
 	@Override
-	public boolean register() {
+	public boolean register() throws RegisterException {
 		return this.repository.register(this);
 	}
 
@@ -223,7 +223,8 @@ public abstract class StatisticCalculator<T extends Statistic>
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleContextException, UnknownContextException,
-			REngineException, RNotAvailableException, UnknownParameterType, InterruptedException {
+			REngineException, RNotAvailableException, UnknownParameterType,
+			InterruptedException {
 		this.lastResult = calculateResult();
 		return this.lastResult;
 	}
@@ -316,7 +317,8 @@ public abstract class StatisticCalculator<T extends Statistic>
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
-			REngineException, RNotAvailableException, UnknownParameterType, InterruptedException;
+			REngineException, RNotAvailableException, UnknownParameterType,
+			InterruptedException;
 
 	/**
 	 * @param absFolderPath

@@ -19,6 +19,7 @@ import de.clusteval.data.dataset.DataSetConfig;
 import de.clusteval.data.dataset.RunResultDataSetConfigFinderThread;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.data.goldstandard.GoldStandardConfigFinderThread;
+import de.clusteval.data.statistics.DataStatistic;
 import de.clusteval.data.statistics.DataStatisticFinderThread;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.SupervisorThread;
@@ -72,8 +73,8 @@ public class RunResultRunFinderThread extends RunFinderThread {
 	protected void beforeFind() {
 
 		if (!this.repository.isInitialized(DataSetConfig.class))
-			this.supervisorThread.getThread(RunResultDataSetConfigFinderThread.class)
-					.waitFor();
+			this.supervisorThread.getThread(
+					RunResultDataSetConfigFinderThread.class).waitFor();
 
 		if (!this.repository.isInitialized(GoldStandardConfig.class))
 			this.supervisorThread.getThread(
@@ -83,7 +84,7 @@ public class RunResultRunFinderThread extends RunFinderThread {
 			this.supervisorThread.getThread(ProgramConfigFinderThread.class)
 					.waitFor();
 
-		if (!this.repository.getDataStatisticsInitialized())
+		if (!this.repository.isInitialized(DataStatistic.class))
 			this.supervisorThread.getThread(DataStatisticFinderThread.class)
 					.waitFor();
 

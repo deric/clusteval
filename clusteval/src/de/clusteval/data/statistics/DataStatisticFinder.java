@@ -53,7 +53,7 @@ public class DataStatisticFinder extends JARFinder<DataStatistic> {
 	 */
 	@Override
 	protected Collection<Class<? extends DataStatistic>> getRegisteredObjectSet() {
-		return this.repository.getDataStatisticClasses();
+		return this.repository.getClasses(DataStatistic.class);
 	}
 
 	/*
@@ -63,7 +63,7 @@ public class DataStatisticFinder extends JARFinder<DataStatistic> {
 	 */
 	@Override
 	protected void removeOldObject(Class<? extends DataStatistic> object) {
-		this.repository.unregisterDataStatisticClass(object);
+		this.repository.unregisterClass(DataStatistic.class, object);
 	}
 
 	/*
@@ -77,7 +77,7 @@ public class DataStatisticFinder extends JARFinder<DataStatistic> {
 			throws MalformedURLException {
 		// add URLS for JARs into list
 		List<URL> urls = this.search(new File(this.repository
-				.getDataStatisticBasePath()));
+				.getBasePath(DataStatistic.class)));
 		// load corresponding classes of URLs in list
 		return new DataStatisticURLClassLoader(this, urls.toArray(new URL[0]),
 				parent);
@@ -124,7 +124,7 @@ public class DataStatisticFinder extends JARFinder<DataStatistic> {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getDataStatisticBasePath());
+		return new File(this.repository.getBasePath(DataStatistic.class));
 	}
 
 	/*
@@ -156,7 +156,7 @@ public class DataStatisticFinder extends JARFinder<DataStatistic> {
 	protected boolean isJARLoaded(File f) {
 		return super.isJARLoaded(f)
 				&& this.repository
-						.isDataStatisticRegistered(classNamesForJARFile(f)[0]);
+						.isClassRegistered(classNamesForJARFile(f)[0]);
 	}
 }
 
@@ -190,8 +190,8 @@ class DataStatisticURLClassLoader extends URLClassLoader {
 			if (name.endsWith("DataStatistic")) {
 				@SuppressWarnings("unchecked")
 				Class<? extends DataStatistic> dataStatistic = (Class<? extends DataStatistic>) result;
-				if (this.parent.getRepository().registerDataStatisticClass(
-						dataStatistic))
+				if (this.parent.getRepository().registerClass(
+						DataStatistic.class, dataStatistic))
 					this.parent.getLog().info(
 							"DataStatistic " + name + " loaded");
 

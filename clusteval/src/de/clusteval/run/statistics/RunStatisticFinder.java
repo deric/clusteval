@@ -53,7 +53,7 @@ public class RunStatisticFinder extends JARFinder<RunStatistic> {
 	 */
 	@Override
 	protected Collection<Class<? extends RunStatistic>> getRegisteredObjectSet() {
-		return this.repository.getRunStatisticClasses();
+		return this.repository.getClasses(RunStatistic.class);
 	}
 
 	/*
@@ -63,7 +63,7 @@ public class RunStatisticFinder extends JARFinder<RunStatistic> {
 	 */
 	@Override
 	protected void removeOldObject(Class<? extends RunStatistic> object) {
-		this.repository.unregisterRunStatisticClass(object);
+		this.repository.unregisterClass(RunStatistic.class, object);
 	}
 
 	/*
@@ -123,7 +123,7 @@ public class RunStatisticFinder extends JARFinder<RunStatistic> {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getRunStatisticBasePath());
+		return new File(this.repository.getBasePath(RunStatistic.class));
 	}
 
 	/*
@@ -155,7 +155,7 @@ public class RunStatisticFinder extends JARFinder<RunStatistic> {
 	protected boolean isJARLoaded(File f) {
 		return super.isJARLoaded(f)
 				&& this.repository
-						.isRunStatisticRegistered(classNamesForJARFile(f)[0]);
+						.isClassRegistered(classNamesForJARFile(f)[0]);
 	}
 }
 
@@ -188,8 +188,8 @@ class RunStatisticURLClassLoader extends URLClassLoader {
 			if (name.endsWith("RunStatistic")) {
 				@SuppressWarnings("unchecked")
 				Class<? extends RunStatistic> runStatistic = (Class<? extends RunStatistic>) result;
-				if (this.parent.getRepository().registerRunStatisticClass(
-						runStatistic))
+				if (this.parent.getRepository().registerClass(
+						RunStatistic.class, runStatistic))
 					this.parent.getLog().info(
 							"RunStatistic " + name + " loaded");
 

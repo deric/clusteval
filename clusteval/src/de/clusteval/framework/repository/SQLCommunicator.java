@@ -450,6 +450,16 @@ public abstract class SQLCommunicator {
 			return this.unregister((DataSet) object);
 		return false;
 	}
+	
+	// TODO
+	protected boolean register(final Class<? extends RepositoryObject> c) {
+		return false;
+	}
+
+	// TODO
+	protected boolean unregister(final Class<? extends RepositoryObject> c) {
+		return false;
+	}
 
 	protected abstract boolean register(final GoldStandardConfig object,
 			final boolean updateOnly);

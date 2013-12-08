@@ -23,7 +23,6 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.run.DataAnalysisRun;
 import de.clusteval.utils.Statistic;
 
-
 /**
  * A data statistic is a type of {@link Statistic}, which corresponds to
  * properties of a data configuration (dataset and goldstandard).
@@ -93,7 +92,7 @@ public abstract class DataStatistic extends Statistic {
 	 * @see framework.repository.RepositoryObject#register()
 	 */
 	@Override
-	public boolean register() {
+	public boolean register() throws RegisterException {
 		return this.repository.register(this);
 	}
 
@@ -120,8 +119,9 @@ public abstract class DataStatistic extends Statistic {
 	 */
 	public static DataStatistic parseFromString(final Repository repository,
 			String dataStatistic) throws UnknownDataStatisticException {
-		Class<? extends DataStatistic> c = repository
-				.getDataStatisticClass("de.clusteval.data.statistics." + dataStatistic);
+		Class<? extends DataStatistic> c = repository.getRegisteredClass(
+				DataStatistic.class, "de.clusteval.data.statistics."
+						+ dataStatistic);
 
 		try {
 			DataStatistic statistic = c.getConstructor(Repository.class,

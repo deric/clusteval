@@ -57,8 +57,6 @@ import de.clusteval.data.dataset.generator.UnknownDataSetGeneratorException;
 import de.clusteval.data.dataset.type.DataSetType;
 import de.clusteval.data.dataset.type.DataSetTypeFinderThread;
 import de.clusteval.data.distance.DistanceMeasure;
-import de.clusteval.data.distance.DistanceMeasureFinderThread;
-import de.clusteval.data.distance.UnknownDistanceMeasureException;
 import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.data.goldstandard.format.GoldStandardFormat;
@@ -67,8 +65,6 @@ import de.clusteval.data.preprocessing.DataPreprocessorFinderThread;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
 import de.clusteval.data.statistics.DataStatistic;
 import de.clusteval.data.statistics.DataStatisticCalculator;
-import de.clusteval.data.statistics.DataStatisticFinderThread;
-import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.MyRengine;
 import de.clusteval.framework.RLibraryNotLoadedException;
@@ -97,11 +93,9 @@ import de.clusteval.run.result.format.RunResultFormatFinderThread;
 import de.clusteval.run.result.format.RunResultFormatParser;
 import de.clusteval.run.statistics.RunDataStatistic;
 import de.clusteval.run.statistics.RunDataStatisticCalculator;
-import de.clusteval.run.statistics.RunDataStatisticFinderThread;
 import de.clusteval.run.statistics.RunStatistic;
 import de.clusteval.run.statistics.RunStatisticCalculator;
 import de.clusteval.run.statistics.RunStatisticFinderThread;
-import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.Finder;
 import de.clusteval.utils.InternalAttributeException;
@@ -130,9 +124,10 @@ import file.FileUtils;
  * @author Christian Wiwie
  * 
  */
-// Repository class before: 7312 lines
-// Repository class after 1st part: 5465 lines
-// Repository class after RunResult part: 5263 lines
+// Repository class before: 7314 lines
+// Repository class after 1st part: 5466 lines
+// Repository class after RunResult part: 5264 lines
+// Repository class after DistanceMeasure: 5009 lines
 public class Repository {
 
 	/**
@@ -281,24 +276,6 @@ public class Repository {
 	private boolean dataSetTypesInitialized;
 
 	/**
-	 * A boolean attribute indicating whether the data statistics have been
-	 * initialized by the {@link DataStatisticFinderThread}.
-	 */
-	private boolean dataStatisticsInitialized;
-
-	/**
-	 * A boolean attribute indicating whether the run statistics have been
-	 * initialized by the {@link RunStatisticFinderThread}.
-	 */
-	private boolean runStatisticsInitialized;
-
-	/**
-	 * A boolean attribute indicating whether the run data statistics have been
-	 * initialized by the {@link RunDataStatisticFinderThread}.
-	 */
-	private boolean runDataStatisticsInitialized;
-
-	/**
 	 * A boolean attribute indicating whether the runresult formats have been
 	 * initialized by the {@link RunResultFormatFinderThread}.
 	 */
@@ -357,24 +334,6 @@ public class Repository {
 	 * dataset types are stored.
 	 */
 	protected String dataSetTypeBasePath;
-
-	/**
-	 * The absolute path to the directory within this repository, where all data
-	 * statistics are stored.
-	 */
-	protected String dataStatisticBasePath;
-
-	/**
-	 * The absolute path to the directory within this repository, where all run
-	 * statistics are stored.
-	 */
-	protected String runStatisticBasePath;
-
-	/**
-	 * The absolute path to the directory within this repository, where all run
-	 * data statistics are stored.
-	 */
-	protected String runDataStatisticBasePath;
 
 	/**
 	 * The absolute path to the directory within this repository, where all
@@ -464,30 +423,6 @@ public class Repository {
 	protected Map<String, List<DataSetType>> dataSetTypeInstances;
 
 	/**
-	 * A map containing all classes of data statistics registered in this
-	 * repository. Mapping from Class.getName() to the class.
-	 */
-	protected Map<String, Class<? extends DataStatistic>> dataStatisticClasses;
-
-	/**
-	 * A map mapping from the simple name of the class to all of its
-	 * instances.Mapping from Class.getSimpleName() to the instances.
-	 */
-	protected Map<String, List<DataStatistic>> dataStatisticInstances;
-
-	/**
-	 * A map containing all classes of data statistic calculators registered in
-	 * this repository.
-	 */
-	protected Map<String, Class<? extends DataStatisticCalculator<? extends DataStatistic>>> dataStatisticCalculatorClasses;
-
-	/**
-	 * A map containing all statistic calculators registered in this repository.
-	 */
-	// TODO
-	protected Map<StatisticCalculator<? extends Statistic>, StatisticCalculator<? extends Statistic>> statisticCalculators;
-
-	/**
 	 * A map containing all classes of clustering quality measure registered in
 	 * this repository. Mapping from Class.getName() to the class.
 	 */
@@ -529,41 +464,6 @@ public class Repository {
 	 */
 	// TODO
 	protected Map<String, Map<ParameterOptimizationMethod, ParameterOptimizationMethod>> parameterOptimizationMethodInstances;
-	/**
-	 * A map containing all classes of run statistics registered in this
-	 * repository. Mapping from Class.getName() to the class.
-	 */
-	protected Map<String, Class<? extends RunStatistic>> runStatisticClasses;
-
-	/**
-	 * A map mapping from the simple name of the class to all of its
-	 * instances.Mapping from Class.getSimpleName() to the instances.
-	 */
-	protected Map<String, List<RunStatistic>> runStatisticInstances;
-
-	/**
-	 * A map containing all classes of run data statistics registered in this
-	 * repository. Mapping from Class.getName() to the class.
-	 */
-	protected Map<String, Class<? extends RunDataStatistic>> runDataStatisticClasses;
-
-	/**
-	 * A map mapping from the simple name of the class to all of its
-	 * instances.Mapping from Class.getSimpleName() to the instances.
-	 */
-	protected Map<String, List<RunDataStatistic>> runDataStatisticInstances;
-
-	/**
-	 * A map containing all classes of run statistic calculators registered in
-	 * this repository.
-	 */
-	protected Map<String, Class<? extends RunStatisticCalculator<? extends RunStatistic>>> runStatisticCalculatorClasses;
-
-	/**
-	 * A map containing all classes of run data statistic calculators registered
-	 * in this repository.
-	 */
-	protected Map<String, Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>>> runDataStatisticCalculatorClasses;
 
 	/**
 	 * A map containing all goldstandard formats registered in this repository.
@@ -985,9 +885,9 @@ public class Repository {
 		this.ensureFolder(this.suppClusteringBasePath);
 		this.ensureFolder(this.contextBasePath);
 		this.ensureFolder(this.parameterOptimizationMethodBasePath);
-		this.ensureFolder(this.dataStatisticBasePath);
-		this.ensureFolder(this.runStatisticBasePath);
-		this.ensureFolder(this.runDataStatisticBasePath);
+		this.ensureFolder(this.getBasePath(DataStatistic.class));
+		this.ensureFolder(this.getBasePath(RunStatistic.class));
+		this.ensureFolder(this.getBasePath(RunDataStatistic.class));
 		this.ensureFolder(this.getBasePath(DistanceMeasure.class));
 		this.ensureFolder(this.generatorBasePath);
 		this.ensureFolder(this.dataSetGeneratorBasePath);
@@ -1324,7 +1224,10 @@ public class Repository {
 	}
 
 	public <T extends RepositoryObject> void setInitialized(final Class<T> c) {
-		this.staticRepositoryEntities.get(c).setInitialized();
+		if (this.staticRepositoryEntities.containsKey(c))
+			this.staticRepositoryEntities.get(c).setInitialized();
+		else
+			this.dynamicRepositoryEntities.get(c).setInitialized();
 	}
 
 	public <T extends RepositoryObject> boolean isClassRegistered(
@@ -1546,69 +1449,6 @@ public class Repository {
 	 */
 	public boolean getDataSetTypesInitialized() {
 		return this.dataSetTypesInitialized;
-	}
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all data statistics are stored.
-	 */
-	public String getDataStatisticBasePath() {
-		return dataStatisticBasePath;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the data
-	 * statistic calculator for the datastatistic class with the given name.
-	 * 
-	 * @param dataStatisticClassName
-	 *            The name of the datastatistic class.
-	 * 
-	 * @return The class of the data statistic calculator with the given name or
-	 *         null, if it does not exist.
-	 */
-	public Class<? extends DataStatisticCalculator<? extends DataStatistic>> getDataStatisticCalculator(
-			final String dataStatisticClassName) {
-		Class<? extends DataStatisticCalculator<? extends DataStatistic>> result = this.dataStatisticCalculatorClasses
-				.get(dataStatisticClassName);
-		if (result == null && parent != null)
-			result = this.parent
-					.getDataStatisticCalculator(dataStatisticClassName);
-		return result;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the data
-	 * statistic with the given name.
-	 * 
-	 * @param dataStatisticClassName
-	 *            The name of the class of the data statistic
-	 * 
-	 * @return The data statistic with the given name or null, if it does not
-	 *         exist.
-	 */
-	public Class<? extends DataStatistic> getDataStatisticClass(
-			final String dataStatisticClassName) {
-		Class<? extends DataStatistic> result = this.dataStatisticClasses
-				.get(dataStatisticClassName);
-		if (result == null && parent != null)
-			result = this.parent.getDataStatisticClass(dataStatisticClassName);
-		return result;
-	}
-
-	/**
-	 * 
-	 * @return The set of all registered data statistic classes.
-	 */
-	public Collection<Class<? extends DataStatistic>> getDataStatisticClasses() {
-		return this.dataStatisticClasses.values();
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the data statistics have
-	 *         been initialized by the {@link DataStatisticFinderThread}.
-	 */
-	public boolean getDataStatisticsInitialized() {
-		return this.dataStatisticsInitialized;
 	}
 
 	/**
@@ -1979,39 +1819,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method checks, whether there is a statistic calculator registered,
-	 * that is equal to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public StatisticCalculator<? extends Statistic> getRegisteredObject(
-			final StatisticCalculator<? extends Statistic> object) {
-		StatisticCalculator<? extends Statistic> other = this.statisticCalculators
-				.get(object);
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
-	}
-
-	/**
 	 * This method checks, whether there is a string program parameter
 	 * registered, that is equal to the passed object and returns it.
 	 * 
@@ -2094,70 +1901,6 @@ public class Repository {
 	 */
 	public boolean getRProgramsInitialized() {
 		return this.rProgramsInitialized;
-	}
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all run data statistics are stored.
-	 */
-	public String getRunDataStatisticBasePath() {
-		return runDataStatisticBasePath;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the run-data
-	 * statistic calculator corresponding to the run-data-statistic with the
-	 * given name.
-	 * 
-	 * @param runDataStatisticClassName
-	 *            The name of the class of the run-data statistic.
-	 * @return The class of the run-data statistic calculator for the given
-	 *         name, or null if it does not exist.
-	 */
-	public Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>> getRunDataStatisticCalculator(
-			final String runDataStatisticClassName) {
-		Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>> result = this.runDataStatisticCalculatorClasses
-				.get(runDataStatisticClassName);
-		if (result == null && parent != null)
-			result = this.parent
-					.getRunDataStatisticCalculator(runDataStatisticClassName);
-		return result;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the run-data
-	 * statistic with the given name.
-	 * 
-	 * @param runDataStatisticClassName
-	 *            The name of the class of the run-data statistic.
-	 * @return The class of the run-data statistic calculator for the given
-	 *         name, or null if it does not exist.
-	 */
-	public Class<? extends RunDataStatistic> getRunDataStatisticClass(
-			final String runDataStatisticClassName) {
-		Class<? extends RunDataStatistic> result = this.runDataStatisticClasses
-				.get(runDataStatisticClassName);
-		if (result == null && parent != null)
-			result = this.parent
-					.getRunDataStatisticClass(runDataStatisticClassName);
-		return result;
-	}
-
-	/**
-	 * 
-	 * @return The set of all registered run data statistic classes.
-	 */
-	public Collection<Class<? extends RunDataStatistic>> getRunDataStatisticClasses() {
-		return this.runDataStatisticClasses.values();
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the run data statistics
-	 *         have been initialized by the {@link RunDataStatisticFinderThread}
-	 *         .
-	 */
-	public boolean getRunDataStatisticsInitialized() {
-		return this.runDataStatisticsInitialized;
 	}
 
 	/**
@@ -2268,78 +2011,6 @@ public class Repository {
 		}
 
 		return result;
-	}
-
-	// /**
-	// * @return A collection with all runs registered in this repository.
-	// */
-	// TODO: differs from getCollection(Run.class) in that it does not include
-	// parent runs -> check
-	// public Collection<Run> getRuns() {
-	// synchronized (this.runs) {
-	// return new HashSet<Run>(this.runs.values());
-	// }
-	// }
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all run statistics are stored.
-	 */
-	public String getRunStatisticBasePath() {
-		return runStatisticBasePath;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the run
-	 * statistic calculator corresponding to the run statistic class with the
-	 * given name.
-	 * 
-	 * @param runStatisticClassName
-	 *            The name of the run statistic class.
-	 * @return The run statistic calculator for the given run statistic class
-	 *         name.
-	 */
-	public Class<? extends RunStatisticCalculator<? extends RunStatistic>> getRunStatisticCalculator(
-			final String runStatisticClassName) {
-		Class<? extends RunStatisticCalculator<? extends RunStatistic>> result = this.runStatisticCalculatorClasses
-				.get(runStatisticClassName);
-		if (result == null && parent != null)
-			result = this.parent
-					.getRunStatisticCalculator(runStatisticClassName);
-		return result;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the run
-	 * statistic with the given name.
-	 * 
-	 * @param runStatisticClassName
-	 *            The name of the run statistic class.
-	 * @return The run statistic with the given class name.
-	 */
-	public Class<? extends RunStatistic> getRunStatisticClass(
-			final String runStatisticClassName) {
-		Class<? extends RunStatistic> result = this.runStatisticClasses
-				.get(runStatisticClassName);
-		if (result == null && parent != null)
-			result = this.parent.getRunStatisticClass(runStatisticClassName);
-		return result;
-	}
-
-	/**
-	 * 
-	 * @return The set of all registered run statistic classes.
-	 */
-	public Collection<Class<? extends RunStatistic>> getRunStatisticClasses() {
-		return this.runStatisticClasses.values();
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the run statistics have
-	 *         been initialized by the {@link RunStatisticFinderThread}.
-	 */
-	public boolean getRunStatisticsInitialized() {
-		return this.runStatisticsInitialized;
 	}
 
 	/**
@@ -2458,6 +2129,38 @@ public class Repository {
 		this.createAndAddDynamicEntity(DistanceMeasure.class, FileUtils
 				.buildPath(this.supplementaryBasePath, "distanceMeasures"));
 
+		this.dynamicRepositoryEntities
+				.put(DataStatistic.class,
+						new DataStatisticRepositoryEntity(
+								this,
+								this.parent != null
+										? (DataStatisticRepositoryEntity) this.parent.dynamicRepositoryEntities
+												.get(DataStatistic.class)
+										: null, FileUtils.buildPath(
+										this.supplementaryBasePath,
+										"statistics", "data")));
+
+		this.dynamicRepositoryEntities
+				.put(RunStatistic.class,
+						new RunStatisticRepositoryEntity(
+								this,
+								this.parent != null
+										? (RunStatisticRepositoryEntity) this.parent.dynamicRepositoryEntities
+												.get(RunStatistic.class) : null,
+								FileUtils.buildPath(this.supplementaryBasePath,
+										"statistics", "run")));
+
+		this.dynamicRepositoryEntities
+				.put(RunDataStatistic.class,
+						new RunDataStatisticRepositoryEntity(
+								this,
+								this.parent != null
+										? (RunDataStatisticRepositoryEntity) this.parent.dynamicRepositoryEntities
+												.get(RunDataStatistic.class)
+										: null, FileUtils.buildPath(
+										this.supplementaryBasePath,
+										"statistics", "rundata")));
+
 		this.contextClasses = new ConcurrentHashMap<String, Class<? extends Context>>();
 		this.contextInstances = new ConcurrentHashMap<String, List<Context>>();
 		this.dataSetFormatInstances = new ConcurrentHashMap<String, List<DataSetFormat>>();
@@ -2468,17 +2171,10 @@ public class Repository {
 		this.dataPreprocessorClasses = new ConcurrentHashMap<String, Class<? extends DataPreprocessor>>();
 		this.dataSetTypeInstances = new ConcurrentHashMap<String, List<DataSetType>>();
 		this.dataSetTypeClasses = new ConcurrentHashMap<String, Class<? extends DataSetType>>();
-		this.dataStatisticClasses = new ConcurrentHashMap<String, Class<? extends DataStatistic>>();
-		this.dataStatisticInstances = new ConcurrentHashMap<String, List<DataStatistic>>();
 		this.statisticCalculators = new ConcurrentHashMap<StatisticCalculator<? extends Statistic>, StatisticCalculator<? extends Statistic>>();
 		this.runStatisticClasses = new ConcurrentHashMap<String, Class<? extends RunStatistic>>();
 		this.runStatisticInstances = new ConcurrentHashMap<String, List<RunStatistic>>();
-		this.runDataStatisticClasses = new ConcurrentHashMap<String, Class<? extends RunDataStatistic>>();
-		this.runDataStatisticInstances = new ConcurrentHashMap<String, List<RunDataStatistic>>();
 		this.dataSetFormatParser = new ConcurrentHashMap<String, Class<? extends DataSetFormatParser>>();
-		this.dataStatisticCalculatorClasses = new ConcurrentHashMap<String, Class<? extends DataStatisticCalculator<? extends DataStatistic>>>();
-		this.runStatisticCalculatorClasses = new ConcurrentHashMap<String, Class<? extends RunStatisticCalculator<? extends RunStatistic>>>();
-		this.runDataStatisticCalculatorClasses = new ConcurrentHashMap<String, Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>>>();
 		this.clusteringQualityMeasureClasses = new ConcurrentHashMap<String, Class<? extends ClusteringQualityMeasure>>();
 		this.clusteringQualityMeasureInstances = new ConcurrentHashMap<String, List<ClusteringQualityMeasure>>();
 		this.goldStandardFormats = new ConcurrentHashMap<GoldStandardFormat, GoldStandardFormat>();
@@ -2596,12 +2292,6 @@ public class Repository {
 				"types");
 		this.dataSetTypeBasePath = FileUtils.buildPath(this.typesBasePath,
 				"dataset");
-		this.dataStatisticBasePath = FileUtils.buildPath(
-				this.supplementaryBasePath, "statistics", "data");
-		this.runStatisticBasePath = FileUtils.buildPath(
-				this.supplementaryBasePath, "statistics", "run");
-		this.runDataStatisticBasePath = FileUtils.buildPath(
-				this.supplementaryBasePath, "statistics", "rundata");
 	}
 
 	/**
@@ -2695,20 +2385,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method checks whether a data statistic with the given class name is
-	 * registered in this repository.
-	 * 
-	 * @param dsStatisticClassName
-	 *            The class name of the data statistic to look up.
-	 * @return True, if the data statistic was registered.
-	 */
-	public boolean isDataStatisticRegistered(final String dsStatisticClassName) {
-		return this.dataStatisticClasses.containsKey(dsStatisticClassName)
-				|| (this.parent != null && this.parent
-						.isDataStatisticRegistered(dsStatisticClassName));
-	}
-
-	/**
 	 * This method checks, whether this repository has been initialized. A
 	 * repository is initialized, if the following invocations return true:
 	 * 
@@ -2736,9 +2412,9 @@ public class Repository {
 	public boolean isInitialized() {
 		// TODO: for loop?
 		return getDataSetFormatsInitialized() && getDataSetTypesInitialized()
-				&& getDataStatisticsInitialized()
-				&& getRunStatisticsInitialized()
-				&& getRunDataStatisticsInitialized()
+				&& isInitialized(DataStatistic.class)
+				&& isInitialized(RunStatistic.class)
+				&& isInitialized(RunDataStatistic.class)
 				&& getRunResultFormatsInitialized()
 				&& getClusteringQualityMeasuresInitialized()
 				&& getParameterOptimizationMethodsInitialized()
@@ -2859,21 +2535,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method checks whether a run-data statistic has been registered for
-	 * the given run-data statistic class name.
-	 * 
-	 * @param dsStatisticClassName
-	 *            The class name of the run-data statistic we want to look up.
-	 * @return True, if the run-data statistic has been registered.
-	 */
-	public boolean isRunDataStatisticRegistered(
-			final String dsStatisticClassName) {
-		return this.runDataStatisticClasses.containsKey(dsStatisticClassName)
-				|| (this.parent != null && this.parent
-						.isRunDataStatisticRegistered(dsStatisticClassName));
-	}
-
-	/**
 	 * This method checks whether a runresult format with the given class has
 	 * been registered.
 	 * 
@@ -2902,20 +2563,6 @@ public class Repository {
 		return this.runResultFormatClasses.containsKey(rrFormatClassName)
 				|| (this.parent != null && this.parent
 						.isRunResultFormatRegistered(rrFormatClassName));
-	}
-
-	/**
-	 * This method checks whether a run statistic has been registered with the
-	 * given class name.
-	 * 
-	 * @param runStatisticClassName
-	 *            The class name for which we want to look up.
-	 * @return True, if the run statistic has been registered.
-	 */
-	public boolean isRunStatisticRegistered(final String runStatisticClassName) {
-		return this.runStatisticClasses.containsKey(runStatisticClassName)
-				|| (this.parent != null && this.parent
-						.isRunStatisticRegistered(runStatisticClassName));
 	}
 
 	/**
@@ -2987,21 +2634,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers instances of a data statistic.
-	 * 
-	 * @param dataStatistic
-	 *            The data statistic instance to register.
-	 * @return True, if the data statistic method was registered successfully,
-	 *         false otherwise.
-	 */
-	public boolean register(final DataStatistic dataStatistic) {
-		this.dataStatisticInstances.get(
-				dataStatistic.getClass().getSimpleName()).add(dataStatistic);
-
-		return true;
-	}
-
-	/**
 	 * This method registers instances of a RProgram.
 	 * 
 	 * @param rProgram
@@ -3014,37 +2646,6 @@ public class Repository {
 		this.register((Program) rProgram);
 		this.rProgramInstances.get(rProgram.getClass().getSimpleName()).add(
 				rProgram);
-
-		return true;
-	}
-
-	/**
-	 * This method registers instances of a run statistic.
-	 * 
-	 * @param runStatistic
-	 *            The run statistic instance to register.
-	 * @return True, if the run statistic was registered successfully, false
-	 *         otherwise.
-	 */
-	public boolean register(final RunStatistic runStatistic) {
-		this.runStatisticInstances.get(runStatistic.getClass().getSimpleName())
-				.add(runStatistic);
-
-		return true;
-	}
-
-	/**
-	 * This method registers instances of a run data statistic.
-	 * 
-	 * @param runDataStatistic
-	 *            The run data statistic instance to register.
-	 * @return True, if the run data statistic was registered successfully,
-	 *         false otherwise.
-	 */
-	public boolean register(final RunDataStatistic runDataStatistic) {
-		this.runDataStatisticInstances.get(
-				runDataStatistic.getClass().getSimpleName()).add(
-				runDataStatistic);
 
 		return true;
 	}
@@ -3188,24 +2789,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers a new statistic calculator. If an old object was
-	 * already registered that equals the new object, the new object is not
-	 * registered.
-	 * 
-	 * @param object
-	 *            The new object to register.
-	 * @return True, if the new object has been registered.
-	 */
-	public boolean register(
-			final StatisticCalculator<? extends Statistic> object) {
-		if (this.getRegisteredObject(object) != null)
-			return false;
-		this.statisticCalculators.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		return true;
-	}
-
-	/**
 	 * This method registers a new string program parameter. If an old object
 	 * was already registered that equals the new object, the new object is not
 	 * registered.
@@ -3280,35 +2863,6 @@ public class Repository {
 			return false;
 
 		return true;
-	}
-
-	/**
-	 * This method assumes, that the class that is passed is currently
-	 * registered in this repository.
-	 * 
-	 * <p>
-	 * If the R libraries are not satisfied, the class is removed from the
-	 * repository.
-	 * 
-	 * @param classObject
-	 *            The class for which we want to ensure R library dependencies.
-	 * @return True, if all R library dependencies are fulfilled.
-	 * @throws UnsatisfiedRLibraryException
-	 */
-	private boolean ensureDataStatisticRLibraries(
-			final Class<? extends DataStatistic> classObject) {
-		// create an instance
-		RLibraryInferior rLibraryInferior;
-		try {
-			rLibraryInferior = DataStatistic.parseFromString(this,
-					classObject.getSimpleName());
-
-			return this.ensureRLibraries(rLibraryInferior);
-		} catch (UnknownDataStatisticException e1) {
-			e1.printStackTrace();
-		}
-		this.dataStatisticClasses.remove(classObject.getName());
-		return false;
 	}
 
 	/**
@@ -3388,57 +2942,6 @@ public class Repository {
 		this.sqlCommunicator.registerDataSetTypeClass(object);
 
 		return true;
-	}
-
-	/**
-	 * This method registers a new data statistic class. It is only registered,
-	 * if it was not before.
-	 * 
-	 * @param object
-	 *            The new class to register.
-	 * @return True, if the new class has been registered.
-	 */
-	public boolean registerDataStatisticClass(
-			final Class<? extends DataStatistic> object) {
-		if (isDataStatisticRegistered(object.getName())) {
-			// first remove the old class
-			unregisterDataStatisticClass(this.dataStatisticClasses.get(object
-					.getName()));
-
-			// // register the new class
-			// this.dataStatisticClasses.put(object.getName(), object);
-			//
-			// if (!ensureDataStatisticRLibraries(object))
-			// return false;
-			//
-			// this.sqlCommunicator.registerDataStatisticClass(object);
-			//
-			// return true;
-		}
-		this.dataStatisticClasses.put(object.getName(), object);
-
-		this.dataStatisticInstances.put(object.getSimpleName(),
-				Collections.synchronizedList(new ArrayList<DataStatistic>()));
-
-		if (!ensureDataStatisticRLibraries(object))
-			return false;
-
-		this.sqlCommunicator.registerDataStatisticClass(object);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new data statistic calculator class.
-	 * 
-	 * @param object
-	 *            The new class to register.
-	 * @return True, if the new object replaced an old one.
-	 */
-	public boolean registerDataStatisticCalculator(
-			final Class<? extends DataStatisticCalculator<? extends DataStatistic>> object) {
-		return this.dataStatisticCalculatorClasses.put(object.getName()
-				.replace("Calculator", ""), object) != null;
 	}
 
 	/**
@@ -3526,55 +3029,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers a new run-data statistic class. It is only
-	 * registered, if it was not before.
-	 * 
-	 * @param object
-	 *            The new class to register.
-	 * @return True, if the new class has been registered.
-	 */
-	public boolean registerRunDataStatisticClass(
-			final Class<? extends RunDataStatistic> object) {
-		if (isRunDataStatisticRegistered(object.getName())) {
-			// remove the old class
-			unregisterRunDataStatisticClass(this.runDataStatisticClasses
-					.get(object.getName()));
-			// // register the new class
-			// this.runDataStatisticClasses.put(object.getName(), object);
-			//
-			// if (!ensureRunDataStatisticRLibraries(object))
-			// return false;
-			//
-			// return true;
-		}
-		this.runDataStatisticClasses.put(object.getName(), object);
-
-		this.runDataStatisticInstances
-				.put(object.getSimpleName(), Collections
-						.synchronizedList(new ArrayList<RunDataStatistic>()));
-
-		if (!ensureRunDataStatisticRLibraries(object))
-			return false;
-
-		this.sqlCommunicator.registerRunDataStatisticClass(object);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new run-data statistic calculator class.
-	 * 
-	 * @param object
-	 *            The new class to register.
-	 * @return True, if the new class replaced an old one.
-	 */
-	public boolean registerRunDataStatisticCalculator(
-			final Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>> object) {
-		return this.runDataStatisticCalculatorClasses.put(object.getName()
-				.replace("Calculator", ""), object) != null;
-	}
-
-	/**
 	 * This method registers a new runresult format class. If an old object was
 	 * already registered that equals the new object, the new object is not
 	 * registered.
@@ -3620,56 +3074,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers a new run statistic class. It is only registered,
-	 * if it was not before.
-	 * 
-	 * @param object
-	 *            The new class to register.
-	 * @return True, if the new class has been registered.
-	 */
-	public boolean registerRunStatisticClass(
-			final Class<? extends RunStatistic> object) {
-		if (isRunStatisticRegistered(object.getName())) {
-			// first remove the old class
-			unregisterRunStatisticClass(this.runStatisticClasses.get(object
-					.getName()));
-			// // we only get here, if the object changed, that is there is
-			// // a newer jar file on the filesystem.
-			// // The passed class is from the newer jar file.
-			// this.runStatisticClasses.put(object.getName(), object);
-			//
-			// if (!ensureRunStatisticRLibraries(object))
-			// return false;
-			//
-			// return true;
-		}
-		this.runStatisticClasses.put(object.getName(), object);
-
-		this.runStatisticInstances.put(object.getSimpleName(),
-				Collections.synchronizedList(new ArrayList<RunStatistic>()));
-
-		if (!ensureRunStatisticRLibraries(object))
-			return false;
-
-		this.sqlCommunicator.registerRunStatisticClass(object);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new run statistic calculator.
-	 * 
-	 * @param object
-	 *            The new class to register.
-	 * @return True, if the new class replaced an old one.
-	 */
-	public boolean registerRunStatisticCalculator(
-			final Class<? extends RunStatisticCalculator<? extends RunStatistic>> object) {
-		return this.runStatisticCalculatorClasses.put(
-				object.getName().replace("Calculator", ""), object) != null;
-	}
-
-	/**
 	 * This method sets the clustering quality measures as initialized. It
 	 * should only be invoked by
 	 * {@link ClusteringQualityMeasureFinderThread#afterFind()}.
@@ -3703,14 +3107,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method sets the data statistics as initialized. It should only be
-	 * invoked by {@link DataStatisticFinderThread#afterFind()}.
-	 */
-	public void setDataStatisticsInitialized() {
-		this.dataStatisticsInitialized = true;
-	}
-
-	/**
 	 * This method sets the parameter optimization methods as initialized. It
 	 * should only be invoked by
 	 * {@link ParameterOptimizationMethodFinderThread#afterFind()}.
@@ -3728,27 +3124,11 @@ public class Repository {
 	}
 
 	/**
-	 * This method sets the run-data statistics as initialized. It should only
-	 * be invoked by {@link RunDataStatisticFinderThread#afterFind()}.
-	 */
-	public void setRunDataStatisticsInitialized() {
-		this.runDataStatisticsInitialized = true;
-	}
-
-	/**
 	 * This method sets the run result formats as initialized. It should only be
 	 * invoked by {@link RunResultFormatFinderThread#afterFind()}.
 	 */
 	public void setRunResultFormatsInitialized() {
 		this.runResultFormatsInitialized = true;
-	}
-
-	/**
-	 * This method sets the run statistics as initialized. It should only be
-	 * invoked by {@link RunStatisticFinderThread#afterFind()}.
-	 */
-	public void setRunStatisticsInitialized() {
-		this.runStatisticsInitialized = true;
 	}
 
 	/**
@@ -3852,24 +3232,6 @@ public class Repository {
 	}
 
 	/**
-	 * @param dataStatistic
-	 *            The data statistic to unregister.
-	 * @return True, if the data statistic has been unregistered successfully.
-	 */
-	public boolean unregister(final DataStatistic dataStatistic) {
-		boolean result = this.dataStatisticInstances.get(
-				dataStatistic.getClass().getSimpleName()).remove(dataStatistic);
-		if (result) {
-			try {
-				dataStatistic.notify(new RepositoryRemoveEvent(dataStatistic));
-			} catch (RegisterException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-
-	/**
 	 * @param rProgram
 	 *            The RProgram to unregister.
 	 * @return True, if the RProgram has been unregistered successfully.
@@ -3881,45 +3243,6 @@ public class Repository {
 		if (result) {
 			try {
 				rProgram.notify(new RepositoryRemoveEvent(rProgram));
-			} catch (RegisterException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * @param runStatistic
-	 *            The run statistic to unregister.
-	 * @return True, if the run statistic has been unregistered successfully.
-	 */
-	public boolean unregister(final RunStatistic runStatistic) {
-		boolean result = this.runStatisticInstances.get(
-				runStatistic.getClass().getSimpleName()).remove(runStatistic);
-		if (result) {
-			try {
-				runStatistic.notify(new RepositoryRemoveEvent(runStatistic));
-			} catch (RegisterException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * @param runDataStatistic
-	 *            The run data statistic to unregister.
-	 * @return True, if the run data statistic has been unregistered
-	 *         successfully.
-	 */
-	public boolean unregister(final RunDataStatistic runDataStatistic) {
-		boolean result = this.runDataStatisticInstances.get(
-				runDataStatistic.getClass().getSimpleName()).remove(
-				runDataStatistic);
-		if (result) {
-			try {
-				runDataStatistic.notify(new RepositoryRemoveEvent(
-						runDataStatistic));
 			} catch (RegisterException e) {
 				e.printStackTrace();
 			}
@@ -4066,18 +3389,6 @@ public class Repository {
 	 */
 	public boolean unregister(final RunResultFormatFinder object) {
 		return this.finder.remove(object) != null;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregister(
-			final StatisticCalculator<? extends Statistic> object) {
-		return this.statisticCalculators.remove(object) != null;
 	}
 
 	/**
@@ -4233,70 +3544,6 @@ public class Repository {
 	 *            The object to be removed.
 	 * @return True, if the object was remved successfully
 	 */
-	public boolean unregisterRunStatisticClass(
-			final Class<? extends RunStatistic> object) {
-		boolean result = this.runStatisticClasses.remove(object.getName()) != null;
-		if (result) {
-			this.info("RunStatistic class removed: " + object.getSimpleName());
-			// we inform all listeners about the new class. that
-			// means those objects are deleted such that new instances instances
-			// can be created using the new class.
-			for (RunStatistic runStatistic : Collections
-					.synchronizedList(new ArrayList<RunStatistic>(
-							runStatisticInstances.get(object.getSimpleName())))) {
-				runStatistic.unregister();
-			}
-
-			this.sqlCommunicator.unregisterRunStatisticClass(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregisterRunDataStatisticClass(
-			final Class<? extends RunDataStatistic> object) {
-		boolean result = this.runDataStatisticClasses.remove(object.getName()) != null;
-		if (result) {
-			this.info("RunDataStatistic class removed: "
-					+ object.getSimpleName());
-			// we inform all listeners about the new class. that
-			// means those objects are deleted such that new instances instances
-			// can be created using the new class.
-			for (RunDataStatistic runDataStatistic : Collections
-					.synchronizedList(new ArrayList<RunDataStatistic>(
-							runDataStatisticInstances.get(object
-									.getSimpleName())))) {
-				runDataStatistic.unregister();
-			}
-
-			this.sqlCommunicator.unregisterRunDataStatisticClass(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
 	public boolean unregisterRProgramClass(
 			final Class<? extends RProgram> object) {
 		boolean result = this.rProgramClasses.remove(object.getName()) != null;
@@ -4310,37 +3557,6 @@ public class Repository {
 							.get(object.getSimpleName())))) {
 				rProgram.unregister();
 			}
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregisterDataStatisticClass(
-			final Class<? extends DataStatistic> object) {
-		boolean result = this.dataStatisticClasses.remove(object.getName()) != null;
-		if (result) {
-			this.info("DataStatistic class removed: " + object.getSimpleName());
-			// we inform all listeners about the new class. that
-			// means those objects are deleted such that new instances instances
-			// can be created using the new class.
-			for (DataStatistic dataStatistic : Collections
-					.synchronizedList(new ArrayList<DataStatistic>(
-							dataStatisticInstances.get(object.getSimpleName())))) {
-				dataStatistic.unregister();
-			}
-
-			this.sqlCommunicator.unregisterDataStatisticClass(object);
 		}
 		return result;
 	}
@@ -4601,60 +3817,6 @@ public class Repository {
 			e1.printStackTrace();
 		}
 		this.clusteringQualityMeasureClasses.remove(classObject.getName());
-		return false;
-	}
-
-	/**
-	 * This method assumes, that the class that is passed is currently
-	 * registered in this repository.
-	 * 
-	 * <p>
-	 * If the R libraries are not satisfied, the class is removed from the
-	 * repository.
-	 * 
-	 * @param classObject
-	 *            The class for which we want to ensure R library dependencies.
-	 * @return True, if all R library dependencies are fulfilled.
-	 * @throws UnsatisfiedRLibraryException
-	 */
-	private boolean ensureRunDataStatisticRLibraries(
-			final Class<? extends RunDataStatistic> classObject) {
-		try {
-			RLibraryInferior rLibraryInferior = RunDataStatistic
-					.parseFromString(this, classObject.getSimpleName());
-
-			return this.ensureRLibraries(rLibraryInferior);
-		} catch (UnknownRunDataStatisticException e1) {
-			e1.printStackTrace();
-		}
-		this.runDataStatisticClasses.remove(classObject.getName());
-		return false;
-	}
-
-	/**
-	 * This method assumes, that the class that is passed is currently
-	 * registered in this repository.
-	 * 
-	 * <p>
-	 * If the R libraries are not satisfied, the class is removed from the
-	 * repository.
-	 * 
-	 * @param classObject
-	 *            The class for which we want to ensure R library dependencies.
-	 * @return True, if all R library dependencies are fulfilled.
-	 * @throws UnsatisfiedRLibraryException
-	 */
-	private boolean ensureRunStatisticRLibraries(
-			final Class<? extends RunStatistic> classObject) {
-		try {
-			RLibraryInferior rLibraryInferior = RunStatistic.parseFromString(
-					this, classObject.getSimpleName());
-
-			return this.ensureRLibraries(rLibraryInferior);
-		} catch (UnknownRunStatisticException e1) {
-			e1.printStackTrace();
-		}
-		this.runStatisticClasses.remove(classObject.getName());
 		return false;
 	}
 
@@ -5004,6 +4166,48 @@ public class Repository {
 	public String getClusterResultsQualityBasePath() {
 		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
 				.get(RunResult.class)).getClusterResultsQualityBasePath();
+	}
+
+	public boolean registerDataStatisticCalculator(
+			Class<? extends DataStatisticCalculator<? extends DataStatistic>> dataStatisticCalculator) {
+		return ((DataStatisticRepositoryEntity) this.dynamicRepositoryEntities
+				.get(DataStatistic.class))
+				.registerDataStatisticCalculator(dataStatisticCalculator);
+	}
+
+	public boolean registerRunDataStatisticCalculator(
+			Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>> runDataStatisticCalculator) {
+		return ((RunDataStatisticRepositoryEntity) this.dynamicRepositoryEntities
+				.get(RunDataStatistic.class))
+				.registerRunDataStatisticCalculator(runDataStatisticCalculator);
+	}
+
+	public boolean registerRunStatisticCalculator(
+			Class<? extends RunStatisticCalculator<? extends RunStatistic>> runStatisticCalculator) {
+		return ((RunStatisticRepositoryEntity) this.dynamicRepositoryEntities
+				.get(RunStatistic.class))
+				.registerRunStatisticCalculator(runStatisticCalculator);
+	}
+
+	public Class<? extends DataStatisticCalculator<? extends DataStatistic>> getDataStatisticCalculator(
+			final String dataStatisticClassName) {
+		return ((DataStatisticRepositoryEntity) this.dynamicRepositoryEntities
+				.get(DataStatistic.class))
+				.getDataStatisticCalculator(dataStatisticClassName);
+	}
+
+	public Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>> getRunDataStatisticCalculator(
+			final String runDataStatisticClassName) {
+		return ((RunDataStatisticRepositoryEntity) this.dynamicRepositoryEntities
+				.get(RunDataStatistic.class))
+				.getRunDataStatisticCalculator(runDataStatisticClassName);
+	}
+
+	public Class<? extends RunStatisticCalculator<? extends RunStatistic>> getRunStatisticCalculator(
+			final String runStatisticClassName) {
+		return ((RunStatisticRepositoryEntity) this.dynamicRepositoryEntities
+				.get(RunStatistic.class))
+				.getRunStatisticCalculator(runStatisticClassName);
 	}
 }
 

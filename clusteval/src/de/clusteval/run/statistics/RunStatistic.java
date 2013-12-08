@@ -92,7 +92,7 @@ public abstract class RunStatistic extends Statistic {
 	 * @see framework.repository.RepositoryObject#register()
 	 */
 	@Override
-	public boolean register() {
+	public boolean register() throws RegisterException {
 		return this.repository.register(this);
 	}
 
@@ -120,7 +120,8 @@ public abstract class RunStatistic extends Statistic {
 	public static RunStatistic parseFromString(final Repository repository,
 			String runStatistic) throws UnknownRunStatisticException {
 		Class<? extends RunStatistic> c = repository
-				.getRunStatisticClass("de.clusteval.run.statistics."
+.getRegisteredClass(
+				RunStatistic.class, "de.clusteval.run.statistics."
 						+ runStatistic);
 
 		try {

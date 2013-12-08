@@ -19,12 +19,17 @@ import de.clusteval.data.dataset.DataSetConfig;
 import de.clusteval.data.dataset.DataSetConfigFinderThread;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.data.goldstandard.GoldStandardConfigFinderThread;
+import de.clusteval.data.statistics.DataStatistic;
 import de.clusteval.data.statistics.DataStatisticFinderThread;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.SupervisorThread;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramConfigFinderThread;
+import de.clusteval.run.statistics.RunDataStatistic;
+import de.clusteval.run.statistics.RunDataStatisticFinderThread;
+import de.clusteval.run.statistics.RunStatistic;
+import de.clusteval.run.statistics.RunStatisticFinderThread;
 import de.clusteval.utils.Finder;
 import de.clusteval.utils.FinderThread;
 
@@ -85,8 +90,16 @@ public class RunFinderThread extends FinderThread {
 			this.supervisorThread.getThread(ProgramConfigFinderThread.class)
 					.waitFor();
 
-		if (!this.repository.getDataStatisticsInitialized())
+		if (!this.repository.isInitialized(DataStatistic.class))
 			this.supervisorThread.getThread(DataStatisticFinderThread.class)
+					.waitFor();
+
+		if (!this.repository.isInitialized(RunDataStatistic.class))
+			this.supervisorThread.getThread(RunDataStatisticFinderThread.class)
+					.waitFor();
+
+		if (!this.repository.isInitialized(RunStatistic.class))
+			this.supervisorThread.getThread(RunStatisticFinderThread.class)
 					.waitFor();
 
 		if (!this.repository.getParameterOptimizationMethodsInitialized())

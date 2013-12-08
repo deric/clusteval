@@ -24,13 +24,13 @@ import java.util.List;
 import org.apache.commons.configuration.ConfigurationException;
 import org.rosuda.REngine.REngineException;
 
+import utils.ProgressPrinter;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
 import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
 import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.context.IncompatibleContextException;
 import de.clusteval.context.UnknownContextException;
-import utils.ProgressPrinter;
 import de.clusteval.data.DataConfigNotFoundException;
 import de.clusteval.data.DataConfigurationException;
 import de.clusteval.data.dataset.DataSetConfigNotFoundException;
@@ -70,6 +70,7 @@ import de.clusteval.run.result.AnalysisRunResultException;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.RunResultParseException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.statistics.RunStatistic;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.FormatConversionException;
@@ -214,7 +215,7 @@ public abstract class AnalysisRunRunnable<T extends Statistic, R extends RunResu
 				bw = new BufferedWriter(new FileWriter(outputFile));
 
 				this.calcFile = new File(FileUtils.buildPath(
-						repo.getRunStatisticBasePath(),
+						repo.getBasePath(RunStatistic.class),
 						statistic.getIdentifier() + ".jar")).getAbsoluteFile();
 
 				StatisticCalculator<T> calc = getStatisticCalculator();

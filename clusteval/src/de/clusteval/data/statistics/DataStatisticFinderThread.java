@@ -69,7 +69,7 @@ public class DataStatisticFinderThread extends FinderThread {
 	@Override
 	protected Finder getFinder() throws RegisterException {
 		return new DataStatisticFinder(repository, System.currentTimeMillis(),
-				new File(repository.getDataStatisticBasePath()));
+				new File(repository.getBasePath(DataStatistic.class)));
 	}
 
 	/*
@@ -79,6 +79,6 @@ public class DataStatisticFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		repository.setDataStatisticsInitialized();
+		repository.setInitialized(DataStatistic.class);
 	}
 }
