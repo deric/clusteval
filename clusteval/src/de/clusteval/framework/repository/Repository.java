@@ -45,11 +45,8 @@ import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.context.Context;
 import de.clusteval.context.ContextFinderThread;
 import de.clusteval.data.DataConfig;
-import de.clusteval.data.dataset.AbsoluteDataSet;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.data.dataset.DataSetConfig;
-import de.clusteval.data.dataset.RelativeDataSet;
-import de.clusteval.data.dataset.RunResultDataSetConfig;
 import de.clusteval.data.dataset.format.DataSetFormat;
 import de.clusteval.data.dataset.format.DataSetFormatFinderThread;
 import de.clusteval.data.dataset.format.DataSetFormatParser;
@@ -87,21 +84,12 @@ import de.clusteval.program.IntegerProgramParameter;
 import de.clusteval.program.Program;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
-import de.clusteval.program.StandaloneProgram;
 import de.clusteval.program.StringProgramParameter;
 import de.clusteval.program.r.RLibraryInferior;
 import de.clusteval.program.r.RProgram;
-import de.clusteval.program.r.RProgramConfig;
 import de.clusteval.program.r.RProgramFinderThread;
 import de.clusteval.program.r.UnknownRProgramException;
-import de.clusteval.run.ClusteringRun;
-import de.clusteval.run.DataAnalysisRun;
-import de.clusteval.run.InternalParameterOptimizationRun;
-import de.clusteval.run.ParameterOptimizationRun;
 import de.clusteval.run.Run;
-import de.clusteval.run.RunAnalysisRun;
-import de.clusteval.run.RunDataAnalysisRun;
-import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.format.RunResultFormat;
 import de.clusteval.run.result.format.RunResultFormatFinder;
@@ -142,6 +130,8 @@ import file.FileUtils;
  * @author Christian Wiwie
  * 
  */
+// Repository class before: 7312 lines
+// Repository class after 1st part: 5465 lines
 public class Repository {
 
 	/**
@@ -312,8 +302,6 @@ public class Repository {
 	 * initialized by the {@link RunDataStatisticFinderThread}.
 	 */
 	private boolean runDataStatisticsInitialized;
-	
-	private boolean runResultsInitialized;
 
 	/**
 	 * A boolean attribute indicating whether the runresult formats have been
@@ -406,30 +394,10 @@ public class Repository {
 	protected String runDataStatisticBasePath;
 
 	/**
-	 * The absolute path to the directory within this repository, where all run
-	 * results are stored.
-	 */
-	protected String runResultBasePath;
-
-	/**
 	 * The absolute path to the directory within this repository, where all
 	 * runresult formats are stored.
 	 */
 	protected String runResultFormatBasePath;
-
-	/**
-	 * The absolute path to the directory, where for a certain runresult
-	 * (identified by its unique run identifier) all clustering results are
-	 * stored.
-	 */
-	protected String clusterResultsBasePath;
-
-	/**
-	 * The absolute path to the directory, where for a certain runresult
-	 * (identified by its unique run identifier) all qualities of clustering
-	 * results are stored.
-	 */
-	protected String clusterResultsQualityBasePath;
 
 	/**
 	 * The absolute path to the directory, where for a certain runresult
@@ -647,17 +615,6 @@ public class Repository {
 	 * instances.Mapping from Class.getSimpleName() to the instances.
 	 */
 	protected Map<String, List<RProgram>> rProgramInstances;
-
-	/**
-	 * A map containing all runresults registered in this repository.
-	 */
-	protected Map<RunResult, RunResult> runResults;
-
-	/**
-	 * A map containing the runresult identifier of all runresults registered in
-	 * this repository.
-	 */
-	protected Map<String, RunResult> runResultIdentifier;
 
 	/**
 	 * A map containing all clusterings registered in this repository.
@@ -1057,7 +1014,7 @@ public class Repository {
 		this.ensureFolder(this.getBasePath(Program.class));
 		this.ensureFolder(this.getBasePath(ProgramConfig.class));
 		this.ensureFolder(this.getBasePath(Run.class));
-		this.ensureFolder(this.runResultBasePath);
+		this.ensureFolder(this.getBasePath(RunResult.class));
 		this.ensureFolder(this.runResultFormatBasePath);
 		this.ensureFolder(this.supplementaryBasePath);
 		this.ensureFolder(this.suppClusteringBasePath);
@@ -1221,15 +1178,6 @@ public class Repository {
 	}
 
 	/**
-	 * @return The absolute path to the directory, where for a certain runresult
-	 *         (identified by its unique run identifier) all analysis results
-	 *         are stored.
-	 */
-	public String getAnalysisResultsBasePath() {
-		return this.analysisResultsBasePath;
-	}
-
-	/**
 	 * @return The absolute path to the root of this repository.
 	 */
 	public String getBasePath() {
@@ -1297,24 +1245,6 @@ public class Repository {
 	 */
 	public boolean getClusteringQualityMeasuresInitialized() {
 		return this.clusteringQualityMeasuresInitialized;
-	}
-
-	/**
-	 * @return The absolute path to the directory, where for a certain runresult
-	 *         (identified by its unique run identifier) all clustering results
-	 *         are stored.
-	 */
-	public String getClusterResultsBasePath() {
-		return this.clusterResultsBasePath;
-	}
-
-	/**
-	 * @return The absolute path to the directory, where for a certain runresult
-	 *         (identified by its unique run identifier) all qualities of
-	 *         clustering results are stored.
-	 */
-	public String getClusterResultsQualityBasePath() {
-		return this.clusterResultsQualityBasePath;
 	}
 
 	/**
@@ -2075,37 +2005,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method checks, whether there is a runresult registered, that is
-	 * equal to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public RunResult getRegisteredObject(final RunResult object) {
-		RunResult other = this.runResults.get(object);
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
-	}
-
-	/**
 	 * This method checks, whether there is a statistic calculator registered,
 	 * that is equal to the passed object and returns it.
 	 * 
@@ -2179,7 +2078,8 @@ public class Repository {
 	 * @return The runresult with the given identifier.
 	 */
 	public RunResult getRegisteredRunResult(final String runIdentifier) {
-		return this.runResultIdentifier.get(runIdentifier);
+		return ((RunResultEntity) this.repositoryObjectEntities
+				.get(RunResult.class)).runResultIdentifier.get(runIdentifier);
 	}
 
 	/**
@@ -2288,14 +2188,6 @@ public class Repository {
 
 	/**
 	 * @return The absolute path to the directory within this repository, where
-	 *         all run results are stored.
-	 */
-	public String getRunResultBasePath() {
-		return this.runResultBasePath;
-	}
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
 	 *         all runresult formats are stored.
 	 */
 	public String getRunResultFormatBasePath() {
@@ -2363,7 +2255,8 @@ public class Repository {
 	public Collection<String> getRunResultIdentifier() {
 		Collection<String> result = new HashSet<String>();
 
-		for (File resultDir : new File(this.getRunResultBasePath()).listFiles()) {
+		for (File resultDir : new File(this.getBasePath(RunResult.class))
+				.listFiles()) {
 			if (resultDir.isDirectory()) {
 				File clustersDir = new File(FileUtils.buildPath(
 						resultDir.getAbsolutePath(), "clusters"));
@@ -2386,13 +2279,6 @@ public class Repository {
 	}
 
 	/**
-	 * @return A collection containing all registered runresults.
-	 */
-	public Collection<RunResult> getRunResults() {
-		return this.runResults.values();
-	}
-
-	/**
 	 * @return A collection with the names of all run result directories
 	 *         contained in the repository of this server. Those run result
 	 *         directories can be resumed, if they were terminated before.
@@ -2400,7 +2286,8 @@ public class Repository {
 	public Collection<String> getRunResumes() {
 		Collection<String> result = new HashSet<String>();
 
-		for (File resultDir : new File(this.getRunResultBasePath()).listFiles()) {
+		for (File resultDir : new File(this.getBasePath(RunResult.class))
+				.listFiles()) {
 			if (resultDir.isDirectory()) {
 				result.add(resultDir.getName());
 			}
@@ -2548,7 +2435,6 @@ public class Repository {
 	 * A helper method for and invoked by
 	 * {@link #Repository(String, Repository, long, long, long, long, long, long, long)}.
 	 */
-	// TODO: find another way, instead of using the same objects
 	protected void initAttributes() {
 
 		this.repositoryObjectEntities = new RepositoryObjectEntityMap();
@@ -2559,10 +2445,6 @@ public class Repository {
 						? this.parent.repositoryObjectEntities
 								.get(DataSet.class) : null, FileUtils
 						.buildPath(this.basePath, "data", "datasets")));
-		// this.repositoryObjectEntities.put(AbsoluteDataSet.class,
-		// this.repositoryObjectEntities.get(DataSet.class));
-		// this.repositoryObjectEntities.put(RelativeDataSet.class,
-		// this.repositoryObjectEntities.get(DataSet.class));
 
 		this.repositoryObjectEntities.put(
 				DataSetConfig.class,
@@ -2572,8 +2454,6 @@ public class Repository {
 										.get(DataSetConfig.class) : null,
 						FileUtils.buildPath(this.basePath, "data", "datasets",
 								"configs")));
-		// this.repositoryObjectEntities.put(RunResultDataSetConfig.class,
-		// this.repositoryObjectEntities.get(DataSetConfig.class));
 
 		this.repositoryObjectEntities.put(
 				GoldStandard.class,
@@ -2605,19 +2485,6 @@ public class Repository {
 				new RepositoryObjectEntity<Run>(this, this.parent != null
 						? this.parent.repositoryObjectEntities.get(Run.class)
 						: null, FileUtils.buildPath(this.basePath, "runs")));
-		// this.repositoryObjectEntities.put(ClusteringRun.class,
-		// this.repositoryObjectEntities.get(Run.class));
-		// this.repositoryObjectEntities.put(ParameterOptimizationRun.class,
-		// this.repositoryObjectEntities.get(Run.class));
-		// this.repositoryObjectEntities.put(
-		// InternalParameterOptimizationRun.class,
-		// this.repositoryObjectEntities.get(Run.class));
-		// this.repositoryObjectEntities.put(DataAnalysisRun.class,
-		// this.repositoryObjectEntities.get(Run.class));
-		// this.repositoryObjectEntities.put(RunAnalysisRun.class,
-		// this.repositoryObjectEntities.get(Run.class));
-		// this.repositoryObjectEntities.put(RunDataAnalysisRun.class,
-		// this.repositoryObjectEntities.get(Run.class));
 
 		this.repositoryObjectEntities.put(
 				ProgramConfig.class,
@@ -2627,8 +2494,6 @@ public class Repository {
 										.get(ProgramConfig.class) : null,
 						FileUtils.buildPath(this.basePath, "programs",
 								"configs")));
-		// this.repositoryObjectEntities.put(RProgramConfig.class,
-		// this.repositoryObjectEntities.get(ProgramConfig.class));
 
 		this.repositoryObjectEntities.put(
 				Program.class,
@@ -2636,10 +2501,13 @@ public class Repository {
 						? this.parent.repositoryObjectEntities
 								.get(Program.class) : null, FileUtils
 						.buildPath(this.basePath, "programs")));
-		// this.repositoryObjectEntities.put(RProgram.class,
-		// this.repositoryObjectEntities.get(Program.class));
-		// this.repositoryObjectEntities.put(StandaloneProgram.class,
-		// this.repositoryObjectEntities.get(Program.class));
+
+		this.repositoryObjectEntities.put(
+				RunResult.class,
+				new RunResultEntity(this, this.parent != null
+						? this.parent.repositoryObjectEntities
+								.get(RunResult.class) : null, FileUtils
+						.buildPath(this.basePath, "results")));
 
 		this.contextClasses = new ConcurrentHashMap<String, Class<? extends Context>>();
 		this.contextInstances = new ConcurrentHashMap<String, List<Context>>();
@@ -2669,8 +2537,6 @@ public class Repository {
 		this.goldStandardFormats = new ConcurrentHashMap<GoldStandardFormat, GoldStandardFormat>();
 		this.rProgramClasses = new ConcurrentHashMap<String, Class<? extends RProgram>>();
 		this.rProgramInstances = new ConcurrentHashMap<String, List<RProgram>>();
-		this.runResults = new ConcurrentHashMap<RunResult, RunResult>();
-		this.runResultIdentifier = new ConcurrentHashMap<String, RunResult>();
 		this.runResultFormatClasses = new ConcurrentHashMap<String, Class<? extends RunResultFormat>>();
 		this.runResultFormatInstances = new ConcurrentHashMap<String, List<RunResultFormat>>();
 		this.runResultFormatParser = new ConcurrentHashMap<String, Class<? extends RunResultFormatParser>>();
@@ -2759,15 +2625,8 @@ public class Repository {
 	@SuppressWarnings("unused")
 	protected void initializePaths() throws InvalidRepositoryException {
 		this.dataBasePath = FileUtils.buildPath(this.basePath, "data");
-		this.runResultBasePath = FileUtils.buildPath(this.basePath, "results");
-		this.clusterResultsBasePath = FileUtils.buildPath(
-				this.runResultBasePath, "%RUNIDENTSTRING", "clusters");
-		this.clusterResultsQualityBasePath = FileUtils.buildPath(
-				this.runResultBasePath, "%RUNIDENTSTRING", "clusters");
-		this.analysisResultsBasePath = FileUtils.buildPath(
-				this.runResultBasePath, "%RUNIDENTSTRING", "analyses");
-		this.logsBasePath = FileUtils.buildPath(this.runResultBasePath,
-				"%RUNIDENTSTRING", "logs");
+		this.logsBasePath = FileUtils.buildPath(
+				this.getBasePath(RunResult.class), "%RUNIDENTSTRING", "logs");
 		this.supplementaryBasePath = FileUtils.buildPath(this.basePath, "supp");
 		this.contextBasePath = FileUtils.buildPath(this.supplementaryBasePath,
 				"contexts");
@@ -3430,28 +3289,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers a new runresult. If an old object was already
-	 * registered that equals the new object, the new object is not registered.
-	 * 
-	 * @param object
-	 *            The new object to register.
-	 * @return True, if the new object has been registered.
-	 */
-	public boolean register(final RunResult object) {
-		if (this.getRegisteredObject(object) != null)
-			return false;
-		this.runResults.put(object, object);
-		this.runResultIdentifier.put(object.getIdentifier(), object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-
-		this.sqlCommunicator.register(object);
-
-		this.log.info("New RunResult: " + object.getAbsolutePath());
-
-		return true;
-	}
-
-	/**
 	 * This method registers a new statistic calculator. If an old object was
 	 * already registered that equals the new object, the new object is not
 	 * registered.
@@ -4051,10 +3888,6 @@ public class Repository {
 	public void setRunResultFormatsInitialized() {
 		this.runResultFormatsInitialized = true;
 	}
-	
-	public void setRunResultsInitialized() {
-		this.runResultsInitialized = true;
-	}
 
 	/**
 	 * This method sets the run statistics as initialized. It should only be
@@ -4388,43 +4221,6 @@ public class Repository {
 	 */
 	public boolean unregister(NamedStringAttribute object) {
 		return this.internalStringAttributes.remove(object) != null;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregister(final RunResult object) {
-		boolean result = this.runResults.remove(object) != null;
-		if (result) {
-			this.runResultIdentifier.remove(object.getIdentifier());
-
-			// added 07.01.2013: add unregister of sqlcommunicator
-			if (object instanceof ParameterOptimizationResult)
-				// if the runresult folder exists, only delete the parameter
-				// optimization run result from the database
-				if (new File(object.getAbsolutePath()).getParentFile().exists())
-					this.sqlCommunicator
-							.unregister((ParameterOptimizationResult) object);
-				else if (Repository.getRepositoryForExactPath(object
-						.getRepository().getBasePath()) != null)
-					Repository.unregister(Repository
-							.getRepositoryForExactPath(object.getRepository()
-									.getBasePath()));
-			this.sqlCommunicator.unregister(object);
-
-			this.log.info("RunResult removed: " + object.getAbsolutePath());
-		}
-
-		return result;
 	}
 
 	/**
@@ -5174,10 +4970,6 @@ public class Repository {
 	public boolean getDataPreprocessorsInitialized() {
 		return this.dataPreprocessorsInitialized;
 	}
-	
-	public boolean getRunResultsInitialized() {
-		return this.runResultsInitialized;
-	}
 
 	/**
 	 * This method checks whether the given data preprocessor class is
@@ -5459,6 +5251,21 @@ public class Repository {
 	 */
 	public void setContextsInitialized() {
 		this.contextsInitialized = true;
+	}
+
+	public String getAnalysisResultsBasePath() {
+		return ((RunResultEntity) this.repositoryObjectEntities
+				.get(RunResult.class)).getAnalysisResultsBasePath();
+	}
+
+	public String getClusterResultsBasePath() {
+		return ((RunResultEntity) this.repositoryObjectEntities
+				.get(RunResult.class)).getClusterResultsBasePath();
+	}
+
+	public String getClusterResultsQualityBasePath() {
+		return ((RunResultEntity) this.repositoryObjectEntities
+				.get(RunResult.class)).getClusterResultsQualityBasePath();
 	}
 }
 

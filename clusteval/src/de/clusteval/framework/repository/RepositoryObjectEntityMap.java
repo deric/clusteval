@@ -6,6 +6,7 @@ package de.clusteval.framework.repository;
 import java.util.HashMap;
 import java.util.Map;
 
+//TODO: rename
 public class RepositoryObjectEntityMap {
 
 	protected Map<Class<? extends RepositoryObject>, RepositoryObjectEntity<? extends RepositoryObject>> map;

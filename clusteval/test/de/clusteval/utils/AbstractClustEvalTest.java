@@ -26,6 +26,7 @@ import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.StubSQLCommunicator;
+import de.clusteval.run.result.RunResult;
 
 /**
  * @author Christian Wiwie
@@ -67,7 +68,7 @@ public abstract class AbstractClustEvalTest {
 
 		if (ClustevalBackendServer.getBackendServerConfiguration()
 				.getCheckForRunResults()) {
-			while (!getRepository().getRunResultsInitialized()) {
+			while (!getRepository().isInitialized(RunResult.class)) {
 				Thread.sleep(100);
 			}
 		}

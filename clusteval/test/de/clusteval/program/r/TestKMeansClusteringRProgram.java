@@ -34,6 +34,7 @@ import de.clusteval.framework.repository.config.RepositoryConfigNotFoundExceptio
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.run.Run;
+import de.clusteval.run.result.RunResult;
 import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.runnable.RunRunnableInitializationException;
 import file.FileUtils;
@@ -112,7 +113,7 @@ public class TestKMeansClusteringRProgram {
 					t.getClass());
 		} finally {
 			FileUtils.delete(new File(FileUtils.buildPath(
-					repo.getRunResultBasePath(),
+					repo.getBasePath(RunResult.class),
 					run.getRunIdentificationString())));
 		}
 	}

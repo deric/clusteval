@@ -276,7 +276,7 @@ public abstract class RunResult extends RepositoryObject {
 	 * @see utils.RepositoryObject#register()
 	 */
 	@Override
-	public boolean register() {
+	public boolean register() throws RegisterException {
 		return this.repository.getParent().register(this);
 	}
 

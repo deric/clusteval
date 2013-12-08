@@ -51,6 +51,7 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.run.result.RunResult;
 import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.RNotAvailableException;
 
@@ -88,7 +89,7 @@ public class TestPlotter {
 
 		if (ClustevalBackendServer.getBackendServerConfiguration()
 				.getCheckForRunResults()) {
-			while (!parent.getRunResultsInitialized()) {
+			while (!parent.isInitialized(RunResult.class)) {
 				Thread.sleep(100);
 			}
 		}

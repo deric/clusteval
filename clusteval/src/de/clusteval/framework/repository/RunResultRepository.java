@@ -18,12 +18,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.data.DataConfig;
-import de.clusteval.data.dataset.AbsoluteDataSet;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.data.dataset.DataSetConfig;
 import de.clusteval.data.dataset.DataSetRegisterException;
-import de.clusteval.data.dataset.RelativeDataSet;
-import de.clusteval.data.dataset.RunResultDataSetConfig;
 import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.data.goldstandard.format.GoldStandardFormat;
@@ -35,16 +32,9 @@ import de.clusteval.program.DoubleProgramParameter;
 import de.clusteval.program.IntegerProgramParameter;
 import de.clusteval.program.Program;
 import de.clusteval.program.ProgramConfig;
-import de.clusteval.program.StandaloneProgram;
 import de.clusteval.program.StringProgramParameter;
-import de.clusteval.program.r.RProgram;
-import de.clusteval.run.ClusteringRun;
-import de.clusteval.run.DataAnalysisRun;
-import de.clusteval.run.InternalParameterOptimizationRun;
-import de.clusteval.run.ParameterOptimizationRun;
 import de.clusteval.run.Run;
-import de.clusteval.run.RunAnalysisRun;
-import de.clusteval.run.RunDataAnalysisRun;
+import de.clusteval.run.result.RunResult;
 import de.clusteval.utils.Finder;
 import file.FileUtils;
 
@@ -120,8 +110,6 @@ public class RunResultRepository extends Repository {
 								? this.parent.repositoryObjectEntities
 										.get(DataSetConfig.class) : null,
 						FileUtils.buildPath(this.basePath, "configs")));
-//		this.repositoryObjectEntities.put(RunResultDataSetConfig.class,
-//				this.repositoryObjectEntities.get(DataSetConfig.class));
 
 		this.repositoryObjectEntities.put(
 				DataSet.class,
@@ -130,10 +118,6 @@ public class RunResultRepository extends Repository {
 								? this.parent.repositoryObjectEntities
 										.get(DataSet.class) : null, FileUtils
 								.buildPath(this.basePath, "inputs")));
-//		this.repositoryObjectEntities.put(AbsoluteDataSet.class,
-//				this.repositoryObjectEntities.get(DataSet.class));
-//		this.repositoryObjectEntities.put(RelativeDataSet.class,
-//				this.repositoryObjectEntities.get(DataSet.class));
 
 		this.repositoryObjectEntities.put(
 				GoldStandardConfig.class,
@@ -160,29 +144,18 @@ public class RunResultRepository extends Repository {
 						FileUtils.buildPath(this.basePath, "configs")));
 
 		this.repositoryObjectEntities.put(Run.class,
-				new RepositoryObjectEntity<Run>(this, this.parent != null
-						? this.parent.repositoryObjectEntities.get(Run.class)
-						: null, FileUtils.buildPath(this.basePath, "configs")));
-//		this.repositoryObjectEntities.put(ClusteringRun.class,
-//				this.repositoryObjectEntities.get(Run.class));
-//		this.repositoryObjectEntities.put(ParameterOptimizationRun.class,
-//				this.repositoryObjectEntities.get(Run.class));
-//		this.repositoryObjectEntities.put(
-//				InternalParameterOptimizationRun.class,
-//				this.repositoryObjectEntities.get(Run.class));
-//		this.repositoryObjectEntities.put(DataAnalysisRun.class,
-//				this.repositoryObjectEntities.get(Run.class));
-//		this.repositoryObjectEntities.put(RunAnalysisRun.class,
-//				this.repositoryObjectEntities.get(Run.class));
-//		this.repositoryObjectEntities.put(RunDataAnalysisRun.class,
-//				this.repositoryObjectEntities.get(Run.class));
+				new RepositoryObjectEntity<Run>(this,
+						this.parent.repositoryObjectEntities.get(Run.class),
+						FileUtils.buildPath(this.basePath, "configs")));
 
 		this.repositoryObjectEntities.put(Program.class,
 				this.parent.repositoryObjectEntities.get(Program.class));
-//		this.repositoryObjectEntities.put(RProgram.class,
-//				this.repositoryObjectEntities.get(Program.class));
-//		this.repositoryObjectEntities.put(StandaloneProgram.class,
-//				this.repositoryObjectEntities.get(Program.class));
+
+		this.repositoryObjectEntities.put(
+				RunResult.class,
+				new RunResultRunResultEntity(this,
+						this.parent.repositoryObjectEntities
+								.get(RunResult.class), this.getBasePath()));
 
 		this.contextClasses = this.parent.contextClasses;
 		this.contextInstances = this.parent.contextInstances;
@@ -212,8 +185,6 @@ public class RunResultRepository extends Repository {
 		this.goldStandardFormats = new ConcurrentHashMap<GoldStandardFormat, GoldStandardFormat>();
 		this.rProgramClasses = this.parent.rProgramClasses;
 		this.rProgramInstances = this.parent.rProgramInstances;
-		this.runResults = this.parent.runResults;
-		this.runResultIdentifier = this.parent.runResultIdentifier;
 		this.runResultFormatClasses = this.parent.runResultFormatClasses;
 		this.runResultFormatInstances = this.parent.runResultFormatInstances;
 		this.runResultFormatParser = this.parent.runResultFormatParser;
@@ -249,12 +220,6 @@ public class RunResultRepository extends Repository {
 					"A RunResultRepository needs a valid parent repository");
 		this.dataBasePath = this.parent.dataBasePath;
 
-		this.runResultBasePath = this.parent.runResultBasePath;
-		// does not work in case of resume run
-		this.clusterResultsBasePath = FileUtils.buildPath(this.basePath,
-				"clusters");
-		this.clusterResultsQualityBasePath = FileUtils.buildPath(this.basePath,
-				"clusters");
 		this.logsBasePath = FileUtils.buildPath(this.basePath, "logs");
 		this.supplementaryBasePath = this.parent.supplementaryBasePath;
 		this.contextBasePath = this.parent.contextBasePath;

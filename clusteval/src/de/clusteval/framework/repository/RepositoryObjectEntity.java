@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+// TODO: rename
 public class RepositoryObjectEntity<T extends RepositoryObject>
 		extends
 			RepositoryEntity<T> {
@@ -131,24 +132,32 @@ public class RepositoryObjectEntity<T extends RepositoryObject>
 			throws RegisterException {
 		S old = this.getRegisteredObject(object);
 		if (old != null) {
-			// check, whether the changeDate is equal
-			if (old.changeDate >= object.changeDate)
-				return false;
-
-			/*
-			 * replace old object by new object
-			 */
-			RepositoryReplaceEvent event = new RepositoryReplaceEvent(old,
-					object);
-			this.objects.put(object, object);
-			this.nameToObject.put(object.toString(), object);
-			this.repository.pathToRepositoryObject.put(object.absPath, object);
-			old.notify(event);
-
-			this.repository.sqlCommunicator.register(object, true);
-
-			return true;
+			return this.registerWhenExisting(old, object);
 		}
+		return this.registerWithoutExisting(object);
+	}
+
+	protected <S extends T> boolean registerWhenExisting(final S old,
+			final S object) throws RegisterException {
+		// check, whether the changeDate is equal
+		if (old.changeDate >= object.changeDate)
+			return false;
+
+		/*
+		 * replace old object by new object
+		 */
+		RepositoryReplaceEvent event = new RepositoryReplaceEvent(old, object);
+		this.objects.put(object, object);
+		this.nameToObject.put(object.toString(), object);
+		this.repository.pathToRepositoryObject.put(object.absPath, object);
+		old.notify(event);
+
+		this.repository.sqlCommunicator.register(object, true);
+
+		return true;
+	}
+
+	protected <S extends T> boolean registerWithoutExisting(final S object) {
 		this.objects.put(object, object);
 		this.nameToObject.put(object.toString(), object);
 		this.repository.pathToRepositoryObject.put(object.absPath, object);
@@ -175,11 +184,15 @@ public class RepositoryObjectEntity<T extends RepositoryObject>
 	public <S extends T> boolean unregister(final S object) {
 		boolean result = this.objects.remove(object) != null;
 		if (result) {
-			this.repository.info(object.getClass().getSimpleName()
-					+ " removed: " + object);
-
-			this.repository.sqlCommunicator.unregister(object);
+			this.unregisterAfterRemove(object);
 		}
 		return result;
+	}
+
+	protected <S extends T> void unregisterAfterRemove(final S object) {
+		this.repository.info(object.getClass().getSimpleName() + " removed: "
+				+ object);
+
+		this.repository.sqlCommunicator.unregister(object);
 	}
 }

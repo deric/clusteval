@@ -101,6 +101,7 @@ import de.clusteval.run.RUN_STATUS;
 import de.clusteval.run.Run;
 import de.clusteval.run.RunException;
 import de.clusteval.run.result.ParameterOptimizationResult;
+import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.RunResultParseException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
@@ -762,7 +763,7 @@ public class ClustevalBackendServer implements IBackendServer {
 			ParameterOptimizationResult.parseFromRunResultFolder(
 					repository,
 					new File(FileUtils.buildPath(
-							repository.getRunResultBasePath(),
+							repository.getBasePath(RunResult.class),
 							uniqueRunIdentifier)), list, false, false, false);
 			for (ParameterOptimizationResult r : list) {
 				String dataConfig = r.getMethod().getDataConfig().getName();

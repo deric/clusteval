@@ -42,7 +42,7 @@ public class RunResultFinder extends FileFinder {
 	 */
 	public RunResultFinder(Repository repository) throws RegisterException {
 		super(repository, System.currentTimeMillis(), new File(
-				repository.getRunResultBasePath()));
+				repository.getBasePath(RunResult.class)));
 	}
 
 	/*
@@ -52,7 +52,7 @@ public class RunResultFinder extends FileFinder {
 	 */
 	@Override
 	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.getRepository().getRunResults();
+		return this.getRepository().getCollection(RunResult.class);
 	}
 
 	/*
@@ -74,7 +74,7 @@ public class RunResultFinder extends FileFinder {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.getRepository().getRunResultBasePath());
+		return new File(this.getRepository().getBasePath(RunResult.class));
 	}
 
 	/*

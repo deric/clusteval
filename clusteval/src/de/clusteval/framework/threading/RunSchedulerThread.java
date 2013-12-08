@@ -39,6 +39,7 @@ import de.clusteval.run.RUN_STATUS;
 import de.clusteval.run.Run;
 import de.clusteval.run.result.NoRunResultFormatParserException;
 import de.clusteval.run.result.ParameterOptimizationResult;
+import de.clusteval.run.result.RunResult;
 import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.runnable.RunRunnableInitializationException;
 import file.FileUtils;
@@ -241,11 +242,11 @@ public class RunSchedulerThread extends ClustevalThread {
 		final Triple<String, String, Boolean> newTriple = Triple.getTriple(
 				clientId, uniqueRunResultIdentifier, true);
 		if (!new File(FileUtils.buildPath(
-				this.repository.getRunResultBasePath(),
+				this.repository.getBasePath(RunResult.class),
 				uniqueRunResultIdentifier)).exists()) {
 			this.log.warn("No run results were found under "
 					+ FileUtils.buildPath(
-							this.repository.getRunResultBasePath(),
+							this.repository.getBasePath(RunResult.class),
 							uniqueRunResultIdentifier));
 			return false;
 		}
@@ -476,7 +477,7 @@ public class RunSchedulerThread extends ClustevalThread {
 								.parseFromRunResultFolder(
 										repository,
 										new File(FileUtils.buildPath(repository
-												.getRunResultBasePath(), runId)),
+												.getBasePath(RunResult.class), runId)),
 										results, false, false, false).clone();
 						run.setStatus(RUN_STATUS.SCHEDULED);
 

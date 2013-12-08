@@ -5,8 +5,7 @@ package de.clusteval.framework.repository;
 
 import de.clusteval.data.dataset.DataSetFinderThread;
 
-// Repository class before: 7310 lines
-// Repository class after:
+//TODO: rename
 public abstract class RepositoryEntity<T extends RepositoryObject> {
 
 	protected Repository repository;
