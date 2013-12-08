@@ -91,15 +91,20 @@ public abstract class FileFinder extends Finder {
 				else if (e.getCause() != null) {
 					StringWriter writer = new StringWriter();
 					e.getCause().printStackTrace(new PrintWriter(writer));
-					message = writer.toString();
+					message = System.getProperty("line.separator")
+							+ writer.toString();
 				} else {
 					StringWriter writer = new StringWriter();
 					e.printStackTrace(new PrintWriter(writer));
-					message = writer.toString();
+					message = System.getProperty("line.separator")
+							+ writer.toString();
 				}
+				String[] split = message.split(System.getProperty("line.separator"));
 				this.getLog().warn(
 						"Could not parse " + getClassToFind().getSimpleName()
-								+ " " + file + ": " + message);
+								+ " " + file + ": " + split[0]);
+				for (int i = 1; i < split.length; i++)
+					this.getLog().warn("|--> " + split[i]);
 			}
 
 			/*
