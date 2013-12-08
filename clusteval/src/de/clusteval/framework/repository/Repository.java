@@ -2423,6 +2423,14 @@ public class Repository {
 		this.log.info(message);
 	}
 
+	protected <T extends RepositoryObject> void createAndAddEntity(
+			final Class<T> c, final String basePath) {
+		this.repositoryObjectEntities.put(c, new RepositoryObjectEntity<T>(
+				this, this.parent != null
+						? this.parent.repositoryObjectEntities.get(c)
+						: null, basePath));
+	}
+
 	/**
 	 * This method initializes all attribute maps and all variables, that keep
 	 * registered repository objects.
@@ -2435,68 +2443,22 @@ public class Repository {
 
 		this.repositoryObjectEntities = new RepositoryObjectEntityMap();
 
-		this.repositoryObjectEntities.put(
-				DataSet.class,
-				new RepositoryObjectEntity<DataSet>(this, this.parent != null
-						? this.parent.repositoryObjectEntities
-								.get(DataSet.class) : null, FileUtils
-						.buildPath(this.basePath, "data", "datasets")));
-
-		this.repositoryObjectEntities.put(
-				DataSetConfig.class,
-				new RepositoryObjectEntity<DataSetConfig>(this,
-						this.parent != null
-								? this.parent.repositoryObjectEntities
-										.get(DataSetConfig.class) : null,
-						FileUtils.buildPath(this.basePath, "data", "datasets",
-								"configs")));
-
-		this.repositoryObjectEntities.put(
-				GoldStandard.class,
-				new RepositoryObjectEntity<GoldStandard>(this,
-						this.parent != null
-								? this.parent.repositoryObjectEntities
-										.get(GoldStandard.class) : null,
-						FileUtils.buildPath(this.basePath, "data",
-								"goldstandards")));
-
-		this.repositoryObjectEntities.put(
-				GoldStandardConfig.class,
-				new RepositoryObjectEntity<GoldStandardConfig>(this,
-						this.parent != null
-								? this.parent.repositoryObjectEntities
-										.get(GoldStandardConfig.class) : null,
-						FileUtils.buildPath(this.basePath, "data",
-								"goldstandards", "configs")));
-
-		this.repositoryObjectEntities.put(
-				DataConfig.class,
-				new RepositoryObjectEntity<DataConfig>(this,
-						this.parent != null
-								? this.parent.repositoryObjectEntities
-										.get(DataConfig.class) : null,
-						FileUtils.buildPath(this.basePath, "data", "configs")));
-
-		this.repositoryObjectEntities.put(Run.class,
-				new RepositoryObjectEntity<Run>(this, this.parent != null
-						? this.parent.repositoryObjectEntities.get(Run.class)
-						: null, FileUtils.buildPath(this.basePath, "runs")));
-
-		this.repositoryObjectEntities.put(
-				ProgramConfig.class,
-				new RepositoryObjectEntity<ProgramConfig>(this,
-						this.parent != null
-								? this.parent.repositoryObjectEntities
-										.get(ProgramConfig.class) : null,
-						FileUtils.buildPath(this.basePath, "programs",
-								"configs")));
-
-		this.repositoryObjectEntities.put(
-				Program.class,
-				new RepositoryObjectEntity<Program>(this, this.parent != null
-						? this.parent.repositoryObjectEntities
-								.get(Program.class) : null, FileUtils
-						.buildPath(this.basePath, "programs")));
+		this.createAndAddEntity(DataSet.class,
+				FileUtils.buildPath(this.basePath, "data", "datasets"));
+		this.createAndAddEntity(DataSetConfig.class, FileUtils.buildPath(
+				this.basePath, "data", "datasets", "configs"));
+		this.createAndAddEntity(GoldStandard.class,
+				FileUtils.buildPath(this.basePath, "data", "goldstandards"));
+		this.createAndAddEntity(GoldStandardConfig.class, FileUtils.buildPath(
+				this.basePath, "data", "goldstandards", "configs"));
+		this.createAndAddEntity(DataConfig.class,
+				FileUtils.buildPath(this.basePath, "data", "configs"));
+		this.createAndAddEntity(Run.class,
+				FileUtils.buildPath(this.basePath, "runs"));
+		this.createAndAddEntity(ProgramConfig.class,
+				FileUtils.buildPath(this.basePath, "programs", "configs"));
+		this.createAndAddEntity(Program.class,
+				FileUtils.buildPath(this.basePath, "programs"));
 
 		this.repositoryObjectEntities.put(
 				RunResult.class,

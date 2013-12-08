@@ -95,21 +95,16 @@ public class RunResultRepository extends Repository {
 
 		this.repositoryObjectEntities = new RepositoryObjectEntityMap();
 
-		this.repositoryObjectEntities.put(
-				DataConfig.class,
-				new RepositoryObjectEntity<DataConfig>(this,
-						this.parent != null
-								? this.parent.repositoryObjectEntities
-										.get(DataConfig.class) : null,
-						FileUtils.buildPath(this.basePath, "configs")));
-
-		this.repositoryObjectEntities.put(
-				DataSetConfig.class,
-				new RepositoryObjectEntity<DataSetConfig>(this,
-						this.parent != null
-								? this.parent.repositoryObjectEntities
-										.get(DataSetConfig.class) : null,
-						FileUtils.buildPath(this.basePath, "configs")));
+		this.createAndAddEntity(DataConfig.class,
+				FileUtils.buildPath(this.basePath, "configs"));
+		this.createAndAddEntity(DataSetConfig.class,
+				FileUtils.buildPath(this.basePath, "configs"));
+		this.createAndAddEntity(GoldStandardConfig.class,
+				FileUtils.buildPath(this.basePath, "configs"));
+		this.createAndAddEntity(ProgramConfig.class,
+				FileUtils.buildPath(this.basePath, "configs"));
+		this.createAndAddEntity(Run.class,
+				FileUtils.buildPath(this.basePath, "configs"));
 
 		this.repositoryObjectEntities.put(
 				DataSet.class,
@@ -120,33 +115,12 @@ public class RunResultRepository extends Repository {
 								.buildPath(this.basePath, "inputs")));
 
 		this.repositoryObjectEntities.put(
-				GoldStandardConfig.class,
-				new RepositoryObjectEntity<GoldStandardConfig>(this,
-						this.parent != null
-								? this.parent.repositoryObjectEntities
-										.get(GoldStandardConfig.class) : null,
-						FileUtils.buildPath(this.basePath, "configs")));
-
-		this.repositoryObjectEntities.put(
 				GoldStandard.class,
 				new RunResultRepositoryGoldStandardObjectEntity(this,
 						this.parent != null
 								? this.parent.repositoryObjectEntities
 										.get(GoldStandard.class) : null,
 						FileUtils.buildPath(this.basePath, "goldstandards")));
-
-		this.repositoryObjectEntities.put(
-				ProgramConfig.class,
-				new RepositoryObjectEntity<ProgramConfig>(this,
-						this.parent != null
-								? this.parent.repositoryObjectEntities
-										.get(ProgramConfig.class) : null,
-						FileUtils.buildPath(this.basePath, "configs")));
-
-		this.repositoryObjectEntities.put(Run.class,
-				new RepositoryObjectEntity<Run>(this,
-						this.parent.repositoryObjectEntities.get(Run.class),
-						FileUtils.buildPath(this.basePath, "configs")));
 
 		this.repositoryObjectEntities.put(Program.class,
 				this.parent.repositoryObjectEntities.get(Program.class));
