@@ -17,7 +17,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collection;
 import java.util.Iterator;
 
 import de.clusteval.framework.repository.RegisterException;
@@ -41,19 +40,7 @@ public class ParameterOptimizationMethodFinder
 	 */
 	public ParameterOptimizationMethodFinder(final Repository repository)
 			throws RegisterException {
-		super(repository, System.currentTimeMillis(), new File(
-				repository.getBasePath(ParameterOptimizationMethod.class)));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getBaseDir()
-	 */
-	@Override
-	protected File getBaseDir() {
-		return new File(
-				this.repository.getBasePath(ParameterOptimizationMethod.class));
+		super(repository, ParameterOptimizationMethod.class);
 	}
 
 	/*
@@ -64,16 +51,6 @@ public class ParameterOptimizationMethodFinder
 	@Override
 	protected boolean checkFile(File file) {
 		return file.getName().endsWith("ParameterOptimizationMethod.jar");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getClassToFind()
-	 */
-	@Override
-	protected Class<?> getClassToFind() {
-		return ParameterOptimizationMethod.class;
 	}
 
 	/*
@@ -121,28 +98,6 @@ public class ParameterOptimizationMethodFinder
 		URL url = f.toURI().toURL();
 		return new ParameterOptimizationMethodURLClassLoader(this,
 				new URL[]{url}, parent);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#getRegisteredObjectSet()
-	 */
-	@Override
-	protected Collection<Class<? extends ParameterOptimizationMethod>> getRegisteredObjectSet() {
-		return this.repository.getClasses(ParameterOptimizationMethod.class);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#removeOldObject(java.lang.Class)
-	 */
-	@Override
-	protected void removeOldObject(
-			Class<? extends ParameterOptimizationMethod> object) {
-		this.repository.unregisterClass(ParameterOptimizationMethod.class,
-				object);
 	}
 }
 

@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
@@ -33,7 +34,7 @@ import file.FileUtils;
  * @param <T>
  * 
  */
-public abstract class JARFinder<T extends RepositoryObject> extends Finder {
+public abstract class JARFinder<T extends RepositoryObject> extends Finder<T> {
 
 	protected Map<URL, URLClassLoader> classLoaders;
 
@@ -47,9 +48,9 @@ public abstract class JARFinder<T extends RepositoryObject> extends Finder {
 	 * @param absPath
 	 * @throws RegisterException
 	 */
-	public JARFinder(Repository repository, long changeDate, File absPath)
+	public JARFinder(Repository repository, Class<T> classToFind)
 			throws RegisterException {
-		super(repository, changeDate, absPath);
+		super(repository, classToFind);
 		this.classLoaders = this.repository.getJARFinderClassLoaders();
 		this.waitingFiles = this.repository.getJARFinderWaitingFiles();
 		this.loadedJarFileChangeDates = this.repository
@@ -221,7 +222,9 @@ public abstract class JARFinder<T extends RepositoryObject> extends Finder {
 						.lastModified();
 	}
 
-	protected abstract Collection<Class<? extends T>> getRegisteredObjectSet();
+	protected Collection<Class<? extends T>> getRegisteredObjectSet() {
+		return this.repository.getClasses(this.getClassToFind());
+	}
 
 	protected void validateRegisteredObjects() {
 		/*
@@ -252,5 +255,7 @@ public abstract class JARFinder<T extends RepositoryObject> extends Finder {
 		super.findAndRegisterObjects();
 	}
 
-	protected abstract void removeOldObject(Class<? extends T> object);
+	protected void removeOldObject(Class<? extends T> object) {
+		this.repository.unregisterClass(this.getClassToFind(), object);
+	}
 }

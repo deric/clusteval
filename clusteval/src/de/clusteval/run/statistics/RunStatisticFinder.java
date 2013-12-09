@@ -18,7 +18,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,33 +36,11 @@ public class RunStatisticFinder extends JARFinder<RunStatistic> {
 	 * 
 	 * @param repository
 	 *            the repository
-	 * @param changeDate
-	 * @param absPath
 	 * @throws RegisterException
 	 */
-	public RunStatisticFinder(final Repository repository,
-			final long changeDate, final File absPath) throws RegisterException {
-		super(repository, changeDate, absPath);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#getRegisteredObjectSet()
-	 */
-	@Override
-	protected Collection<Class<? extends RunStatistic>> getRegisteredObjectSet() {
-		return this.repository.getClasses(RunStatistic.class);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#removeOldObject(java.lang.Class)
-	 */
-	@Override
-	protected void removeOldObject(Class<? extends RunStatistic> object) {
-		this.repository.unregisterClass(RunStatistic.class, object);
+	public RunStatisticFinder(final Repository repository)
+			throws RegisterException {
+		super(repository, RunStatistic.class);
 	}
 
 	/*
@@ -114,26 +91,6 @@ public class RunStatisticFinder extends JARFinder<RunStatistic> {
 						+ f.getName().replace(".jar", ""),
 				"de.clusteval.run.statistics."
 						+ f.getName().replace(".jar", "Calculator")};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getBaseDir()
-	 */
-	@Override
-	protected File getBaseDir() {
-		return new File(this.repository.getBasePath(RunStatistic.class));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getClassToFind()
-	 */
-	@Override
-	protected Class<?> getClassToFind() {
-		return RunStatistic.class;
 	}
 
 	/*

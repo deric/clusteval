@@ -11,7 +11,6 @@
 package de.clusteval.data.dataset;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.Iterator;
 
 import utils.ArrayIterator;
@@ -28,7 +27,7 @@ import de.clusteval.utils.FileFinder;
  * 
  * 
  */
-public class RunResultDataSetConfigFinder extends FileFinder {
+public class RunResultDataSetConfigFinder extends FileFinder<DataSetConfig> {
 
 	/**
 	 * Instantiates a new dataset configuration finder.
@@ -39,18 +38,7 @@ public class RunResultDataSetConfigFinder extends FileFinder {
 	 */
 	public RunResultDataSetConfigFinder(final Repository repository)
 			throws RegisterException {
-		super(repository, System.currentTimeMillis(), new File(
-				repository.getBasePath(DataSetConfig.class)));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getBaseDir()
-	 */
-	@Override
-	protected File getBaseDir() {
-		return new File(this.repository.getBasePath(DataSetConfig.class));
+		super(repository, DataSetConfig.class);
 	}
 
 	/*
@@ -66,31 +54,11 @@ public class RunResultDataSetConfigFinder extends FileFinder {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#getClassToFind()
-	 */
-	@Override
-	protected Class<?> getClassToFind() {
-		return DataSetConfig.class;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see utils.Finder#getIterator()
 	 */
 	@Override
 	protected Iterator<File> getIterator() {
 		return new ArrayIterator<File>(getBaseDir().listFiles());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FileFinder#getRegisteredObjectSet()
-	 */
-	@Override
-	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.repository.getCollectionStaticEntities(DataSetConfig.class);
 	}
 
 	/*

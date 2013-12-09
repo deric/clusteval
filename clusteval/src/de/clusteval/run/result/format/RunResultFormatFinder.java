@@ -18,7 +18,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,33 +36,11 @@ public class RunResultFormatFinder extends JARFinder<RunResultFormat> {
 	 * 
 	 * @param repository
 	 *            the repository
-	 * @param changeDate
-	 * @param absPath
 	 * @throws RegisterException
 	 */
-	public RunResultFormatFinder(final Repository repository,
-			final long changeDate, final File absPath) throws RegisterException {
-		super(repository, changeDate, absPath);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#getRegisteredObjectSet()
-	 */
-	@Override
-	protected Collection<Class<? extends RunResultFormat>> getRegisteredObjectSet() {
-		return this.repository.getClasses(RunResultFormat.class);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#removeOldObject(java.lang.Class)
-	 */
-	@Override
-	protected void removeOldObject(Class<? extends RunResultFormat> object) {
-		this.repository.unregisterClass(RunResultFormat.class, object);
+	public RunResultFormatFinder(final Repository repository)
+			throws RegisterException {
+		super(repository, RunResultFormat.class);
 	}
 
 	/*
@@ -97,31 +74,11 @@ public class RunResultFormatFinder extends JARFinder<RunResultFormat> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#getBaseDir()
-	 */
-	@Override
-	protected File getBaseDir() {
-		return new File(this.repository.getBasePath(RunResultFormat.class));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see utils.Finder#checkFile(java.io.File)
 	 */
 	@Override
 	protected boolean checkFile(File file) {
 		return file.getName().endsWith("RunResultFormat.jar");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getClassToFind()
-	 */
-	@Override
-	protected Class<?> getClassToFind() {
-		return RunResultFormat.class;
 	}
 
 	/*

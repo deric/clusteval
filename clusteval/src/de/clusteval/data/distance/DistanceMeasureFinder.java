@@ -17,7 +17,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collection;
 import java.util.Iterator;
 
 import de.clusteval.framework.repository.RegisterException;
@@ -33,23 +32,11 @@ public class DistanceMeasureFinder extends JARFinder<DistanceMeasure> {
 
 	/**
 	 * @param repository
-	 * @param changeDate
-	 * @param absPath
 	 * @throws RegisterException
 	 */
-	public DistanceMeasureFinder(Repository repository, long changeDate,
-			File absPath) throws RegisterException {
-		super(repository, changeDate, absPath);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getBaseDir()
-	 */
-	@Override
-	protected File getBaseDir() {
-		return new File(this.getRepository().getBasePath(DistanceMeasure.class));
+	public DistanceMeasureFinder(Repository repository)
+			throws RegisterException {
+		super(repository, DistanceMeasure.class);
 	}
 
 	/*
@@ -87,16 +74,6 @@ public class DistanceMeasureFinder extends JARFinder<DistanceMeasure> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#getClassToFind()
-	 */
-	@Override
-	protected Class<?> getClassToFind() {
-		return DistanceMeasure.class;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see utils.JARFinder#classNamesForJARFile(java.io.File)
 	 */
 	@Override
@@ -116,26 +93,6 @@ public class DistanceMeasureFinder extends JARFinder<DistanceMeasure> {
 				&& this.repository
 						.isClassRegistered("de.clusteval.data.distance."
 								+ f.getName().replace(".jar", ""));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#getRegisteredObjectSet()
-	 */
-	@Override
-	protected Collection<Class<? extends DistanceMeasure>> getRegisteredObjectSet() {
-		return this.repository.getClasses(DistanceMeasure.class);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#removeOldObject(java.lang.Class)
-	 */
-	@Override
-	protected void removeOldObject(Class<? extends DistanceMeasure> object) {
-		this.repository.unregisterClass(object);
 	}
 
 }
@@ -160,7 +117,6 @@ class DistanceMeasureURLClassLoader extends URLClassLoader {
 	 * 
 	 * @see java.lang.ClassLoader#loadClass(java.lang.String)
 	 */
-	@SuppressWarnings("cast")
 	@Override
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
 		Class<?> result = super.loadClass(name);

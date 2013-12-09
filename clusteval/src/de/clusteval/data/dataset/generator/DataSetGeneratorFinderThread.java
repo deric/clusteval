@@ -13,12 +13,9 @@
  */
 package de.clusteval.data.dataset.generator;
 
-import java.io.File;
-
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.SupervisorThread;
-import de.clusteval.utils.Finder;
 import de.clusteval.utils.FinderThread;
 
 /**
@@ -79,9 +76,7 @@ public class DataSetGeneratorFinderThread extends FinderThread {
 	 * @see utils.FinderThread#getFinder()
 	 */
 	@Override
-	protected Finder getFinder() throws RegisterException {
-		return new DataSetGeneratorFinder(repository,
-				System.currentTimeMillis(), new File(
-						repository.getBasePath(DataSetGenerator.class)));
+	protected DataSetGeneratorFinder getFinder() throws RegisterException {
+		return new DataSetGeneratorFinder(repository);
 	}
 }

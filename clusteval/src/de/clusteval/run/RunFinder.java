@@ -11,16 +11,13 @@
 package de.clusteval.run;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.Iterator;
 
+import utils.ArrayIterator;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.utils.FileFinder;
-
-
-import utils.ArrayIterator;
 
 /**
  * Objects of this class look for new run-files in the run-directory defined in
@@ -30,7 +27,7 @@ import utils.ArrayIterator;
  * 
  * 
  */
-public class RunFinder extends FileFinder {
+public class RunFinder extends FileFinder<Run> {
 
 	/**
 	 * Instantiates a new run finder.
@@ -40,8 +37,7 @@ public class RunFinder extends FileFinder {
 	 * @throws RegisterException
 	 */
 	public RunFinder(final Repository repository) throws RegisterException {
-		super(repository, System.currentTimeMillis(), new File(
-				repository.getBasePath(Run.class)));
+		super(repository, Run.class);
 	}
 
 	/*
@@ -57,41 +53,11 @@ public class RunFinder extends FileFinder {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#getBaseDir()
-	 */
-	@Override
-	protected File getBaseDir() {
-		return new File(this.repository.getBasePath(Run.class));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getClassToFind()
-	 */
-	@Override
-	protected Class<?> getClassToFind() {
-		return Run.class;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see utils.Finder#getIterator()
 	 */
 	@Override
 	protected Iterator<File> getIterator() {
 		return new ArrayIterator<File>(getBaseDir().listFiles());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FileFinder#getRegisteredObjectSet()
-	 */
-	@Override
-	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.repository.getCollectionStaticEntities(Run.class);
 	}
 
 	/*

@@ -17,7 +17,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collection;
 import java.util.Iterator;
 
 import de.clusteval.framework.repository.RegisterException;
@@ -35,33 +34,10 @@ public class ContextFinder extends JARFinder<Context> {
 	 * 
 	 * @param repository
 	 *            the repository
-	 * @param changeDate
-	 * @param absPath
 	 * @throws RegisterException
 	 */
-	public ContextFinder(final Repository repository, final long changeDate,
-			final File absPath) throws RegisterException {
-		super(repository, changeDate, absPath);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#getRegisteredObjectSet()
-	 */
-	@Override
-	protected Collection<Class<? extends Context>> getRegisteredObjectSet() {
-		return repository.getClasses(Context.class);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#removeOldObject(java.lang.Class)
-	 */
-	@Override
-	protected void removeOldObject(Class<? extends Context> object) {
-		repository.unregisterClass(Context.class, object);
+	public ContextFinder(final Repository repository) throws RegisterException {
+		super(repository, Context.class);
 	}
 
 	/*
@@ -83,26 +59,6 @@ public class ContextFinder extends JARFinder<Context> {
 	protected String[] classNamesForJARFile(File f) {
 		return new String[]{"de.clusteval.context."
 				+ f.getName().replace(".jar", "")};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getBaseDir()
-	 */
-	@Override
-	protected File getBaseDir() {
-		return new File(this.repository.getBasePath(Context.class));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getClassToFind()
-	 */
-	@Override
-	protected Class<?> getClassToFind() {
-		return Context.class;
 	}
 
 	/*

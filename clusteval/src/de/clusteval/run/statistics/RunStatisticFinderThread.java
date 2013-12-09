@@ -13,12 +13,9 @@
  */
 package de.clusteval.run.statistics;
 
-import java.io.File;
-
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.SupervisorThread;
-import de.clusteval.utils.Finder;
 import de.clusteval.utils.FinderThread;
 
 /**
@@ -67,9 +64,8 @@ public class RunStatisticFinderThread extends FinderThread {
 	 * @see utils.FinderThread#getFinder()
 	 */
 	@Override
-	protected Finder getFinder() throws RegisterException {
-		return new RunStatisticFinder(repository, System.currentTimeMillis(),
-				new File(repository.getBasePath(RunStatistic.class)));
+	protected RunStatisticFinder getFinder() throws RegisterException {
+		return new RunStatisticFinder(repository);
 	}
 
 	/*

@@ -16,7 +16,6 @@ package de.clusteval.cluster.paramOptimization;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.SupervisorThread;
-import de.clusteval.utils.Finder;
 import de.clusteval.utils.FinderThread;
 
 /**
@@ -86,7 +85,8 @@ public class ParameterOptimizationMethodFinderThread extends FinderThread {
 	 * @see utils.FinderThread#getFinder()
 	 */
 	@Override
-	protected Finder getFinder() throws RegisterException {
+	protected ParameterOptimizationMethodFinder getFinder()
+			throws RegisterException {
 		return new ParameterOptimizationMethodFinder(repository);
 	}
 }

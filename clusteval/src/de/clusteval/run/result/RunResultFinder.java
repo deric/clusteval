@@ -31,7 +31,7 @@ import de.clusteval.utils.FileFinder;
  * @author Christian Wiwie
  * 
  */
-public class RunResultFinder extends FileFinder {
+public class RunResultFinder extends FileFinder<RunResult> {
 
 	/**
 	 * Instantiates a new run result finder.
@@ -41,18 +41,7 @@ public class RunResultFinder extends FileFinder {
 	 * @throws RegisterException
 	 */
 	public RunResultFinder(Repository repository) throws RegisterException {
-		super(repository, System.currentTimeMillis(), new File(
-				repository.getBasePath(RunResult.class)));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FileFinder#getRegisteredObjectSet()
-	 */
-	@Override
-	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.getRepository().getCollectionStaticEntities(RunResult.class);
+		super(repository, RunResult.class);
 	}
 
 	/*
@@ -65,16 +54,6 @@ public class RunResultFinder extends FileFinder {
 			throws InterruptedException, Exception {
 		return RunResult.parseFromRunResultFolder(getRepository(), file,
 				new ArrayList<ExecutionRunResult>(), false, false);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getBaseDir()
-	 */
-	@Override
-	protected File getBaseDir() {
-		return new File(this.getRepository().getBasePath(RunResult.class));
 	}
 
 	/*
@@ -113,16 +92,6 @@ public class RunResultFinder extends FileFinder {
 			}
 		}
 		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getClassToFind()
-	 */
-	@Override
-	protected Class<?> getClassToFind() {
-		return RunResult.class;
 	}
 
 }

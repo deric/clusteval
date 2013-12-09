@@ -13,8 +13,6 @@
  */
 package de.clusteval.context;
 
-import java.io.File;
-
 import de.clusteval.data.dataset.format.DataSetFormat;
 import de.clusteval.data.dataset.format.DataSetFormatFinderThread;
 import de.clusteval.framework.repository.RegisterException;
@@ -22,7 +20,6 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.SupervisorThread;
 import de.clusteval.run.result.format.RunResultFormat;
 import de.clusteval.run.result.format.RunResultFormatFinderThread;
-import de.clusteval.utils.Finder;
 import de.clusteval.utils.FinderThread;
 
 /**
@@ -88,8 +85,7 @@ public class ContextFinderThread extends FinderThread {
 	 * @see utils.FinderThread#getFinder()
 	 */
 	@Override
-	protected Finder getFinder() throws RegisterException {
-		return new ContextFinder(repository, System.currentTimeMillis(),
-				new File(repository.getBasePath(Context.class)));
+	protected ContextFinder getFinder() throws RegisterException {
+		return new ContextFinder(repository);
 	}
 }

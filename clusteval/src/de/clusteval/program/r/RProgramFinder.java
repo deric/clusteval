@@ -14,14 +14,11 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collection;
 import java.util.Iterator;
 
 import utils.ArrayIterator;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
-import de.clusteval.program.Program;
-import de.clusteval.program.ProgramConfig;
 import de.clusteval.utils.JARFinder;
 
 /**
@@ -39,43 +36,10 @@ public class RProgramFinder extends JARFinder<RProgram> {
 	 * 
 	 * @param repository
 	 *            the repository
-	 * @param changeDate
-	 * @param absPath
 	 * @throws RegisterException
 	 */
-	public RProgramFinder(final Repository repository, final long changeDate,
-			final File absPath) throws RegisterException {
-		super(repository, changeDate, absPath);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#getRegisteredObjectSet()
-	 */
-	@Override
-	protected Collection<Class<? extends RProgram>> getRegisteredObjectSet() {
-		return this.repository.getClasses(RProgram.class);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#removeOldObject(java.lang.Class)
-	 */
-	@Override
-	protected void removeOldObject(Class<? extends RProgram> object) {
-		this.repository.unregisterClass(RProgram.class, object);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getBaseDir()
-	 */
-	@Override
-	protected File getBaseDir() {
-		return new File(this.repository.getBasePath(Program.class));
+	public RProgramFinder(final Repository repository) throws RegisterException {
+		super(repository, RProgram.class);
 	}
 
 	/*
@@ -96,16 +60,6 @@ public class RProgramFinder extends JARFinder<RProgram> {
 	@Override
 	protected Iterator<File> getIterator() {
 		return new ArrayIterator<File>(getBaseDir().listFiles());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getClassToFind()
-	 */
-	@Override
-	protected Class<?> getClassToFind() {
-		return ProgramConfig.class;
 	}
 
 	/*

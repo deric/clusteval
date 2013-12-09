@@ -17,7 +17,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collection;
 import java.util.Iterator;
 
 import de.clusteval.framework.repository.RegisterException;
@@ -37,34 +36,11 @@ public class ClusteringQualityMeasureFinder
 	 * 
 	 * @param repository
 	 *            The repository to register the new data configurations at.
-	 * @param changeDate
-	 * @param absPath
 	 * @throws RegisterException
 	 */
-	public ClusteringQualityMeasureFinder(final Repository repository,
-			final long changeDate, final File absPath) throws RegisterException {
-		super(repository, changeDate, absPath);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#getRegisteredObjectSet()
-	 */
-	@Override
-	protected Collection<Class<? extends ClusteringQualityMeasure>> getRegisteredObjectSet() {
-		return this.repository.getClasses(ClusteringQualityMeasure.class);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#removeOldObject(java.lang.Class)
-	 */
-	@Override
-	protected void removeOldObject(
-			Class<? extends ClusteringQualityMeasure> object) {
-		this.repository.unregisterClass(ClusteringQualityMeasure.class, object);
+	public ClusteringQualityMeasureFinder(final Repository repository)
+			throws RegisterException {
+		super(repository, ClusteringQualityMeasure.class);
 	}
 
 	/*
@@ -112,27 +88,6 @@ public class ClusteringQualityMeasureFinder
 	@Override
 	protected boolean checkFile(File file) {
 		return file.getName().endsWith("ClusteringQualityMeasure.jar");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getBaseDir()
-	 */
-	@Override
-	protected File getBaseDir() {
-		return new File(
-				this.repository.getBasePath(ClusteringQualityMeasure.class));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getClassToFind()
-	 */
-	@Override
-	protected Class<?> getClassToFind() {
-		return ClusteringQualityMeasure.class;
 	}
 
 	/*

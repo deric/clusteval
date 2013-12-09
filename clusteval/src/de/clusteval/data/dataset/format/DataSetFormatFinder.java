@@ -17,7 +17,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Collection;
 import java.util.Iterator;
 
 import de.clusteval.framework.repository.RegisterException;
@@ -36,33 +35,11 @@ public class DataSetFormatFinder extends JARFinder<DataSetFormat> {
 	 * 
 	 * @param repository
 	 *            the repository
-	 * @param changeDate
-	 * @param absPath
 	 * @throws RegisterException
 	 */
-	public DataSetFormatFinder(final Repository repository,
-			final long changeDate, final File absPath) throws RegisterException {
-		super(repository, changeDate, absPath);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#getRegisteredObjectSet()
-	 */
-	@Override
-	protected Collection<Class<? extends DataSetFormat>> getRegisteredObjectSet() {
-		return repository.getClasses(DataSetFormat.class);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.JARFinder#removeOldObject(java.lang.Class)
-	 */
-	@Override
-	protected void removeOldObject(Class<? extends DataSetFormat> object) {
-		repository.unregisterClass(DataSetFormat.class, object);
+	public DataSetFormatFinder(final Repository repository)
+			throws RegisterException {
+		super(repository, DataSetFormat.class);
 	}
 
 	/*
@@ -87,26 +64,6 @@ public class DataSetFormatFinder extends JARFinder<DataSetFormat> {
 						+ f.getName().replace(".jar", ""),
 				"de.clusteval.data.dataset.format."
 						+ f.getName().replace(".jar", "Parser")};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getBaseDir()
-	 */
-	@Override
-	protected File getBaseDir() {
-		return new File(this.repository.getBasePath(DataSetFormat.class));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getClassToFind()
-	 */
-	@Override
-	protected Class<?> getClassToFind() {
-		return DataSetFormat.class;
 	}
 
 	/*

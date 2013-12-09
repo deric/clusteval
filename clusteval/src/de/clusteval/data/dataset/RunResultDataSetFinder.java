@@ -32,13 +32,11 @@ public class RunResultDataSetFinder extends DataSetFinder {
 	 * 
 	 * @param repository
 	 *            the repository
-	 * @param changeDate
-	 * @param absPath
 	 * @throws RegisterException
 	 */
-	public RunResultDataSetFinder(final Repository repository,
-			final long changeDate, final File absPath) throws RegisterException {
-		super(repository, changeDate, absPath);
+	public RunResultDataSetFinder(final Repository repository)
+			throws RegisterException {
+		super(repository);
 	}
 
 	/*

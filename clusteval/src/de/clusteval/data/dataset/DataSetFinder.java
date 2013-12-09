@@ -11,7 +11,6 @@
 package de.clusteval.data.dataset;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.Iterator;
 
 import de.clusteval.framework.repository.RegisterException;
@@ -19,7 +18,6 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.utils.FileFinder;
 import de.clusteval.utils.SubDirectoryIterator;
-
 
 /**
  * Objects of this class look for new run-files in the run-directory defined in
@@ -29,30 +27,17 @@ import de.clusteval.utils.SubDirectoryIterator;
  * 
  * 
  */
-public class DataSetFinder extends FileFinder {
+public class DataSetFinder extends FileFinder<DataSet> {
 
 	/**
 	 * Instantiates a new run finder.
 	 * 
 	 * @param repository
 	 *            the repository
-	 * @param changeDate
-	 * @param absPath
 	 * @throws RegisterException
 	 */
-	public DataSetFinder(final Repository repository, final long changeDate,
-			final File absPath) throws RegisterException {
-		super(repository, changeDate, absPath);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Finder#getBaseDir()
-	 */
-	@Override
-	protected File getBaseDir() {
-		return new File(this.repository.getBasePath(DataSet.class));
+	public DataSetFinder(final Repository repository) throws RegisterException {
+		super(repository, DataSet.class);
 	}
 
 	/*
@@ -74,31 +59,11 @@ public class DataSetFinder extends FileFinder {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#getClassToFind()
-	 */
-	@Override
-	protected Class<?> getClassToFind() {
-		return DataSet.class;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see utils.Finder#getIterator()
 	 */
 	@Override
 	protected Iterator<File> getIterator() {
 		return new SubDirectoryIterator(getBaseDir());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FileFinder#getRegisteredObjectSet()
-	 */
-	@Override
-	protected Collection<? extends RepositoryObject> getRegisteredObjectSet() {
-		return this.repository.getCollectionStaticEntities(DataSet.class);
 	}
 
 	/*

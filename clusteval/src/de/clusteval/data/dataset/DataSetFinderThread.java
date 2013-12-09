@@ -13,8 +13,6 @@
  */
 package de.clusteval.data.dataset;
 
-import java.io.File;
-
 import de.clusteval.data.dataset.format.DataSetFormat;
 import de.clusteval.data.dataset.format.DataSetFormatFinderThread;
 import de.clusteval.data.dataset.type.DataSetType;
@@ -22,7 +20,6 @@ import de.clusteval.data.dataset.type.DataSetTypeFinderThread;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.SupervisorThread;
-import de.clusteval.utils.Finder;
 import de.clusteval.utils.FinderThread;
 
 /**
@@ -89,8 +86,7 @@ public class DataSetFinderThread extends FinderThread {
 	 * @see utils.FinderThread#getFinder()
 	 */
 	@Override
-	protected Finder getFinder() throws RegisterException {
-		return new DataSetFinder(repository, System.currentTimeMillis(),
-				new File(repository.getBasePath(DataSet.class)));
+	protected DataSetFinder getFinder() throws RegisterException {
+		return new DataSetFinder(repository);
 	}
 }

@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryEvent;
@@ -28,21 +29,28 @@ import de.clusteval.framework.repository.RepositoryReplaceEvent;
 
 /**
  * @author Christian Wiwie
+ * @param <T>
  * 
  */
-public abstract class Finder extends RepositoryObject {
+public abstract class Finder<T extends RepositoryObject>
+		extends
+			RepositoryObject {
+
+	protected Class<T> classToFind;
 
 	protected Map<String, List<Throwable>> knownExceptions;
 
 	/**
 	 * @param repository
-	 * @param changeDate
-	 * @param absPath
+	 * @param classToFind
 	 * @throws RegisterException
 	 */
-	public Finder(Repository repository, long changeDate, File absPath)
+	public Finder(Repository repository, Class<T> classToFind)
 			throws RegisterException {
-		super(repository, changeDate, absPath);
+		super(repository, System.currentTimeMillis(), new File(
+				repository.getBasePath(classToFind)));
+
+		this.classToFind = classToFind;
 
 		this.knownExceptions = this.repository.getKnownFinderExceptions();
 	}
@@ -118,7 +126,9 @@ public abstract class Finder extends RepositoryObject {
 		}
 	}
 
-	protected abstract File getBaseDir();
+	protected File getBaseDir() {
+		return new File(this.repository.getBasePath(this.getClassToFind()));
+	}
 
 	protected abstract Iterator<File> getIterator();
 
@@ -126,7 +136,9 @@ public abstract class Finder extends RepositoryObject {
 
 	protected abstract void doOnFileFound(final File file) throws Exception;
 
-	protected abstract Class<?> getClassToFind();
+	protected final Class<T> getClassToFind() {
+		return this.classToFind;
+	}
 
 	@Override
 	public void notify(RepositoryEvent e) {
