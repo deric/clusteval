@@ -53,7 +53,7 @@ public class RunResultFormatFinder extends JARFinder<RunResultFormat> {
 	 */
 	@Override
 	protected Collection<Class<? extends RunResultFormat>> getRegisteredObjectSet() {
-		return this.repository.getRunResultFormatClasses();
+		return this.repository.getClasses(RunResultFormat.class);
 	}
 
 	/*
@@ -63,7 +63,7 @@ public class RunResultFormatFinder extends JARFinder<RunResultFormat> {
 	 */
 	@Override
 	protected void removeOldObject(Class<? extends RunResultFormat> object) {
-		this.repository.unregisterRunResultFormatClass(object);
+		this.repository.unregisterClass(RunResultFormat.class, object);
 	}
 
 	/*
@@ -78,7 +78,7 @@ public class RunResultFormatFinder extends JARFinder<RunResultFormat> {
 
 		// add URLS for JARs into list
 		List<URL> urls = this.search(new File(this.repository
-				.getRunResultFormatBasePath()));
+				.getBasePath(RunResultFormat.class)));
 		// load corresponding classes of URLs in list
 		return new RunResultFormatURLClassLoader(this,
 				urls.toArray(new URL[0]), parent);
@@ -101,7 +101,7 @@ public class RunResultFormatFinder extends JARFinder<RunResultFormat> {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getRunResultFormatBasePath());
+		return new File(this.repository.getBasePath(RunResultFormat.class));
 	}
 
 	/*
@@ -142,8 +142,8 @@ public class RunResultFormatFinder extends JARFinder<RunResultFormat> {
 	@Override
 	protected boolean isJARLoaded(File f) {
 		return super.isJARLoaded(f)
-				&& this.repository
-						.isRunResultFormatRegistered(classNamesForJARFile(f)[0]);
+				&& this.repository.isClassRegistered(RunResultFormat.class,
+						classNamesForJARFile(f)[0]);
 	}
 
 	/*
@@ -191,8 +191,8 @@ class RunResultFormatURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends RunResultFormat> runResultFormat = (Class<? extends RunResultFormat>) result;
 
-				if (this.parent.getRepository().registerRunResultFormatClass(
-						runResultFormat))
+				if (this.parent.getRepository().registerClass(
+						RunResultFormat.class, runResultFormat))
 					this.parent.getLog().info(
 							"RunResultFormat " + name + " loaded");
 				// /*

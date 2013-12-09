@@ -68,7 +68,7 @@ public class RunResultFormatFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		repository.setRunResultFormatsInitialized();
+		repository.setInitialized(RunResultFormat.class);
 	}
 
 	/*
@@ -80,6 +80,6 @@ public class RunResultFormatFinderThread extends FinderThread {
 	protected Finder getFinder() throws RegisterException {
 		return new RunResultFormatFinder(repository,
 				System.currentTimeMillis(), new File(
-						repository.getRunResultFormatBasePath()));
+						repository.getBasePath(RunResultFormat.class)));
 	}
 }

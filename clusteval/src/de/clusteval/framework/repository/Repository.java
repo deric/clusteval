@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -75,7 +74,6 @@ import de.clusteval.run.Run;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.format.RunResultFormat;
 import de.clusteval.run.result.format.RunResultFormatFinder;
-import de.clusteval.run.result.format.RunResultFormatFinderThread;
 import de.clusteval.run.result.format.RunResultFormatParser;
 import de.clusteval.run.statistics.RunDataStatistic;
 import de.clusteval.run.statistics.RunDataStatisticCalculator;
@@ -235,12 +233,6 @@ public class Repository {
 	protected Repository parent;
 
 	/**
-	 * A boolean attribute indicating whether the runresult formats have been
-	 * initialized by the {@link RunResultFormatFinderThread}.
-	 */
-	private boolean runResultFormatsInitialized;
-
-	/**
 	 * The absolute path of the root of this repository.
 	 */
 	protected String basePath;
@@ -250,12 +242,6 @@ public class Repository {
 	 * generators are stored.
 	 */
 	protected String generatorBasePath;
-
-	/**
-	 * The absolute path to the directory within this repository, where all
-	 * runresult formats are stored.
-	 */
-	protected String runResultFormatBasePath;
 
 	/**
 	 * The absolute path to the directory, where for a certain runresult
@@ -321,24 +307,6 @@ public class Repository {
 	 * A map containing all clusteritems registered in this repository.
 	 */
 	protected Map<ClusterItem, ClusterItem> clusterItems;
-
-	/**
-	 * A map containing all classes of runresult formats registered in this
-	 * repository. Mapping from Class.getName() to the class.
-	 */
-	protected Map<String, Class<? extends RunResultFormat>> runResultFormatClasses;
-
-	/**
-	 * A map mapping from the simple name of the class to all of its
-	 * instances.Mapping from Class.getSimpleName() to the instances.
-	 */
-	protected Map<String, List<RunResultFormat>> runResultFormatInstances;
-
-	/**
-	 * A map containing all runresult format parsers registered in this
-	 * repository.
-	 */
-	protected Map<String, Class<? extends RunResultFormatParser>> runResultFormatParser;
 
 	/**
 	 * A map containing all finder instances registered in this repository.
@@ -655,7 +623,7 @@ public class Repository {
 		this.ensureFolder(this.getBasePath(ProgramConfig.class));
 		this.ensureFolder(this.getBasePath(Run.class));
 		this.ensureFolder(this.getBasePath(RunResult.class));
-		this.ensureFolder(this.runResultFormatBasePath);
+		this.ensureFolder(this.getBasePath(RunResultFormat.class));
 		this.ensureFolder(this.supplementaryBasePath);
 		this.ensureFolder(this.suppClusteringBasePath);
 		this.ensureFolder(this.getBasePath(Context.class));
@@ -1462,39 +1430,6 @@ public class Repository {
 	}
 
 	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all runresult formats are stored.
-	 */
-	public String getRunResultFormatBasePath() {
-		return this.runResultFormatBasePath;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the
-	 * runresult format with the given name.
-	 * 
-	 * @param runResultFormatClassName
-	 *            The runresult format class name.
-	 * @return The runresult format with the given name.
-	 */
-	public Class<? extends RunResultFormat> getRunResultFormatClass(
-			final String runResultFormatClassName) {
-		Class<? extends RunResultFormat> result = this.runResultFormatClasses
-				.get(runResultFormatClassName);
-		if (result == null && parent != null)
-			return parent.getRunResultFormatClass(runResultFormatClassName);
-		return result;
-	}
-
-	/**
-	 * 
-	 * @return The set of all registered run result format classes.
-	 */
-	public Collection<Class<? extends RunResultFormat>> getRunResultFormatClasses() {
-		return this.runResultFormatClasses.values();
-	}
-
-	/**
 	 * This method looks up and returns (if it exists) the class of the
 	 * runresult format parser corresponding to the runresult format with the
 	 * given name.
@@ -1506,19 +1441,9 @@ public class Repository {
 	 */
 	public Class<? extends RunResultFormatParser> getRunResultFormatParser(
 			final String runResultFormatName) {
-		Class<? extends RunResultFormatParser> result = this.runResultFormatParser
-				.get(runResultFormatName);
-		if (result == null && parent != null)
-			result = parent.getRunResultFormatParser(runResultFormatName);
-		return result;
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the runresult formats have
-	 *         been initialized by the {@link RunResultFormatFinderThread}.
-	 */
-	public boolean getRunResultFormatsInitialized() {
-		return this.runResultFormatsInitialized;
+		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities
+				.get(RunResultFormat.class))
+				.getRunResultFormatParser(runResultFormatName);
 	}
 
 	/**
@@ -1759,10 +1684,17 @@ public class Repository {
 										: null, FileUtils.buildPath(
 										this.formatsBasePath, "dataset")));
 
+		this.dynamicRepositoryEntities
+				.put(RunResultFormat.class,
+						new RunResultFormatRepositoryEntity(
+								this,
+								this.parent != null
+										? (RunResultFormatRepositoryEntity) this.parent.dynamicRepositoryEntities
+												.get(RunResultFormat.class)
+										: null, FileUtils.buildPath(
+										this.formatsBasePath, "runresult")));
+
 		this.goldStandardFormats = new ConcurrentHashMap<GoldStandardFormat, GoldStandardFormat>();
-		this.runResultFormatClasses = new ConcurrentHashMap<String, Class<? extends RunResultFormat>>();
-		this.runResultFormatInstances = new ConcurrentHashMap<String, List<RunResultFormat>>();
-		this.runResultFormatParser = new ConcurrentHashMap<String, Class<? extends RunResultFormatParser>>();
 		this.finder = new ConcurrentHashMap<Finder, Finder>();
 
 		this.internalDoubleAttributes = new ConcurrentHashMap<String, NamedDoubleAttribute>();
@@ -1851,8 +1783,6 @@ public class Repository {
 				"formats");
 		this.generatorBasePath = FileUtils.buildPath(
 				this.supplementaryBasePath, "generators");
-		this.runResultFormatBasePath = FileUtils.buildPath(
-				this.formatsBasePath, "runresult");
 		this.typesBasePath = FileUtils.buildPath(this.supplementaryBasePath,
 				"types");
 	}
@@ -1889,7 +1819,7 @@ public class Repository {
 				&& isInitialized(DataStatistic.class)
 				&& isInitialized(RunStatistic.class)
 				&& isInitialized(RunDataStatistic.class)
-				&& getRunResultFormatsInitialized()
+				&& isInitialized(RunResultFormat.class)
 				&& isInitialized(ClusteringQualityMeasure.class)
 				&& isInitialized(ParameterOptimizationMethod.class)
 				&& isInitialized(Run.class) && isInitialized(RProgram.class)
@@ -1915,10 +1845,9 @@ public class Repository {
 	 */
 	public boolean isRegisteredForRunResultFormat(
 			final Class<? extends RunResultFormat> runResultFormat) {
-		return this.runResultFormatParser
-				.containsKey(runResultFormat.getName())
-				|| (this.parent != null && this.parent
-						.isRegisteredForRunResultFormat(runResultFormat));
+		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities
+				.get(RunResultFormat.class))
+				.isRegisteredForRunResultFormat(runResultFormat);
 	}
 
 	/**
@@ -1932,56 +1861,9 @@ public class Repository {
 	 */
 	public boolean isRegisteredForRunResultFormat(
 			final String runResultFormatName) {
-		return this.runResultFormatParser.containsKey(runResultFormatName)
-				|| (this.parent != null && this.parent
-						.isRegisteredForRunResultFormat(runResultFormatName));
-	}
-
-	/**
-	 * This method checks whether a runresult format with the given class has
-	 * been registered.
-	 * 
-	 * @param rrFormat
-	 *            The class for which we want to know whether a runresult format
-	 *            has been registered.
-	 * @return True, if the runresult format has been registered.
-	 */
-	public boolean isRunResultFormatRegistered(
-			final Class<? extends RunResultFormat> rrFormat) {
-		return this.runResultFormatClasses.containsKey(rrFormat.getName())
-				|| (this.parent != null && this.parent
-						.isRunResultFormatRegistered(rrFormat));
-	}
-
-	/**
-	 * This method checks whether a runresult format has been registered with
-	 * the given class name.
-	 * 
-	 * @param rrFormatClassName
-	 *            The class name for which we want to know whether a runresult
-	 *            format has been registered.
-	 * @return True, if the runresult format has been registered.
-	 */
-	public boolean isRunResultFormatRegistered(final String rrFormatClassName) {
-		return this.runResultFormatClasses.containsKey(rrFormatClassName)
-				|| (this.parent != null && this.parent
-						.isRunResultFormatRegistered(rrFormatClassName));
-	}
-
-	/**
-	 * This method registers instances of a run result format.
-	 * 
-	 * @param runResultFormat
-	 *            The run result format instance to register.
-	 * @return True, if the run result format was registered successfully, false
-	 *         otherwise.
-	 */
-	public boolean register(final RunResultFormat runResultFormat) {
-		this.runResultFormatInstances.get(
-				runResultFormat.getClass().getSimpleName())
-				.add(runResultFormat);
-
-		return true;
+		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities
+				.get(RunResultFormat.class))
+				.isRegisteredForRunResultFormat(runResultFormatName);
 	}
 
 	/**
@@ -2152,36 +2034,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers a new runresult format class. If an old object was
-	 * already registered that equals the new object, the new object is not
-	 * registered.
-	 * 
-	 * @param object
-	 *            The new object to register.
-	 * @return True, if the new object has been registered.
-	 */
-	public boolean registerRunResultFormatClass(
-			final Class<? extends RunResultFormat> object) {
-		if (isRunResultFormatRegistered(object)) {
-			// first remove the old class
-			unregisterRunResultFormatClass(this.runResultFormatClasses
-					.get(object.getName()));
-
-			// // unregister the new class
-			// this.runResultFormatClasses.put(object.getName(), object);
-			// return true;
-		}
-		this.runResultFormatClasses.put(object.getName(), object);
-
-		this.runResultFormatInstances.put(object.getSimpleName(),
-				Collections.synchronizedList(new ArrayList<RunResultFormat>()));
-
-		this.sqlCommunicator.registerRunResultFormatClass(object);
-
-		return true;
-	}
-
-	/**
 	 * This method registers a new runresult format parser class.
 	 * 
 	 * @param runResultFormatParser
@@ -2190,18 +2042,9 @@ public class Repository {
 	 */
 	public boolean registerRunResultFormatParser(
 			final Class<? extends RunResultFormatParser> runResultFormatParser) {
-		this.runResultFormatParser.put(
-				runResultFormatParser.getName().replace("Parser", ""),
-				runResultFormatParser);
-		return true;
-	}
-
-	/**
-	 * This method sets the run result formats as initialized. It should only be
-	 * invoked by {@link RunResultFormatFinderThread#afterFind()}.
-	 */
-	public void setRunResultFormatsInitialized() {
-		this.runResultFormatsInitialized = true;
+		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities
+				.get(RunResultFormat.class))
+				.registerRunResultFormatParser(runResultFormatParser);
 	}
 
 	/**
@@ -2220,27 +2063,6 @@ public class Repository {
 	@Override
 	public String toString() {
 		return this.basePath;
-	}
-
-	/**
-	 * @param runResultFormat
-	 *            The run result format to unregister.
-	 * @return True, if the run result format has been unregistered
-	 *         successfully.
-	 */
-	public boolean unregister(final RunResultFormat runResultFormat) {
-		boolean result = this.runResultFormatInstances.get(
-				runResultFormat.getClass().getSimpleName()).remove(
-				runResultFormat);
-		if (result) {
-			try {
-				runResultFormat.notify(new RepositoryRemoveEvent(
-						runResultFormat));
-			} catch (RegisterException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
 	}
 
 	/**
@@ -2370,45 +2192,15 @@ public class Repository {
 	/**
 	 * This method unregisters the passed object.
 	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregisterRunResultFormatClass(
-			final Class<? extends RunResultFormat> object) {
-		boolean result = this.runResultFormatClasses.remove(object.getName()) != null;
-		if (result) {
-			this.info("RunResultFormat class removed: " + object);
-			// we inform all listeners about the new class. that
-			// means those objects are deleted such that new instances instances
-			// can be created using the new class.
-			for (RunResultFormat runResultFormat : Collections
-					.synchronizedList(new ArrayList<RunResultFormat>(
-							runResultFormatInstances.get(object.getSimpleName())))) {
-				runResultFormat.unregister();
-			}
-
-			this.sqlCommunicator.unregisterRunResultFormat(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
 	 * @param object
 	 *            The object to be removed.
 	 * @return True, if the object was remved successfully
 	 */
 	public boolean unregisterRunResultFormatParser(
 			final Class<? extends RunResultFormatParser> object) {
-		return this.runResultFormatParser.remove(object.getName().replace(
-				"Parser", "")) != null;
+		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities
+				.get(RunResultFormat.class))
+				.unregisterRunResultFormatParser(object);
 	}
 
 	/**
@@ -2484,3 +2276,4 @@ public class Repository {
 // Repository class after Context: 3126 lines
 // Repository class after ParameterOptimizationMethod: 2889 lines
 // Repository class after DataSetType: 2692 lines
+// Repository class after Format classes: 2266 lines

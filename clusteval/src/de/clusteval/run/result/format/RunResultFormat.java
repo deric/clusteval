@@ -47,8 +47,8 @@ public abstract class RunResultFormat extends RepositoryObject {
 	public static RunResultFormat parseFromString(final Repository repository,
 			String runResultFormat) throws UnknownRunResultFormatException {
 
-		Class<? extends RunResultFormat> c = repository
-				.getRunResultFormatClass("de.clusteval.run.result.format."
+		Class<? extends RunResultFormat> c = repository.getRegisteredClass(
+				RunResultFormat.class, "de.clusteval.run.result.format."
 						+ runResultFormat);
 		try {
 			return c.getConstructor(Repository.class, boolean.class,
@@ -105,7 +105,7 @@ public abstract class RunResultFormat extends RepositoryObject {
 	 * @see framework.repository.RepositoryObject#register()
 	 */
 	@Override
-	public boolean register() {
+	public boolean register() throws RegisterException {
 		return this.repository.register(this);
 	}
 

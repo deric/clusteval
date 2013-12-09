@@ -20,6 +20,7 @@ import de.clusteval.data.dataset.format.DataSetFormatFinderThread;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.SupervisorThread;
+import de.clusteval.run.result.format.RunResultFormat;
 import de.clusteval.run.result.format.RunResultFormatFinderThread;
 import de.clusteval.utils.Finder;
 import de.clusteval.utils.FinderThread;
@@ -65,7 +66,7 @@ public class ContextFinderThread extends FinderThread {
 			this.supervisorThread.getThread(DataSetFormatFinderThread.class)
 					.waitFor();
 		}
-		if (!this.repository.getRunResultFormatsInitialized())
+		if (!this.repository.isInitialized(RunResultFormat.class))
 			this.supervisorThread.getThread(RunResultFormatFinderThread.class)
 					.waitFor();
 		this.log.debug("Checking for new Contexts...");
