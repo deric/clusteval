@@ -37,20 +37,16 @@ import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
-import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethodFinderThread;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.context.Context;
-import de.clusteval.context.ContextFinderThread;
 import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.data.dataset.DataSetConfig;
 import de.clusteval.data.dataset.format.DataSetFormat;
-import de.clusteval.data.dataset.format.DataSetFormatFinderThread;
 import de.clusteval.data.dataset.format.DataSetFormatParser;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.dataset.generator.DataSetGenerator;
 import de.clusteval.data.dataset.type.DataSetType;
-import de.clusteval.data.dataset.type.DataSetTypeFinderThread;
 import de.clusteval.data.distance.DistanceMeasure;
 import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
@@ -239,29 +235,10 @@ public class Repository {
 	protected Repository parent;
 
 	/**
-	 * A boolean attribute indicating whether the dataset formats have been
-	 * initialized by the {@link DataSetFormatFinderThread}.
-	 */
-	private boolean dataSetFormatsInitialized;
-
-	/**
-	 * A boolean attribute indicating whether the dataset types have been
-	 * initialized by the {@link DataSetTypeFinderThread}.
-	 */
-	private boolean dataSetTypesInitialized;
-
-	/**
 	 * A boolean attribute indicating whether the runresult formats have been
 	 * initialized by the {@link RunResultFormatFinderThread}.
 	 */
 	private boolean runResultFormatsInitialized;
-
-	/**
-	 * A boolean attribute indicating whether the parameter optimization methods
-	 * have been initialized by the
-	 * {@link ParameterOptimizationMethodFinderThread}.
-	 */
-	private boolean parameterOptimizationMethodsInitialized;
 
 	/**
 	 * The absolute path of the root of this repository.
@@ -269,27 +246,10 @@ public class Repository {
 	protected String basePath;
 
 	/**
-	 * This map holds the current versions of the available dataset formats.
-	 */
-	protected Map<String, Integer> dataSetFormatCurrentVersions;
-
-	/**
-	 * The absolute path to the directory within this repository, where all
-	 * dataset formats are stored.
-	 */
-	protected String dataSetFormatBasePath;
-
-	/**
 	 * The absolute path to the directory within this repository, where all
 	 * generators are stored.
 	 */
 	protected String generatorBasePath;
-
-	/**
-	 * The absolute path to the directory within this repository, where all
-	 * dataset types are stored.
-	 */
-	protected String dataSetTypeBasePath;
 
 	/**
 	 * The absolute path to the directory within this repository, where all
@@ -321,12 +281,6 @@ public class Repository {
 	protected String suppClusteringBasePath;
 
 	/**
-	 * The absolute path to the directory within this repository, where all
-	 * parameter optimization method jars are stored.
-	 */
-	protected String parameterOptimizationMethodBasePath;
-
-	/**
 	 * The absolute path to the directory within this repository, where all type
 	 * jars are stored.
 	 */
@@ -347,49 +301,6 @@ public class Repository {
 	protected StaticRepositoryEntityMap staticRepositoryEntities;
 
 	protected DynamicRepositoryEntityMap dynamicRepositoryEntities;
-
-	/**
-	 * A map containing all classes of dataset types registered in this
-	 * repository. Mapping from Class.getName() to the class.
-	 */
-	protected Map<String, Class<? extends DataSetType>> dataSetTypeClasses;
-
-	/**
-	 * A map mapping from the simple name of the class to all of its instances.
-	 * Mapping from Class.getSimpleName() to the instances.
-	 */
-	protected Map<String, List<DataSetType>> dataSetTypeInstances;
-
-	/**
-	 * A map containing all classes of parameter optimization methods registered
-	 * in this repository. Mapping from Class.getName() to the class.
-	 */
-	protected Map<String, Class<? extends ParameterOptimizationMethod>> parameterOptimizationMethodClasses;
-
-	/**
-	 * A map containing all classes of dataset formats registered in this
-	 * repository. Mapping from Class.getName() to the class.
-	 */
-	protected Map<String, Class<? extends DataSetFormat>> dataSetFormatClasses;
-
-	/**
-	 * A map mapping from the simple name of the class to all of its
-	 * instances.Mapping from Class.getSimpleName() to the instances.
-	 */
-	protected Map<String, List<DataSetFormat>> dataSetFormatInstances;
-
-	/**
-	 * A map containing all classes of dataset format parsers registered in this
-	 * repository.
-	 */
-	protected Map<String, Class<? extends DataSetFormatParser>> dataSetFormatParser;
-
-	/**
-	 * A map mapping from the simple name of the class to all of its
-	 * instances.Mapping from Class.getSimpleName() to the instances.
-	 */
-	// TODO
-	protected Map<String, Map<ParameterOptimizationMethod, ParameterOptimizationMethod>> parameterOptimizationMethodInstances;
 
 	/**
 	 * A map containing all goldstandard formats registered in this repository.
@@ -519,32 +430,6 @@ public class Repository {
 	 * finder instances.
 	 */
 	protected Map<String, Long> finderLoadedJarFileChangeDates;
-
-	/**
-	 * A map containing all classes of contexts registered in this repository.
-	 * Mapping from Class.getName() to the class.
-	 */
-	protected Map<String, Class<? extends Context>> contextClasses;
-
-	/**
-	 * A map mapping from the simple name of the class to all of its
-	 * instances.Mapping from Class.getSimpleName() to the instances.
-	 */
-	protected Map<String, List<Context>> contextInstances;
-
-	/**
-	 * A boolean attribute indicating whether the contexts have been initialized
-	 * by the {@link ContextFinderThread}.
-	 */
-	// TODO initialize
-	private boolean contextsInitialized;
-
-	/**
-	 * The absolute path to the directory within this repository, where all
-	 * contexts are stored.
-	 */
-	// TODO: initialize
-	protected String contextBasePath;
 
 	private Map<Thread, MyRengine> rEngines;
 
@@ -761,8 +646,8 @@ public class Repository {
 		this.ensureFolder(this.basePath);
 		this.ensureFolder(this.getBasePath(DataConfig.class));
 		this.ensureFolder(this.getBasePath(DataSet.class));
-		this.ensureFolder(this.dataSetFormatBasePath);
-		this.ensureFolder(this.dataSetTypeBasePath);
+		this.ensureFolder(this.getBasePath(DataSetFormat.class));
+		this.ensureFolder(this.getBasePath(DataSetType.class));
 		this.ensureFolder(this.getBasePath(DataSetConfig.class));
 		this.ensureFolder(this.getBasePath(GoldStandard.class));
 		this.ensureFolder(this.getBasePath(GoldStandardConfig.class));
@@ -773,8 +658,8 @@ public class Repository {
 		this.ensureFolder(this.runResultFormatBasePath);
 		this.ensureFolder(this.supplementaryBasePath);
 		this.ensureFolder(this.suppClusteringBasePath);
-		this.ensureFolder(this.contextBasePath);
-		this.ensureFolder(this.parameterOptimizationMethodBasePath);
+		this.ensureFolder(this.getBasePath(Context.class));
+		this.ensureFolder(this.getBasePath(ParameterOptimizationMethod.class));
 		this.ensureFolder(this.getBasePath(DataStatistic.class));
 		this.ensureFolder(this.getBasePath(RunStatistic.class));
 		this.ensureFolder(this.getBasePath(RunDataStatistic.class));
@@ -939,14 +824,6 @@ public class Repository {
 		return this.basePath;
 	}
 
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all dataset formats are stored.
-	 */
-	public String getDataFormatsBasePath() {
-		return this.dataSetFormatBasePath;
-	}
-
 	public String getBasePath(final Class<? extends RepositoryObject> c) {
 		if (this.staticRepositoryEntities.containsKey(c))
 			return this.staticRepositoryEntities.get(c).getBasePath();
@@ -982,15 +859,23 @@ public class Repository {
 
 	public <T extends RepositoryObject, S extends T> S getRegisteredObject(
 			final Class<T> c, final S object, final boolean ignoreChangeDate) {
-		if (!this.staticRepositoryEntities.containsKey(c)
+		boolean staticEntityFound = false;
+		boolean dynamicEntityFound = false;
+		if (!((staticEntityFound = this.staticRepositoryEntities.containsKey(c)) || (dynamicEntityFound = this.dynamicRepositoryEntities
+				.containsKey(c)))
 				&& object.getClass().getSuperclass() != null
 				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
 			return this.getRegisteredObject(
 					(Class<? extends RepositoryObject>) c.getSuperclass(),
 					object, ignoreChangeDate);
 		}
-		return this.staticRepositoryEntities.get(c).getRegisteredObject(object,
-				ignoreChangeDate);
+		if (staticEntityFound)
+			return this.staticRepositoryEntities.get(c).getRegisteredObject(
+					object, ignoreChangeDate);
+		else if (dynamicEntityFound)
+			return this.dynamicRepositoryEntities.get(c).getRegisteredObject(
+					object, ignoreChangeDate);
+		return null;
 	}
 
 	public <T extends RepositoryObject, S extends T> boolean unregister(
@@ -1185,40 +1070,6 @@ public class Repository {
 	}
 
 	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all dataset formats are stored.
-	 */
-	public String getDataSetFormatBasePath() {
-		return this.dataSetFormatBasePath;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the dataset
-	 * format with the given name.
-	 * 
-	 * @param dataSetFormatClassName
-	 *            The name of the class of the dataset format.
-	 * @return The dataset format class with the given name or null, if it does
-	 *         not exist.
-	 */
-	public Class<? extends DataSetFormat> getDataSetFormatClass(
-			final String dataSetFormatClassName) {
-		Class<? extends DataSetFormat> result = this.dataSetFormatClasses
-				.get(dataSetFormatClassName);
-		if (result == null && parent != null)
-			result = this.parent.getDataSetFormatClass(dataSetFormatClassName);
-		return result;
-	}
-
-	/**
-	 * 
-	 * @return The set of all registered dataset format classes.
-	 */
-	public Collection<Class<? extends DataSetFormat>> getDataSetFormatClasses() {
-		return this.dataSetFormatClasses.values();
-	}
-
-	/**
 	 * This method returns the latest and current version of the given format.
 	 * It is used by default, if no other version for a format is specified. If
 	 * the current version of a format changes, add a static block to that
@@ -1233,10 +1084,9 @@ public class Repository {
 	 */
 	public int getCurrentDataSetFormatVersion(final String formatClass)
 			throws UnknownDataSetFormatException {
-		if (!dataSetFormatCurrentVersions.containsKey(formatClass))
-			throw new UnknownDataSetFormatException("\"" + formatClass
-					+ "\" is not a known dataset format.");
-		return dataSetFormatCurrentVersions.get(formatClass);
+		return ((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities
+				.get(DataSetFormat.class))
+				.getCurrentDataSetFormatVersion(formatClass);
 	}
 
 	/**
@@ -1248,7 +1098,9 @@ public class Repository {
 	 */
 	public void putCurrentDataSetFormatVersion(final String formatClass,
 			final int version) {
-		this.dataSetFormatCurrentVersions.put(formatClass, version);
+		((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities
+				.get(DataSetFormat.class)).putCurrentDataSetFormatVersion(
+				formatClass, version);
 	}
 
 	/**
@@ -1262,61 +1114,9 @@ public class Repository {
 	 */
 	public Class<? extends DataSetFormatParser> getDataSetFormatParser(
 			final String dataSetFormatName) {
-		Class<? extends DataSetFormatParser> result = this.dataSetFormatParser
-				.get(dataSetFormatName);
-		if (result == null && parent != null)
-			return this.parent.getDataSetFormatParser(dataSetFormatName);
-		return result;
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the dataset formats have
-	 *         been initialized by the {@link DataSetFormatFinderThread}.
-	 */
-	public boolean getDataSetFormatsInitialized() {
-		return this.dataSetFormatsInitialized;
-	}
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all dataset types are stored.
-	 */
-	public String getDataSetTypeBasePath() {
-		return this.dataSetTypeBasePath;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the dataset
-	 * type with the given name.
-	 * 
-	 * @param dataSetTypeClassName
-	 *            The name of the class of the dataset type.
-	 * @return The class of the dataset type with the given name or null, if it
-	 *         does not exist.
-	 */
-	public Class<? extends DataSetType> getDataSetTypeClass(
-			final String dataSetTypeClassName) {
-		Class<? extends DataSetType> result = this.dataSetTypeClasses
-				.get(dataSetTypeClassName);
-		if (result == null && parent != null)
-			result = this.parent.getDataSetTypeClass(dataSetTypeClassName);
-		return result;
-	}
-
-	/**
-	 * 
-	 * @return The set of all registered dataset type classes.
-	 */
-	public Collection<Class<? extends DataSetType>> getDataSetTypeClasses() {
-		return this.dataSetTypeClasses.values();
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the dataset types have
-	 *         been initialized by the {@link DataSetTypeFinderThread}.
-	 */
-	public boolean getDataSetTypesInitialized() {
-		return this.dataSetTypesInitialized;
+		return ((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities
+				.get(DataSetFormat.class))
+				.getDataSetFormatParser(dataSetFormatName);
 	}
 
 	/**
@@ -1390,50 +1190,6 @@ public class Repository {
 	public String getLogBasePath() {
 		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
 				.get(RunResult.class)).getResultLogBasePath();
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the
-	 * parameter optimization method with the given name.
-	 * 
-	 * @param parameterOptimizationMethodName
-	 *            The name of the class of the parameter optimization method.
-	 * @return The class of the parameter optimization method with the given
-	 *         name or null, if it does not exist.
-	 */
-	public Class<? extends ParameterOptimizationMethod> getParameterOptimizationMethodClass(
-			final String parameterOptimizationMethodName) {
-		Class<? extends ParameterOptimizationMethod> result = this.parameterOptimizationMethodClasses
-				.get(parameterOptimizationMethodName);
-		if (result == null && parent != null)
-			return parent
-					.getParameterOptimizationMethodClass(parameterOptimizationMethodName);
-		return result;
-	}
-
-	/**
-	 * 
-	 * @return The set of all registered parameter optimization method classes.
-	 */
-	public Collection<Class<? extends ParameterOptimizationMethod>> getParameterOptimizationMethodClasses() {
-		return this.parameterOptimizationMethodClasses.values();
-	}
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all parameter optimization method jars are stored.
-	 */
-	public String getParameterOptimizationMethodsBasePath() {
-		return this.parameterOptimizationMethodBasePath;
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the parameter optimization
-	 *         methods have been initialized by the
-	 *         {@link ParameterOptimizationMethodFinderThread}.
-	 */
-	public boolean getParameterOptimizationMethodsInitialized() {
-		return this.parameterOptimizationMethodsInitialized;
 	}
 
 	/**
@@ -1648,39 +1404,6 @@ public class Repository {
 			final NamedStringAttribute object) {
 		NamedStringAttribute other = this.internalStringAttributes.get(object
 				.getName());
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
-	}
-
-	/**
-	 * This method checks, whether there is a program registered, that is equal
-	 * to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public ParameterOptimizationMethod getRegisteredObject(
-			final ParameterOptimizationMethod object) {
-		ParameterOptimizationMethod other = this.parameterOptimizationMethodInstances
-				.get(object.getClass().getSimpleName()).get(object);
 		if (other == null && parent != null)
 			return parent.getRegisteredObject(object);
 		return other;
@@ -2016,20 +1739,31 @@ public class Repository {
 				FileUtils.buildPath(this.suppClusteringBasePath,
 						"qualityMeasures"));
 
-		this.contextClasses = new ConcurrentHashMap<String, Class<? extends Context>>();
-		this.contextInstances = new ConcurrentHashMap<String, List<Context>>();
-		this.dataSetFormatInstances = new ConcurrentHashMap<String, List<DataSetFormat>>();
-		this.dataSetFormatClasses = new ConcurrentHashMap<String, Class<? extends DataSetFormat>>();
-		this.dataSetTypeInstances = new ConcurrentHashMap<String, List<DataSetType>>();
-		this.dataSetTypeClasses = new ConcurrentHashMap<String, Class<? extends DataSetType>>();
-		this.dataSetFormatParser = new ConcurrentHashMap<String, Class<? extends DataSetFormatParser>>();
+		this.createAndAddDynamicEntity(Context.class,
+				FileUtils.buildPath(this.supplementaryBasePath, "contexts"));
+
+		this.createAndAddDynamicEntity(ParameterOptimizationMethod.class,
+				FileUtils.buildPath(this.suppClusteringBasePath,
+						"paramOptimization"));
+
+		this.createAndAddDynamicEntity(DataSetType.class,
+				FileUtils.buildPath(this.typesBasePath, "dataset"));
+
+		this.dynamicRepositoryEntities
+				.put(DataSetFormat.class,
+						new DataSetFormatRepositoryEntity(
+								this,
+								this.parent != null
+										? (DataSetFormatRepositoryEntity) this.parent.dynamicRepositoryEntities
+												.get(DataSetFormat.class)
+										: null, FileUtils.buildPath(
+										this.formatsBasePath, "dataset")));
+
 		this.goldStandardFormats = new ConcurrentHashMap<GoldStandardFormat, GoldStandardFormat>();
 		this.runResultFormatClasses = new ConcurrentHashMap<String, Class<? extends RunResultFormat>>();
 		this.runResultFormatInstances = new ConcurrentHashMap<String, List<RunResultFormat>>();
 		this.runResultFormatParser = new ConcurrentHashMap<String, Class<? extends RunResultFormatParser>>();
 		this.finder = new ConcurrentHashMap<Finder, Finder>();
-		this.parameterOptimizationMethodClasses = new ConcurrentHashMap<String, Class<? extends ParameterOptimizationMethod>>();
-		this.parameterOptimizationMethodInstances = new ConcurrentHashMap<String, Map<ParameterOptimizationMethod, ParameterOptimizationMethod>>();
 
 		this.internalDoubleAttributes = new ConcurrentHashMap<String, NamedDoubleAttribute>();
 		this.internalStringAttributes = new ConcurrentHashMap<String, NamedStringAttribute>();
@@ -2044,7 +1778,6 @@ public class Repository {
 		this.clusterItems = new ConcurrentHashMap<ClusterItem, ClusterItem>();
 
 		// added 14.04.2013
-		this.dataSetFormatCurrentVersions = new HashMap<String, Integer>();
 		this.knownFinderExceptions = new ConcurrentHashMap<String, List<Throwable>>();
 		this.finderClassLoaders = new ConcurrentHashMap<URL, URLClassLoader>();
 		this.finderWaitingFiles = new ConcurrentHashMap<File, List<File>>();
@@ -2112,82 +1845,16 @@ public class Repository {
 	@SuppressWarnings("unused")
 	protected void initializePaths() throws InvalidRepositoryException {
 		this.supplementaryBasePath = FileUtils.buildPath(this.basePath, "supp");
-		this.contextBasePath = FileUtils.buildPath(this.supplementaryBasePath,
-				"contexts");
 		this.suppClusteringBasePath = FileUtils.buildPath(
 				this.supplementaryBasePath, "clustering");
-		this.parameterOptimizationMethodBasePath = FileUtils.buildPath(
-				this.suppClusteringBasePath, "paramOptimization");
 		this.formatsBasePath = FileUtils.buildPath(this.supplementaryBasePath,
 				"formats");
-		this.dataSetFormatBasePath = FileUtils.buildPath(this.formatsBasePath,
-				"dataset");
 		this.generatorBasePath = FileUtils.buildPath(
 				this.supplementaryBasePath, "generators");
 		this.runResultFormatBasePath = FileUtils.buildPath(
 				this.formatsBasePath, "runresult");
 		this.typesBasePath = FileUtils.buildPath(this.supplementaryBasePath,
 				"types");
-		this.dataSetTypeBasePath = FileUtils.buildPath(this.typesBasePath,
-				"dataset");
-	}
-
-	/**
-	 * This method checks whether the given dataset format class is registered
-	 * in this repository.
-	 * 
-	 * @param dsFormat
-	 *            The class of the dataset format to look up.
-	 * @return True, if the dataset format class was registered.
-	 */
-	public boolean isDataSetFormatRegistered(
-			final Class<? extends DataSetFormat> dsFormat) {
-		return this.dataSetFormatClasses.containsKey(dsFormat.getName())
-				|| (this.parent != null && this.parent
-						.isDataSetFormatRegistered(dsFormat));
-	}
-
-	/**
-	 * This method checks whether a dataset format with the given class name is
-	 * registered in this repository.
-	 * 
-	 * @param dsFormatClassName
-	 *            The class name of the dataset format to look up.
-	 * @return True, if the dataset format class was registered.
-	 */
-	public boolean isDataSetFormatRegistered(final String dsFormatClassName) {
-		return this.dataSetFormatClasses.containsKey(dsFormatClassName)
-				|| (this.parent != null && this.parent
-						.isDataSetFormatRegistered(dsFormatClassName));
-	}
-
-	/**
-	 * This method checks whether the a dataset type with the given class is
-	 * registered in this repository.
-	 * 
-	 * @param dsType
-	 *            The class of the dataset type to look up.
-	 * @return True, if the dataset type class was registered.
-	 */
-	public boolean isDataSetTypeRegistered(
-			final Class<? extends DataSetType> dsType) {
-		return this.dataSetTypeClasses.containsKey(dsType.getName())
-				|| (this.parent != null && this.parent
-						.isDataSetTypeRegistered(dsType));
-	}
-
-	/**
-	 * This method checks whether a dataset type with the given class name is
-	 * registered in this repository.
-	 * 
-	 * @param dsTypeClassName
-	 *            The class of the dataset type to look up.
-	 * @return True, if the dataset type class was registered.
-	 */
-	public boolean isDataSetTypeRegistered(final String dsTypeClassName) {
-		return this.dataSetTypeClasses.containsKey(dsTypeClassName)
-				|| (this.parent != null && this.parent
-						.isDataSetTypeRegistered(dsTypeClassName));
 	}
 
 	/**
@@ -2217,13 +1884,14 @@ public class Repository {
 	 */
 	public boolean isInitialized() {
 		// TODO: for loop?
-		return getDataSetFormatsInitialized() && getDataSetTypesInitialized()
+		return isInitialized(DataSetFormat.class)
+				&& isInitialized(DataSetType.class)
 				&& isInitialized(DataStatistic.class)
 				&& isInitialized(RunStatistic.class)
 				&& isInitialized(RunDataStatistic.class)
 				&& getRunResultFormatsInitialized()
 				&& isInitialized(ClusteringQualityMeasure.class)
-				&& getParameterOptimizationMethodsInitialized()
+				&& isInitialized(ParameterOptimizationMethod.class)
 				&& isInitialized(Run.class) && isInitialized(RProgram.class)
 				&& isInitialized(DataSetConfig.class)
 				&& isInitialized(DataSet.class)
@@ -2231,57 +1899,9 @@ public class Repository {
 				&& isInitialized(DataConfig.class)
 				&& isInitialized(ProgramConfig.class)
 				&& isInitialized(DataSetGenerator.class)
-				&& getContextsInitialized()
+				&& isInitialized(Context.class)
 				&& isInitialized(DataPreprocessor.class)
 				&& isInitialized(DistanceMeasure.class);
-	}
-
-	/**
-	 * This method checks whether a parameter optimization method with the given
-	 * class name is registered in this repository.
-	 * 
-	 * @param parameterOptimizationMethodClass
-	 *            The class name of the parameter optimization method to look
-	 *            up.
-	 * @return True, if the parameter optimization method was registered.
-	 */
-	public boolean isParameterOptimizationMethodRegistered(
-			final String parameterOptimizationMethodClass) {
-		return this.parameterOptimizationMethodClasses
-				.containsKey(parameterOptimizationMethodClass)
-				|| (this.parent != null && this.parent
-						.isParameterOptimizationMethodRegistered(parameterOptimizationMethodClass));
-	}
-
-	/**
-	 * This method checks whether a parser has been registered for the given
-	 * dataset format class.
-	 * 
-	 * @param dsFormat
-	 *            The class for which we want to know whether a parser has been
-	 *            registered.
-	 * @return True, if the parser has been registered.
-	 */
-	public boolean isRegisteredForDataSetFormat(
-			final Class<? extends DataSetFormat> dsFormat) {
-		return this.dataSetFormatParser.containsKey(dsFormat.getName())
-				|| (this.parent != null && this.parent
-						.isRegisteredForDataSetFormat(dsFormat));
-	}
-
-	/**
-	 * This method checks whether a parser has been registered for the dataset
-	 * format with the given class name.
-	 * 
-	 * @param dsFormatName
-	 *            The class name for which we want to know whether a parser has
-	 *            been registered.
-	 * @return True, if the parser has been registered.
-	 */
-	public boolean isRegisteredForDataSetFormat(final String dsFormatName) {
-		return this.dataSetFormatParser.containsKey(dsFormatName)
-				|| (this.parent != null && this.parent
-						.isRegisteredForDataSetFormat(dsFormatName));
 	}
 
 	/**
@@ -2349,41 +1969,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers instances of a dataset format.
-	 * 
-	 * @param dataSetFormat
-	 *            The dataset format instance to register.
-	 * @return True, if the dataset format was registered successfully, false
-	 *         otherwise.
-	 */
-	public boolean register(final DataSetFormat dataSetFormat) {
-		this.dataSetFormatInstances.get(
-				dataSetFormat.getClass().getSimpleName()).add(dataSetFormat);
-
-		return true;
-	}
-
-	/**
-	 * This method registers instances of a parameter optimization method.
-	 * 
-	 * @param object
-	 *            The parameter optimization method instance to register.
-	 * @return True, if the parameter optimization method was registered
-	 *         successfully, false otherwise.
-	 */
-	public boolean register(final ParameterOptimizationMethod object) {
-		ParameterOptimizationMethod old = this.getRegisteredObject(object);
-		if (old != null) {
-			return false;
-		}
-
-		this.parameterOptimizationMethodInstances.get(
-				object.getClass().getSimpleName()).put(object, object);
-
-		return true;
-	}
-
-	/**
 	 * This method registers instances of a run result format.
 	 * 
 	 * @param runResultFormat
@@ -2395,21 +1980,6 @@ public class Repository {
 		this.runResultFormatInstances.get(
 				runResultFormat.getClass().getSimpleName())
 				.add(runResultFormat);
-
-		return true;
-	}
-
-	/**
-	 * This method registers instances of a dataset format.
-	 * 
-	 * @param dataSetType
-	 *            The dataset type instance to register.
-	 * @return True, if the dataset type was registered successfully, false
-	 *         otherwise.
-	 */
-	public boolean register(final DataSetType dataSetType) {
-		this.dataSetTypeInstances.get(dataSetType.getClass().getSimpleName())
-				.add(dataSetType);
 
 		return true;
 	}
@@ -2552,31 +2122,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers a dataset format class. The class is only
-	 * registered, if it was not before.
-	 * 
-	 * @param object
-	 *            The new class to register.
-	 * @return True, if the new class was registered.
-	 */
-	public boolean registerDataSetFormatClass(
-			final Class<? extends DataSetFormat> object) {
-		if (isDataSetFormatRegistered(object)) {
-			// first remove the old class
-			unregisterDataSetFormatClass(this.dataSetFormatClasses.get(object
-					.getName()));
-		}
-		this.dataSetFormatClasses.put(object.getName(), object);
-
-		this.dataSetFormatInstances.put(object.getSimpleName(),
-				Collections.synchronizedList(new ArrayList<DataSetFormat>()));
-
-		this.sqlCommunicator.registerDataSetFormatClass(object);
-
-		return true;
-	}
-
-	/**
 	 * This method registers a dataset format parser.
 	 * 
 	 * @param dsFormatParser
@@ -2585,72 +2130,25 @@ public class Repository {
 	 */
 	public boolean registerDataSetFormatParser(
 			final Class<? extends DataSetFormatParser> dsFormatParser) {
-		this.dataSetFormatParser.put(
-				dsFormatParser.getName().replace("Parser", ""), dsFormatParser);
-		return true;
+		return ((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities
+				.get(DataSetFormat.class))
+				.registerDataSetFormatParser(dsFormatParser);
 	}
 
 	/**
-	 * This method registers a new dataset type class. It is only registered, if
-	 * it was not before.
+	 * This method checks whether a parser has been registered for the given
+	 * dataset format class.
 	 * 
-	 * @param object
-	 *            The class to register.
-	 * @return True, if the class has been registered.
+	 * @param dsFormat
+	 *            The class for which we want to know whether a parser has been
+	 *            registered.
+	 * @return True, if the parser has been registered.
 	 */
-	public boolean registerDataSetTypeClass(
-			final Class<? extends DataSetType> object) {
-		if (isDataSetTypeRegistered(object)) {
-			// first remove the old class
-			unregisterDataSetTypeClass(this.dataSetTypeClasses.get(object
-					.getName()));
-			// // register the new class
-			// this.dataSetTypeClasses.put(object.getName(), object);
-			//
-			// this.sqlCommunicator.registerDataSetTypeClass(object);
-			// return true;
-		}
-		this.dataSetTypeClasses.put(object.getName(), object);
-
-		this.dataSetTypeInstances.put(object.getSimpleName(),
-				Collections.synchronizedList(new ArrayList<DataSetType>()));
-
-		this.sqlCommunicator.registerDataSetTypeClass(object);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new parameter optimization method class. It is
-	 * only registered, if it was not before.
-	 * 
-	 * @param object
-	 *            The new class to register.
-	 * @return True, if the new class has been registered.
-	 */
-	public boolean registerParameterOptimizationMethodClass(
-			final Class<? extends ParameterOptimizationMethod> object) {
-		if (isParameterOptimizationMethodRegistered(object.getName())) {
-			// first remove the old class
-			unregisterParameterOptimizationMethodClass(this.parameterOptimizationMethodClasses
-					.get(object.getName()));
-			// // register the new class
-			// this.parameterOptimizationMethodClasses.put(object.getName(),
-			// object);
-			// return true;
-		}
-		this.parameterOptimizationMethodClasses.put(object.getName(), object);
-
-		this.parameterOptimizationMethodInstances
-				.put(object.getSimpleName(),
-						new ConcurrentHashMap<ParameterOptimizationMethod, ParameterOptimizationMethod>());
-
-		this.log.info("New Parameter Optimization Method Class registered: "
-				+ object.getSimpleName());
-
-		this.sqlCommunicator.registerParameterOptimizationMethodClass(object);
-
-		return true;
+	public boolean isRegisteredForDataSetFormat(
+			final Class<? extends DataSetFormat> dsFormat) {
+		return ((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities
+				.get(DataSetFormat.class))
+				.isRegisteredForDataSetFormat(dsFormat);
 	}
 
 	/**
@@ -2699,31 +2197,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method sets the dataset formats as initialized. It should only be
-	 * invoked by {@link DataSetFormatFinderThread#afterFind()}.
-	 */
-	public void setDataSetFormatsInitialized() {
-		this.dataSetFormatsInitialized = true;
-	}
-
-	/**
-	 * This method sets the dataset types as initialized. It should only be
-	 * invoked by {@link DataSetTypeFinderThread#afterFind()}.
-	 */
-	public void setDataSetTypesInitialized() {
-		this.dataSetTypesInitialized = true;
-	}
-
-	/**
-	 * This method sets the parameter optimization methods as initialized. It
-	 * should only be invoked by
-	 * {@link ParameterOptimizationMethodFinderThread#afterFind()}.
-	 */
-	public void setParameterOptimizationMethodsInitialized() {
-		this.parameterOptimizationMethodsInitialized = true;
-	}
-
-	/**
 	 * This method sets the run result formats as initialized. It should only be
 	 * invoked by {@link RunResultFormatFinderThread#afterFind()}.
 	 */
@@ -2750,45 +2223,6 @@ public class Repository {
 	}
 
 	/**
-	 * @param dataSetFormat
-	 *            The dataset format to unregister.
-	 * @return True, if the dataset format has been unregistered successfully.
-	 */
-	public boolean unregister(final DataSetFormat dataSetFormat) {
-		boolean result = this.dataSetFormatInstances.get(
-				dataSetFormat.getClass().getSimpleName()).remove(dataSetFormat);
-		if (result) {
-			try {
-				dataSetFormat.notify(new RepositoryRemoveEvent(dataSetFormat));
-			} catch (RegisterException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * @param paramOptMethod
-	 *            The parameter optimization method to unregister.
-	 * @return True, if the parameter optimization method has been unregistered
-	 *         successfully.
-	 */
-	public boolean unregister(final ParameterOptimizationMethod paramOptMethod) {
-		boolean result = this.parameterOptimizationMethodInstances.get(
-				paramOptMethod.getClass().getSimpleName()).remove(
-				paramOptMethod) != null;
-		if (result) {
-			try {
-				paramOptMethod
-						.notify(new RepositoryRemoveEvent(paramOptMethod));
-			} catch (RegisterException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-
-	/**
 	 * @param runResultFormat
 	 *            The run result format to unregister.
 	 * @return True, if the run result format has been unregistered
@@ -2802,24 +2236,6 @@ public class Repository {
 			try {
 				runResultFormat.notify(new RepositoryRemoveEvent(
 						runResultFormat));
-			} catch (RegisterException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * @param dataSetType
-	 *            The dataset format to unregister.
-	 * @return True, if the dataset format has been unregistered successfully.
-	 */
-	public boolean unregister(final DataSetType dataSetType) {
-		boolean result = this.dataSetTypeInstances.get(
-				dataSetType.getClass().getSimpleName()).remove(dataSetType);
-		if (result) {
-			try {
-				dataSetType.notify(new RepositoryRemoveEvent(dataSetType));
 			} catch (RegisterException e) {
 				e.printStackTrace();
 			}
@@ -2963,102 +2379,6 @@ public class Repository {
 	 *            The object to be removed.
 	 * @return True, if the object was remved successfully
 	 */
-	public boolean unregisterDataSetFormatClass(
-			final Class<? extends DataSetFormat> object) {
-		boolean result = this.dataSetFormatClasses.remove(object.getName()) != null;
-		if (result) {
-			this.info("DataSetFormat removed: " + object.getSimpleName());
-			// we inform all existing datasets about the new class. that
-			// means those objects are deleted such that new instances instances
-			// can be created using the new class.
-			for (DataSetFormat dataSetFormat : Collections
-					.synchronizedList(new ArrayList<DataSetFormat>(
-							dataSetFormatInstances.get(object.getSimpleName())))) {
-				dataSetFormat.unregister();
-			}
-
-			this.sqlCommunicator.unregisterDataSetFormatClass(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregisterDataSetTypeClass(
-			final Class<? extends DataSetType> object) {
-		boolean result = this.dataSetTypeClasses.remove(object.getName()) != null;
-		if (result) {
-			this.info("DataSetType class removed: " + object.getSimpleName());
-			// we inform all listeners about the new class. that
-			// means those objects are deleted such that new instances instances
-			// can be created using the new class.
-			for (DataSetType dataSetType : Collections
-					.synchronizedList(new ArrayList<DataSetType>(
-							dataSetTypeInstances.get(object.getSimpleName())))) {
-				dataSetType.unregister();
-			}
-
-			this.sqlCommunicator.unregisterDataSetTypeClass(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregisterParameterOptimizationMethodClass(
-			final Class<? extends ParameterOptimizationMethod> object) {
-		boolean result = this.parameterOptimizationMethodClasses.remove(object
-				.getName()) != null;
-		if (result) {
-			this.info("ParameterOptimizationMethod class removed: "
-					+ object.getSimpleName());
-			// we inform all listeners about the new class. that
-			// means those objects are deleted such that new instances instances
-			// can be created using the new class.
-			for (ParameterOptimizationMethod paramOptMethod : new ConcurrentHashMap<ParameterOptimizationMethod, ParameterOptimizationMethod>(
-					parameterOptimizationMethodInstances.get(object
-							.getSimpleName())).values()) {
-				paramOptMethod.unregister();
-			}
-
-			this.sqlCommunicator
-					.unregisterParameterOptimizationMethodClass(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
 	public boolean unregisterRunResultFormatClass(
 			final Class<? extends RunResultFormat> object) {
 		boolean result = this.runResultFormatClasses.remove(object.getName()) != null;
@@ -3151,137 +2471,6 @@ public class Repository {
 	public Map<String, Long> getFinderLoadedJarFileChangeDates() {
 		return this.finderLoadedJarFileChangeDates;
 	}
-
-	/**
-	 * This method checks whether the given context class is registered in this
-	 * repository.
-	 * 
-	 * @param context
-	 *            The class of the context to look up.
-	 * @return True, if the context class was registered.
-	 */
-	public boolean isContextRegistered(final Class<? extends Context> context) {
-		return this.contextClasses.containsKey(context.getName())
-				|| (this.parent != null && this.parent
-						.isContextRegistered(context));
-	}
-
-	/**
-	 * This method checks whether a context with the given class name is
-	 * registered in this repository.
-	 * 
-	 * @param contextClassName
-	 *            The class name of the context to look up.
-	 * @return True, if the context class was registered.
-	 */
-	public boolean isContextRegistered(final String contextClassName) {
-		return this.contextClasses.containsKey(contextClassName)
-				|| (this.parent != null && this.parent
-						.isContextRegistered(contextClassName));
-	}
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all contexts are stored.
-	 */
-	public String getContextBasePath() {
-		return this.contextBasePath;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the context
-	 * with the given name.
-	 * 
-	 * @param contextClassName
-	 *            The name of the class of the context.
-	 * @return The context class with the given name or null, if it does not
-	 *         exist.
-	 */
-	public Class<? extends Context> getContextClass(
-			final String contextClassName) {
-		Class<? extends Context> result = this.contextClasses
-				.get(contextClassName);
-		if (result == null && parent != null)
-			result = this.parent.getContextClass(contextClassName);
-		return result;
-	}
-
-	/**
-	 * 
-	 * @return The set of all registered context classes.
-	 */
-	public Collection<Class<? extends Context>> getContextClasses() {
-		return this.contextClasses.values();
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the contexts have been
-	 *         initialized by the {@link ContextFinderThread}.
-	 */
-	public boolean getContextsInitialized() {
-		return this.contextsInitialized;
-	}
-
-	/**
-	 * This method registers a context class. The class is only registered, if
-	 * it was not before.
-	 * 
-	 * @param object
-	 *            The new class to register.
-	 * @return True, if the new class was registered.
-	 */
-	public boolean registerContextClass(final Class<? extends Context> object) {
-		if (isContextRegistered(object)) {
-			// first remove the old class
-			unregisterContextClass(this.contextClasses.get(object.getName()));
-		}
-		this.contextClasses.put(object.getName(), object);
-
-		this.contextInstances.put(object.getSimpleName(),
-				Collections.synchronizedList(new ArrayList<Context>()));
-
-		this.sqlCommunicator.registerContextClass(object);
-
-		return true;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregisterContextClass(final Class<? extends Context> object) {
-		boolean result = this.contextClasses.remove(object.getName()) != null;
-		if (result) {
-			this.info("Context removed: " + object.getSimpleName());
-			// we inform all existing context objects about the new class. that
-			// means those objects are deleted such that new instances instances
-			// can be created using the new class.
-			for (Context context : Collections
-					.synchronizedList(new ArrayList<Context>(contextInstances
-							.get(object.getSimpleName())))) {
-				context.unregister();
-			}
-
-			this.sqlCommunicator.unregisterContextClass(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method sets the contexts as initialized. It should only be invoked
-	 * by {@link ContextFinderThread#afterFind()}.
-	 */
-	public void setContextsInitialized() {
-		this.contextsInitialized = true;
-	}
 }
 // Repository class before: 7311 lines
 // Repository class after 1st part: 5463 lines
@@ -3292,3 +2481,6 @@ public class Repository {
 // Repository class after DataPreprocessor: 3761 lines
 // Repository class after RProgram: 3545 lines
 // Repository class after ClusteringQualityMeasure: 3285 lines
+// Repository class after Context: 3126 lines
+// Repository class after ParameterOptimizationMethod: 2889 lines
+// Repository class after DataSetType: 2692 lines

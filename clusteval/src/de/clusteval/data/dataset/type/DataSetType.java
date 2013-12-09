@@ -96,8 +96,8 @@ public abstract class DataSetType extends RepositoryObject {
 	 */
 	public static DataSetType parseFromString(final Repository repository,
 			String datasetType) throws UnknownDataSetTypeException {
-		Class<? extends DataSetType> c = repository
-				.getDataSetTypeClass("de.clusteval.data.dataset.type."
+		Class<? extends DataSetType> c = repository.getRegisteredClass(
+				DataSetType.class, "de.clusteval.data.dataset.type."
 						+ datasetType);
 		try {
 			Constructor<? extends DataSetType> constr = c.getConstructor(
@@ -158,7 +158,7 @@ public abstract class DataSetType extends RepositoryObject {
 	 * @see framework.repository.RepositoryObject#register()
 	 */
 	@Override
-	public boolean register() {
+	public boolean register() throws RegisterException {
 		return this.repository.register(this);
 	}
 

@@ -18,7 +18,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.LoggerFactory;
 
@@ -244,7 +243,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 * @see framework.repository.RepositoryObject#register()
 	 */
 	@Override
-	public boolean register() {
+	public boolean register() throws RegisterException {
 		return this.repository.register(this);
 	}
 
@@ -538,8 +537,9 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 			throws UnknownParameterOptimizationMethodException {
 
 		Class<? extends ParameterOptimizationMethod> c = repository
-				.getParameterOptimizationMethodClass("de.clusteval.cluster.paramOptimization."
-						+ parameterOptimizationMethod);
+				.getRegisteredClass(ParameterOptimizationMethod.class,
+						"de.clusteval.cluster.paramOptimization."
+								+ parameterOptimizationMethod);
 		try {
 			Constructor<? extends ParameterOptimizationMethod> constr = c
 					.getConstructor(Repository.class, boolean.class,

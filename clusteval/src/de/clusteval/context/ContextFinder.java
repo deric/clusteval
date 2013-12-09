@@ -51,7 +51,7 @@ public class ContextFinder extends JARFinder<Context> {
 	 */
 	@Override
 	protected Collection<Class<? extends Context>> getRegisteredObjectSet() {
-		return repository.getContextClasses();
+		return repository.getClasses(Context.class);
 	}
 
 	/*
@@ -61,7 +61,7 @@ public class ContextFinder extends JARFinder<Context> {
 	 */
 	@Override
 	protected void removeOldObject(Class<? extends Context> object) {
-		repository.unregisterContextClass(object);
+		repository.unregisterClass(Context.class, object);
 	}
 
 	/*
@@ -81,8 +81,8 @@ public class ContextFinder extends JARFinder<Context> {
 	 */
 	@Override
 	protected String[] classNamesForJARFile(File f) {
-		return new String[] { "de.clusteval.context."
-				+ f.getName().replace(".jar", "") };
+		return new String[]{"de.clusteval.context."
+				+ f.getName().replace(".jar", "")};
 	}
 
 	/*
@@ -92,7 +92,7 @@ public class ContextFinder extends JARFinder<Context> {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getContextBasePath());
+		return new File(this.repository.getBasePath(Context.class));
 	}
 
 	/*
@@ -123,8 +123,10 @@ public class ContextFinder extends JARFinder<Context> {
 	@Override
 	protected boolean isJARLoaded(File f) {
 		return super.isJARLoaded(f)
-				&& this.repository.isContextRegistered("de.clusteval.context."
-						+ f.getName().replace(".jar", ""));
+				&& this.repository.isClassRegistered(
+						Context.class,
+						"de.clusteval.context."
+								+ f.getName().replace(".jar", ""));
 	}
 
 	/*
@@ -136,7 +138,7 @@ public class ContextFinder extends JARFinder<Context> {
 	protected URLClassLoader getURLClassLoader0(File f, final ClassLoader parent)
 			throws MalformedURLException {
 		URL url = f.toURI().toURL();
-		return new ContextURLClassLoader(this, new URL[] { url }, parent);
+		return new ContextURLClassLoader(this, new URL[]{url}, parent);
 	}
 
 	/*
@@ -190,7 +192,8 @@ class ContextURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends Context> context = (Class<? extends Context>) result;
 
-				if (this.parent.getRepository().registerContextClass(context))
+				if (this.parent.getRepository().registerClass(Context.class,
+						context))
 					this.parent.getLog().info("Context " + name + " loaded");
 			}
 		}

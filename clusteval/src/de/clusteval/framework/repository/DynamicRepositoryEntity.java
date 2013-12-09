@@ -80,7 +80,14 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 	public <S extends T> S getRegisteredObject(final S object,
 			final boolean ignoreChangeDate) {
 		// get object without changedate
-		S other = (S) this.objects.get(object);
+		S other = null;
+		for (List<T> list : this.objects.values()) {
+			for (T elem : list)
+				if (elem.equals(object)) {
+					other = (S) elem;
+					break;
+				}
+		}
 		// inserted parent, 02.06.2012
 		if (other == null && parent != null)
 			return parent.getRegisteredObject(object, ignoreChangeDate);

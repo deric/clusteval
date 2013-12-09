@@ -77,7 +77,7 @@ public class ParameterOptimizationMethodFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		repository.setParameterOptimizationMethodsInitialized();
+		repository.setInitialized(ParameterOptimizationMethod.class);
 	}
 
 	/*

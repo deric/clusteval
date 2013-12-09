@@ -36,8 +36,8 @@ public abstract class Context extends RepositoryObject {
 	public static Context parseFromString(final Repository repository,
 			final String contextName) throws UnknownContextException {
 
-		Class<? extends Context> c = repository
-				.getContextClass("de.clusteval.context." + contextName);
+		Class<? extends Context> c = repository.getRegisteredClass(
+				Context.class, "de.clusteval.context." + contextName);
 		Constructor<? extends Context> constr;
 		try {
 			constr = c.getConstructor(Repository.class, boolean.class,

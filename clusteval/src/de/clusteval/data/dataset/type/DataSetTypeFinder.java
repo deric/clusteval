@@ -57,7 +57,7 @@ public class DataSetTypeFinder extends JARFinder<DataSetType> {
 	 */
 	@Override
 	protected Collection<Class<? extends DataSetType>> getRegisteredObjectSet() {
-		return this.repository.getDataSetTypeClasses();
+		return this.repository.getClasses(DataSetType.class);
 	}
 
 	/*
@@ -67,7 +67,7 @@ public class DataSetTypeFinder extends JARFinder<DataSetType> {
 	 */
 	@Override
 	protected void removeOldObject(Class<? extends DataSetType> object) {
-		this.repository.unregisterDataSetTypeClass(object);
+		this.repository.unregisterClass(DataSetType.class, object);
 	}
 
 	/*
@@ -98,7 +98,7 @@ public class DataSetTypeFinder extends JARFinder<DataSetType> {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getDataSetTypeBasePath());
+		return new File(this.repository.getBasePath(DataSetType.class));
 	}
 
 	/*
@@ -129,8 +129,8 @@ public class DataSetTypeFinder extends JARFinder<DataSetType> {
 	@Override
 	protected boolean isJARLoaded(File f) {
 		return super.isJARLoaded(f)
-				&& this.repository
-						.isDataSetTypeRegistered("de.clusteval.data.dataset.type."
+				&& this.repository.isClassRegistered(DataSetType.class,
+						"de.clusteval.data.dataset.type."
 								+ f.getName().replace(".jar", ""));
 	}
 
@@ -197,8 +197,8 @@ class DataSetTypeURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends DataSetType> DataSetType = (Class<? extends DataSetType>) result;
 
-				if (this.parent.getRepository().registerDataSetTypeClass(
-						DataSetType))
+				if (this.parent.getRepository().registerClass(
+						DataSetType.class, DataSetType))
 					this.parent.getLog()
 							.info("DataSetType " + name + " loaded");
 			}

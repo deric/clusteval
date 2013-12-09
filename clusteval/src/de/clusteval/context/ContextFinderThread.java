@@ -15,6 +15,7 @@ package de.clusteval.context;
 
 import java.io.File;
 
+import de.clusteval.data.dataset.format.DataSetFormat;
 import de.clusteval.data.dataset.format.DataSetFormatFinderThread;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
@@ -60,7 +61,7 @@ public class ContextFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void beforeFind() {
-		if (!this.repository.getDataSetFormatsInitialized()) {
+		if (!this.repository.isInitialized(DataSetFormat.class)) {
 			this.supervisorThread.getThread(DataSetFormatFinderThread.class)
 					.waitFor();
 		}
@@ -77,7 +78,7 @@ public class ContextFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		repository.setContextsInitialized();
+		repository.setInitialized(Context.class);
 	}
 
 	/*
@@ -88,6 +89,6 @@ public class ContextFinderThread extends FinderThread {
 	@Override
 	protected Finder getFinder() throws RegisterException {
 		return new ContextFinder(repository, System.currentTimeMillis(),
-				new File(repository.getContextBasePath()));
+				new File(repository.getBasePath(Context.class)));
 	}
 }

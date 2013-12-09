@@ -42,7 +42,7 @@ public class ParameterOptimizationMethodFinder
 	public ParameterOptimizationMethodFinder(final Repository repository)
 			throws RegisterException {
 		super(repository, System.currentTimeMillis(), new File(
-				repository.getParameterOptimizationMethodsBasePath()));
+				repository.getBasePath(ParameterOptimizationMethod.class)));
 	}
 
 	/*
@@ -53,7 +53,7 @@ public class ParameterOptimizationMethodFinder
 	@Override
 	protected File getBaseDir() {
 		return new File(
-				this.repository.getParameterOptimizationMethodsBasePath());
+				this.repository.getBasePath(ParameterOptimizationMethod.class));
 	}
 
 	/*
@@ -105,8 +105,9 @@ public class ParameterOptimizationMethodFinder
 	@Override
 	protected boolean isJARLoaded(File f) {
 		return super.isJARLoaded(f)
-				&& this.repository
-						.isParameterOptimizationMethodRegistered(classNamesForJARFile(f)[0]);
+				&& this.repository.isClassRegistered(
+						ParameterOptimizationMethod.class,
+						classNamesForJARFile(f)[0]);
 	}
 
 	/*
@@ -149,7 +150,7 @@ public class ParameterOptimizationMethodFinder
 	 */
 	@Override
 	protected Collection<Class<? extends ParameterOptimizationMethod>> getRegisteredObjectSet() {
-		return this.repository.getParameterOptimizationMethodClasses();
+		return this.repository.getClasses(ParameterOptimizationMethod.class);
 	}
 
 	/*
@@ -160,7 +161,8 @@ public class ParameterOptimizationMethodFinder
 	@Override
 	protected void removeOldObject(
 			Class<? extends ParameterOptimizationMethod> object) {
-		this.repository.unregisterParameterOptimizationMethodClass(object);
+		this.repository.unregisterClass(ParameterOptimizationMethod.class,
+				object);
 	}
 }
 
@@ -213,9 +215,9 @@ class ParameterOptimizationMethodURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends ParameterOptimizationMethod> parameterOptimizationMethod = (Class<? extends ParameterOptimizationMethod>) result;
 
-				if (this.parent.getRepository()
-						.registerParameterOptimizationMethodClass(
-								parameterOptimizationMethod))
+				if (this.parent.getRepository().registerClass(
+						ParameterOptimizationMethod.class,
+						parameterOptimizationMethod))
 					this.parent.getLog().info(
 							"ParameterOptimizationMethod " + name + " loaded");
 			}

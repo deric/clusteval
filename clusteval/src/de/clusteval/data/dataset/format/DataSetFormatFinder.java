@@ -52,7 +52,7 @@ public class DataSetFormatFinder extends JARFinder<DataSetFormat> {
 	 */
 	@Override
 	protected Collection<Class<? extends DataSetFormat>> getRegisteredObjectSet() {
-		return repository.getDataSetFormatClasses();
+		return repository.getClasses(DataSetFormat.class);
 	}
 
 	/*
@@ -62,7 +62,7 @@ public class DataSetFormatFinder extends JARFinder<DataSetFormat> {
 	 */
 	@Override
 	protected void removeOldObject(Class<? extends DataSetFormat> object) {
-		repository.unregisterDataSetFormatClass(object);
+		repository.unregisterClass(DataSetFormat.class, object);
 	}
 
 	/*
@@ -96,7 +96,7 @@ public class DataSetFormatFinder extends JARFinder<DataSetFormat> {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getDataSetFormatBasePath());
+		return new File(this.repository.getBasePath(DataSetFormat.class));
 	}
 
 	/*
@@ -127,8 +127,8 @@ public class DataSetFormatFinder extends JARFinder<DataSetFormat> {
 	@Override
 	protected boolean isJARLoaded(File f) {
 		return super.isJARLoaded(f)
-				&& this.repository
-						.isDataSetFormatRegistered("de.clusteval.data.dataset.format."
+				&& this.repository.isClassRegistered(DataSetFormat.class,
+						"de.clusteval.data.dataset.format."
 								+ f.getName().replace(".jar", ""));
 	}
 
@@ -207,8 +207,8 @@ class DataSetFormatURLClassLoader extends URLClassLoader {
 					throw ex;
 				}
 
-				if (this.parent.getRepository().registerDataSetFormatClass(
-						dataSetFormat))
+				if (this.parent.getRepository().registerClass(
+						DataSetFormat.class, dataSetFormat))
 					this.parent.getLog().info(
 							"DataSetFormat " + name + " loaded");
 

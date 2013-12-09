@@ -13,7 +13,9 @@
  */
 package de.clusteval.run;
 
+import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethodFinderThread;
+import de.clusteval.context.Context;
 import de.clusteval.context.ContextFinderThread;
 import de.clusteval.data.dataset.DataSetConfig;
 import de.clusteval.data.dataset.DataSetConfigFinderThread;
@@ -102,11 +104,11 @@ public class RunFinderThread extends FinderThread {
 			this.supervisorThread.getThread(RunStatisticFinderThread.class)
 					.waitFor();
 
-		if (!this.repository.getParameterOptimizationMethodsInitialized())
+		if (!this.repository.isInitialized(ParameterOptimizationMethod.class))
 			this.supervisorThread.getThread(
 					ParameterOptimizationMethodFinderThread.class).waitFor();
 
-		if (!this.repository.getContextsInitialized())
+		if (!this.repository.isInitialized(Context.class))
 			this.supervisorThread.getThread(ContextFinderThread.class)
 					.waitFor();
 

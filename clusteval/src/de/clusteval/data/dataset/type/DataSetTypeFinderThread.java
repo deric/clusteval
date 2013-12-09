@@ -68,7 +68,7 @@ public class DataSetTypeFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		repository.setDataSetTypesInitialized();
+		repository.setInitialized(DataSetType.class);
 	}
 
 	/*
@@ -79,6 +79,6 @@ public class DataSetTypeFinderThread extends FinderThread {
 	@Override
 	protected Finder getFinder() throws RegisterException {
 		return new DataSetTypeFinder(repository, System.currentTimeMillis(),
-				new File(repository.getDataSetTypeBasePath()));
+				new File(repository.getBasePath(DataSetType.class)));
 	}
 }

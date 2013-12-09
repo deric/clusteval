@@ -16,12 +16,16 @@ package de.clusteval.framework.repository;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ConcurrentHashMap;
 
+import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
+import de.clusteval.context.Context;
 import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.data.dataset.DataSetConfig;
 import de.clusteval.data.dataset.DataSetRegisterException;
+import de.clusteval.data.dataset.format.DataSetFormat;
 import de.clusteval.data.dataset.generator.DataSetGenerator;
+import de.clusteval.data.dataset.type.DataSetType;
 import de.clusteval.data.distance.DistanceMeasure;
 import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
@@ -169,20 +173,24 @@ public class RunResultRepository extends Repository {
 		this.dynamicRepositoryEntities.put(RProgram.class,
 				this.parent.dynamicRepositoryEntities.get(RProgram.class));
 
-		this.contextClasses = this.parent.contextClasses;
-		this.contextInstances = this.parent.contextInstances;
-		this.dataSetFormatInstances = this.parent.dataSetFormatInstances;
-		this.dataSetFormatClasses = this.parent.dataSetFormatClasses;
-		this.dataSetTypeInstances = this.parent.dataSetTypeInstances;
-		this.dataSetTypeClasses = this.parent.dataSetTypeClasses;
-		this.dataSetFormatParser = this.parent.dataSetFormatParser;
+		this.dynamicRepositoryEntities.put(Context.class,
+				this.parent.dynamicRepositoryEntities.get(Context.class));
+
+		this.dynamicRepositoryEntities.put(ParameterOptimizationMethod.class,
+				this.parent.dynamicRepositoryEntities
+						.get(ParameterOptimizationMethod.class));
+
+		this.dynamicRepositoryEntities.put(DataSetType.class,
+				this.parent.dynamicRepositoryEntities.get(DataSetType.class));
+
+		this.dynamicRepositoryEntities.put(DataSetFormat.class,
+				this.parent.dynamicRepositoryEntities.get(DataSetFormat.class));
+
 		this.goldStandardFormats = new ConcurrentHashMap<GoldStandardFormat, GoldStandardFormat>();
 		this.runResultFormatClasses = this.parent.runResultFormatClasses;
 		this.runResultFormatInstances = this.parent.runResultFormatInstances;
 		this.runResultFormatParser = this.parent.runResultFormatParser;
 		this.finder = new ConcurrentHashMap<Finder, Finder>();
-		this.parameterOptimizationMethodClasses = this.parent.parameterOptimizationMethodClasses;
-		this.parameterOptimizationMethodInstances = this.parent.parameterOptimizationMethodInstances;
 
 		this.internalDoubleAttributes = this.parent.internalDoubleAttributes;
 		this.internalStringAttributes = this.parent.internalStringAttributes;
@@ -193,7 +201,6 @@ public class RunResultRepository extends Repository {
 		this.stringProgramParameters = new ConcurrentHashMap<StringProgramParameter, StringProgramParameter>();
 
 		// added 14.04.2013
-		this.dataSetFormatCurrentVersions = this.parent.dataSetFormatCurrentVersions;
 		this.knownFinderExceptions = this.parent.knownFinderExceptions;
 		this.finderClassLoaders = this.parent.finderClassLoaders;
 		this.finderWaitingFiles = this.parent.finderWaitingFiles;
@@ -212,46 +219,11 @@ public class RunResultRepository extends Repository {
 					"A RunResultRepository needs a valid parent repository");
 
 		this.supplementaryBasePath = this.parent.supplementaryBasePath;
-		this.contextBasePath = this.parent.contextBasePath;
 		this.suppClusteringBasePath = this.parent.suppClusteringBasePath;
-		this.parameterOptimizationMethodBasePath = this.parent.parameterOptimizationMethodBasePath;
 		this.formatsBasePath = this.parent.formatsBasePath;
-		this.dataSetFormatBasePath = this.parent.dataSetFormatBasePath;
 		this.generatorBasePath = this.parent.generatorBasePath;
 		this.runResultFormatBasePath = this.parent.runResultFormatBasePath;
 		this.typesBasePath = this.parent.typesBasePath;
-		this.dataSetTypeBasePath = this.parent.dataSetTypeBasePath;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Repository#getDataSetFormatsInitialized()
-	 */
-	@Override
-	public boolean getDataSetFormatsInitialized() {
-		return this.parent.getDataSetFormatsInitialized();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Repository#getParameterOptimizationMethodsInitialized()
-	 */
-	@Override
-	public boolean getParameterOptimizationMethodsInitialized() {
-		return this.parent.getParameterOptimizationMethodsInitialized();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.clusteval.framework.repository.Repository#getContextsInitialized()
-	 */
-	@Override
-	public boolean getContextsInitialized() {
-		return this.parent.getContextsInitialized();
 	}
 
 	/*
@@ -295,16 +267,6 @@ public class RunResultRepository extends Repository {
 	protected SupervisorThread createSupervisorThread() {
 		return new RunResultRepositorySupervisorThread(this,
 				this.getParent().repositoryConfig.getThreadSleepTimes());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Repository#getDataSetFormatsInitialized()
-	 */
-	@Override
-	public boolean getDataSetTypesInitialized() {
-		return this.parent.getDataSetTypesInitialized();
 	}
 }
 

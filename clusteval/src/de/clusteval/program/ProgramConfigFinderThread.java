@@ -13,7 +13,9 @@
  */
 package de.clusteval.program;
 
+import de.clusteval.context.Context;
 import de.clusteval.context.ContextFinderThread;
+import de.clusteval.data.dataset.format.DataSetFormat;
 import de.clusteval.data.dataset.format.DataSetFormatFinderThread;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
@@ -68,7 +70,7 @@ public class ProgramConfigFinderThread extends FinderThread {
 	@Override
 	protected void beforeFind() {
 
-		if (!this.repository.getDataSetFormatsInitialized())
+		if (!this.repository.isInitialized(DataSetFormat.class))
 			this.supervisorThread.getThread(DataSetFormatFinderThread.class)
 					.waitFor();
 
@@ -76,7 +78,7 @@ public class ProgramConfigFinderThread extends FinderThread {
 			this.supervisorThread.getThread(RProgramFinderThread.class)
 					.waitFor();
 
-		if (!this.repository.getContextsInitialized())
+		if (!this.repository.isInitialized(Context.class))
 			this.supervisorThread.getThread(ContextFinderThread.class)
 					.waitFor();
 		this.log.debug("Checking for ProgramConfigs...");

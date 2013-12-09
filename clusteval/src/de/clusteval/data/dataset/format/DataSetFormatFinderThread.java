@@ -25,6 +25,7 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
+// TODO: those can be removed now, by make FinderThread parameterized
 public class DataSetFormatFinderThread extends FinderThread {
 
 	/**
@@ -68,7 +69,7 @@ public class DataSetFormatFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		repository.setDataSetFormatsInitialized();
+		repository.setInitialized(DataSetFormat.class);
 	}
 
 	/*
@@ -79,6 +80,6 @@ public class DataSetFormatFinderThread extends FinderThread {
 	@Override
 	protected Finder getFinder() throws RegisterException {
 		return new DataSetFormatFinder(repository, System.currentTimeMillis(),
-				new File(repository.getDataSetFormatBasePath()));
+				new File(repository.getBasePath(DataSetFormat.class)));
 	}
 }

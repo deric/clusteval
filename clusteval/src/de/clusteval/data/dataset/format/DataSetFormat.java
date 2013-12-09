@@ -89,8 +89,8 @@ public abstract class DataSetFormat extends RepositoryObject {
 	public static DataSetFormat parseFromString(final Repository repository,
 			String datasetFormat, final int formatVersion)
 			throws UnknownDataSetFormatException {
-		Class<? extends DataSetFormat> c = repository
-				.getDataSetFormatClass("de.clusteval.data.dataset.format."
+		Class<? extends DataSetFormat> c = repository.getRegisteredClass(
+				DataSetFormat.class, "de.clusteval.data.dataset.format."
 						+ datasetFormat);
 		try {
 			Constructor<? extends DataSetFormat> constr = c.getConstructor(
@@ -309,7 +309,7 @@ public abstract class DataSetFormat extends RepositoryObject {
 	 * @see framework.repository.RepositoryObject#register()
 	 */
 	@Override
-	public boolean register() {
+	public boolean register() throws RegisterException {
 		return this.repository.register(this);
 	}
 

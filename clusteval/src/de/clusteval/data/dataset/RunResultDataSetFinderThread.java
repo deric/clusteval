@@ -15,7 +15,9 @@ package de.clusteval.data.dataset;
 
 import java.io.File;
 
+import de.clusteval.data.dataset.format.DataSetFormat;
 import de.clusteval.data.dataset.format.DataSetFormatFinderThread;
+import de.clusteval.data.dataset.type.DataSetType;
 import de.clusteval.data.dataset.type.DataSetTypeFinderThread;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
@@ -84,11 +86,11 @@ public class RunResultDataSetFinderThread extends DataSetFinderThread {
 	@Override
 	protected void beforeFind() {
 
-		if (!this.repository.getDataSetFormatsInitialized())
+		if (!this.repository.isInitialized(DataSetFormat.class))
 			this.supervisorThread.getThread(DataSetFormatFinderThread.class)
 					.waitFor();
 
-		if (!this.repository.getDataSetTypesInitialized())
+		if (!this.repository.isInitialized(DataSetType.class))
 			this.supervisorThread.getThread(DataSetTypeFinderThread.class)
 					.waitFor();
 
