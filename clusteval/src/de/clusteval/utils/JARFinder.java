@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
@@ -44,8 +43,6 @@ public abstract class JARFinder<T extends RepositoryObject> extends Finder<T> {
 
 	/**
 	 * @param repository
-	 * @param changeDate
-	 * @param absPath
 	 * @throws RegisterException
 	 */
 	public JARFinder(Repository repository, Class<T> classToFind)

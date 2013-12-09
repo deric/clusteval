@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryEvent;
@@ -62,7 +61,7 @@ public abstract class Finder<T extends RepositoryObject>
 	 *            The object to clone.
 	 * @throws RegisterException
 	 */
-	public Finder(final Finder other) throws RegisterException {
+	public Finder(final Finder<T> other) throws RegisterException {
 		super(other);
 	}
 
@@ -72,9 +71,9 @@ public abstract class Finder<T extends RepositoryObject>
 	 * @see java.lang.Object#clone()
 	 */
 	@Override
-	public Finder clone() {
+	public Finder<T> clone() {
 		try {
-			return this.getClass().getConstructor(Finder.class)
+			return (Finder<T>) this.getClass().getConstructor(Finder.class)
 					.newInstance(this);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();

@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-import de.clusteval.data.dataset.DataSetConfig;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
@@ -28,12 +27,14 @@ import de.clusteval.framework.repository.RepositoryRemoveEvent;
 
 /**
  * @author Christian Wiwie
+ * @param <T>
  * 
  */
 public abstract class FileFinder<T extends RepositoryObject> extends Finder<T> {
 
 	/**
 	 * @param repository
+	 * @param classToFind
 	 * @throws RegisterException
 	 */
 	public FileFinder(Repository repository, Class<T> classToFind)
