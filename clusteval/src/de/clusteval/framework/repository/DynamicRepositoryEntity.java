@@ -113,6 +113,8 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 		if (!ensureLibraries(object))
 			return false;
 
+		DynamicRepositoryEntity.loadedClasses.put(object.getName(), object);
+
 		this.repository.log.info("Dynamic class registered: "
 				+ object.getSimpleName());
 
@@ -234,6 +236,8 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 					(List<S>) objects.get(c.getSimpleName())))) {
 				object.unregister();
 			}
+
+			DynamicRepositoryEntity.loadedClasses.remove(c.getName());
 
 			this.repository.sqlCommunicator.unregister(c);
 		}

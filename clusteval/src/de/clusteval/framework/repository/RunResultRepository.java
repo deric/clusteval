@@ -21,10 +21,13 @@ import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.data.dataset.DataSetConfig;
 import de.clusteval.data.dataset.DataSetRegisterException;
+import de.clusteval.data.dataset.generator.DataSetGenerator;
 import de.clusteval.data.distance.DistanceMeasure;
 import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.data.goldstandard.format.GoldStandardFormat;
+import de.clusteval.data.preprocessing.DataPreprocessor;
+import de.clusteval.data.statistics.DataStatistic;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.framework.threading.RunResultRepositorySupervisorThread;
@@ -34,8 +37,11 @@ import de.clusteval.program.IntegerProgramParameter;
 import de.clusteval.program.Program;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.StringProgramParameter;
+import de.clusteval.program.r.RProgram;
 import de.clusteval.run.Run;
 import de.clusteval.run.result.RunResult;
+import de.clusteval.run.statistics.RunDataStatistic;
+import de.clusteval.run.statistics.RunStatistic;
 import de.clusteval.utils.Finder;
 import file.FileUtils;
 
@@ -96,6 +102,8 @@ public class RunResultRepository extends Repository {
 
 		this.staticRepositoryEntities = new StaticRepositoryEntityMap();
 
+		this.dynamicRepositoryEntities = new DynamicRepositoryEntityMap();
+
 		this.createAndAddStaticEntity(DataConfig.class,
 				FileUtils.buildPath(this.basePath, "configs"));
 		this.createAndAddStaticEntity(DataSetConfig.class,
@@ -136,32 +144,39 @@ public class RunResultRepository extends Repository {
 				this.parent.dynamicRepositoryEntities
 						.get(DistanceMeasure.class));
 
+		this.dynamicRepositoryEntities.put(DataSetGenerator.class,
+				this.parent.dynamicRepositoryEntities
+						.get(DataSetGenerator.class));
+
+		this.dynamicRepositoryEntities.put(DataPreprocessor.class,
+				this.parent.dynamicRepositoryEntities
+						.get(DataPreprocessor.class));
+
+		this.dynamicRepositoryEntities.put(DataStatistic.class,
+				this.parent.dynamicRepositoryEntities.get(DataStatistic.class));
+
+		this.dynamicRepositoryEntities.put(RunStatistic.class,
+				this.parent.dynamicRepositoryEntities.get(RunStatistic.class));
+
+		this.dynamicRepositoryEntities.put(RunDataStatistic.class,
+				this.parent.dynamicRepositoryEntities
+						.get(RunDataStatistic.class));
+
+		this.dynamicRepositoryEntities.put(ClusteringQualityMeasure.class,
+				this.parent.dynamicRepositoryEntities
+						.get(ClusteringQualityMeasure.class));
+
+		this.dynamicRepositoryEntities.put(RProgram.class,
+				this.parent.dynamicRepositoryEntities.get(RProgram.class));
+
 		this.contextClasses = this.parent.contextClasses;
 		this.contextInstances = this.parent.contextInstances;
 		this.dataSetFormatInstances = this.parent.dataSetFormatInstances;
 		this.dataSetFormatClasses = this.parent.dataSetFormatClasses;
-		this.dataSetGeneratorClasses = this.parent.dataSetGeneratorClasses;
-		this.dataSetGeneratorInstances = this.parent.dataSetGeneratorInstances;
-		this.dataPreprocessorInstances = this.parent.dataPreprocessorInstances;
-		this.dataPreprocessorClasses = this.parent.dataPreprocessorClasses;
 		this.dataSetTypeInstances = this.parent.dataSetTypeInstances;
 		this.dataSetTypeClasses = this.parent.dataSetTypeClasses;
-		this.dataStatisticClasses = this.parent.dataStatisticClasses;
-		this.dataStatisticInstances = this.parent.dataStatisticInstances;
-		this.statisticCalculators = this.parent.statisticCalculators;
-		this.runStatisticClasses = this.parent.runStatisticClasses;
-		this.runStatisticInstances = this.parent.runStatisticInstances;
-		this.runDataStatisticClasses = this.parent.runDataStatisticClasses;
-		this.runDataStatisticInstances = this.parent.runDataStatisticInstances;
 		this.dataSetFormatParser = this.parent.dataSetFormatParser;
-		this.dataStatisticCalculatorClasses = this.parent.dataStatisticCalculatorClasses;
-		this.runStatisticCalculatorClasses = this.parent.runStatisticCalculatorClasses;
-		this.runDataStatisticCalculatorClasses = this.parent.runDataStatisticCalculatorClasses;
-		this.clusteringQualityMeasureClasses = this.parent.clusteringQualityMeasureClasses;
-		this.clusteringQualityMeasureInstances = this.parent.clusteringQualityMeasureInstances;
 		this.goldStandardFormats = new ConcurrentHashMap<GoldStandardFormat, GoldStandardFormat>();
-		this.rProgramClasses = this.parent.rProgramClasses;
-		this.rProgramInstances = this.parent.rProgramInstances;
 		this.runResultFormatClasses = this.parent.runResultFormatClasses;
 		this.runResultFormatInstances = this.parent.runResultFormatInstances;
 		this.runResultFormatParser = this.parent.runResultFormatParser;
@@ -200,18 +215,12 @@ public class RunResultRepository extends Repository {
 		this.contextBasePath = this.parent.contextBasePath;
 		this.suppClusteringBasePath = this.parent.suppClusteringBasePath;
 		this.parameterOptimizationMethodBasePath = this.parent.parameterOptimizationMethodBasePath;
-		this.clusteringQualityMeasureBasePath = this.parent.clusteringQualityMeasureBasePath;
 		this.formatsBasePath = this.parent.formatsBasePath;
 		this.dataSetFormatBasePath = this.parent.dataSetFormatBasePath;
 		this.generatorBasePath = this.parent.generatorBasePath;
-		this.dataSetGeneratorBasePath = this.parent.dataSetGeneratorBasePath;
 		this.runResultFormatBasePath = this.parent.runResultFormatBasePath;
 		this.typesBasePath = this.parent.typesBasePath;
 		this.dataSetTypeBasePath = this.parent.dataSetTypeBasePath;
-		this.dataStatisticBasePath = this.parent.dataStatisticBasePath;
-		this.runStatisticBasePath = this.parent.runStatisticBasePath;
-		this.runDataStatisticBasePath = this.parent.runDataStatisticBasePath;
-		this.dataPreprocessorBasePath = this.parent.dataPreprocessorBasePath;
 	}
 
 	/*
@@ -227,73 +236,11 @@ public class RunResultRepository extends Repository {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Repository#getDataStatisticsInitialized()
-	 */
-	@Override
-	public boolean getDataStatisticsInitialized() {
-		return this.parent.getDataStatisticsInitialized();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Repository#getRProgramsInitialized()
-	 */
-	@Override
-	public boolean getRProgramsInitialized() {
-		return this.parent.getRProgramsInitialized();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Repository#getClusteringQualityMeasuresInitialized()
-	 */
-	@Override
-	public boolean getClusteringQualityMeasuresInitialized() {
-		return this.parent.getClusteringQualityMeasuresInitialized();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see utils.Repository#getParameterOptimizationMethodsInitialized()
 	 */
 	@Override
 	public boolean getParameterOptimizationMethodsInitialized() {
 		return this.parent.getParameterOptimizationMethodsInitialized();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Repository#getRunDataStatisticsInitialized()
-	 */
-	@Override
-	public boolean getRunDataStatisticsInitialized() {
-		return this.parent.getRunDataStatisticsInitialized();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Repository#getRunStatisticsInitialized()
-	 */
-	@Override
-	public boolean getRunStatisticsInitialized() {
-		return this.parent.getRunStatisticsInitialized();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.clusteval.framework.repository.Repository#getDataPreprocessorsInitialized
-	 * ()
-	 */
-	@Override
-	public boolean getDataPreprocessorsInitialized() {
-		return this.parent.getDataPreprocessorsInitialized();
 	}
 
 	/*
@@ -320,16 +267,6 @@ public class RunResultRepository extends Repository {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see framework.repository.Repository#getDataSetGeneratorsInitialized()
-	 */
-	@Override
-	public boolean getDataSetGeneratorsInitialized() {
-		return this.parent.getDataSetGeneratorsInitialized();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see utils.Repository#log(java.lang.String)
 	 */
 	@Override
@@ -347,53 +284,6 @@ public class RunResultRepository extends Repository {
 	protected void warn(String message) {
 		// reduce visibility of log messages
 		this.log.debug(message);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Repository#getClusteringQualityMeasureClass(java.lang.String)
-	 */
-	@Override
-	public Class<? extends ClusteringQualityMeasure> getClusteringQualityMeasureClass(
-			String clusteringQualityMeasureClassName) {
-		return this.parent
-				.getClusteringQualityMeasureClass(clusteringQualityMeasureClassName);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.Repository#registerClusteringQualityMeasure(java.lang.Class)
-	 */
-	@Override
-	public boolean registerClusteringQualityMeasureClass(
-			Class<? extends ClusteringQualityMeasure> object) {
-		return this.parent.registerClusteringQualityMeasureClass(object);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * utils.Repository#isClusteringQualityMeasureRegistered(java.lang.Class)
-	 */
-	@Override
-	public boolean isClusteringQualityMeasureRegistered(
-			Class<? extends ClusteringQualityMeasure> dsFormat) {
-		return this.parent.isClusteringQualityMeasureRegistered(dsFormat);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * utils.Repository#isClusteringQualityMeasureRegistered(java.lang.String)
-	 */
-	@Override
-	public boolean isClusteringQualityMeasureRegistered(String dsFormatClassName) {
-		return this.parent
-				.isClusteringQualityMeasureRegistered(dsFormatClassName);
 	}
 
 	/*
