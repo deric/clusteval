@@ -139,26 +139,6 @@ public class DataSetGeneratorFinder extends JARFinder<DataSetGenerator> {
 		URL url = f.toURI().toURL();
 		return new DataSetGeneratorURLClassLoader(this, new URL[]{url}, parent);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#register()
-	 */
-	@Override
-	public boolean register() {
-		return repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
 }
 
 class DataSetGeneratorURLClassLoader extends URLClassLoader {

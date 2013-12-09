@@ -270,26 +270,6 @@ public abstract class RunResult extends RepositoryObject {
 		return this.run;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.getParent().register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
-
 	/**
 	 * This method loads the contents of this run result into the memory by
 	 * parsing the files on the filesystem.

@@ -145,6 +145,21 @@ public class RunResultRepository extends Repository {
 						this.parent.staticRepositoryEntities
 								.get(RunResult.class), this.getBasePath()));
 
+		this.staticRepositoryEntities.put(Finder.class,
+				this.parent.staticRepositoryEntities.get(Finder.class));
+
+		this.staticRepositoryEntities.put(DoubleProgramParameter.class,
+				this.parent.staticRepositoryEntities
+						.get(DoubleProgramParameter.class));
+
+		this.staticRepositoryEntities.put(IntegerProgramParameter.class,
+				this.parent.staticRepositoryEntities
+						.get(IntegerProgramParameter.class));
+
+		this.staticRepositoryEntities.put(StringProgramParameter.class,
+				this.parent.staticRepositoryEntities
+						.get(StringProgramParameter.class));
+
 		this.dynamicRepositoryEntities.put(DistanceMeasure.class,
 				this.parent.dynamicRepositoryEntities
 						.get(DistanceMeasure.class));
@@ -192,15 +207,10 @@ public class RunResultRepository extends Repository {
 						.get(RunResultFormat.class));
 
 		this.goldStandardFormats = new ConcurrentHashMap<GoldStandardFormat, GoldStandardFormat>();
-		this.finder = new ConcurrentHashMap<Finder, Finder>();
 
 		this.internalDoubleAttributes = this.parent.internalDoubleAttributes;
 		this.internalStringAttributes = this.parent.internalStringAttributes;
 		this.internalIntegerAttributes = this.parent.internalIntegerAttributes;
-
-		this.doubleProgramParameters = new ConcurrentHashMap<DoubleProgramParameter, DoubleProgramParameter>();
-		this.integerProgramParameters = new ConcurrentHashMap<IntegerProgramParameter, IntegerProgramParameter>();
-		this.stringProgramParameters = new ConcurrentHashMap<StringProgramParameter, StringProgramParameter>();
 
 		// added 14.04.2013
 		this.knownFinderExceptions = this.parent.knownFinderExceptions;

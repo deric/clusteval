@@ -707,14 +707,4 @@ public class ParameterOptimizationRun extends ExecutionRun {
 	public List<ParameterOptimizationMethod> getOptimizationMethods() {
 		return this.optimizationMethods;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see run.config.Run#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
 }

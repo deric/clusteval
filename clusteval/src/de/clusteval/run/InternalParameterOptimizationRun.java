@@ -349,14 +349,4 @@ public class InternalParameterOptimizationRun extends ExecutionRun {
 		log.debug("Run parsed");
 		return result;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see run.config.Run#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
 }

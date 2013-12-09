@@ -699,16 +699,6 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
-
 	/**
 	 * @param paramSet
 	 *            The parameter set for which we want the resulting clustering

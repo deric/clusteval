@@ -93,16 +93,6 @@ public abstract class AnalysisRun<S extends Statistic> extends Run {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see run.config.Run#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see run.Run#notify(framework.repository.RepositoryEvent)
 	 */
 	@Override

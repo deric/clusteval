@@ -143,26 +143,6 @@ public class DataSetFormatFinder extends JARFinder<DataSetFormat> {
 		URL url = f.toURI().toURL();
 		return new DataSetFormatURLClassLoader(this, new URL[]{url}, parent);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#register()
-	 */
-	@Override
-	public boolean register() {
-		return repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
 }
 
 class DataSetFormatURLClassLoader extends URLClassLoader {

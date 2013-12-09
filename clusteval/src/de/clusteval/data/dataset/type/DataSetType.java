@@ -151,24 +151,4 @@ public abstract class DataSetType extends RepositoryObject {
 	 * @return The alias of this dataset type.
 	 */
 	public abstract String getAlias();
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see framework.repository.RepositoryObject#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see framework.repository.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
 }

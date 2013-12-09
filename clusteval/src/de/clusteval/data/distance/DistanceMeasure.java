@@ -82,26 +82,6 @@ public abstract class DistanceMeasure extends RepositoryObject
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see framework.repository.RepositoryObject#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see framework.repository.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
-
 	/**
 	 * Parses the from string.
 	 * 

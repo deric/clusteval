@@ -102,26 +102,6 @@ public abstract class RunResultFormat extends RepositoryObject {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see framework.repository.RepositoryObject#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see framework.repository.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

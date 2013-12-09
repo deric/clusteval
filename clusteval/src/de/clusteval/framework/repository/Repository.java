@@ -73,7 +73,6 @@ import de.clusteval.program.r.RProgram;
 import de.clusteval.run.Run;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.format.RunResultFormat;
-import de.clusteval.run.result.format.RunResultFormatFinder;
 import de.clusteval.run.result.format.RunResultFormatParser;
 import de.clusteval.run.statistics.RunDataStatistic;
 import de.clusteval.run.statistics.RunDataStatisticCalculator;
@@ -309,11 +308,6 @@ public class Repository {
 	protected Map<ClusterItem, ClusterItem> clusterItems;
 
 	/**
-	 * A map containing all finder instances registered in this repository.
-	 */
-	protected Map<Finder, Finder> finder;
-
-	/**
 	 * The pattern that is used to scan a string ofr internal attribute
 	 * placeholders in {@link #isInternalAttribute(String)}.
 	 */
@@ -340,24 +334,6 @@ public class Repository {
 	 * available before starting of a run.
 	 */
 	protected Map<String, NamedIntegerAttribute> internalIntegerAttributes;
-
-	/**
-	 * This map contains all double program parameters. These program parameters
-	 * are defined in program configurations.
-	 */
-	protected Map<DoubleProgramParameter, DoubleProgramParameter> doubleProgramParameters;
-
-	/**
-	 * This map contains all integer program parameters. These program
-	 * parameters are defined in program configurations.
-	 */
-	protected Map<IntegerProgramParameter, IntegerProgramParameter> integerProgramParameters;
-
-	/**
-	 * This map contains all string program parameters. These program parameters
-	 * are defined in program configurations.
-	 */
-	protected Map<StringProgramParameter, StringProgramParameter> stringProgramParameters;
 
 	protected Logger log;
 
@@ -1170,38 +1146,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method checks, whether there is a double program parameter
-	 * registered, that is equal to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public DoubleProgramParameter getRegisteredObject(
-			final DoubleProgramParameter object) {
-		DoubleProgramParameter other = this.doubleProgramParameters.get(object);
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
-	}
-
-	/**
 	 * This method looks up and returns (if it exists) the repository object
 	 * that belongs to the passed absolute path.
 	 * 
@@ -1212,70 +1156,6 @@ public class Repository {
 	 */
 	public RepositoryObject getRegisteredObject(final File absFilePath) {
 		return this.pathToRepositoryObject.get(absFilePath);
-	}
-
-	/**
-	 * This method checks, whether there is a finder registered, that is equal
-	 * to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public Finder getRegisteredObject(final Finder object) {
-		Finder other = this.finder.get(object);
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
-	}
-
-	/**
-	 * This method checks, whether there is an integer program parameter
-	 * registered, that is equal to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public IntegerProgramParameter getRegisteredObject(
-			final IntegerProgramParameter object) {
-		IntegerProgramParameter other = this.integerProgramParameters
-				.get(object);
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
 	}
 
 	/**
@@ -1372,38 +1252,6 @@ public class Repository {
 			final NamedStringAttribute object) {
 		NamedStringAttribute other = this.internalStringAttributes.get(object
 				.getName());
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object);
-		return other;
-	}
-
-	/**
-	 * This method checks, whether there is a string program parameter
-	 * registered, that is equal to the passed object and returns it.
-	 * 
-	 * <p>
-	 * Equality is checked in terms of
-	 * <ul>
-	 * <li><b>object.hashCode == other.hashCode</b></li>
-	 * <li><b>object.equals(other)</b></li>
-	 * </ul>
-	 * since internally the repository uses hash datastructures.
-	 * 
-	 * <p>
-	 * By default the {@link RepositoryObject#equals(Object)} method is only
-	 * based on the absolute path of the repository object and the repositories
-	 * of the two objects, this means two repository objects are considered the
-	 * same if they are stored in the same repository and they have the same
-	 * absolute path.
-	 * 
-	 * @param object
-	 *            The object for which we want to find an equal registered
-	 *            object.
-	 * @return The registered object equal to the passed object.
-	 */
-	public StringProgramParameter getRegisteredObject(
-			final StringProgramParameter object) {
-		StringProgramParameter other = this.stringProgramParameters.get(object);
 		if (other == null && parent != null)
 			return parent.getRegisteredObject(object);
 		return other;
@@ -1609,6 +1457,34 @@ public class Repository {
 								.get(RunResult.class) : null, FileUtils
 						.buildPath(this.basePath, "results")));
 
+		this.staticRepositoryEntities.put(
+				Finder.class,
+				new FinderRepositoryEntity(this, this.parent != null
+						? this.parent.staticRepositoryEntities
+								.get(Finder.class) : null, null));
+
+		this.staticRepositoryEntities.put(
+				DoubleProgramParameter.class,
+				new ProgramParameterRepositoryEntity<DoubleProgramParameter>(
+						this, this.parent != null
+								? this.parent.staticRepositoryEntities
+										.get(DoubleProgramParameter.class)
+								: null, null));
+		this.staticRepositoryEntities.put(
+				IntegerProgramParameter.class,
+				new ProgramParameterRepositoryEntity<IntegerProgramParameter>(
+						this, this.parent != null
+								? this.parent.staticRepositoryEntities
+										.get(IntegerProgramParameter.class)
+								: null, null));
+		this.staticRepositoryEntities.put(
+				StringProgramParameter.class,
+				new ProgramParameterRepositoryEntity<StringProgramParameter>(
+						this, this.parent != null
+								? this.parent.staticRepositoryEntities
+										.get(StringProgramParameter.class)
+								: null, null));
+
 		this.createAndAddDynamicEntity(DistanceMeasure.class, FileUtils
 				.buildPath(this.supplementaryBasePath, "distanceMeasures"));
 
@@ -1695,15 +1571,10 @@ public class Repository {
 										this.formatsBasePath, "runresult")));
 
 		this.goldStandardFormats = new ConcurrentHashMap<GoldStandardFormat, GoldStandardFormat>();
-		this.finder = new ConcurrentHashMap<Finder, Finder>();
 
 		this.internalDoubleAttributes = new ConcurrentHashMap<String, NamedDoubleAttribute>();
 		this.internalStringAttributes = new ConcurrentHashMap<String, NamedStringAttribute>();
 		this.internalIntegerAttributes = new ConcurrentHashMap<String, NamedIntegerAttribute>();
-
-		this.doubleProgramParameters = new ConcurrentHashMap<DoubleProgramParameter, DoubleProgramParameter>();
-		this.integerProgramParameters = new ConcurrentHashMap<IntegerProgramParameter, IntegerProgramParameter>();
-		this.stringProgramParameters = new ConcurrentHashMap<StringProgramParameter, StringProgramParameter>();
 
 		this.clusterings = new ConcurrentHashMap<Clustering, Clustering>();
 		this.clusters = new ConcurrentHashMap<Cluster, Cluster>();
@@ -1867,62 +1738,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers a new double program parameter. In case an old
-	 * object is already registered that equals the new object, the new object
-	 * is not registered.
-	 * 
-	 * @param object
-	 *            The new object to register.
-	 * @return True, if the passed object is registered, false otherwise.
-	 */
-	public boolean register(final DoubleProgramParameter object) {
-		if (this.getRegisteredObject(object) != null)
-			return false;
-		this.doubleProgramParameters.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-
-		this.sqlCommunicator.register(object);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a new finder. In case an old object is already
-	 * registered that equals the new object, the new object is not registered.
-	 * 
-	 * @param object
-	 *            The new finder to register.
-	 * @return True, if the new object has been registered.
-	 */
-	public boolean register(final Finder object) {
-		if (this.getRegisteredObject(object) != null)
-			return false;
-		this.finder.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-		return true;
-	}
-
-	/**
-	 * This method registers a new integer program parameter. In case an old
-	 * object is already registered, that equals the new object, the new object
-	 * is not registered.
-	 * 
-	 * @param object
-	 *            The new object which wants to be registered.
-	 * @return True, if the new object has been registered.
-	 */
-	public boolean register(final IntegerProgramParameter object) {
-		if (this.getRegisteredObject(object) != null)
-			return false;
-		this.integerProgramParameters.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-
-		this.sqlCommunicator.register(object);
-
-		return true;
-	}
-
-	/**
 	 * This method registers a new named double attribute. If an old object was
 	 * already registered that equals the new object, the new object is not
 	 * registered.
@@ -1970,26 +1785,6 @@ public class Repository {
 			return false;
 		this.internalStringAttributes.put(object.getName(), object);
 		this.pathToRepositoryObject.put(object.absPath, object);
-		return true;
-	}
-
-	/**
-	 * This method registers a new string program parameter. If an old object
-	 * was already registered that equals the new object, the new object is not
-	 * registered.
-	 * 
-	 * @param object
-	 *            The new object to register.
-	 * @return True, if the new object has been registered.
-	 */
-	public boolean register(final StringProgramParameter object) {
-		if (this.getRegisteredObject(object) != null)
-			return false;
-		this.stringProgramParameters.put(object, object);
-		this.pathToRepositoryObject.put(object.absPath, object);
-
-		this.sqlCommunicator.register(object);
-
 		return true;
 	}
 
@@ -2068,64 +1863,6 @@ public class Repository {
 	/**
 	 * This method unregisters the passed object.
 	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregister(DoubleProgramParameter object) {
-		boolean result = this.doubleProgramParameters.remove(object) != null;
-
-		if (result) {
-			this.sqlCommunicator.unregister(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregister(Finder object) {
-		return this.finder.remove(object) != null;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregister(IntegerProgramParameter object) {
-		boolean result = this.integerProgramParameters.remove(object) != null;
-
-		if (result) {
-			this.sqlCommunicator.unregister(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
 	 * @param object
 	 *            The object to be removed.
 	 * @return True, if the object was remved successfully
@@ -2154,39 +1891,6 @@ public class Repository {
 	 */
 	public boolean unregister(NamedStringAttribute object) {
 		return this.internalStringAttributes.remove(object) != null;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregister(final RunResultFormatFinder object) {
-		return this.finder.remove(object) != null;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregister(StringProgramParameter object) {
-		boolean result = this.stringProgramParameters.remove(object) != null;
-		if (result) {
-
-			this.sqlCommunicator.unregister(object);
-		}
-
-		return result;
 	}
 
 	/**
@@ -2277,3 +1981,5 @@ public class Repository {
 // Repository class after ParameterOptimizationMethod: 2889 lines
 // Repository class after DataSetType: 2692 lines
 // Repository class after Format classes: 2266 lines
+// Repository class after Finder classes: 2191 lines
+// Repository class after ProgramParameter classes: 1970 lines

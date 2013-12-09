@@ -131,16 +131,6 @@ public abstract class Context extends RepositoryObject {
 		return null;
 	}
 
-	@Override
-	public boolean register() {
-		return false;
-	}
-
-	@Override
-	public boolean unregister() {
-		return false;
-	}
-
 	/**
 	 * Contexts have a unique name.
 	 * 

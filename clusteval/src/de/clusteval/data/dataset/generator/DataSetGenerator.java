@@ -110,26 +110,6 @@ public abstract class DataSetGenerator extends RepositoryObject
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see framework.repository.RepositoryObject#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see framework.repository.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
-
 	/**
 	 * @return A wrapper object keeping all options of your dataset generator
 	 *         together with the default options of all dataset generators. The

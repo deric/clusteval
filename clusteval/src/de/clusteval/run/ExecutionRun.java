@@ -774,14 +774,4 @@ public abstract class ExecutionRun extends Run {
 			}
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see run.config.Run#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
 }

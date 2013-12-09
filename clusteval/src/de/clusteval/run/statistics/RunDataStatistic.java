@@ -87,26 +87,6 @@ public abstract class RunDataStatistic extends Statistic {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see framework.repository.RepositoryObject#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see framework.repository.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
-
 	/**
 	 * This method parses a string and maps it to a subclass of
 	 * {@link RunDataStatistic} looking it up in the given repository.

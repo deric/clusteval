@@ -80,26 +80,6 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 	 */
 	protected double[][] x;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see program.Program#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see program.Program#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
-
 	/**
 	 * This method parses the major name given as a string, looks up the
 	 * corresponding RProgram in the repository and returns a new instance.

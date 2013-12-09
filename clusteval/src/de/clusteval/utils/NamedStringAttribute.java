@@ -72,24 +72,4 @@ public class NamedStringAttribute extends NamedAttribute<String> {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#register()
-	 */
-	@Override
-	public boolean register() {
-		return this.repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
-
 }

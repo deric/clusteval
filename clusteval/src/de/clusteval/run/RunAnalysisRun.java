@@ -310,14 +310,4 @@ public class RunAnalysisRun extends AnalysisRun<RunStatistic> {
 	public List<String> getUniqueRunAnalysisRunIdentifiers() {
 		return this.uniqueRunAnalysisRunIdentifiers;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see run.config.Run#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
 }

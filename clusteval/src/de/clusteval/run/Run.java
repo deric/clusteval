@@ -907,16 +907,6 @@ public abstract class Run extends RepositoryObject {
 		afterPerform();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
-
 	/**
 	 * This method will resume a previously started run. This method should only
 	 * be invoked on a run, that was parsed from a runresult folder. Otherwise
@@ -984,15 +974,7 @@ public abstract class Run extends RepositoryObject {
 		return this.getName();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
+	
 
 	/**
 	 * @return A map with the optimization status of this run.

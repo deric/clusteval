@@ -74,21 +74,6 @@ public class StubRepositoryObject extends RepositoryObject {
 		return null;
 	}
 
-	@Override
-	public boolean register() {
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return false;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 

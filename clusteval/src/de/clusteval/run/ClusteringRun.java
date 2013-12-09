@@ -151,16 +151,6 @@ public class ClusteringRun extends ExecutionRun {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see run.config.Run#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see run.ExecutionRun#createRunRunnableFor(framework.RunScheduler,
 	 * run.Run, program.ProgramConfig, data.DataConfig, java.lang.String,
 	 * boolean)

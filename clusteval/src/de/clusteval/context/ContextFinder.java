@@ -140,26 +140,6 @@ public class ContextFinder extends JARFinder<Context> {
 		URL url = f.toURI().toURL();
 		return new ContextURLClassLoader(this, new URL[]{url}, parent);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#register()
-	 */
-	@Override
-	public boolean register() {
-		return repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
 }
 
 class ContextURLClassLoader extends URLClassLoader {

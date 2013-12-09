@@ -177,7 +177,9 @@ public abstract class RepositoryObject implements RepositoryListener {
 	 *             registering process, that might be interesting to handle
 	 *             individually.
 	 */
-	public abstract boolean register() throws RegisterException;
+	public final boolean register() throws RegisterException {
+		return this.repository.register(this);
+	}
 
 	/**
 	 * Any subclass needs to implement this method. It will be responsible to
@@ -185,7 +187,9 @@ public abstract class RepositoryObject implements RepositoryListener {
 	 * 
 	 * @return true, if successful
 	 */
-	public abstract boolean unregister();
+	public final boolean unregister() {
+		return this.repository.unregister(this);
+	}
 
 	/**
 	 * Do on register.

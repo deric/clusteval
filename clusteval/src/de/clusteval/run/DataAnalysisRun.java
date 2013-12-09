@@ -163,16 +163,6 @@ public class DataAnalysisRun extends AnalysisRun<DataStatistic> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see run.config.Run#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see run.Run#terminate()
 	 */
 	@Override

@@ -429,26 +429,6 @@ public abstract class DataSet extends RepositoryObject {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.RepositoryObject#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see utils.RepositoryObject#copyTo(java.io.File, boolean)
 	 */
 	@Override

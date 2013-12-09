@@ -115,26 +115,6 @@ public abstract class StatisticCalculator<T extends Statistic>
 	@Override
 	public abstract StatisticCalculator<T> clone();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#register()
-	 */
-	@Override
-	public boolean register() throws RegisterException {
-		return this.repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
-
 	/**
 	 * Calculate the result. This method stores the calculated result in the
 	 * {@link #lastResult} attribute for later usage, e.g. in

@@ -122,26 +122,6 @@ public class IntegerProgramParameter extends ProgramParameter<Integer> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.RepositoryObject#register()
-	 */
-	@Override
-	public boolean register() {
-		return this.repository.register(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.RepositoryObject#unregister()
-	 */
-	@Override
-	public boolean unregister() {
-		return this.repository.unregister(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see program.ProgramParameter#isMinValueSet()
 	 */
 	@Override
