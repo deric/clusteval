@@ -104,14 +104,6 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 		if (isClassRegistered(object)) {
 			// first remove the old class
 			unregisterClass(this.classes.get(object.getName()));
-
-			// // register the new class
-			// this.distanceMeasureClasses.put(object.getName(), object);
-			//
-			// if (!ensureDistanceMeasureLibraries(object))
-			// return false;
-			//
-			// return true;
 		}
 		this.classes.put(object.getName(), object);
 

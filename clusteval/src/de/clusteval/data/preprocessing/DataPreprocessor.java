@@ -90,7 +90,7 @@ public abstract class DataPreprocessor extends RepositoryObject
 	 * @see framework.repository.RepositoryObject#register()
 	 */
 	@Override
-	public boolean register() {
+	public boolean register() throws RegisterException {
 		return this.repository.register(this);
 	}
 
@@ -139,8 +139,8 @@ public abstract class DataPreprocessor extends RepositoryObject
 	public static DataPreprocessor parseFromString(final Repository repository,
 			String dataPreprocessor) throws UnknownDataPreprocessorException {
 
-		Class<? extends DataPreprocessor> c = repository
-				.getDataPreprocessorClass("de.clusteval.data.preprocessing."
+		Class<? extends DataPreprocessor> c = repository.getRegisteredClass(
+				DataPreprocessor.class, "de.clusteval.data.preprocessing."
 						+ dataPreprocessor);
 		try {
 			DataPreprocessor preprocessor = c.getConstructor(Repository.class,

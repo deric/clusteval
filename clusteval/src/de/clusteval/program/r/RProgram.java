@@ -114,8 +114,8 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 	 */
 	public static RProgram parseFromString(final Repository repository,
 			String rProgram) throws UnknownRProgramException {
-		Class<? extends RProgram> c = repository
-				.getRProgramClass("de.clusteval.program.r." + rProgram);
+		Class<? extends RProgram> c = repository.getRegisteredClass(
+				RProgram.class, "de.clusteval.program.r." + rProgram);
 
 		try {
 			Constructor<? extends RProgram> constr = c

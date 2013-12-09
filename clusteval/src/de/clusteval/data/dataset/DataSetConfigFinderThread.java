@@ -15,6 +15,7 @@ package de.clusteval.data.dataset;
 
 import de.clusteval.data.distance.DistanceMeasure;
 import de.clusteval.data.distance.DistanceMeasureFinderThread;
+import de.clusteval.data.preprocessing.DataPreprocessor;
 import de.clusteval.data.preprocessing.DataPreprocessorFinderThread;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
@@ -74,7 +75,7 @@ public class DataSetConfigFinderThread extends FinderThread {
 			this.supervisorThread.getThread(DistanceMeasureFinderThread.class)
 					.waitFor();
 
-		if (!this.repository.getDataPreprocessorsInitialized())
+		if (!this.repository.isInitialized(DataPreprocessor.class))
 			this.supervisorThread.getThread(DataPreprocessorFinderThread.class)
 					.waitFor();
 		this.log.debug("Checking for DataSetConfigs...");

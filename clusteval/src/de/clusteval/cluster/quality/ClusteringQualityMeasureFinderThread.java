@@ -77,7 +77,7 @@ public class ClusteringQualityMeasureFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		repository.setClusteringQualityMeasuresInitialized();
+		repository.setInitialized(ClusteringQualityMeasure.class);
 	}
 
 	/*
@@ -89,6 +89,6 @@ public class ClusteringQualityMeasureFinderThread extends FinderThread {
 	protected Finder getFinder() throws RegisterException {
 		return new ClusteringQualityMeasureFinder(repository,
 				System.currentTimeMillis(), new File(
-						repository.getClusteringQualityMeasuresBasePath()));
+						repository.getBasePath(ClusteringQualityMeasure.class)));
 	}
 }

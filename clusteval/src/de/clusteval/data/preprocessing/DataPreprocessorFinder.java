@@ -51,7 +51,7 @@ public class DataPreprocessorFinder extends JARFinder<DataPreprocessor> {
 	 */
 	@Override
 	protected Collection<Class<? extends DataPreprocessor>> getRegisteredObjectSet() {
-		return repository.getDataPreprocessorClasses();
+		return repository.getClasses(DataPreprocessor.class);
 	}
 
 	/*
@@ -61,7 +61,7 @@ public class DataPreprocessorFinder extends JARFinder<DataPreprocessor> {
 	 */
 	@Override
 	protected void removeOldObject(Class<? extends DataPreprocessor> object) {
-		repository.unregisterDataPreprocessorClass(object);
+		repository.unregisterClass(DataPreprocessor.class, object);
 	}
 
 	/*
@@ -92,7 +92,7 @@ public class DataPreprocessorFinder extends JARFinder<DataPreprocessor> {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getDataPreprocessorBasePath());
+		return new File(this.repository.getBasePath(DataPreprocessor.class));
 	}
 
 	/*
@@ -123,8 +123,8 @@ public class DataPreprocessorFinder extends JARFinder<DataPreprocessor> {
 	@Override
 	protected boolean isJARLoaded(File f) {
 		return super.isJARLoaded(f)
-				&& this.repository
-						.isDataPreprocessorRegistered("de.clusteval.data.preprocessing."
+				&& this.repository.isClassRegistered(DataPreprocessor.class,
+						"de.clusteval.data.preprocessing."
 								+ f.getName().replace(".jar", ""));
 	}
 
@@ -191,8 +191,8 @@ class DataPreprocessorURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends DataPreprocessor> dataSetGenerator = (Class<? extends DataPreprocessor>) result;
 
-				if (this.parent.getRepository().registerDataPreprocessorClass(
-						dataSetGenerator))
+				if (this.parent.getRepository().registerClass(
+						DataPreprocessor.class, dataSetGenerator))
 					this.parent.getLog().info(
 							"DataPreprocessor " + name + " loaded");
 			}

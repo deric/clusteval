@@ -51,7 +51,7 @@ public class DataSetGeneratorFinder extends JARFinder<DataSetGenerator> {
 	 */
 	@Override
 	protected Collection<Class<? extends DataSetGenerator>> getRegisteredObjectSet() {
-		return repository.getDataSetGeneratorClasses();
+		return repository.getClasses(DataSetGenerator.class);
 	}
 
 	/*
@@ -61,7 +61,7 @@ public class DataSetGeneratorFinder extends JARFinder<DataSetGenerator> {
 	 */
 	@Override
 	protected void removeOldObject(Class<? extends DataSetGenerator> object) {
-		repository.unregisterDataSetGeneratorClass(object);
+		repository.unregisterClass(DataSetGenerator.class, object);
 	}
 
 	/*
@@ -92,7 +92,7 @@ public class DataSetGeneratorFinder extends JARFinder<DataSetGenerator> {
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getDataSetGeneratorBasePath());
+		return new File(this.repository.getBasePath(DataSetGenerator.class));
 	}
 
 	/*
@@ -123,8 +123,8 @@ public class DataSetGeneratorFinder extends JARFinder<DataSetGenerator> {
 	@Override
 	protected boolean isJARLoaded(File f) {
 		return super.isJARLoaded(f)
-				&& this.repository
-						.isDataSetGeneratorRegistered("de.clusteval.data.dataset.generator."
+				&& this.repository.isClassRegistered(DataSetGenerator.class,
+						"de.clusteval.data.dataset.generator."
 								+ f.getName().replace(".jar", ""));
 	}
 
@@ -191,8 +191,8 @@ class DataSetGeneratorURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends DataSetGenerator> dataSetGenerator = (Class<? extends DataSetGenerator>) result;
 
-				if (this.parent.getRepository().registerDataSetGeneratorClass(
-						dataSetGenerator))
+				if (this.parent.getRepository().registerClass(
+						DataSetGenerator.class, dataSetGenerator))
 					this.parent.getLog().info(
 							"DataSetGenerator " + name + " loaded");
 			}

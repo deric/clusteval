@@ -86,7 +86,7 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 	 * @see framework.repository.RepositoryObject#register()
 	 */
 	@Override
-	public boolean register() {
+	public boolean register() throws RegisterException {
 		return this.repository.register(this);
 	}
 
@@ -159,7 +159,7 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 			throws UnknownClusteringQualityMeasureException {
 
 		Class<? extends ClusteringQualityMeasure> c = repository
-				.getClusteringQualityMeasureClass("de.clusteval.cluster.quality."
+				.getRegisteredClass(ClusteringQualityMeasure.class, "de.clusteval.cluster.quality."
 						+ qualityMeasure);
 		try {
 			ClusteringQualityMeasure measure = c.getConstructor(

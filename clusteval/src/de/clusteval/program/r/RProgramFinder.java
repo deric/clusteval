@@ -55,7 +55,7 @@ public class RProgramFinder extends JARFinder<RProgram> {
 	 */
 	@Override
 	protected Collection<Class<? extends RProgram>> getRegisteredObjectSet() {
-		return this.repository.getRProgramClasses();
+		return this.repository.getClasses(RProgram.class);
 	}
 
 	/*
@@ -65,7 +65,7 @@ public class RProgramFinder extends JARFinder<RProgram> {
 	 */
 	@Override
 	protected void removeOldObject(Class<? extends RProgram> object) {
-		this.repository.unregisterRProgramClass(object);
+		this.repository.unregisterClass(RProgram.class, object);
 	}
 
 	/*
@@ -127,8 +127,8 @@ public class RProgramFinder extends JARFinder<RProgram> {
 	@Override
 	protected boolean isJARLoaded(File f) {
 		return super.isJARLoaded(f)
-				&& this.repository
-						.isRProgramRegistered(classNamesForJARFile(f)[0]);
+				&& this.repository.isClassRegistered(RProgram.class,
+						classNamesForJARFile(f)[0]);
 	}
 
 	/*
@@ -176,7 +176,8 @@ class RProgramURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends RProgram> rProgram = (Class<? extends RProgram>) result;
 
-				if (this.parent.getRepository().registerRProgramClass(rProgram))
+				if (this.parent.getRepository().registerClass(RProgram.class,
+						rProgram))
 					this.parent.getLog().info("RProgram " + name + " loaded");
 
 				RProgram program;

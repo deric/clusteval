@@ -116,7 +116,7 @@ public abstract class DataSetGenerator extends RepositoryObject
 	 * @see framework.repository.RepositoryObject#register()
 	 */
 	@Override
-	public boolean register() {
+	public boolean register() throws RegisterException {
 		return this.repository.register(this);
 	}
 
@@ -210,8 +210,8 @@ public abstract class DataSetGenerator extends RepositoryObject
 		if (this.generatesGoldStandard()) {
 			// Ensure, that the goldstandard target file does not exist yet
 			targetFile = new File(FileUtils.buildPath(
-					this.repository.getBasePath(GoldStandard.class), this.folderName,
-					this.fileName));
+					this.repository.getBasePath(GoldStandard.class),
+					this.folderName, this.fileName));
 
 			if (targetFile.exists())
 				throw new ParseException(
@@ -325,8 +325,8 @@ public abstract class DataSetGenerator extends RepositoryObject
 	public static DataSetGenerator parseFromString(final Repository repository,
 			String dataSetGenerator) throws UnknownDataSetGeneratorException {
 
-		Class<? extends DataSetGenerator> c = repository
-				.getDataSetGeneratorClass("de.clusteval.data.dataset.generator."
+		Class<? extends DataSetGenerator> c = repository.getRegisteredClass(
+				DataSetGenerator.class, "de.clusteval.data.dataset.generator."
 						+ dataSetGenerator);
 		try {
 			DataSetGenerator generator = c.getConstructor(Repository.class,

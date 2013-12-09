@@ -428,7 +428,8 @@ public class ProgramConfig extends RepositoryObject {
 
 			programP = new StandaloneProgram(repo, context, true, changeDate,
 					programFile, alias);
-		} else if (repo.isRProgramRegistered("de.clusteval.program.r." + type)) {
+		} else if (repo.isClassRegistered(RProgram.class,
+				"de.clusteval.program.r." + type)) {
 			programP = RProgram.parseFromString(repo, type);
 
 			RProgram rProgram = (RProgram) programP;

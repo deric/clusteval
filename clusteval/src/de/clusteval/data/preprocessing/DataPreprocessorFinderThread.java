@@ -70,7 +70,7 @@ public class DataPreprocessorFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		repository.setDataPreprocessorsInitialized();
+		repository.setInitialized(DataPreprocessor.class);
 	}
 
 	/*
@@ -82,6 +82,6 @@ public class DataPreprocessorFinderThread extends FinderThread {
 	protected Finder getFinder() throws RegisterException {
 		return new DataPreprocessorFinder(repository,
 				System.currentTimeMillis(), new File(
-						repository.getDataPreprocessorBasePath()));
+						repository.getBasePath(DataPreprocessor.class)));
 	}
 }

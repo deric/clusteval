@@ -61,12 +61,13 @@ public class ClustQualityEval {
 		this.repo = new Repository(absRepoPath, null);
 		this.repo.initialize();
 
-		this.dataConfig = this.repo.getStaticObjectWithName(DataConfig.class,dataConfigName);
+		this.dataConfig = this.repo.getStaticObjectWithName(DataConfig.class,
+				dataConfigName);
 
 		List<ClusteringQualityMeasure> measures = new ArrayList<ClusteringQualityMeasure>();
 
 		for (Class<? extends ClusteringQualityMeasure> measureClass : this.repo
-				.getClusteringQualityMeasureClasses()) {
+				.getClasses(ClusteringQualityMeasure.class)) {
 			measures.add(ClusteringQualityMeasure.parseFromString(this.repo,
 					measureClass.getSimpleName()));
 		}

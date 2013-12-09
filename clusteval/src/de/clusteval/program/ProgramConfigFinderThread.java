@@ -18,6 +18,7 @@ import de.clusteval.data.dataset.format.DataSetFormatFinderThread;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.SupervisorThread;
+import de.clusteval.program.r.RProgram;
 import de.clusteval.program.r.RProgramFinderThread;
 import de.clusteval.utils.Finder;
 import de.clusteval.utils.FinderThread;
@@ -71,7 +72,7 @@ public class ProgramConfigFinderThread extends FinderThread {
 			this.supervisorThread.getThread(DataSetFormatFinderThread.class)
 					.waitFor();
 
-		if (!this.repository.getRProgramsInitialized())
+		if (!this.repository.isInitialized(RProgram.class))
 			this.supervisorThread.getThread(RProgramFinderThread.class)
 					.waitFor();
 

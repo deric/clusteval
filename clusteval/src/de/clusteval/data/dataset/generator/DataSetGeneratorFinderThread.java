@@ -70,7 +70,7 @@ public class DataSetGeneratorFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		repository.setDataSetGeneratorsInitialized();
+		repository.setInitialized(DataSetGenerator.class);
 	}
 
 	/*
@@ -82,6 +82,6 @@ public class DataSetGeneratorFinderThread extends FinderThread {
 	protected Finder getFinder() throws RegisterException {
 		return new DataSetGeneratorFinder(repository,
 				System.currentTimeMillis(), new File(
-						repository.getDataSetGeneratorBasePath()));
+						repository.getBasePath(DataSetGenerator.class)));
 	}
 }

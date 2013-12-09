@@ -12,7 +12,6 @@ package de.clusteval.framework.repository;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -40,8 +39,6 @@ import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethodFinderThread;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
-import de.clusteval.cluster.quality.ClusteringQualityMeasureFinderThread;
-import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.context.Context;
 import de.clusteval.context.ContextFinderThread;
 import de.clusteval.data.DataConfig;
@@ -52,8 +49,6 @@ import de.clusteval.data.dataset.format.DataSetFormatFinderThread;
 import de.clusteval.data.dataset.format.DataSetFormatParser;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.dataset.generator.DataSetGenerator;
-import de.clusteval.data.dataset.generator.DataSetGeneratorFinderThread;
-import de.clusteval.data.dataset.generator.UnknownDataSetGeneratorException;
 import de.clusteval.data.dataset.type.DataSetType;
 import de.clusteval.data.dataset.type.DataSetTypeFinderThread;
 import de.clusteval.data.distance.DistanceMeasure;
@@ -61,8 +56,6 @@ import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.data.goldstandard.format.GoldStandardFormat;
 import de.clusteval.data.preprocessing.DataPreprocessor;
-import de.clusteval.data.preprocessing.DataPreprocessorFinderThread;
-import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
 import de.clusteval.data.statistics.DataStatistic;
 import de.clusteval.data.statistics.DataStatisticCalculator;
 import de.clusteval.framework.ClustevalBackendServer;
@@ -81,10 +74,7 @@ import de.clusteval.program.Program;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.program.StringProgramParameter;
-import de.clusteval.program.r.RLibraryInferior;
 import de.clusteval.program.r.RProgram;
-import de.clusteval.program.r.RProgramFinderThread;
-import de.clusteval.program.r.UnknownRProgramException;
 import de.clusteval.run.Run;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.format.RunResultFormat;
@@ -95,16 +85,11 @@ import de.clusteval.run.statistics.RunDataStatistic;
 import de.clusteval.run.statistics.RunDataStatisticCalculator;
 import de.clusteval.run.statistics.RunStatistic;
 import de.clusteval.run.statistics.RunStatisticCalculator;
-import de.clusteval.run.statistics.RunStatisticFinderThread;
-import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.Finder;
 import de.clusteval.utils.InternalAttributeException;
 import de.clusteval.utils.NamedDoubleAttribute;
 import de.clusteval.utils.NamedIntegerAttribute;
 import de.clusteval.utils.NamedStringAttribute;
-import de.clusteval.utils.Statistic;
-import de.clusteval.utils.StatisticCalculator;
-import de.clusteval.utils.UnsatisfiedRLibraryException;
 import file.FileUtils;
 
 /**
@@ -124,10 +109,6 @@ import file.FileUtils;
  * @author Christian Wiwie
  * 
  */
-// Repository class before: 7314 lines
-// Repository class after 1st part: 5466 lines
-// Repository class after RunResult part: 5264 lines
-// Repository class after DistanceMeasure: 5009 lines
 public class Repository {
 
 	/**
@@ -264,12 +245,6 @@ public class Repository {
 	private boolean dataSetFormatsInitialized;
 
 	/**
-	 * A boolean attribute indicating whether the data preprocessors have been
-	 * initialized by the {@link DataPreprocessorFinderThread}.
-	 */
-	private boolean dataPreprocessorsInitialized;
-
-	/**
 	 * A boolean attribute indicating whether the dataset types have been
 	 * initialized by the {@link DataSetTypeFinderThread}.
 	 */
@@ -282,24 +257,11 @@ public class Repository {
 	private boolean runResultFormatsInitialized;
 
 	/**
-	 * A boolean attribute indicating whether the clustering quality measures
-	 * have been initialized by the {@link ClusteringQualityMeasureFinderThread}
-	 * .
-	 */
-	private boolean clusteringQualityMeasuresInitialized;
-
-	/**
 	 * A boolean attribute indicating whether the parameter optimization methods
 	 * have been initialized by the
 	 * {@link ParameterOptimizationMethodFinderThread}.
 	 */
 	private boolean parameterOptimizationMethodsInitialized;
-
-	/**
-	 * A boolean attribute indicating whether the RPrograms have been
-	 * initialized by the {@link RProgramFinderThread}.
-	 */
-	private boolean rProgramsInitialized;
 
 	/**
 	 * The absolute path of the root of this repository.
@@ -322,12 +284,6 @@ public class Repository {
 	 * generators are stored.
 	 */
 	protected String generatorBasePath;
-
-	/**
-	 * The absolute path to the directory within this repository, where all
-	 * dataset generators are stored.
-	 */
-	protected String dataSetGeneratorBasePath;
 
 	/**
 	 * The absolute path to the directory within this repository, where all
@@ -371,12 +327,6 @@ public class Repository {
 	protected String parameterOptimizationMethodBasePath;
 
 	/**
-	 * The absolute path to the directory within this repository, where all
-	 * clustering quality measure jars are stored.
-	 */
-	protected String clusteringQualityMeasureBasePath;
-
-	/**
 	 * The absolute path to the directory within this repository, where all type
 	 * jars are stored.
 	 */
@@ -399,18 +349,6 @@ public class Repository {
 	protected DynamicRepositoryEntityMap dynamicRepositoryEntities;
 
 	/**
-	 * A map containing all classes of dataset generators registered in this
-	 * repository. Mapping from Class.getName() to the class.
-	 */
-	protected Map<String, Class<? extends DataSetGenerator>> dataSetGeneratorClasses;
-
-	/**
-	 * A map mapping from the simple name of the class to all of its
-	 * instances.Mapping from Class.getSimpleName() to the instances.
-	 */
-	protected Map<String, List<DataSetGenerator>> dataSetGeneratorInstances;
-
-	/**
 	 * A map containing all classes of dataset types registered in this
 	 * repository. Mapping from Class.getName() to the class.
 	 */
@@ -421,18 +359,6 @@ public class Repository {
 	 * Mapping from Class.getSimpleName() to the instances.
 	 */
 	protected Map<String, List<DataSetType>> dataSetTypeInstances;
-
-	/**
-	 * A map containing all classes of clustering quality measure registered in
-	 * this repository. Mapping from Class.getName() to the class.
-	 */
-	protected Map<String, Class<? extends ClusteringQualityMeasure>> clusteringQualityMeasureClasses;
-
-	/**
-	 * A map mapping from the simple name of the class to all of its
-	 * instances.Mapping from Class.getSimpleName() to the instances.
-	 */
-	protected Map<String, List<ClusteringQualityMeasure>> clusteringQualityMeasureInstances;
 
 	/**
 	 * A map containing all classes of parameter optimization methods registered
@@ -469,18 +395,6 @@ public class Repository {
 	 * A map containing all goldstandard formats registered in this repository.
 	 */
 	protected Map<GoldStandardFormat, GoldStandardFormat> goldStandardFormats;
-
-	/**
-	 * A map containing all classes of RPrograms registered in this repository.
-	 * Mapping from Class.getName() to the class.
-	 */
-	protected Map<String, Class<? extends RProgram>> rProgramClasses;
-
-	/**
-	 * A map mapping from the simple name of the class to all of its
-	 * instances.Mapping from Class.getSimpleName() to the instances.
-	 */
-	protected Map<String, List<RProgram>> rProgramInstances;
 
 	/**
 	 * A map containing all clusterings registered in this repository.
@@ -581,30 +495,6 @@ public class Repository {
 	 * libraries that could not be loaded.
 	 */
 	protected Map<String, Set<RLibraryNotLoadedException>> missingRLibraries;
-
-	/**
-	 * The absolute path to the directory within this repository, where all data
-	 * preprocessors are stored.
-	 */
-	protected String dataPreprocessorBasePath;
-
-	/**
-	 * A map containing all classes of data preprocessors registered in this
-	 * repository. Mapping from Class.getName() to the class.
-	 */
-	protected Map<String, Class<? extends DataPreprocessor>> dataPreprocessorClasses;
-
-	/**
-	 * A map mapping from the simple name of the class to all of its
-	 * instances.Mapping from Class.getSimpleName() to the instances.
-	 */
-	protected Map<String, List<DataPreprocessor>> dataPreprocessorInstances;
-
-	/**
-	 * A boolean attribute indicating whether the dataset generators have been
-	 * initialized by the {@link DataSetGeneratorFinderThread}.
-	 */
-	private boolean dataSetGeneratorsInitialized;
 
 	/**
 	 * All exceptions thrown during parsing of finder instances are being
@@ -890,8 +780,8 @@ public class Repository {
 		this.ensureFolder(this.getBasePath(RunDataStatistic.class));
 		this.ensureFolder(this.getBasePath(DistanceMeasure.class));
 		this.ensureFolder(this.generatorBasePath);
-		this.ensureFolder(this.dataSetGeneratorBasePath);
-		this.ensureFolder(this.dataPreprocessorBasePath);
+		this.ensureFolder(this.getBasePath(DataSetGenerator.class));
+		this.ensureFolder(this.getBasePath(DataPreprocessor.class));
 
 		return true;
 	}
@@ -1047,69 +937,6 @@ public class Repository {
 	 */
 	public String getBasePath() {
 		return this.basePath;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the
-	 * clustering quality measure with the given name.
-	 * 
-	 * @param clusteringQualityMeasureClassName
-	 *            The name of the class of the clustering quality measure.
-	 * @return The clustering quality measure class with the given name or null,
-	 *         if it does not exist.
-	 */
-	public Class<? extends ClusteringQualityMeasure> getClusteringQualityMeasureClass(
-			final String clusteringQualityMeasureClassName) {
-		Class<? extends ClusteringQualityMeasure> result = this.clusteringQualityMeasureClasses
-				.get(clusteringQualityMeasureClassName);
-		if (result == null && parent != null)
-			return parent
-					.getClusteringQualityMeasureClass(clusteringQualityMeasureClassName);
-		return result;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the dataset
-	 * generator with the given name.
-	 * 
-	 * @param dataSetGeneratorClassName
-	 *            The name of the class of the clustering quality measure.
-	 * @return The clustering quality measure class with the given name or null,
-	 *         if it does not exist.
-	 */
-	public Class<? extends DataSetGenerator> getDataSetGeneratorClass(
-			final String dataSetGeneratorClassName) {
-		Class<? extends DataSetGenerator> result = this.dataSetGeneratorClasses
-				.get(dataSetGeneratorClassName);
-		if (result == null && parent != null)
-			return parent.getDataSetGeneratorClass(dataSetGeneratorClassName);
-		return result;
-	}
-
-	/**
-	 * 
-	 * @return The set of all registered clustering quality measure classes.
-	 */
-	public Collection<Class<? extends ClusteringQualityMeasure>> getClusteringQualityMeasureClasses() {
-		return this.clusteringQualityMeasureClasses.values();
-	}
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all clustering quality measure jars are stored.
-	 */
-	public String getClusteringQualityMeasuresBasePath() {
-		return this.clusteringQualityMeasureBasePath;
-	}
-
-	/**
-	 * 
-	 * @return A boolean attribute indicating whether the clustering quality
-	 *         measures have been initialized by the
-	 *         {@link ClusteringQualityMeasureFinderThread} .
-	 */
-	public boolean getClusteringQualityMeasuresInitialized() {
-		return this.clusteringQualityMeasuresInitialized;
 	}
 
 	/**
@@ -1300,20 +1127,69 @@ public class Repository {
 		return this.dynamicRepositoryEntities.get(c).getClasses();
 	}
 
+	public String getAnalysisResultsBasePath() {
+		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
+				.get(RunResult.class)).getAnalysisResultsBasePath();
+	}
+
+	public String getClusterResultsBasePath() {
+		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
+				.get(RunResult.class)).getClusterResultsBasePath();
+	}
+
+	public String getClusterResultsQualityBasePath() {
+		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
+				.get(RunResult.class)).getClusterResultsQualityBasePath();
+	}
+
+	public boolean registerDataStatisticCalculator(
+			Class<? extends DataStatisticCalculator<? extends DataStatistic>> dataStatisticCalculator) {
+		return ((DataStatisticRepositoryEntity) this.dynamicRepositoryEntities
+				.get(DataStatistic.class))
+				.registerDataStatisticCalculator(dataStatisticCalculator);
+	}
+
+	public boolean registerRunDataStatisticCalculator(
+			Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>> runDataStatisticCalculator) {
+		return ((RunDataStatisticRepositoryEntity) this.dynamicRepositoryEntities
+				.get(RunDataStatistic.class))
+				.registerRunDataStatisticCalculator(runDataStatisticCalculator);
+	}
+
+	public boolean registerRunStatisticCalculator(
+			Class<? extends RunStatisticCalculator<? extends RunStatistic>> runStatisticCalculator) {
+		return ((RunStatisticRepositoryEntity) this.dynamicRepositoryEntities
+				.get(RunStatistic.class))
+				.registerRunStatisticCalculator(runStatisticCalculator);
+	}
+
+	public Class<? extends DataStatisticCalculator<? extends DataStatistic>> getDataStatisticCalculator(
+			final String dataStatisticClassName) {
+		return ((DataStatisticRepositoryEntity) this.dynamicRepositoryEntities
+				.get(DataStatistic.class))
+				.getDataStatisticCalculator(dataStatisticClassName);
+	}
+
+	public Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>> getRunDataStatisticCalculator(
+			final String runDataStatisticClassName) {
+		return ((RunDataStatisticRepositoryEntity) this.dynamicRepositoryEntities
+				.get(RunDataStatistic.class))
+				.getRunDataStatisticCalculator(runDataStatisticClassName);
+	}
+
+	public Class<? extends RunStatisticCalculator<? extends RunStatistic>> getRunStatisticCalculator(
+			final String runStatisticClassName) {
+		return ((RunStatisticRepositoryEntity) this.dynamicRepositoryEntities
+				.get(RunStatistic.class))
+				.getRunStatisticCalculator(runStatisticClassName);
+	}
+
 	/**
 	 * @return The absolute path to the directory within this repository, where
 	 *         all dataset formats are stored.
 	 */
 	public String getDataSetFormatBasePath() {
 		return this.dataSetFormatBasePath;
-	}
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all dataset generators are stored.
-	 */
-	public String getDataSetGeneratorBasePath() {
-		return this.dataSetGeneratorBasePath;
 	}
 
 	/**
@@ -1373,14 +1249,6 @@ public class Repository {
 	public void putCurrentDataSetFormatVersion(final String formatClass,
 			final int version) {
 		this.dataSetFormatCurrentVersions.put(formatClass, version);
-	}
-
-	/**
-	 * 
-	 * @return The set of all registered dataset generator classes.
-	 */
-	public Collection<Class<? extends DataSetGenerator>> getDataSetGeneratorClasses() {
-		return this.dataSetGeneratorClasses.values();
 	}
 
 	/**
@@ -1871,39 +1739,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method looks up and returns (if it exists) the class of the RProgram
-	 * with the given name.
-	 * 
-	 * @param rProgramClassName
-	 *            The name of the RProgram class.
-	 * @return The RProgram with the given name.
-	 */
-	public Class<? extends RProgram> getRProgramClass(
-			final String rProgramClassName) {
-		Class<? extends RProgram> result = this.rProgramClasses
-				.get(rProgramClassName);
-		if (result == null && parent != null)
-			result = this.parent.getRProgramClass(rProgramClassName);
-		return result;
-	}
-
-	/**
-	 * 
-	 * @return The set of all registered RProgram classes.
-	 */
-	public Collection<Class<? extends RProgram>> getRProgramClasses() {
-		return this.rProgramClasses.values();
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the RPrograms have been
-	 *         initialized by the {@link RProgramFinderThread}.
-	 */
-	public boolean getRProgramsInitialized() {
-		return this.rProgramsInitialized;
-	}
-
-	/**
 	 * @return The absolute path to the directory within this repository, where
 	 *         all runresult formats are stored.
 	 */
@@ -2161,25 +1996,34 @@ public class Repository {
 										this.supplementaryBasePath,
 										"statistics", "rundata")));
 
+		this.createAndAddDynamicEntity(DataSetGenerator.class,
+				FileUtils.buildPath(this.generatorBasePath, "dataset"));
+		this.createAndAddDynamicEntity(DataPreprocessor.class, FileUtils
+				.buildPath(this.supplementaryBasePath, "preprocessing"));
+
+		this.dynamicRepositoryEntities
+				.put(RProgram.class,
+						new RProgramRepositoryEntity(
+								this,
+								this.staticRepositoryEntities
+										.get(Program.class),
+								this.parent != null
+										? (RProgramRepositoryEntity) this.parent.dynamicRepositoryEntities
+												.get(RProgram.class) : null,
+								this.getBasePath(Program.class)));
+
+		this.createAndAddDynamicEntity(ClusteringQualityMeasure.class,
+				FileUtils.buildPath(this.suppClusteringBasePath,
+						"qualityMeasures"));
+
 		this.contextClasses = new ConcurrentHashMap<String, Class<? extends Context>>();
 		this.contextInstances = new ConcurrentHashMap<String, List<Context>>();
 		this.dataSetFormatInstances = new ConcurrentHashMap<String, List<DataSetFormat>>();
 		this.dataSetFormatClasses = new ConcurrentHashMap<String, Class<? extends DataSetFormat>>();
-		this.dataSetGeneratorInstances = new ConcurrentHashMap<String, List<DataSetGenerator>>();
-		this.dataSetGeneratorClasses = new ConcurrentHashMap<String, Class<? extends DataSetGenerator>>();
-		this.dataPreprocessorInstances = new ConcurrentHashMap<String, List<DataPreprocessor>>();
-		this.dataPreprocessorClasses = new ConcurrentHashMap<String, Class<? extends DataPreprocessor>>();
 		this.dataSetTypeInstances = new ConcurrentHashMap<String, List<DataSetType>>();
 		this.dataSetTypeClasses = new ConcurrentHashMap<String, Class<? extends DataSetType>>();
-		this.statisticCalculators = new ConcurrentHashMap<StatisticCalculator<? extends Statistic>, StatisticCalculator<? extends Statistic>>();
-		this.runStatisticClasses = new ConcurrentHashMap<String, Class<? extends RunStatistic>>();
-		this.runStatisticInstances = new ConcurrentHashMap<String, List<RunStatistic>>();
 		this.dataSetFormatParser = new ConcurrentHashMap<String, Class<? extends DataSetFormatParser>>();
-		this.clusteringQualityMeasureClasses = new ConcurrentHashMap<String, Class<? extends ClusteringQualityMeasure>>();
-		this.clusteringQualityMeasureInstances = new ConcurrentHashMap<String, List<ClusteringQualityMeasure>>();
 		this.goldStandardFormats = new ConcurrentHashMap<GoldStandardFormat, GoldStandardFormat>();
-		this.rProgramClasses = new ConcurrentHashMap<String, Class<? extends RProgram>>();
-		this.rProgramInstances = new ConcurrentHashMap<String, List<RProgram>>();
 		this.runResultFormatClasses = new ConcurrentHashMap<String, Class<? extends RunResultFormat>>();
 		this.runResultFormatInstances = new ConcurrentHashMap<String, List<RunResultFormat>>();
 		this.runResultFormatParser = new ConcurrentHashMap<String, Class<? extends RunResultFormatParser>>();
@@ -2274,56 +2118,18 @@ public class Repository {
 				this.supplementaryBasePath, "clustering");
 		this.parameterOptimizationMethodBasePath = FileUtils.buildPath(
 				this.suppClusteringBasePath, "paramOptimization");
-		this.clusteringQualityMeasureBasePath = FileUtils.buildPath(
-				this.suppClusteringBasePath, "qualityMeasures");
 		this.formatsBasePath = FileUtils.buildPath(this.supplementaryBasePath,
 				"formats");
 		this.dataSetFormatBasePath = FileUtils.buildPath(this.formatsBasePath,
 				"dataset");
 		this.generatorBasePath = FileUtils.buildPath(
 				this.supplementaryBasePath, "generators");
-		this.dataSetGeneratorBasePath = FileUtils.buildPath(
-				this.generatorBasePath, "dataset");
-		this.dataPreprocessorBasePath = FileUtils.buildPath(
-				this.supplementaryBasePath, "preprocessing");
 		this.runResultFormatBasePath = FileUtils.buildPath(
 				this.formatsBasePath, "runresult");
 		this.typesBasePath = FileUtils.buildPath(this.supplementaryBasePath,
 				"types");
 		this.dataSetTypeBasePath = FileUtils.buildPath(this.typesBasePath,
 				"dataset");
-	}
-
-	/**
-	 * This method checks whether the given clustering quality measure class is
-	 * registered in this repository.
-	 * 
-	 * @param clusteringQualityMeasure
-	 *            The class of the clustering quality measure to look up.
-	 * @return True, if the clustering quality measure class was registered.
-	 */
-	public boolean isClusteringQualityMeasureRegistered(
-			final Class<? extends ClusteringQualityMeasure> clusteringQualityMeasure) {
-		return this.clusteringQualityMeasureClasses
-				.containsKey(clusteringQualityMeasure.getName())
-				|| (this.parent != null && this.parent
-						.isClusteringQualityMeasureRegistered(clusteringQualityMeasure));
-	}
-
-	/**
-	 * This method checks whether a clustering quality measure with the given
-	 * name is registered in this repository.
-	 * 
-	 * @param clusteringQualityMeasure
-	 *            The name of the clustering quality measure to look up.
-	 * @return True, if the clustering quality measure was registered.
-	 */
-	public boolean isClusteringQualityMeasureRegistered(
-			final String clusteringQualityMeasure) {
-		return this.clusteringQualityMeasureClasses
-				.containsKey(clusteringQualityMeasure)
-				|| (this.parent != null && this.parent
-						.isClusteringQualityMeasureRegistered(clusteringQualityMeasure));
 	}
 
 	/**
@@ -2416,27 +2222,18 @@ public class Repository {
 				&& isInitialized(RunStatistic.class)
 				&& isInitialized(RunDataStatistic.class)
 				&& getRunResultFormatsInitialized()
-				&& getClusteringQualityMeasuresInitialized()
+				&& isInitialized(ClusteringQualityMeasure.class)
 				&& getParameterOptimizationMethodsInitialized()
-				&& isInitialized(Run.class) && getRProgramsInitialized()
+				&& isInitialized(Run.class) && isInitialized(RProgram.class)
 				&& isInitialized(DataSetConfig.class)
 				&& isInitialized(DataSet.class)
 				&& isInitialized(GoldStandardConfig.class)
 				&& isInitialized(DataConfig.class)
 				&& isInitialized(ProgramConfig.class)
-				&& getDataSetGeneratorsInitialized()
+				&& isInitialized(DataSetGenerator.class)
 				&& getContextsInitialized()
-				&& getDataPreprocessorsInitialized()
+				&& isInitialized(DataPreprocessor.class)
 				&& isInitialized(DistanceMeasure.class);
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the dataset generators
-	 *         have been initialized by the {@link DataSetGeneratorFinderThread}
-	 *         .
-	 */
-	public boolean getDataSetGeneratorsInitialized() {
-		return this.dataSetGeneratorsInitialized;
 	}
 
 	/**
@@ -2521,20 +2318,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method checks, whether a RProgram with the given name has been
-	 * registered.
-	 * 
-	 * @param string
-	 *            The name of the RProgram.
-	 * @return True, if an RProgram with the given name has been registered.
-	 */
-	public boolean isRProgramRegistered(String string) {
-		return this.rProgramClasses.containsKey(string)
-				|| (this.parent != null && this.parent
-						.isRProgramRegistered(string));
-	}
-
-	/**
 	 * This method checks whether a runresult format with the given class has
 	 * been registered.
 	 * 
@@ -2581,22 +2364,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers instances of a dataset generator.
-	 * 
-	 * @param dataSetGenerator
-	 *            The dataset generator instance to register.
-	 * @return True, if the dataset generator was registered successfully, false
-	 *         otherwise.
-	 */
-	public boolean register(final DataSetGenerator dataSetGenerator) {
-		this.dataSetGeneratorInstances.get(
-				dataSetGenerator.getClass().getSimpleName()).add(
-				dataSetGenerator);
-
-		return true;
-	}
-
-	/**
 	 * This method registers instances of a parameter optimization method.
 	 * 
 	 * @param object
@@ -2612,40 +2379,6 @@ public class Repository {
 
 		this.parameterOptimizationMethodInstances.get(
 				object.getClass().getSimpleName()).put(object, object);
-
-		return true;
-	}
-
-	/**
-	 * This method registers instances of a parameter optimization method.
-	 * 
-	 * @param clusteringQualityMeasure
-	 *            The parameter optimization method instance to register.
-	 * @return True, if the parameter optimization method was registered
-	 *         successfully, false otherwise.
-	 */
-	public boolean register(
-			final ClusteringQualityMeasure clusteringQualityMeasure) {
-		this.clusteringQualityMeasureInstances.get(
-				clusteringQualityMeasure.getClass().getSimpleName()).add(
-				clusteringQualityMeasure);
-
-		return true;
-	}
-
-	/**
-	 * This method registers instances of a RProgram.
-	 * 
-	 * @param rProgram
-	 *            The RProgram instance to register.
-	 * @return True, if the RProgram was registered successfully, false
-	 *         otherwise.
-	 * @throws RegisterException
-	 */
-	public boolean register(final RProgram rProgram) throws RegisterException {
-		this.register((Program) rProgram);
-		this.rProgramInstances.get(rProgram.getClass().getSimpleName()).add(
-				rProgram);
 
 		return true;
 	}
@@ -2809,63 +2542,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers a clustering quality measure class. It is only
-	 * registered, if it was not before.
-	 * 
-	 * @param object
-	 *            The new class to register.
-	 * @return True, if the new class was registered.
-	 */
-	public boolean registerClusteringQualityMeasureClass(
-			final Class<? extends ClusteringQualityMeasure> object) {
-		if (this.isClusteringQualityMeasureRegistered(object)) {
-			// first remove the old class
-			unregisterClusteringQualityMeasureClass(this.clusteringQualityMeasureClasses
-					.get(object.getName()));
-		}
-
-		this.clusteringQualityMeasureClasses.put(object.getName(), object);
-
-		this.clusteringQualityMeasureInstances
-				.put(object.getSimpleName(),
-						Collections
-								.synchronizedList(new ArrayList<ClusteringQualityMeasure>()));
-
-		if (!ensureClusteringQualityMeasureRLibraries(object))
-			return false;
-
-		this.sqlCommunicator.registerClusteringQualityMeasureClass(object);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a dataset generator class. The class is only
-	 * registered, if it was not before.
-	 * 
-	 * @param object
-	 *            The new class to register.
-	 * @return True, if the new class was registered.
-	 */
-	public boolean registerDataSetGeneratorClass(
-			final Class<? extends DataSetGenerator> object) {
-		if (isDataSetGeneratorRegistered(object)) {
-			// first remove the old class
-			unregisterDataSetGeneratorClass(this.dataSetGeneratorClasses
-					.get(object.getName()));
-		}
-		this.dataSetGeneratorClasses.put(object.getName(), object);
-		this.dataSetGeneratorInstances
-				.put(object.getSimpleName(), Collections
-						.synchronizedList(new ArrayList<DataSetGenerator>()));
-
-		if (!ensureDataSetGeneratorRLibraries(object))
-			return false;
-
-		return true;
-	}
-
-	/**
 	 * @return The MyRengine object corresponding to the current thread.
 	 * @throws RserveException
 	 */
@@ -2978,57 +2654,6 @@ public class Repository {
 	}
 
 	/**
-	 * This method registers a new RProgram class. It is only registered, if it
-	 * was not before.
-	 * 
-	 * @param object
-	 *            The new class to register.
-	 * @return True, if the new class has been registered.
-	 */
-	public boolean registerRProgramClass(final Class<? extends RProgram> object) {
-		if (isRProgramRegistered(object.getName())) {
-			// first remove old class
-			unregisterRProgramClass(this.rProgramClasses.get(object.getName()));
-			// // register the new class
-			// this.rProgramClasses.put(object.getName(), object);
-			//
-			// if (!ensureRProgramRLibraries(object))
-			// return false;
-			//
-			// return true;
-		}
-		this.rProgramClasses.put(object.getName(), object);
-
-		this.rProgramInstances.put(object.getSimpleName(),
-				Collections.synchronizedList(new ArrayList<RProgram>()));
-
-		if (!ensureRProgramRLibraries(object))
-			return false;
-
-		this.log.info("New RProgram Class registered: "
-				+ object.getSimpleName());
-
-		try {
-			// registers the program
-			object.getConstructor(Repository.class).newInstance(this);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		}
-
-		return true;
-	}
-
-	/**
 	 * This method registers a new runresult format class. If an old object was
 	 * already registered that equals the new object, the new object is not
 	 * registered.
@@ -3074,28 +2699,11 @@ public class Repository {
 	}
 
 	/**
-	 * This method sets the clustering quality measures as initialized. It
-	 * should only be invoked by
-	 * {@link ClusteringQualityMeasureFinderThread#afterFind()}.
-	 */
-	public void setClusteringQualityMeasuresInitialized() {
-		this.clusteringQualityMeasuresInitialized = true;
-	}
-
-	/**
 	 * This method sets the dataset formats as initialized. It should only be
 	 * invoked by {@link DataSetFormatFinderThread#afterFind()}.
 	 */
 	public void setDataSetFormatsInitialized() {
 		this.dataSetFormatsInitialized = true;
-	}
-
-	/**
-	 * This method sets the dataset generators as initialized. It should only be
-	 * invoked by {@link DataSetGeneratorFinderThread#afterFind()}.
-	 */
-	public void setDataSetGeneratorsInitialized() {
-		this.dataSetGeneratorsInitialized = true;
 	}
 
 	/**
@@ -3113,14 +2721,6 @@ public class Repository {
 	 */
 	public void setParameterOptimizationMethodsInitialized() {
 		this.parameterOptimizationMethodsInitialized = true;
-	}
-
-	/**
-	 * This method sets the RPrograms as initialized. It should only be invoked
-	 * by {@link RProgramFinderThread#afterFind()}.
-	 */
-	public void setRProgramsInitialized() {
-		this.rProgramsInitialized = true;
 	}
 
 	/**
@@ -3168,27 +2768,6 @@ public class Repository {
 	}
 
 	/**
-	 * @param dataSetGenerator
-	 *            The dataset generator to unregister.
-	 * @return True, if the dataset generator has been unregistered
-	 *         successfully.
-	 */
-	public boolean unregister(final DataSetGenerator dataSetGenerator) {
-		boolean result = this.dataSetGeneratorInstances.get(
-				dataSetGenerator.getClass().getSimpleName()).remove(
-				dataSetGenerator);
-		if (result) {
-			try {
-				dataSetGenerator.notify(new RepositoryRemoveEvent(
-						dataSetGenerator));
-			} catch (RegisterException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-
-	/**
 	 * @param paramOptMethod
 	 *            The parameter optimization method to unregister.
 	 * @return True, if the parameter optimization method has been unregistered
@@ -3202,47 +2781,6 @@ public class Repository {
 			try {
 				paramOptMethod
 						.notify(new RepositoryRemoveEvent(paramOptMethod));
-			} catch (RegisterException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * @param clusteringQualityMeasure
-	 *            The clustering quality measure to unregister.
-	 * @return True, if the clustering quality measure has been unregistered
-	 *         successfully.
-	 */
-	public boolean unregister(
-			final ClusteringQualityMeasure clusteringQualityMeasure) {
-		boolean result = this.clusteringQualityMeasureInstances.get(
-				clusteringQualityMeasure.getClass().getSimpleName()).remove(
-				clusteringQualityMeasure);
-		if (result) {
-			try {
-				clusteringQualityMeasure.notify(new RepositoryRemoveEvent(
-						clusteringQualityMeasure));
-			} catch (RegisterException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * @param rProgram
-	 *            The RProgram to unregister.
-	 * @return True, if the RProgram has been unregistered successfully.
-	 */
-	public boolean unregister(final RProgram rProgram) {
-		this.unregister((Program) rProgram);
-		boolean result = this.rProgramInstances.get(
-				rProgram.getClass().getSimpleName()).remove(rProgram);
-		if (result) {
-			try {
-				rProgram.notify(new RepositoryRemoveEvent(rProgram));
 			} catch (RegisterException e) {
 				e.printStackTrace();
 			}
@@ -3447,29 +2985,6 @@ public class Repository {
 	/**
 	 * This method unregisters the passed object.
 	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregisterDataSetGeneratorClass(
-			final Class<? extends DataSetGenerator> object) {
-		boolean result = this.dataSetGeneratorClasses.remove(object.getName()) != null;
-		if (result) {
-			this.info("DataSetGenerator removed: " + object.getSimpleName());
-			for (DataSetGenerator dataSetGenerator : Collections
-					.synchronizedList(new ArrayList<DataSetGenerator>(
-							dataSetGeneratorInstances.get(object
-									.getSimpleName())))) {
-				dataSetGenerator.unregister();
-			}
-
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
 	 * <p>
 	 * If the object has been registered before and was unregistered now, this
 	 * method tells the sql communicator such that he can also handle the
@@ -3544,70 +3059,6 @@ public class Repository {
 	 *            The object to be removed.
 	 * @return True, if the object was remved successfully
 	 */
-	public boolean unregisterRProgramClass(
-			final Class<? extends RProgram> object) {
-		boolean result = this.rProgramClasses.remove(object.getName()) != null;
-		if (result) {
-			this.info("RProgram class removed: " + object.getSimpleName());
-			// we inform all listeners about the new class. that
-			// means those objects are deleted such that new instances instances
-			// can be created using the new class.
-			for (RProgram rProgram : Collections
-					.synchronizedList(new ArrayList<RProgram>(rProgramInstances
-							.get(object.getSimpleName())))) {
-				rProgram.unregister();
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregisterClusteringQualityMeasureClass(
-			final Class<? extends ClusteringQualityMeasure> object) {
-		boolean result = this.clusteringQualityMeasureClasses.remove(object
-				.getName()) != null;
-		if (result) {
-			this.info("ClusteringQualityMeasure class removed: "
-					+ object.getSimpleName());
-			// we inform all listeners about the new class. that
-			// means those objects are deleted such that new instances instances
-			// can be created using the new class.
-			for (ClusteringQualityMeasure clusteringQualityMeasure : Collections
-					.synchronizedList(new ArrayList<ClusteringQualityMeasure>(
-							clusteringQualityMeasureInstances.get(object
-									.getSimpleName())))) {
-				clusteringQualityMeasure.unregister();
-			}
-
-			this.sqlCommunicator
-					.unregisterClusteringQualityMeasureClass(object);
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * <p>
-	 * If the object has been registered before and was unregistered now, this
-	 * method tells the sql communicator such that he can also handle the
-	 * removal of the object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
 	public boolean unregisterRunResultFormatClass(
 			final Class<? extends RunResultFormat> object) {
 		boolean result = this.runResultFormatClasses.remove(object.getName()) != null;
@@ -3666,327 +3117,6 @@ public class Repository {
 	 */
 	protected void warn(final String message) {
 		this.log.warn(message);
-	}
-
-	/**
-	 * This method checks whether the given dataset generator class is
-	 * registered in this repository.
-	 * 
-	 * @param dsGenerator
-	 *            The class of the dataset generator to look up.
-	 * @return True, if the dataset generator class was registered.
-	 */
-	public boolean isDataSetGeneratorRegistered(
-			final Class<? extends DataSetGenerator> dsGenerator) {
-		return this.dataSetGeneratorClasses.containsKey(dsGenerator.getName())
-				|| (this.parent != null && this.parent
-						.isDataSetGeneratorRegistered(dsGenerator));
-	}
-
-	/**
-	 * This method checks whether a dataset generator with the given class name
-	 * is registered in this repository.
-	 * 
-	 * @param dsGeneratorClassName
-	 *            The class name of the dataset generator to look up.
-	 * @return True, if the dataset format class was registered.
-	 */
-	public boolean isDataSetGeneratorRegistered(
-			final String dsGeneratorClassName) {
-		return this.dataSetGeneratorClasses.containsKey(dsGeneratorClassName)
-				|| (this.parent != null && this.parent
-						.isDataSetGeneratorRegistered(dsGeneratorClassName));
-	}
-
-	/**
-	 * This method assumes, that the class that is passed is currently
-	 * registered in this repository.
-	 * 
-	 * <p>
-	 * If the R libraries are not satisfied, the class is removed from the
-	 * repository.
-	 * 
-	 * @param classObject
-	 *            The class for which we want to ensure R library dependencies.
-	 * @return True, if all R library dependencies are fulfilled.
-	 * @throws UnsatisfiedRLibraryException
-	 */
-	private boolean ensureDataSetGeneratorRLibraries(
-			final Class<? extends DataSetGenerator> classObject) {
-		// create an instance
-		RLibraryInferior rLibraryInferior;
-		try {
-			rLibraryInferior = DataSetGenerator.parseFromString(this,
-					classObject.getSimpleName());
-
-			return this.ensureRLibraries(rLibraryInferior);
-		} catch (UnknownDataSetGeneratorException e1) {
-			e1.printStackTrace();
-		}
-		this.dataSetGeneratorClasses.remove(classObject.getName());
-		return false;
-	}
-
-	/**
-	 * This method assumes, that the class that is passed is currently
-	 * registered in this repository.
-	 * 
-	 * <p>
-	 * If the R libraries are not satisfied, the class is removed from the
-	 * repository.
-	 * 
-	 * @param classObject
-	 *            The class for which we want to ensure R library dependencies.
-	 * @return True, if all R library dependencies are fulfilled.
-	 * @throws UnsatisfiedRLibraryException
-	 */
-	private boolean ensureDataPreprocessorRLibraries(
-			final Class<? extends DataPreprocessor> classObject) {
-		// create an instance
-		RLibraryInferior object;
-		try {
-			object = DataPreprocessor.parseFromString(this,
-					classObject.getSimpleName());
-			return this.ensureRLibraries(object);
-		} catch (UnknownDataPreprocessorException e1) {
-			e1.printStackTrace();
-		}
-		this.dataPreprocessorClasses.remove(classObject.getName());
-		return false;
-	}
-
-	/**
-	 * This method assumes, that the class that is passed is currently
-	 * registered in this repository.
-	 * 
-	 * <p>
-	 * If the R libraries are not satisfied, the class is removed from the
-	 * repository.
-	 * 
-	 * @param classObject
-	 *            The class for which we want to ensure R library dependencies.
-	 * @return True, if all R library dependencies are fulfilled.
-	 * @throws UnsatisfiedRLibraryException
-	 */
-	private boolean ensureRProgramRLibraries(
-			final Class<? extends RProgram> classObject) {
-		try {
-			// check whether we have R available
-			this.getRengineForCurrentThread();
-			try {
-				// create an instance
-				RLibraryInferior rLibraryInferior = RProgram.parseFromString(
-						this, classObject.getSimpleName());
-
-				return this.ensureRLibraries(rLibraryInferior);
-			} catch (UnknownRProgramException e1) {
-				e1.printStackTrace();
-			}
-		} catch (RserveException e) {
-			this.warn("\""
-					+ classObject.getSimpleName()
-					+ "\" could not be loaded since it requires R and no connection could be established.");
-		}
-		this.rProgramClasses.remove(classObject.getName());
-		return false;
-	}
-
-	/**
-	 * This method assumes, that the class that is passed is currently
-	 * registered in this repository.
-	 * 
-	 * <p>
-	 * If the R libraries are not satisfied, the class is removed from the
-	 * repository.
-	 * 
-	 * @param classObject
-	 *            The class for which we want to ensure R library dependencies.
-	 * @return True, if all R library dependencies are fulfilled.
-	 * @throws UnsatisfiedRLibraryException
-	 */
-	private boolean ensureClusteringQualityMeasureRLibraries(
-			final Class<? extends ClusteringQualityMeasure> classObject) {
-		// create an instance
-		RLibraryInferior rLibraryInferior;
-		try {
-			rLibraryInferior = ClusteringQualityMeasure.parseFromString(this,
-					classObject.getSimpleName());
-
-			return this.ensureRLibraries(rLibraryInferior);
-		} catch (UnknownClusteringQualityMeasureException e1) {
-			e1.printStackTrace();
-		}
-		this.clusteringQualityMeasureClasses.remove(classObject.getName());
-		return false;
-	}
-
-	/**
-	 * This method sets the data preprocessors as initialized. It should only be
-	 * invoked by {@link DataPreprocessorFinderThread#afterFind()}.
-	 */
-	public void setDataPreprocessorsInitialized() {
-		this.dataPreprocessorsInitialized = true;
-	}
-
-	/**
-	 * @return The absolute path to the directory within this repository, where
-	 *         all data preprocessors are stored.
-	 */
-	public String getDataPreprocessorBasePath() {
-		return this.dataPreprocessorBasePath;
-	}
-
-	/**
-	 * This method looks up and returns (if it exists) the class of the data
-	 * preprocessor with the given name.
-	 * 
-	 * @param dataPreprocessorClassName
-	 *            The name of the class of the clustering quality measure.
-	 * @return The clustering quality measure class with the given name or null,
-	 *         if it does not exist.
-	 */
-	public Class<? extends DataPreprocessor> getDataPreprocessorClass(
-			final String dataPreprocessorClassName) {
-		Class<? extends DataPreprocessor> result = this.dataPreprocessorClasses
-				.get(dataPreprocessorClassName);
-		if (result == null && parent != null)
-			return parent.getDataPreprocessorClass(dataPreprocessorClassName);
-		return result;
-	}
-
-	/**
-	 * 
-	 * @return The set of all registered data preprocessor classes.
-	 */
-	public Collection<Class<? extends DataPreprocessor>> getDataPreprocessorClasses() {
-		return this.dataPreprocessorClasses.values();
-	}
-
-	/**
-	 * @return A boolean attribute indicating whether the data preprocessors
-	 *         have been initialized by the {@link DataPreprocessorFinderThread}
-	 *         .
-	 */
-	public boolean getDataPreprocessorsInitialized() {
-		return this.dataPreprocessorsInitialized;
-	}
-
-	/**
-	 * This method checks whether the given data preprocessor class is
-	 * registered in this repository.
-	 * 
-	 * @param dataPreprocessor
-	 *            The class of the data preprocessor to look up.
-	 * @return True, if the data preprocessor class was registered.
-	 */
-	public boolean isDataPreprocessorRegistered(
-			final Class<? extends DataPreprocessor> dataPreprocessor) {
-		return this.dataPreprocessorClasses.containsKey(dataPreprocessor
-				.getName())
-				|| (this.parent != null && this.parent
-						.isDataPreprocessorRegistered(dataPreprocessor));
-	}
-
-	/**
-	 * This method checks whether a data preprocessor with the given class name
-	 * is registered in this repository.
-	 * 
-	 * @param dataPreprocessorClassName
-	 *            The class name of the data preprocessor to look up.
-	 * @return True, if the data preprocessor class was registered.
-	 */
-	public boolean isDataPreprocessorRegistered(
-			final String dataPreprocessorClassName) {
-		return this.dataPreprocessorClasses
-				.containsKey(dataPreprocessorClassName)
-				|| (this.parent != null && this.parent
-						.isDataPreprocessorRegistered(dataPreprocessorClassName));
-	}
-
-	/**
-	 * This method registers instances of a dataset generator.
-	 * 
-	 * @param dataPreprocessor
-	 *            The data preprocessor instance to register.
-	 * @return True, if the data preprocessor was registered successfully, false
-	 *         otherwise.
-	 */
-	public boolean register(final DataPreprocessor dataPreprocessor) {
-		this.dataPreprocessorInstances.get(
-				dataPreprocessor.getClass().getSimpleName()).add(
-				dataPreprocessor);
-
-		return true;
-	}
-
-	/**
-	 * This method registers a data preprocessor class. The class is only
-	 * registered, if it was not before.
-	 * 
-	 * @param object
-	 *            The new class to register.
-	 * @return True, if the new class was registered.
-	 */
-	public boolean registerDataPreprocessorClass(
-			final Class<? extends DataPreprocessor> object) {
-		if (isDataPreprocessorRegistered(object)) {
-			// first remove the old class
-			unregisterDataPreprocessorClass(this.dataPreprocessorClasses
-					.get(object.getName()));
-		}
-		this.dataPreprocessorClasses.put(object.getName(), object);
-		this.dataPreprocessorInstances
-				.put(object.getSimpleName(), Collections
-						.synchronizedList(new ArrayList<DataPreprocessor>()));
-
-		if (!ensureDataPreprocessorRLibraries(object))
-			return false;
-
-		return true;
-	}
-
-	/**
-	 * @param dataPreprocessor
-	 *            The data preprocessor to unregister.
-	 * @return True, if the data preprocessor has been unregistered
-	 *         successfully.
-	 */
-	public boolean unregister(final DataPreprocessor dataPreprocessor) {
-		boolean result = this.dataPreprocessorInstances.get(
-				dataPreprocessor.getClass().getSimpleName()).remove(
-				dataPreprocessor);
-		if (result) {
-			try {
-				dataPreprocessor.notify(new RepositoryRemoveEvent(
-						dataPreprocessor));
-			} catch (RegisterException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * This method unregisters the passed object.
-	 * 
-	 * @param object
-	 *            The object to be removed.
-	 * @return True, if the object was remved successfully
-	 */
-	public boolean unregisterDataPreprocessorClass(
-			final Class<? extends DataPreprocessor> object) {
-		boolean result = this.dataPreprocessorClasses.remove(object.getName()) != null;
-		if (result) {
-			this.info("DataPreprocessor removed: " + object.getSimpleName());
-			for (DataPreprocessor dataPreprocessor : Collections
-					.synchronizedList(new ArrayList<DataPreprocessor>(
-							dataPreprocessorInstances.get(object
-									.getSimpleName())))) {
-				dataPreprocessor.unregister();
-			}
-
-		}
-		return result;
 	}
 
 	/**
@@ -4152,85 +3282,13 @@ public class Repository {
 	public void setContextsInitialized() {
 		this.contextsInitialized = true;
 	}
-
-	public String getAnalysisResultsBasePath() {
-		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
-				.get(RunResult.class)).getAnalysisResultsBasePath();
-	}
-
-	public String getClusterResultsBasePath() {
-		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
-				.get(RunResult.class)).getClusterResultsBasePath();
-	}
-
-	public String getClusterResultsQualityBasePath() {
-		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
-				.get(RunResult.class)).getClusterResultsQualityBasePath();
-	}
-
-	public boolean registerDataStatisticCalculator(
-			Class<? extends DataStatisticCalculator<? extends DataStatistic>> dataStatisticCalculator) {
-		return ((DataStatisticRepositoryEntity) this.dynamicRepositoryEntities
-				.get(DataStatistic.class))
-				.registerDataStatisticCalculator(dataStatisticCalculator);
-	}
-
-	public boolean registerRunDataStatisticCalculator(
-			Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>> runDataStatisticCalculator) {
-		return ((RunDataStatisticRepositoryEntity) this.dynamicRepositoryEntities
-				.get(RunDataStatistic.class))
-				.registerRunDataStatisticCalculator(runDataStatisticCalculator);
-	}
-
-	public boolean registerRunStatisticCalculator(
-			Class<? extends RunStatisticCalculator<? extends RunStatistic>> runStatisticCalculator) {
-		return ((RunStatisticRepositoryEntity) this.dynamicRepositoryEntities
-				.get(RunStatistic.class))
-				.registerRunStatisticCalculator(runStatisticCalculator);
-	}
-
-	public Class<? extends DataStatisticCalculator<? extends DataStatistic>> getDataStatisticCalculator(
-			final String dataStatisticClassName) {
-		return ((DataStatisticRepositoryEntity) this.dynamicRepositoryEntities
-				.get(DataStatistic.class))
-				.getDataStatisticCalculator(dataStatisticClassName);
-	}
-
-	public Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>> getRunDataStatisticCalculator(
-			final String runDataStatisticClassName) {
-		return ((RunDataStatisticRepositoryEntity) this.dynamicRepositoryEntities
-				.get(RunDataStatistic.class))
-				.getRunDataStatisticCalculator(runDataStatisticClassName);
-	}
-
-	public Class<? extends RunStatisticCalculator<? extends RunStatistic>> getRunStatisticCalculator(
-			final String runStatisticClassName) {
-		return ((RunStatisticRepositoryEntity) this.dynamicRepositoryEntities
-				.get(RunStatistic.class))
-				.getRunStatisticCalculator(runStatisticClassName);
-	}
 }
-
-// class RepositoryJarEntity<T extends RepositoryObject>
-// extends
-// RepositoryEntity<T> {
-//
-// /**
-// * @param basePath
-// */
-// public RepositoryJarEntity(String basePath) {
-// super(basePath);
-// }
-//
-// /**
-// * A map containing all classes of dataset formats registered in this
-// * repository. Mapping from Class.getName() to the class.
-// */
-// protected Map<String, Class<? extends T>> dataSetFormatClasses;
-//
-// /**
-// * A map mapping from the simple name of the class to all of its
-// * instances.Mapping from Class.getSimpleName() to the instances.
-// */
-// protected Map<String, List<T>> dataSetFormatInstances;
-// }
+// Repository class before: 7311 lines
+// Repository class after 1st part: 5463 lines
+// Repository class after RunResult part: 5261 lines
+// Repository class after DistanceMeasure: 5006 lines
+// Repository class after Statistic classes: 4209 lines
+// Repository class after DataSetGenerator: 3984 lines
+// Repository class after DataPreprocessor: 3761 lines
+// Repository class after RProgram: 3545 lines
+// Repository class after ClusteringQualityMeasure: 3285 lines

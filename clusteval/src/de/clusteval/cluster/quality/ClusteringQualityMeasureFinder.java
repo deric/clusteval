@@ -53,7 +53,7 @@ public class ClusteringQualityMeasureFinder
 	 */
 	@Override
 	protected Collection<Class<? extends ClusteringQualityMeasure>> getRegisteredObjectSet() {
-		return this.repository.getClusteringQualityMeasureClasses();
+		return this.repository.getClasses(ClusteringQualityMeasure.class);
 	}
 
 	/*
@@ -64,7 +64,7 @@ public class ClusteringQualityMeasureFinder
 	@Override
 	protected void removeOldObject(
 			Class<? extends ClusteringQualityMeasure> object) {
-		this.repository.unregisterClusteringQualityMeasureClass(object);
+		this.repository.unregisterClass(ClusteringQualityMeasure.class, object);
 	}
 
 	/*
@@ -99,8 +99,9 @@ public class ClusteringQualityMeasureFinder
 	@Override
 	protected boolean isJARLoaded(File f) {
 		return super.isJARLoaded(f)
-				&& this.repository
-						.isClusteringQualityMeasureRegistered(classNamesForJARFile(f)[0]);
+				&& this.repository.isClassRegistered(
+						ClusteringQualityMeasure.class,
+						classNamesForJARFile(f)[0]);
 	}
 
 	/*
@@ -120,7 +121,8 @@ public class ClusteringQualityMeasureFinder
 	 */
 	@Override
 	protected File getBaseDir() {
-		return new File(this.repository.getClusteringQualityMeasuresBasePath());
+		return new File(
+				this.repository.getBasePath(ClusteringQualityMeasure.class));
 	}
 
 	/*
@@ -207,8 +209,8 @@ class ClusteringQualityMeasureURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends ClusteringQualityMeasure> qualityMeasure = (Class<? extends ClusteringQualityMeasure>) result;
 
-				if (this.parent.getRepository()
-						.registerClusteringQualityMeasureClass(qualityMeasure))
+				if (this.parent.getRepository().registerClass(
+						ClusteringQualityMeasure.class, qualityMeasure))
 					this.parent.getLog().info(
 							"ClusteringQualityMeasure " + name + " loaded");
 			}

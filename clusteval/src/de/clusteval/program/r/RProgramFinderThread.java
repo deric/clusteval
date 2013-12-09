@@ -69,7 +69,7 @@ public class RProgramFinderThread extends FinderThread {
 	 */
 	@Override
 	protected void afterFind() {
-		this.repository.setRProgramsInitialized();
+		this.repository.setInitialized(RProgram.class);
 	}
 
 	/*
