@@ -143,6 +143,10 @@ public class StaticRepositoryEntity<T extends RepositoryObject>
 		if (old.changeDate >= object.changeDate)
 			return false;
 
+		if (this.printOnRegister)
+			this.repository.info(object.getClass().getSimpleName() + " "
+					+ object.toString() + " reloaded");
+
 		/*
 		 * replace old object by new object
 		 */
