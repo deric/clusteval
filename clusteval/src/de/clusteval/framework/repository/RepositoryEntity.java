@@ -20,6 +20,8 @@ public abstract class RepositoryEntity<T extends RepositoryObject> {
 	 * datasets are stored.
 	 */
 	protected String basePath;
+	
+	protected boolean printOnRegister = true;
 
 	public RepositoryEntity(final Repository repository, final String basePath) {
 		super();

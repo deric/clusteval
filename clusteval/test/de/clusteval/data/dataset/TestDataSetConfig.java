@@ -14,24 +14,48 @@
 package de.clusteval.data.dataset;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import junit.framework.Assert;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Test;
 
+import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
+import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
+import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
+import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
+import de.clusteval.context.IncompatibleContextException;
+import de.clusteval.context.UnknownContextException;
+import de.clusteval.data.DataConfigNotFoundException;
+import de.clusteval.data.DataConfigurationException;
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
 import de.clusteval.data.dataset.format.ConversionStandardToInputConfiguration;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.dataset.type.UnknownDataSetTypeException;
 import de.clusteval.data.distance.DistanceMeasure;
 import de.clusteval.data.distance.UnknownDistanceMeasureException;
+import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
+import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
+import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.preprocessing.DataPreprocessor;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.RepositoryRemoveEvent;
 import de.clusteval.framework.repository.RepositoryReplaceEvent;
+import de.clusteval.framework.repository.parse.Parser;
+import de.clusteval.program.NoOptimizableProgramParameterException;
+import de.clusteval.program.UnknownParameterType;
+import de.clusteval.program.UnknownProgramParameterException;
+import de.clusteval.program.UnknownProgramTypeException;
+import de.clusteval.program.r.UnknownRProgramException;
+import de.clusteval.run.RunException;
+import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.statistics.UnknownRunDataStatisticException;
+import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.AbstractClustEvalTest;
 import de.clusteval.utils.StubRepositoryObject;
 
@@ -54,6 +78,29 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws UnknownDataPreprocessorException
 	 * @throws NumberFormatException
 	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	public void testRegister() throws DataSetConfigurationException,
 			NoRepositoryFoundException, DataSetNotFoundException,
@@ -61,10 +108,28 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			UnknownDistanceMeasureException, RegisterException,
 			UnknownDataSetTypeException, NoDataSetException,
 			NumberFormatException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
-		this.repositoryObject = DataSetConfig.parseFromFile(new File(
-				"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
-				.getAbsoluteFile());
+			IncompatibleDataSetConfigPreprocessorException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownContextException, FileNotFoundException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSetConfig.class,
+						new File(
+								"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
+								.getAbsoluteFile());
 		Assert.assertEquals(this.repositoryObject, this.getRepository()
 				.getRegisteredObject((DataSetConfig) this.repositoryObject));
 
@@ -73,11 +138,12 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 		// not register the second object.
 		this.repositoryObject = new DataSetConfig(
 				(DataSetConfig) this.repositoryObject);
-		Assert.assertEquals(this.getRepository()
-				.getRegisteredObject((DataSetConfig) this.repositoryObject),
+		Assert.assertEquals(
+				this.getRepository().getRegisteredObject(
+						(DataSetConfig) this.repositoryObject),
 				this.repositoryObject);
-		Assert.assertFalse(this.getRepository()
-				.getRegisteredObject((DataSetConfig) this.repositoryObject) == this.repositoryObject);
+		Assert.assertFalse(this.getRepository().getRegisteredObject(
+				(DataSetConfig) this.repositoryObject) == this.repositoryObject);
 	}
 
 	/**
@@ -92,6 +158,29 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws UnknownDataPreprocessorException
 	 * @throws NumberFormatException
 	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	public void testUnregister() throws DataSetConfigurationException,
 			NoRepositoryFoundException, DataSetNotFoundException,
@@ -99,16 +188,34 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			UnknownDistanceMeasureException, RegisterException,
 			UnknownDataSetTypeException, NoDataSetException,
 			NumberFormatException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
-		this.repositoryObject = DataSetConfig.parseFromFile(new File(
-				"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
-				.getAbsoluteFile());
+			IncompatibleDataSetConfigPreprocessorException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownContextException, FileNotFoundException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSetConfig.class,
+						new File(
+								"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
+								.getAbsoluteFile());
 		Assert.assertEquals(this.repositoryObject, this.getRepository()
 				.getRegisteredObject((DataSetConfig) this.repositoryObject));
 		this.repositoryObject.unregister();
 		// is not registered anymore
-		Assert.assertTrue(this.getRepository()
-				.getRegisteredObject((DataSetConfig) this.repositoryObject) == null);
+		Assert.assertTrue(this.getRepository().getRegisteredObject(
+				(DataSetConfig) this.repositoryObject) == null);
 	}
 
 	/**
@@ -125,6 +232,29 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws UnknownDataPreprocessorException
 	 * @throws NumberFormatException
 	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test
 	public void testNotifyRepositoryEvent() throws NoRepositoryFoundException,
@@ -133,7 +263,22 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			UnknownDistanceMeasureException, RegisterException,
 			UnknownDataSetTypeException, NoDataSetException,
 			NumberFormatException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
+			IncompatibleDataSetConfigPreprocessorException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownContextException, FileNotFoundException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
 
 		/*
 		 * REPLACE
@@ -143,9 +288,12 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 		 * First check, whether listeners of DataSetconfigs are notified
 		 * correctly when the DataSetconfig is replaced
 		 */
-		DataSetConfig gsConfig = DataSetConfig.parseFromFile(new File(
-				"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
-				.getAbsoluteFile());
+		DataSetConfig gsConfig = Parser
+				.parseFromFile(
+						DataSetConfig.class,
+						new File(
+								"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
+								.getAbsoluteFile());
 		StubRepositoryObject child = new StubRepositoryObject(getRepository(),
 				false, System.currentTimeMillis(), new File(
 						"testCaseRepository/Bla"));
@@ -207,6 +355,29 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws UnknownDataPreprocessorException
 	 * @throws NumberFormatException
 	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test(expected = DataSetConfigurationException.class)
 	public void testParseFromFileDataSetNameMissing()
@@ -215,10 +386,26 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			DataSetConfigNotFoundException, UnknownDistanceMeasureException,
 			RegisterException, UnknownDataSetTypeException, NoDataSetException,
 			NumberFormatException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
+			IncompatibleDataSetConfigPreprocessorException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownContextException, FileNotFoundException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
 		try {
-			DataSetConfig
-					.parseFromFile(new File(
+			Parser.parseFromFile(
+					DataSetConfig.class,
+					new File(
 							"testCaseRepository/data/datasets/configs/testDataSetConfig.dsconfig")
 							.getAbsoluteFile());
 		} catch (DataSetConfigurationException e) {
@@ -243,6 +430,29 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws UnknownDataPreprocessorException
 	 * @throws NumberFormatException
 	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test
 	public void testParseFromFile() throws DataSetConfigurationException,
@@ -251,10 +461,28 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			UnknownDistanceMeasureException, RegisterException,
 			UnknownDataSetTypeException, NoDataSetException,
 			NumberFormatException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
-		DataSetConfig gsConfig = DataSetConfig.parseFromFile(new File(
-				"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
-				.getAbsoluteFile());
+			IncompatibleDataSetConfigPreprocessorException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownContextException, FileNotFoundException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		DataSetConfig gsConfig = Parser
+				.parseFromFile(
+						DataSetConfig.class,
+						new File(
+								"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
+								.getAbsoluteFile());
 		Assert.assertEquals(
 				new DataSetConfig(
 						getRepository(),
@@ -264,11 +492,14 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 						new File(
 								"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
 								.getAbsoluteFile(),
-						DataSet.parseFromFile(new File(
-								"testCaseRepository/data/datasets/astral_1_161/blastResults.txt")
-								.getAbsoluteFile()),
+						Parser.parseFromFile(
+								DataSet.class,
+								new File(
+										"testCaseRepository/data/datasets/astral_1_161/blastResults.txt")
+										.getAbsoluteFile()),
 						new ConversionInputToStandardConfiguration(
-								DistanceMeasure.parseFromString(getRepository(),
+								DistanceMeasure.parseFromString(
+										getRepository(),
 										"EuclidianDistanceMeasure"),
 								new ArrayList<DataPreprocessor>(),
 								new ArrayList<DataPreprocessor>()),
@@ -289,6 +520,29 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws UnknownDataPreprocessorException
 	 * @throws NumberFormatException
 	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test(expected = DataSetConfigurationException.class)
 	public void testParseFromFileDataSetFileMissing()
@@ -297,10 +551,26 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			DataSetConfigNotFoundException, UnknownDistanceMeasureException,
 			RegisterException, UnknownDataSetTypeException, NoDataSetException,
 			NumberFormatException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
+			IncompatibleDataSetConfigPreprocessorException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownContextException, FileNotFoundException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
 		try {
-			DataSetConfig
-					.parseFromFile(new File(
+			Parser.parseFromFile(
+					DataSetConfig.class,
+					new File(
 							"testCaseRepository/data/datasets/configs/testDataSetConfig2.dsconfig")
 							.getAbsoluteFile());
 		} catch (DataSetConfigurationException e) {
@@ -322,6 +592,29 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws UnknownDataPreprocessorException
 	 * @throws NumberFormatException
 	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test(expected = DataSetConfigNotFoundException.class)
 	public void testParseFromNotExistingFile()
@@ -330,8 +623,23 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			DataSetConfigNotFoundException, UnknownDistanceMeasureException,
 			RegisterException, UnknownDataSetTypeException, NoDataSetException,
 			NumberFormatException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
-		DataSetConfig.parseFromFile(new File(
+			IncompatibleDataSetConfigPreprocessorException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownContextException, FileNotFoundException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		Parser.parseFromFile(DataSetConfig.class, new File(
 				"testCaseRepository/data/datasets/configs/DS1_12.gsconfig")
 				.getAbsoluteFile());
 	}
@@ -349,6 +657,29 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws UnknownDataPreprocessorException
 	 * @throws NumberFormatException
 	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test
 	public void testGetDataSet() throws DataSetConfigurationException,
@@ -357,15 +688,35 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			UnknownDistanceMeasureException, RegisterException,
 			UnknownDataSetTypeException, NoDataSetException,
 			NumberFormatException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
-		DataSetConfig dsConfig = DataSetConfig.parseFromFile(new File(
-				"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
-				.getAbsoluteFile());
+			IncompatibleDataSetConfigPreprocessorException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownContextException, FileNotFoundException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		DataSetConfig dsConfig = Parser
+				.parseFromFile(
+						DataSetConfig.class,
+						new File(
+								"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
+								.getAbsoluteFile());
 		DataSet ds = dsConfig.getDataSet();
-		DataSet expected = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/astral_1_161/blastResults.txt")
-						.getAbsoluteFile());
+		DataSet expected = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/astral_1_161/blastResults.txt")
+								.getAbsoluteFile());
 		Assert.assertEquals(expected, ds);
 	}
 
@@ -384,6 +735,29 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws UnknownDataPreprocessorException
 	 * @throws NumberFormatException
 	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test
 	public void testSetDataSet() throws DataSetConfigurationException,
@@ -392,21 +766,43 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			UnknownDistanceMeasureException, RegisterException,
 			UnknownDataSetTypeException, NoDataSetException,
 			NumberFormatException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
-		DataSetConfig dsConfig = DataSetConfig.parseFromFile(new File(
-				"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
-				.getAbsoluteFile());
+			IncompatibleDataSetConfigPreprocessorException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownContextException, FileNotFoundException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		DataSetConfig dsConfig = Parser
+				.parseFromFile(
+						DataSetConfig.class,
+						new File(
+								"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
+								.getAbsoluteFile());
 		DataSet ds = dsConfig.getDataSet();
-		DataSet expected = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/astral_1_161/blastResults.txt")
-						.getAbsoluteFile());
+		DataSet expected = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/astral_1_161/blastResults.txt")
+								.getAbsoluteFile());
 		Assert.assertEquals(expected, ds);
 
-		DataSet override = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
-						.getAbsoluteFile());
+		DataSet override = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
+								.getAbsoluteFile());
 		dsConfig.setDataSet(override);
 		Assert.assertEquals(override, dsConfig.getDataSet());
 	}
@@ -424,6 +820,29 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws UnknownDataPreprocessorException
 	 * @throws NumberFormatException
 	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test
 	public void testToString() throws DataSetConfigurationException,
@@ -432,10 +851,28 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			UnknownDistanceMeasureException, RegisterException,
 			UnknownDataSetTypeException, NoDataSetException,
 			NumberFormatException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
-		DataSetConfig gsConfig = DataSetConfig.parseFromFile(new File(
-				"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
-				.getAbsoluteFile());
+			IncompatibleDataSetConfigPreprocessorException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownContextException, FileNotFoundException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		DataSetConfig gsConfig = Parser
+				.parseFromFile(
+						DataSetConfig.class,
+						new File(
+								"testCaseRepository/data/datasets/configs/astral_1.dsconfig")
+								.getAbsoluteFile());
 		Assert.assertEquals("astral_1", gsConfig.toString());
 
 	}

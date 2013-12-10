@@ -121,13 +121,19 @@ public abstract class Parser<P extends RepositoryObject> {
 		else if (c.equals(RunDataAnalysisRun.class))
 			return (Parser<T>) new RunDataAnalysisRunParser();
 		else if (c.equals(DataSetConfig.class))
-			return (Parser<T>) new DataSetConfigParser<DataSetConfig>();
+			return (Parser<T>) new DataSetConfigParser();
 		else if (c.equals(RunResultDataSetConfig.class))
-			return (Parser<T>) new DataSetConfigParser<RunResultDataSetConfig>();
+			return (Parser<T>) new RunResultDataSetConfigParser();
 		else if (c.equals(DataSet.class))
 			return (Parser<T>) new DataSetParser();
 		else if (c.equals(GoldStandardConfig.class))
 			return (Parser<T>) new GoldStandardConfigParser();
+		else if (c.equals(ProgramConfig.class))
+			return (Parser<T>) new ProgramConfigParser();
+		else if (c.equals(Run.class))
+			return (Parser<T>) new RunParser<Run>();
+		else if (c.equals(DataConfig.class))
+			return (Parser<T>) new DataConfigParser();
 		return null;
 	}
 
@@ -260,8 +266,6 @@ class AnalysisRunParser<T extends AnalysisRun<?>> extends RunParser<T> {
 
 class ClusteringRunParser extends ExecutionRunParser<ClusteringRun> {
 
-	protected ClusteringRun result;
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -295,7 +299,7 @@ class ClusteringRunParser extends ExecutionRunParser<ClusteringRun> {
 
 		result = new ClusteringRun(repo, context, changeDate, absPath,
 				programConfigs, dataConfigs, qualityMeasures, runParamValues);
-		result = (ClusteringRun) repo.getRegisteredObject(result, false);
+		result = repo.getRegisteredObject(result, false);
 	}
 }
 
@@ -332,7 +336,7 @@ class DataAnalysisRunParser extends AnalysisRunParser<DataAnalysisRun> {
 
 		List<DataStatistic> dataStatistics = new LinkedList<DataStatistic>();
 
-		for (String dataConfig : props.getStringArray("dataConfig")) {
+		for (String dataConfig : getProps().getStringArray("dataConfig")) {
 			dataConfigs.add(repo.getRegisteredObject(Parser.parseFromFile(
 					DataConfig.class,
 					new File(FileUtils.buildPath(
@@ -346,7 +350,7 @@ class DataAnalysisRunParser extends AnalysisRunParser<DataAnalysisRun> {
 		 * repository.
 		 */
 		List<UnknownDataStatisticException> thrownExceptions = new ArrayList<UnknownDataStatisticException>();
-		for (String dataStatistic : props.getStringArray("dataStatistics")) {
+		for (String dataStatistic : getProps().getStringArray("dataStatistics")) {
 			try {
 				dataStatistics.add(DataStatistic.parseFromString(repo,
 						dataStatistic));
@@ -361,7 +365,7 @@ class DataAnalysisRunParser extends AnalysisRunParser<DataAnalysisRun> {
 
 		result = new DataAnalysisRun(repo, context, changeDate, absPath,
 				dataConfigs, dataStatistics);
-		result = (DataAnalysisRun) repo.getRegisteredObject(result, false);
+		result = repo.getRegisteredObject(result, false);
 	};
 }
 
@@ -401,9 +405,9 @@ class DataConfigParser extends RepositoryObjectParser<DataConfig> {
 		log.debug("Parsing data config \"" + absPath + "\"");
 
 		try {
-			props.setThrowExceptionOnMissing(true);
+			getProps().setThrowExceptionOnMissing(true);
 
-			String datasetConfigName = props.getString("datasetConfig");
+			String datasetConfigName = getProps().getString("datasetConfig");
 			DataSetConfig dataSetConfig;
 			if (repo instanceof RunResultRepository)
 				dataSetConfig = Parser.parseFromFile(
@@ -420,7 +424,8 @@ class DataConfigParser extends RepositoryObjectParser<DataConfig> {
 
 			GoldStandardConfig goldStandardConfig = null;
 			try {
-				String gsConfigName = props.getString("goldstandardConfig");
+				String gsConfigName = getProps()
+						.getString("goldstandardConfig");
 				goldStandardConfig = Parser.parseFromFile(
 						GoldStandardConfig.class,
 						new File(FileUtils.buildPath(
@@ -430,8 +435,8 @@ class DataConfigParser extends RepositoryObjectParser<DataConfig> {
 				// No goldstandard config given
 			}
 
-			DataConfig result = new DataConfig(repo, changeDate, absPath,
-					dataSetConfig, goldStandardConfig);
+			result = new DataConfig(repo, changeDate, absPath, dataSetConfig,
+					goldStandardConfig);
 			result = repo.getRegisteredObject(result);
 		} catch (NoSuchElementException e) {
 			throw new DataConfigurationException(e);
@@ -439,12 +444,14 @@ class DataConfigParser extends RepositoryObjectParser<DataConfig> {
 	}
 }
 
-class DataSetConfigParser<T extends DataSetConfig>
-		extends
-			RepositoryObjectParser<T> {
+class DataSetConfigParser extends RepositoryObjectParser<DataSetConfig> {
 
 	protected String datasetName;
 	protected String datasetFile;
+
+	protected DataSet dataSet;
+	protected ConversionInputToStandardConfiguration configInputToStandard;
+	protected ConversionStandardToInputConfiguration configStandardToInput;
 
 	/*
 	 * (non-Javadoc)
@@ -480,27 +487,31 @@ class DataSetConfigParser<T extends DataSetConfig>
 		log.debug("Parsing dataset config \"" + absPath + "\"");
 
 		try {
-			props.setThrowExceptionOnMissing(true);
+			getProps().setThrowExceptionOnMissing(true);
 
-			datasetName = props.getString("datasetName");
-			datasetFile = props.getString("datasetFile");
+			datasetName = getProps().getString("datasetName");
+			datasetFile = getProps().getString("datasetFile");
 
 			DistanceMeasure distanceMeasure;
-			if (props.containsKey("distanceMeasureAbsoluteToRelative")) {
-				distanceMeasure = DistanceMeasure.parseFromString(repo,
-						props.getString("distanceMeasureAbsoluteToRelative"));
+			if (getProps().containsKey("distanceMeasureAbsoluteToRelative")) {
+				distanceMeasure = DistanceMeasure.parseFromString(
+						repo,
+						getProps().getString(
+								"distanceMeasureAbsoluteToRelative"));
 			} else
 				distanceMeasure = DistanceMeasure.parseFromString(repo,
 						"EuclidianDistanceMeasure");
 
-			DataSet dataSet = this.getDataSet();
+			dataSet = this.getDataSet();
 
 			// added 12.04.2013
 			List<DataPreprocessor> preprocessorBeforeDistance;
-			if (props.containsKey("preprocessorBeforeDistance")) {
-				preprocessorBeforeDistance = DataPreprocessor.parseFromString(
-						repo,
-						props.getStringArray("preprocessorBeforeDistance"));
+			if (getProps().containsKey("preprocessorBeforeDistance")) {
+				preprocessorBeforeDistance = DataPreprocessor
+						.parseFromString(
+								repo,
+								getProps().getStringArray(
+										"preprocessorBeforeDistance"));
 
 				for (DataPreprocessor proc : preprocessorBeforeDistance) {
 					if (!proc.getCompatibleDataSetFormats().contains(
@@ -518,20 +529,20 @@ class DataSetConfigParser<T extends DataSetConfig>
 				preprocessorBeforeDistance = new ArrayList<DataPreprocessor>();
 
 			List<DataPreprocessor> preprocessorAfterDistance;
-			if (props.containsKey("preprocessorAfterDistance")) {
-				preprocessorAfterDistance = DataPreprocessor
-						.parseFromString(repo, props
-								.getStringArray("preprocessorAfterDistance"));
+			if (getProps().containsKey("preprocessorAfterDistance")) {
+				preprocessorAfterDistance = DataPreprocessor.parseFromString(
+						repo,
+						getProps().getStringArray("preprocessorAfterDistance"));
 			} else
 				preprocessorAfterDistance = new ArrayList<DataPreprocessor>();
 
-			ConversionInputToStandardConfiguration configInputToStandard = new ConversionInputToStandardConfiguration(
+			configInputToStandard = new ConversionInputToStandardConfiguration(
 					distanceMeasure, preprocessorBeforeDistance,
 					preprocessorAfterDistance);
-			ConversionStandardToInputConfiguration configStandardToInput = new ConversionStandardToInputConfiguration();
+			configStandardToInput = new ConversionStandardToInputConfiguration();
 
-			DataSetConfig result = new DataSetConfig(repo, changeDate, absPath,
-					dataSet, configInputToStandard, configStandardToInput);
+			result = new DataSetConfig(repo, changeDate, absPath, dataSet,
+					configInputToStandard, configStandardToInput);
 			result = repo.getRegisteredObject(result);
 		} catch (NoSuchElementException e) {
 			throw new DataSetConfigurationException(e);
@@ -568,6 +579,13 @@ class DataSetConfigParser<T extends DataSetConfig>
 }
 
 class DataSetParser extends RepositoryObjectParser<DataSet> {
+
+	/**
+	 * 
+	 */
+	public DataSetParser() {
+		this.loadConfigFile = false;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -665,8 +683,6 @@ class DataSetParser extends RepositoryObjectParser<DataSet> {
 			}
 
 			final long changeDate = absPath.lastModified();
-
-			DataSet result;
 
 			LoggerFactory.getLogger(DataSet.class).debug(
 					"Parsing dataset \"" + absPath + "\"");
@@ -800,10 +816,10 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException {
 
-		if (props.getStringArray("programConfig").length == 0)
+		if (getProps().getStringArray("programConfig").length == 0)
 			throw new RunException(
 					"At least one program config must be specified");
-		for (String programConfig : props.getStringArray("programConfig")) {
+		for (String programConfig : getProps().getStringArray("programConfig")) {
 			ProgramConfig newProgramConfig = Parser.parseFromFile(
 					ProgramConfig.class,
 					new File(FileUtils.buildPath(
@@ -829,15 +845,16 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 
 	protected void parseProgramConfigParams(final ProgramConfig programConfig)
 			throws NoOptimizableProgramParameterException,
-			UnknownProgramParameterException, RunException {
+			UnknownProgramParameterException, RunException,
+			ConfigurationException {
 
 		paramMap = new HashMap<ProgramParameter<?>, String>();
 
-		if (props.getSections().contains(programConfig.getName())) {
+		if (getProps().getSections().contains(programConfig.getName())) {
 			/*
 			 * General parameters, not only for optimization.
 			 */
-			Iterator<String> itParams = props.getSection(
+			Iterator<String> itParams = getProps().getSection(
 					programConfig.getName()).getKeys();
 			while (itParams.hasNext()) {
 				String param = itParams.next();
@@ -847,9 +864,11 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 								.getParamWithId(param);
 
 						if (checkParamValueToMap(param))
-							paramMap.put(p,
-									props.getSection(programConfig.getName())
-											.getString(param));
+							paramMap.put(
+									p,
+									getProps().getSection(
+											programConfig.getName()).getString(
+											param));
 					} catch (UnknownProgramParameterException e) {
 						log.error("The run " + absPath.getName()
 								+ " contained invalid parameter values: "
@@ -870,9 +889,9 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 	}
 
 	protected void parseQualityMeasures() throws RunException,
-			UnknownClusteringQualityMeasureException {
+			UnknownClusteringQualityMeasureException, ConfigurationException {
 
-		if (props.getStringArray("qualityMeasures").length == 0)
+		if (getProps().getStringArray("qualityMeasures").length == 0)
 			throw new RunException(
 					"At least one quality measure must be specified");
 		/**
@@ -881,7 +900,8 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 		 * repository.
 		 */
 		List<UnknownClusteringQualityMeasureException> thrownExceptions = new ArrayList<UnknownClusteringQualityMeasureException>();
-		for (String qualityMeasure : props.getStringArray("qualityMeasures")) {
+		for (String qualityMeasure : getProps().getStringArray(
+				"qualityMeasures")) {
 			try {
 				qualityMeasures.add(ClusteringQualityMeasure.parseFromString(
 						repo, qualityMeasure));
@@ -917,9 +937,9 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException {
-		if (props.getStringArray("dataConfig").length == 0)
+		if (getProps().getStringArray("dataConfig").length == 0)
 			throw new RunException("At least one data config must be specified");
-		for (String dataConfig : props.getStringArray("dataConfig")) {
+		for (String dataConfig : getProps().getStringArray("dataConfig")) {
 			dataConfigs.add(repo.getRegisteredObject(Parser.parseFromFile(
 					DataConfig.class,
 					new File(FileUtils.buildPath(
@@ -965,13 +985,12 @@ class GoldStandardConfigParser
 		super.parseFromFile(absPath);
 
 		log.debug("Parsing goldstandard config \"" + absPath + "\"");
-		GoldStandardConfig result;
 
 		try {
-			props.setThrowExceptionOnMissing(true);
+			getProps().setThrowExceptionOnMissing(true);
 
-			String gsName = props.getString("goldstandardName");
-			String gsFile = props.getString("goldstandardFile");
+			String gsName = getProps().getString("goldstandardName");
+			String gsFile = getProps().getString("goldstandardFile");
 
 			result = new GoldStandardConfig(repo, changeDate, absPath,
 					GoldStandard.parseFromFile(new File(FileUtils.buildPath(
@@ -988,8 +1007,6 @@ class GoldStandardConfigParser
 class InternalParameterOptimizationRunParser
 		extends
 			ExecutionRunParser<InternalParameterOptimizationRun> {
-
-	protected InternalParameterOptimizationRun result;
 
 	/*
 	 * (non-Javadoc)
@@ -1025,8 +1042,7 @@ class InternalParameterOptimizationRunParser
 		result = new InternalParameterOptimizationRun(repo, context,
 				changeDate, absPath, programConfigs, dataConfigs,
 				qualityMeasures, runParamValues);
-		result = (InternalParameterOptimizationRun) repo.getRegisteredObject(
-				result, false);
+		result = repo.getRegisteredObject(result, false);
 
 	}
 }
@@ -1035,7 +1051,6 @@ class ParameterOptimizationRunParser
 		extends
 			ExecutionRunParser<ParameterOptimizationRun> {
 
-	protected ParameterOptimizationRun result;
 	protected List<Map<ProgramParameter<?>, String>> parameterValues;
 	protected List<List<ProgramParameter<?>>> optimizationParameters;
 	protected List<ParameterOptimizationMethod> optimizationMethods;
@@ -1077,15 +1092,17 @@ class ParameterOptimizationRunParser
 
 		ClusteringQualityMeasure optimizationCriterion = null;
 
-		String paramOptCriterion = props.getString("optimizationCriterion");
+		String paramOptCriterion = getProps()
+				.getString("optimizationCriterion");
 		optimizationCriterion = ClusteringQualityMeasure.parseFromString(repo,
 				paramOptCriterion);
 		if (!qualityMeasures.contains(optimizationCriterion))
 			throw new UnknownClusteringQualityMeasureException(
 					"The optimization criterion is not contained in the list of quality measures.");
 
-		String paramOptIterations = props.getString("optimizationIterations");
-		if (!props.containsKey("optimizationIterations"))
+		String paramOptIterations = getProps().getString(
+				"optimizationIterations");
+		if (!getProps().containsKey("optimizationIterations"))
 			throw new RunException(
 					"The number of optimization iterations has to be specified as attribute 'optimizationIterations'");
 
@@ -1185,7 +1202,7 @@ class ParameterOptimizationRunParser
 		 * Default optimization method for all programs, where no specific
 		 * method is defined
 		 */
-		paramOptMethod = props.getString("optimizationMethod");
+		paramOptMethod = getProps().getString("optimizationMethod");
 		paramOptMethods = new ArrayList<String>();
 
 		super.parseProgramConfigurations();
@@ -1201,18 +1218,19 @@ class ParameterOptimizationRunParser
 	@Override
 	protected void parseProgramConfigParams(ProgramConfig programConfig)
 			throws NoOptimizableProgramParameterException,
-			UnknownProgramParameterException, RunException {
+			UnknownProgramParameterException, RunException,
+			ConfigurationException {
 
 		optParaList = new ArrayList<ProgramParameter<?>>();
 
-		if (props.getSections().contains(programConfig.getName())) {
+		if (getProps().getSections().contains(programConfig.getName())) {
 
 			/*
 			 * These parameters are used for parameter optimization. If we are
 			 * in parameter optimization mode and there are concrete values for
 			 * this parameters in this section, they will be ignored.
 			 */
-			optimizationParas = props.getSection(programConfig.getName())
+			optimizationParas = getProps().getSection(programConfig.getName())
 					.getStringArray("optimizationParameters");
 
 			/*
@@ -1243,9 +1261,10 @@ class ParameterOptimizationRunParser
 				}
 			}
 
-			if (props.getSection(programConfig.getName()).containsKey(
+			if (getProps().getSection(programConfig.getName()).containsKey(
 					"optimizationMethod")) {
-				paramOptMethods.add(props.getSection(programConfig.getName())
+				paramOptMethods.add(getProps().getSection(
+						programConfig.getName())
 						.getString("optimizationMethod"));
 			}
 			/*
@@ -1308,12 +1327,13 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 		super.parseFromFile(absPath);
 
 		log.debug("Parsing program config \"" + absPath + "\"");
-		props.setThrowExceptionOnMissing(true);
+		getProps().setThrowExceptionOnMissing(true);
 
 		Context context;
 		// by default we are in a clustering context
-		if (props.containsKey("context"))
-			context = Context.parseFromString(repo, props.getString("context"));
+		if (getProps().containsKey("context"))
+			context = Context.parseFromString(repo,
+					getProps().getString("context"));
 		else
 			context = Context.parseFromString(repo, "ClusteringContext");
 
@@ -1321,8 +1341,8 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 		 * Added 07.08.2012 Type of programconfig is either standalone or R
 		 */
 		String type;
-		if (props.containsKey("type")) {
-			type = props.getString("type");
+		if (getProps().containsKey("type")) {
+			type = getProps().getString("type");
 		} else
 			// Default
 			type = "standalone";
@@ -1335,9 +1355,9 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 		List<DataSetFormat> compatibleDataSetFormats;
 		boolean expectsNormalizedDataSet = false;
 		if (type.equals("standalone")) {
-			String program = FileUtils
-					.buildPath(repo.getBasePath(Program.class),
-							props.getString("program"));
+			String program = FileUtils.buildPath(
+					repo.getBasePath(Program.class),
+					getProps().getString("program"));
 
 			File programFile = new File(program);
 			if (!(programFile).exists())
@@ -1347,17 +1367,17 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 
 			changeDate = programFile.lastModified();
 
-			String outputFormat = props.getString("outputFormat");
+			String outputFormat = getProps().getString("outputFormat");
 
-			compatibleDataSetFormatsStr = props
-					.getStringArray("compatibleDataSetFormats");
+			compatibleDataSetFormatsStr = getProps().getStringArray(
+					"compatibleDataSetFormats");
 
 			compatibleDataSetFormats = DataSetFormat.parseFromString(repo,
 					compatibleDataSetFormatsStr);
 
-			if (props.containsKey("expectsNormalizedDataSet"))
-				expectsNormalizedDataSet = props
-						.getBoolean("expectsNormalizedDataSet");
+			if (getProps().containsKey("expectsNormalizedDataSet"))
+				expectsNormalizedDataSet = getProps().getBoolean(
+						"expectsNormalizedDataSet");
 			else
 				expectsNormalizedDataSet = false;
 
@@ -1367,7 +1387,7 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 			runresultFormat = RunResultFormat.parseFromString(repo,
 					outputFormat);
 
-			String alias = props.getString("alias");
+			String alias = getProps().getString("alias");
 
 			programP = new StandaloneProgram(repo, context, true, changeDate,
 					programFile, alias);
@@ -1386,7 +1406,8 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 					+ " is unknown.");
 		}
 
-		List<String> paras = Arrays.asList(props.getStringArray("parameters"));
+		List<String> paras = Arrays.asList(getProps().getStringArray(
+				"parameters"));
 		List<ProgramParameter<?>> params = new ArrayList<ProgramParameter<?>>();
 		List<ProgramParameter<?>> optimizableParameters = new ArrayList<ProgramParameter<?>>();
 
@@ -1394,7 +1415,7 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 
 		// check whether there are parameter-sections for parameters, that are
 		// not listed in the parameters-list
-		Set<String> sections = props.getSections();
+		Set<String> sections = getProps().getSections();
 		sections.removeAll(paras);
 		sections.remove(null);
 		sections.remove("invocationFormat");
@@ -1408,32 +1429,30 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 							+ " for undefined parameters. Please add them to the parameter-list.");
 		}
 
-		ProgramConfig result;
-
 		if (type.equals("standalone")) {
-			String invocationFormat = props.getSection("invocationFormat")
+			String invocationFormat = getProps().getSection("invocationFormat")
 					.getString("invocationFormat");
 			String invocationFormatWithoutGoldStandard = null;
 			String invocationFormatParameterOptimization = null;
 			String invocationFormatParameterOptimizationWithoutGoldStandard = null;
 
-			if (props.getSection("invocationFormat").containsKey(
+			if (getProps().getSection("invocationFormat").containsKey(
 					"invocationFormatWithoutGoldStandard"))
-				invocationFormatWithoutGoldStandard = props.getSection(
+				invocationFormatWithoutGoldStandard = getProps().getSection(
 						"invocationFormat").getString(
 						"invocationFormatWithoutGoldStandard");
 			else
 				invocationFormatWithoutGoldStandard = invocationFormat;
 
-			if (props.getSection("invocationFormat").containsKey(
+			if (getProps().getSection("invocationFormat").containsKey(
 					"invocationFormatParameterOptimization"))
-				invocationFormatParameterOptimization = props.getSection(
+				invocationFormatParameterOptimization = getProps().getSection(
 						"invocationFormat").getString(
 						"invocationFormatParameterOptimization");
 
-			if (props.getSection("invocationFormat").containsKey(
+			if (getProps().getSection("invocationFormat").containsKey(
 					"invocationFormatParameterOptimizationWithoutGoldStandard"))
-				invocationFormatParameterOptimizationWithoutGoldStandard = props
+				invocationFormatParameterOptimizationWithoutGoldStandard = getProps()
 						.getSection("invocationFormat")
 						.getString(
 								"invocationFormatParameterOptimizationWithoutGoldStandard");
@@ -1471,8 +1490,8 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 		 * Get the optimization parameters (parameters, that can be optimized
 		 * for this program in parameter_optimization runmode
 		 */
-		String[] optimizableParams = props
-				.getStringArray("optimizationParameters");
+		String[] optimizableParams = getProps().getStringArray(
+				"optimizationParameters");
 
 		// iterate over all parameters
 		for (String pa : paras) {
@@ -1485,7 +1504,8 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 			paramValues.put("name", pa);
 
 			ProgramParameter<?> param = ProgramParameter
-					.parseFromConfiguration(result, pa, props.getSection(pa));
+					.parseFromConfiguration(result, pa,
+							getProps().getSection(pa));
 			params.add(param);
 
 			/*
@@ -1520,7 +1540,8 @@ class RepositoryObjectParser<T extends RepositoryObject> extends Parser<T> {
 
 	// the members of the RepositoryObject class
 
-	protected HierarchicalINIConfiguration props;
+	protected boolean loadConfigFile = true;
+	private HierarchicalINIConfiguration props;
 	protected Repository repo;
 	protected long changeDate;
 	protected File absPath;
@@ -1549,15 +1570,21 @@ class RepositoryObjectParser<T extends RepositoryObject> extends Parser<T> {
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException {
 
-		this.props = new HierarchicalINIConfiguration(absPath.getAbsolutePath());
+		if (!absPath.exists())
+			throw new FileNotFoundException("File \"" + absPath
+					+ "\" does not exist!");
+
 		this.repo = Repository.getRepositoryForPath(absPath.getAbsolutePath());
 		this.changeDate = absPath.lastModified();
 		this.absPath = absPath;
 		this.log = LoggerFactory.getLogger(this.getClass());
+	}
 
-		if (!absPath.exists())
-			throw new FileNotFoundException("File \"" + absPath
-					+ "\" does not exist!");
+	protected HierarchicalINIConfiguration getProps()
+			throws ConfigurationException {
+		if (props == null)
+			props = new HierarchicalINIConfiguration(absPath.getAbsolutePath());
+		return props;
 	}
 }
 
@@ -1594,8 +1621,8 @@ class RunAnalysisRunParser extends AnalysisRunParser<RunAnalysisRun> {
 
 		List<RunStatistic> runStatistics = new LinkedList<RunStatistic>();
 
-		uniqueRunIdentifiers.addAll(Arrays.asList(props
-				.getStringArray("uniqueRunIdentifiers")));
+		uniqueRunIdentifiers.addAll(Arrays.asList(getProps().getStringArray(
+				"uniqueRunIdentifiers")));
 
 		/**
 		 * We catch the exceptions such that all statistics are tried to be
@@ -1603,7 +1630,7 @@ class RunAnalysisRunParser extends AnalysisRunParser<RunAnalysisRun> {
 		 * repository.
 		 */
 		List<UnknownRunStatisticException> thrownExceptions = new ArrayList<UnknownRunStatisticException>();
-		for (String runStatistic : props.getStringArray("runStatistics")) {
+		for (String runStatistic : getProps().getStringArray("runStatistics")) {
 			try {
 				runStatistics.add(RunStatistic.parseFromString(repo,
 						runStatistic));
@@ -1653,9 +1680,9 @@ class RunDataAnalysisRunParser extends AnalysisRunParser<RunDataAnalysisRun> {
 
 		List<RunDataStatistic> runDataStatistics = new LinkedList<RunDataStatistic>();
 
-		uniqueRunAnalysisRunIdentifiers.addAll(Arrays.asList(props
+		uniqueRunAnalysisRunIdentifiers.addAll(Arrays.asList(getProps()
 				.getStringArray("uniqueRunIdentifiers")));
-		uniqueDataAnalysisRunIdentifiers.addAll(Arrays.asList(props
+		uniqueDataAnalysisRunIdentifiers.addAll(Arrays.asList(getProps()
 				.getStringArray("uniqueDataIdentifiers")));
 
 		/**
@@ -1664,7 +1691,8 @@ class RunDataAnalysisRunParser extends AnalysisRunParser<RunDataAnalysisRun> {
 		 * repository.
 		 */
 		List<UnknownRunDataStatisticException> thrownExceptions = new ArrayList<UnknownRunDataStatisticException>();
-		for (String runStatistic : props.getStringArray("runDataStatistics")) {
+		for (String runStatistic : getProps().getStringArray(
+				"runDataStatistics")) {
 			try {
 				runDataStatistics.add(RunDataStatistic.parseFromString(repo,
 						runStatistic));
@@ -1717,18 +1745,17 @@ class RunParser<T extends Run> extends RepositoryObjectParser<T> {
 		super.parseFromFile(absPath);
 
 		// by default we are in a clustering context
-		if (props.containsKey("context"))
-			context = Context.parseFromString(repo, props.getString("context"));
+		if (getProps().containsKey("context"))
+			context = Context.parseFromString(repo,
+					getProps().getString("context"));
 		else
 			context = Context.parseFromString(repo, "ClusteringContext");
 
-		mode = props.getString("mode", "clustering");
+		mode = getProps().getString("mode", "clustering");
 	}
 }
 
-class RunResultDataSetConfigParser
-		extends
-			DataSetConfigParser<RunResultDataSetConfig> {
+class RunResultDataSetConfigParser extends DataSetConfigParser {
 
 	/*
 	 * (non-Javadoc)

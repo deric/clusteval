@@ -23,12 +23,20 @@ import java.util.ArrayList;
 
 import junit.framework.Assert;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Test;
 
 import utils.SimilarityMatrix;
 import ch.qos.logback.classic.Level;
+import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
+import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
+import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
+import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
+import de.clusteval.context.IncompatibleContextException;
 import de.clusteval.context.UnknownContextException;
 import de.clusteval.data.DataConfig;
+import de.clusteval.data.DataConfigNotFoundException;
+import de.clusteval.data.DataConfigurationException;
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
 import de.clusteval.data.dataset.format.ConversionStandardToInputConfiguration;
 import de.clusteval.data.dataset.format.DataSetFormat;
@@ -39,7 +47,12 @@ import de.clusteval.data.dataset.type.DataSetType;
 import de.clusteval.data.dataset.type.UnknownDataSetTypeException;
 import de.clusteval.data.distance.DistanceMeasure;
 import de.clusteval.data.distance.UnknownDistanceMeasureException;
+import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
+import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
+import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.preprocessing.DataPreprocessor;
+import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
@@ -50,6 +63,16 @@ import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.StubSQLCommunicator;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.parse.Parser;
+import de.clusteval.program.NoOptimizableProgramParameterException;
+import de.clusteval.program.UnknownParameterType;
+import de.clusteval.program.UnknownProgramParameterException;
+import de.clusteval.program.UnknownProgramTypeException;
+import de.clusteval.program.r.UnknownRProgramException;
+import de.clusteval.run.RunException;
+import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.statistics.UnknownRunDataStatisticException;
+import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.AbstractClustEvalTest;
 import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.RNotAvailableException;
@@ -69,15 +92,63 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws DataSetConfigurationException
 	 * @throws RegisterException
 	 * @throws UnknownDataSetTypeException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	public void testRegister() throws UnknownDataSetFormatException,
 			NoRepositoryFoundException, DataSetNotFoundException,
 			DataSetConfigurationException, RegisterException,
-			UnknownDataSetTypeException, NoDataSetException {
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
-						.getAbsoluteFile());
+			UnknownDataSetTypeException, NoDataSetException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			FileNotFoundException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
+								.getAbsoluteFile());
 
 		Assert.assertEquals(this.repositoryObject, this.getRepository()
 				.getRegisteredObject((DataSet) this.repositoryObject));
@@ -109,6 +180,33 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws DataSetNotFoundException
 	 * @throws UnknownDataSetTypeException
 	 * @throws NoSuchAlgorithmException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test(expected = DataSetRegisterException.class)
 	public void testRegisterRunResultRepositoryNotPresentInParent()
@@ -118,7 +216,25 @@ public class TestDataSet extends AbstractClustEvalTest {
 			DataSetNotFoundException, DataSetConfigurationException,
 			UnknownDataSetFormatException, RegisterException,
 			UnknownDataSetTypeException, NoDataSetException,
-			NoSuchAlgorithmException, InterruptedException {
+			NoSuchAlgorithmException, InterruptedException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
 		Repository runResultRepository = new RunResultRepository(
 				new File(
 						"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1")
@@ -127,9 +243,11 @@ public class TestDataSet extends AbstractClustEvalTest {
 				runResultRepository));
 		runResultRepository.initialize();
 		try {
-			DataSet.parseFromFile(new File(
-					"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1/inputs/DS1/testCaseDataSetNotPresentInParent.txt")
-					.getAbsoluteFile());
+			Parser.parseFromFile(
+					DataSet.class,
+					new File(
+							"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1/inputs/DS1/testCaseDataSetNotPresentInParent.txt")
+							.getAbsoluteFile());
 		} finally {
 			runResultRepository.terminateSupervisorThread();
 		}
@@ -143,16 +261,64 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws DataSetNotFoundException
 	 * @throws DataSetConfigurationException
 	 * @throws RegisterException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	public void testUnregister() throws UnknownDataSetFormatException,
 			NoRepositoryFoundException, DataSetNotFoundException,
 			DataSetConfigurationException, RegisterException,
-			UnknownDataSetTypeException, NoDataSetException {
+			UnknownDataSetTypeException, NoDataSetException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			FileNotFoundException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
 
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
-						.getAbsoluteFile());
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
+								.getAbsoluteFile());
 
 		Assert.assertEquals(this.repositoryObject, this.getRepository()
 				.getRegisteredObject((DataSet) this.repositoryObject));
@@ -173,16 +339,64 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws DataSetConfigurationException
 	 * @throws RegisterException
 	 * @throws UnknownDataSetTypeException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test
 	public void testParseFromFile() throws UnknownDataSetFormatException,
 			NoRepositoryFoundException, DataSetNotFoundException,
 			DataSetConfigurationException, RegisterException,
-			UnknownDataSetTypeException, NoDataSetException {
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
-						.getAbsoluteFile());
+			UnknownDataSetTypeException, NoDataSetException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			FileNotFoundException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
+								.getAbsoluteFile());
 		Assert.assertEquals(
 				new RelativeDataSet(
 						getRepository(),
@@ -207,17 +421,64 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws DataSetNotFoundException
 	 * @throws DataSetConfigurationException
 	 * @throws RegisterException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test(expected = DataSetNotFoundException.class)
 	public void testParseFromNotExistingFile()
 			throws UnknownDataSetFormatException, NoRepositoryFoundException,
 			DataSetNotFoundException, DataSetNotFoundException,
 			DataSetConfigurationException, RegisterException,
-			UnknownDataSetTypeException, NoDataSetException {
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities2.txt")
-						.getAbsoluteFile());
+			UnknownDataSetTypeException, NoDataSetException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			FileNotFoundException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities2.txt")
+								.getAbsoluteFile());
 	}
 
 	/**
@@ -228,16 +489,64 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws DataSetNotFoundException
 	 * @throws DataSetConfigurationException
 	 * @throws RegisterException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test
 	public void testGetDataSetFormat() throws NoRepositoryFoundException,
 			UnknownDataSetFormatException, DataSetNotFoundException,
 			DataSetConfigurationException, RegisterException,
-			UnknownDataSetTypeException, NoDataSetException {
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
-						.getAbsoluteFile());
+			UnknownDataSetTypeException, NoDataSetException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			FileNotFoundException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
+								.getAbsoluteFile());
 		DataSetFormat dsFormat = ((DataSet) this.repositoryObject)
 				.getDataSetFormat();
 		Assert.assertEquals(DataSetFormat.parseFromString(getRepository(),
@@ -252,16 +561,64 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws DataSetNotFoundException
 	 * @throws DataSetConfigurationException
 	 * @throws RegisterException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test
 	public void testGetMajorName() throws NoRepositoryFoundException,
 			UnknownDataSetFormatException, DataSetNotFoundException,
 			DataSetConfigurationException, RegisterException,
-			UnknownDataSetTypeException, NoDataSetException {
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
-						.getAbsoluteFile());
+			UnknownDataSetTypeException, NoDataSetException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			FileNotFoundException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
+								.getAbsoluteFile());
 		DataSet casted = (DataSet) this.repositoryObject;
 		Assert.assertEquals("DS1", casted.getMajorName());
 	}
@@ -274,16 +631,64 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws DataSetNotFoundException
 	 * @throws DataSetConfigurationException
 	 * @throws RegisterException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test
 	public void testGetMinorName() throws NoRepositoryFoundException,
 			UnknownDataSetFormatException, DataSetNotFoundException,
 			DataSetConfigurationException, RegisterException,
-			UnknownDataSetTypeException, NoDataSetException {
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
-						.getAbsoluteFile());
+			UnknownDataSetTypeException, NoDataSetException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			FileNotFoundException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
+								.getAbsoluteFile());
 		DataSet casted = (DataSet) this.repositoryObject;
 
 		Assert.assertEquals(casted.getMinorName(), casted.getAbsolutePath()
@@ -299,16 +704,63 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws DataSetNotFoundException
 	 * @throws DataSetConfigurationException
 	 * @throws RegisterException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test
 	public void testGetFullName() throws NoRepositoryFoundException,
 			UnknownDataSetFormatException, DataSetNotFoundException,
 			DataSetConfigurationException, RegisterException,
-			UnknownDataSetTypeException, NoDataSetException {
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
-						.getAbsoluteFile());
+			UnknownDataSetTypeException, NoDataSetException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			FileNotFoundException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
+								.getAbsoluteFile());
 		Assert.assertEquals("DS1/Zachary_karate_club_similarities.txt",
 				((DataSet) this.repositoryObject).getFullName());
 	}
@@ -321,16 +773,64 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws DataSetNotFoundException
 	 * @throws DataSetConfigurationException
 	 * @throws RegisterException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws FileNotFoundException
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test
 	public void testToString() throws NoRepositoryFoundException,
 			UnknownDataSetFormatException, DataSetNotFoundException,
 			DataSetConfigurationException, RegisterException,
-			UnknownDataSetTypeException, NoDataSetException {
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
-						.getAbsoluteFile());
+			UnknownDataSetTypeException, NoDataSetException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			FileNotFoundException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
+								.getAbsoluteFile());
 		Assert.assertEquals("DS1/Zachary_karate_club_similarities.txt",
 				((DataSet) this.repositoryObject).toString());
 	}
@@ -350,6 +850,31 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws InstantiationException
 	 * @throws UnknownDistanceMeasureException
 	 * @throws RNotAvailableException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 * @throws UnknownContextException
 	 */
 	@Test
@@ -360,11 +885,30 @@ public class TestDataSet extends AbstractClustEvalTest {
 			DataSetConfigurationException, RegisterException,
 			UnknownDataSetTypeException, NoDataSetException,
 			InstantiationException, IllegalAccessException,
-			UnknownDistanceMeasureException, RNotAvailableException {
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
-						.getAbsoluteFile());
+			UnknownDistanceMeasureException, RNotAvailableException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
+								.getAbsoluteFile());
 
 		DataSet standard = ((DataSet) this.repositoryObject)
 				.preprocessAndConvertTo(
@@ -397,6 +941,31 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
 	 * @throws RNotAvailableException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 * @throws UnknownContextException
 	 */
 	@Test
@@ -407,11 +976,30 @@ public class TestDataSet extends AbstractClustEvalTest {
 			DataSetConfigurationException, RegisterException,
 			UnknownDataSetTypeException, NoDataSetException,
 			InstantiationException, IllegalAccessException,
-			UnknownDistanceMeasureException, RNotAvailableException {
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/rowSimTest/rowSimTestFile.sim")
-						.getAbsoluteFile());
+			UnknownDistanceMeasureException, RNotAvailableException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/rowSimTest/rowSimTestFile.sim")
+								.getAbsoluteFile());
 		RelativeDataSet standard = (RelativeDataSet) ((DataSet) this.repositoryObject)
 				.preprocessAndConvertTo(
 						context,
@@ -448,6 +1036,31 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
 	 * @throws RNotAvailableException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 * @throws UnknownContextException
 	 */
 	@Test
@@ -458,11 +1071,30 @@ public class TestDataSet extends AbstractClustEvalTest {
 			DataSetConfigurationException, RegisterException,
 			UnknownDataSetTypeException, NoDataSetException,
 			InstantiationException, IllegalAccessException,
-			UnknownDistanceMeasureException, RNotAvailableException {
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
-						.getAbsoluteFile());
+			UnknownDistanceMeasureException, RNotAvailableException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/DS1/Zachary_karate_club_similarities.txt")
+								.getAbsoluteFile());
 		DataSet standard = ((DataSet) this.repositoryObject)
 				.preprocessAndConvertTo(
 						context,
@@ -621,11 +1253,29 @@ public class TestDataSet extends AbstractClustEvalTest {
 			InstantiationException, IllegalAccessException,
 			UnknownDistanceMeasureException, IllegalArgumentException,
 			SecurityException, InvocationTargetException,
-			NoSuchMethodException, RNotAvailableException {
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/sfld/sfld_brown_et_al_amidohydrolases_protein_similarities_for_beh.txt")
-						.getAbsoluteFile());
+			NoSuchMethodException, RNotAvailableException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownContextException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/sfld/sfld_brown_et_al_amidohydrolases_protein_similarities_for_beh.txt")
+								.getAbsoluteFile());
 		((DataSet) this.repositoryObject).preprocessAndConvertTo(
 				context,
 				DataSetFormat.parseFromString(getRepository(),
@@ -652,6 +1302,32 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws RegisterException
 	 * @throws RNotAvailableException
 	 * @throws InvalidParameterException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test
 	public void testConvertToDirectly() throws NoRepositoryFoundException,
@@ -660,7 +1336,23 @@ public class TestDataSet extends AbstractClustEvalTest {
 			DataSetConfigurationException, RegisterException,
 			UnknownDataSetTypeException, NoDataSetException,
 			UnknownDistanceMeasureException, InvalidParameterException,
-			RNotAvailableException {
+			RNotAvailableException, GoldStandardNotFoundException,
+			GoldStandardConfigurationException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
 
 		File targetFile = new File(
 				"testCaseRepository/data/datasets/rowSimTest/rowSimTestFile.sim.strip.SimMatrix")
@@ -668,10 +1360,12 @@ public class TestDataSet extends AbstractClustEvalTest {
 		if (targetFile.exists())
 			targetFile.delete();
 
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/rowSimTest/rowSimTestFile.sim")
-						.getAbsoluteFile());
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/rowSimTest/rowSimTestFile.sim")
+								.getAbsoluteFile());
 		DataSetAttributeFilterer filterer = new DataSetAttributeFilterer(
 				"testCaseRepository/data/datasets/rowSimTest/rowSimTestFile.sim");
 		filterer.process();
@@ -704,6 +1398,32 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws RegisterException
 	 * @throws RNotAvailableException
 	 * @throws InvalidParameterException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDataStatisticException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownProgramParameterException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IncompatibleContextException
+	 * @throws RunException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownParameterType
+	 * @throws UnknownContextException
+	 * @throws ConfigurationException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
 	 */
 	@Test
 	public void testGetInStandardFormat() throws NoRepositoryFoundException,
@@ -712,12 +1432,30 @@ public class TestDataSet extends AbstractClustEvalTest {
 			DataSetConfigurationException, RegisterException,
 			UnknownDataSetTypeException, NoDataSetException,
 			UnknownDistanceMeasureException, InvalidParameterException,
-			RNotAvailableException {
+			RNotAvailableException, GoldStandardNotFoundException,
+			GoldStandardConfigurationException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException,
+			ConfigurationException, UnknownContextException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
 
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/rowSimTest/rowSimTestFile.sim")
-						.getAbsoluteFile());
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/rowSimTest/rowSimTestFile.sim")
+								.getAbsoluteFile());
 		DataSetAttributeFilterer filterer = new DataSetAttributeFilterer(
 				"testCaseRepository/data/datasets/rowSimTest/rowSimTestFile.sim");
 		filterer.process();
@@ -748,11 +1486,29 @@ public class TestDataSet extends AbstractClustEvalTest {
 			InstantiationException, IllegalAccessException,
 			UnknownDistanceMeasureException, IllegalArgumentException,
 			SecurityException, InvocationTargetException,
-			NoSuchMethodException, RNotAvailableException {
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/bone_marrow_gene_expr/ALB_ALT_AML.1000genes.res.out2")
-						.getAbsoluteFile());
+			NoSuchMethodException, RNotAvailableException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownContextException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/bone_marrow_gene_expr/ALB_ALT_AML.1000genes.res.out2")
+								.getAbsoluteFile());
 		DataSet newDataSet = ((DataSet) this.repositoryObject)
 				.preprocessAndConvertTo(
 						context,
@@ -782,11 +1538,29 @@ public class TestDataSet extends AbstractClustEvalTest {
 			InstantiationException, IllegalAccessException,
 			UnknownDistanceMeasureException, IllegalArgumentException,
 			SecurityException, InvocationTargetException,
-			NoSuchMethodException, RNotAvailableException {
-		this.repositoryObject = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/data/datasets/bone_marrow_gene_expr/ALB_ALT_AML.1000genes.res.out2.SimMatrix")
-						.getAbsoluteFile());
+			NoSuchMethodException, RNotAvailableException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownContextException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
+		this.repositoryObject = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/data/datasets/bone_marrow_gene_expr/ALB_ALT_AML.1000genes.res.out2.SimMatrix")
+								.getAbsoluteFile());
 		DataSet newDataSet = ((DataSet) this.repositoryObject)
 				.preprocessAndConvertTo(
 						context,

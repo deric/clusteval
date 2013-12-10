@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -26,13 +27,22 @@ import org.junit.Test;
 import org.rosuda.REngine.REngineException;
 
 import ch.qos.logback.classic.Level;
+import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
+import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
+import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
+import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.context.Context;
+import de.clusteval.context.IncompatibleContextException;
 import de.clusteval.context.UnknownContextException;
 import de.clusteval.data.DataConfig;
+import de.clusteval.data.DataConfigNotFoundException;
+import de.clusteval.data.DataConfigurationException;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.data.dataset.DataSetConfig;
+import de.clusteval.data.dataset.DataSetConfigNotFoundException;
 import de.clusteval.data.dataset.DataSetConfigurationException;
 import de.clusteval.data.dataset.DataSetNotFoundException;
+import de.clusteval.data.dataset.IncompatibleDataSetConfigPreprocessorException;
 import de.clusteval.data.dataset.NoDataSetException;
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
 import de.clusteval.data.dataset.format.ConversionStandardToInputConfiguration;
@@ -42,7 +52,12 @@ import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.dataset.type.UnknownDataSetTypeException;
 import de.clusteval.data.distance.DistanceMeasure;
 import de.clusteval.data.distance.UnknownDistanceMeasureException;
+import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
+import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
+import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.preprocessing.DataPreprocessor;
+import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
@@ -51,7 +66,17 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.parse.Parser;
+import de.clusteval.program.NoOptimizableProgramParameterException;
+import de.clusteval.program.UnknownParameterType;
+import de.clusteval.program.UnknownProgramParameterException;
+import de.clusteval.program.UnknownProgramTypeException;
+import de.clusteval.program.r.UnknownRProgramException;
+import de.clusteval.run.RunException;
 import de.clusteval.run.result.RunResult;
+import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.statistics.UnknownRunDataStatisticException;
+import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.RNotAvailableException;
 
@@ -114,12 +139,29 @@ public class TestPlotter {
 			DataSetNotFoundException, DataSetConfigurationException,
 			NoDataSetException, NoRepositoryFoundException,
 			UnknownContextException, RNotAvailableException,
-			InterruptedException {
+			InterruptedException, GoldStandardNotFoundException,
+			GoldStandardConfigurationException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
 		Context context = Context.parseFromString(parent, "ClusteringContext");
 
-		DataSet ds = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/results/04_07_2013-14_41_00_paper_run_synthetic/inputs/TransClust_2_synthetic_cassini250/synthetic/cassini250"));
+		DataSet ds = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/results/04_07_2013-14_41_00_paper_run_synthetic/inputs/TransClust_2_synthetic_cassini250/synthetic/cassini250"));
 
 		File targetFile = new File(
 				"testCaseRepository/results/04_07_2013-14_41_00_paper_run_synthetic/inputs/TransClust_2_synthetic_cassini250/synthetic/cassini250.strip.isoMDS");
@@ -168,12 +210,29 @@ public class TestPlotter {
 			DataSetNotFoundException, DataSetConfigurationException,
 			NoDataSetException, NoRepositoryFoundException,
 			UnknownContextException, RNotAvailableException,
-			InterruptedException {
+			InterruptedException, GoldStandardNotFoundException,
+			GoldStandardConfigurationException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException,
+			DataConfigNotFoundException, ConfigurationException,
+			UnknownParameterType, UnknownClusteringQualityMeasureException,
+			RunException, IncompatibleContextException,
+			UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException {
 		Context context = Context.parseFromString(parent, "ClusteringContext");
 
-		DataSet ds = DataSet
-				.parseFromFile(new File(
-						"testCaseRepository/results/04_07_2013-14_41_00_paper_run_synthetic/inputs/TransClust_2_synthetic_cassini250/synthetic/cassini250"));
+		DataSet ds = Parser
+				.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/results/04_07_2013-14_41_00_paper_run_synthetic/inputs/TransClust_2_synthetic_cassini250/synthetic/cassini250"));
 
 		File targetFile = new File(
 				"testCaseRepository/results/04_07_2013-14_41_00_paper_run_synthetic/inputs/TransClust_2_synthetic_cassini250/synthetic/cassini250.strip.PCA");

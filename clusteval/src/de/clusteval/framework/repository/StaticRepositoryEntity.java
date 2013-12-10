@@ -161,8 +161,9 @@ public class StaticRepositoryEntity<T extends RepositoryObject>
 		this.objects.put(object, object);
 		this.nameToObject.put(object.toString(), object);
 		this.repository.pathToRepositoryObject.put(object.absPath, object);
-		this.repository.info("New " + object.getClass().getSimpleName() + ": "
-				+ object.toString());
+		if (this.printOnRegister)
+			this.repository.info("New " + object.getClass().getSimpleName()
+					+ ": " + object.toString());
 
 		this.repository.sqlCommunicator.register(object, false);
 
@@ -191,8 +192,9 @@ public class StaticRepositoryEntity<T extends RepositoryObject>
 	}
 
 	protected <S extends T> void unregisterAfterRemove(final S object) {
-		this.repository.info(object.getClass().getSimpleName() + " removed: "
-				+ object);
+		if (this.printOnRegister)
+			this.repository.info(object.getClass().getSimpleName()
+					+ " removed: " + object);
 
 		this.repository.sqlCommunicator.unregister(object);
 	}

@@ -235,7 +235,9 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 	public <S extends T> boolean unregisterClass(final Class<S> c) {
 		boolean result = this.classes.remove(c.getName()) != null;
 		if (result) {
-			this.repository.info("Dynamic class removed: " + c.getSimpleName());
+			if (this.printOnRegister)
+				this.repository.info("Dynamic class removed: "
+						+ c.getSimpleName());
 			// we inform all listeners about the new class. that
 			// means those objects are deleted such that new instances instances
 			// can be created using the new class.

@@ -124,8 +124,21 @@ class RunResultIterator implements Iterator<File> {
 		if (this.parsedResults.size() > 0)
 			return true;
 
-		// parse the next result folder
-		return basePath.hasNext();
+		// parse new runresults
+		boolean exception = true;
+		while ((exception || this.parsedResults.size() == 0)
+				&& basePath.hasNext()) {
+			try {
+				List<RunResult> newResults = new ArrayList<RunResult>();
+				RunResult.parseFromRunResultFolder(repo, basePath.next(),
+						newResults, false, false);
+				this.parsedResults.addAll(newResults);
+				exception = false;
+			} catch (Exception e) {
+				// just ignore that runresult if it cannot be parsed
+			}
+		}
+		return this.parsedResults.size() > 0;
 	}
 
 	/*
@@ -135,18 +148,6 @@ class RunResultIterator implements Iterator<File> {
 	 */
 	@Override
 	public File next() {
-		// parse new runresults
-		if (this.parsedResults.size() == 0) {
-			try {
-				List<RunResult> newResults = new ArrayList<RunResult>();
-				RunResult.parseFromRunResultFolder(repo, basePath.next(),
-						newResults, false, false);
-				this.parsedResults.addAll(newResults);
-			} catch (Exception e) {
-				// just ignore that runresult if it cannot be parsed
-			}
-		}
-
 		this.lastReturnedResult = this.parsedResults.remove(0);
 		return new File(lastReturnedResult.getAbsolutePath());
 	}

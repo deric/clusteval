@@ -21,6 +21,7 @@ public class ProgramParameterRepositoryEntity<T extends ProgramParameter<?>>
 	public ProgramParameterRepositoryEntity(Repository repository,
 			StaticRepositoryEntity<T> parent, String basePath) {
 		super(repository, parent, basePath);
+		this.printOnRegister = false;
 	}
 
 	/*

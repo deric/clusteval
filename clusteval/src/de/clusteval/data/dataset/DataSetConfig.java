@@ -11,30 +11,15 @@
 package de.clusteval.data.dataset;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.HierarchicalINIConfiguration;
-import org.slf4j.LoggerFactory;
 
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
 import de.clusteval.data.dataset.format.ConversionStandardToInputConfiguration;
-import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
-import de.clusteval.data.dataset.type.UnknownDataSetTypeException;
-import de.clusteval.data.distance.DistanceMeasure;
-import de.clusteval.data.distance.UnknownDistanceMeasureException;
-import de.clusteval.data.preprocessing.DataPreprocessor;
-import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
-import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryEvent;
 import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.RepositoryRemoveEvent;
 import de.clusteval.framework.repository.RepositoryReplaceEvent;
-import file.FileUtils;
 
 /**
  * 
@@ -154,129 +139,6 @@ public class DataSetConfig extends RepositoryObject {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	/**
-	 * This method parses a dataset configuration from a file on the filesystem.
-	 * 
-	 * <p>
-	 * A dataset configuration contains several options:
-	 * <ul>
-	 * <li><b>datasetName</b>: The folder the dataset file lies within.</li>
-	 * <li><b>datasetFile</b>: The filename of the dataset file.</li>
-	 * <li><b>distanceMeasureAbsoluteToRelative</b>: If the dataset contains
-	 * absolute coordinates, this measure is used to calculate the pairwise
-	 * distances/similarities between the object pairs.</li>
-	 * <li><b>preprocessorBeforeDistance</b>: A comma seperated list of data
-	 * preprocessors to apply, before the data is converted to pairwise
-	 * similarities (the standard input format)</li>
-	 * <li><b>preprocessorAfterDistance</b>: A comma seperated list of data
-	 * preprocessors to apply, after the data is converted to pairwise
-	 * similarities (the standard input format)</li>
-	 * </ul>
-	 * 
-	 * @param absConfigPath
-	 *            The absolute path to the dataset configuration file.
-	 * @throws DataSetConfigurationException
-	 * @throws UnknownDataSetFormatException
-	 * @throws NoRepositoryFoundException
-	 * @throws DataSetNotFoundException
-	 * @throws DataSetConfigNotFoundException
-	 * @throws UnknownDistanceMeasureException
-	 * @throws RegisterException
-	 * @throws UnknownDataSetTypeException
-	 * @throws NumberFormatException
-	 * @throws NoDataSetException
-	 * @return The dataset configuration object.
-	 * @throws UnknownDataPreprocessorException
-	 * @throws IncompatibleDataSetConfigPreprocessorException
-	 */
-	@Deprecated
-	public static DataSetConfig parseFromFile(final File absConfigPath)
-			throws DataSetConfigurationException,
-			UnknownDataSetFormatException, NoRepositoryFoundException,
-			DataSetNotFoundException, DataSetConfigNotFoundException,
-			UnknownDistanceMeasureException, RegisterException,
-			UnknownDataSetTypeException, NumberFormatException,
-			NoDataSetException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
-
-		if (!absConfigPath.exists())
-			throw new DataSetConfigNotFoundException("Dataset config \""
-					+ absConfigPath + "\" does not exist!");
-
-		LoggerFactory.getLogger(DataSetConfig.class).debug(
-				"Parsing dataset config \"" + absConfigPath + "\"");
-
-		try {
-			HierarchicalINIConfiguration props = new HierarchicalINIConfiguration(
-					absConfigPath);
-			props.setThrowExceptionOnMissing(true);
-
-			final long changeDate = absConfigPath.lastModified();
-			String datasetName = props.getString("datasetName");
-			String datasetFile = props.getString("datasetFile");
-
-			Repository repo = Repository.getRepositoryForPath(absConfigPath
-					.getAbsolutePath());
-
-			DistanceMeasure distanceMeasure;
-			if (props.containsKey("distanceMeasureAbsoluteToRelative")) {
-				distanceMeasure = DistanceMeasure.parseFromString(repo,
-						props.getString("distanceMeasureAbsoluteToRelative"));
-			} else
-				distanceMeasure = DistanceMeasure.parseFromString(repo,
-						"EuclidianDistanceMeasure");
-
-			DataSet dataSet = DataSet.parseFromFile(new File(FileUtils
-					.buildPath(repo.getBasePath(DataSet.class), datasetName,
-							datasetFile)));
-
-			// added 12.04.2013
-			List<DataPreprocessor> preprocessorBeforeDistance;
-			if (props.containsKey("preprocessorBeforeDistance")) {
-				preprocessorBeforeDistance = DataPreprocessor.parseFromString(
-						repo,
-						props.getStringArray("preprocessorBeforeDistance"));
-
-				for (DataPreprocessor proc : preprocessorBeforeDistance) {
-					if (!proc.getCompatibleDataSetFormats().contains(
-							dataSet.getDataSetFormat().getClass()
-									.getSimpleName())) {
-						throw new IncompatibleDataSetConfigPreprocessorException(
-								"The data preprocessor "
-										+ proc.getClass().getSimpleName()
-										+ " cannot be applied to a dataset with format "
-										+ dataSet.getDataSetFormat().getClass()
-												.getSimpleName());
-					}
-				}
-			} else
-				preprocessorBeforeDistance = new ArrayList<DataPreprocessor>();
-
-			List<DataPreprocessor> preprocessorAfterDistance;
-			if (props.containsKey("preprocessorAfterDistance")) {
-				preprocessorAfterDistance = DataPreprocessor
-						.parseFromString(repo, props
-								.getStringArray("preprocessorAfterDistance"));
-			} else
-				preprocessorAfterDistance = new ArrayList<DataPreprocessor>();
-
-			ConversionInputToStandardConfiguration configInputToStandard = new ConversionInputToStandardConfiguration(
-					distanceMeasure, preprocessorBeforeDistance,
-					preprocessorAfterDistance);
-			ConversionStandardToInputConfiguration configStandardToInput = new ConversionStandardToInputConfiguration();
-
-			DataSetConfig result = new DataSetConfig(repo, changeDate,
-					absConfigPath, dataSet, configInputToStandard,
-					configStandardToInput);
-			result = repo.getRegisteredObject(result);
-			return result;
-		} catch (ConfigurationException e) {
-			throw new DataSetConfigurationException(e);
-		} catch (NoSuchElementException e) {
-			throw new DataSetConfigurationException(e);
-		}
 	}
 
 	/**

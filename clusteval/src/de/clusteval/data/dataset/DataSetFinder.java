@@ -47,11 +47,14 @@ public class DataSetFinder extends FileFinder<DataSet> {
 	@Override
 	protected boolean checkFile(File file) {
 		try {
-			return file.isFile()
-					&& !file.getParentFile().getName().equals("configs")
-					&& ((DataSetAttributeParser) new DataSetAttributeParser(
-							file.getAbsolutePath()).process())
-							.getAttributeValues().size() > 0;
+			DataSetAttributeParser p;
+			if (file.isFile()
+					&& !file.getParentFile().getName().equals("configs")) {
+				p = new DataSetAttributeParser(file.getAbsolutePath());
+				p.process();
+				return p.getAttributeValues().size() > 0;
+			}
+			return false;
 		} catch (Exception e) {
 			return false;
 		}

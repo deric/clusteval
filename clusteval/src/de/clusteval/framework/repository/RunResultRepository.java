@@ -139,11 +139,14 @@ public class RunResultRepository extends Repository {
 		this.staticRepositoryEntities.put(Program.class,
 				this.parent.staticRepositoryEntities.get(Program.class));
 
-		this.staticRepositoryEntities.put(
-				RunResult.class,
-				new RunResultRunResultRepositoryEntity(this,
-						this.parent.staticRepositoryEntities
-								.get(RunResult.class), this.getBasePath()));
+		// this.staticRepositoryEntities.put(
+		// RunResult.class,
+		// new RunResultRunResultRepositoryEntity(this,
+		// this.parent.staticRepositoryEntities
+		// .get(RunResult.class), this.getBasePath()));
+
+		this.staticRepositoryEntities.put(RunResult.class,
+				this.parent.staticRepositoryEntities.get(RunResult.class));
 
 		this.staticRepositoryEntities.put(Finder.class,
 				this.parent.staticRepositoryEntities.get(Finder.class));

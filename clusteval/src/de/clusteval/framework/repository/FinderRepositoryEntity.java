@@ -19,6 +19,7 @@ public class FinderRepositoryEntity extends StaticRepositoryEntity<Finder> {
 	public FinderRepositoryEntity(Repository repository,
 			StaticRepositoryEntity<Finder> parent, String basePath) {
 		super(repository, parent, basePath);
+		this.printOnRegister = false;
 	}
 
 	/*
