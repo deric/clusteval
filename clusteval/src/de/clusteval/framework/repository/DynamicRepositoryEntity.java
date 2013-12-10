@@ -124,6 +124,8 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 
 		this.repository.log.info("Dynamic class registered: "
 				+ object.getSimpleName());
+		
+		this.repository.sqlCommunicator.register(object);
 
 		return true;
 	}

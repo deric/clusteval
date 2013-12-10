@@ -441,6 +441,45 @@ public abstract class SQLCommunicator {
 			final boolean updateOnly) {
 		if (object instanceof DataSet)
 			return this.register((DataSet) object, updateOnly);
+		else if (object instanceof ClusteringRun)
+			return this.register((ClusteringRun) object, updateOnly);
+		else if (object instanceof ClusteringRunResult)
+			return this.register((ClusteringRunResult) object);
+		else if (object instanceof DataAnalysisRun)
+			return this.register((DataAnalysisRun) object, updateOnly);
+		else if (object instanceof DataAnalysisRunResult)
+			return this.register((DataAnalysisRunResult) object);
+		else if (object instanceof DataConfig)
+			return this.register((DataConfig) object, updateOnly);
+		else if (object instanceof DataSetConfig)
+			return this.register((DataSetConfig) object, updateOnly);
+		else if (object instanceof DoubleProgramParameter)
+			return this.register((DoubleProgramParameter) object);
+		else if (object instanceof GoldStandard)
+			return this.register((GoldStandard) object, updateOnly);
+		else if (object instanceof GoldStandardConfig)
+			return this.register((GoldStandardConfig) object, updateOnly);
+		else if (object instanceof IntegerProgramParameter)
+			return this.register((IntegerProgramParameter) object);
+		else if (object instanceof InternalParameterOptimizationRun)
+			return this.register((InternalParameterOptimizationRun) object,
+					updateOnly);
+		else if (object instanceof ParameterOptimizationResult)
+			return this.register((ParameterOptimizationResult) object);
+		else if (object instanceof Program)
+			return this.register((Program) object, updateOnly);
+		else if (object instanceof ProgramConfig)
+			return this.register((ProgramConfig) object, updateOnly);
+		else if (object instanceof RunAnalysisRun)
+			return this.register((RunAnalysisRun) object, updateOnly);
+		else if (object instanceof RunAnalysisRunResult)
+			return this.register((RunAnalysisRunResult) object);
+		else if (object instanceof RunDataAnalysisRun)
+			return this.register((RunDataAnalysisRun) object, updateOnly);
+		else if (object instanceof RunDataAnalysisRunResult)
+			return this.register((RunDataAnalysisRunResult) object);
+		else if (object instanceof StringProgramParameter)
+			return this.register((StringProgramParameter) object);
 		return false;
 	}
 
@@ -448,16 +487,106 @@ public abstract class SQLCommunicator {
 	protected boolean unregister(final RepositoryObject object) {
 		if (object instanceof DataSet)
 			return this.unregister((DataSet) object);
+		else if (object instanceof ClusteringRun)
+			return this.unregister((ClusteringRun) object);
+		else if (object instanceof ClusteringRunResult)
+			return this.unregister((ClusteringRunResult) object);
+		else if (object instanceof DataAnalysisRun)
+			return this.unregister((DataAnalysisRun) object);
+		else if (object instanceof DataAnalysisRunResult)
+			return this.unregister((DataAnalysisRunResult) object);
+		else if (object instanceof DataConfig)
+			return this.unregister((DataConfig) object);
+		else if (object instanceof DataSetConfig)
+			return this.unregister((DataSetConfig) object);
+		else if (object instanceof DoubleProgramParameter)
+			return this.unregister((DoubleProgramParameter) object);
+		else if (object instanceof GoldStandard)
+			return this.unregister((GoldStandard) object);
+		else if (object instanceof GoldStandardConfig)
+			return this.unregister((GoldStandardConfig) object);
+		else if (object instanceof IntegerProgramParameter)
+			return this.unregister((IntegerProgramParameter) object);
+		else if (object instanceof InternalParameterOptimizationRun)
+			return this.unregister((InternalParameterOptimizationRun) object);
+		else if (object instanceof ParameterOptimizationResult)
+			return this.unregister((ParameterOptimizationResult) object);
+		else if (object instanceof Program)
+			return this.unregister((Program) object);
+		else if (object instanceof ProgramConfig)
+			return this.unregister((ProgramConfig) object);
+		else if (object instanceof RunAnalysisRun)
+			return this.unregister((RunAnalysisRun) object);
+		else if (object instanceof RunAnalysisRunResult)
+			return this.unregister((RunAnalysisRunResult) object);
+		else if (object instanceof RunDataAnalysisRun)
+			return this.unregister((RunDataAnalysisRun) object);
+		else if (object instanceof RunDataAnalysisRunResult)
+			return this.unregister((RunDataAnalysisRunResult) object);
+		else if (object instanceof StringProgramParameter)
+			return this.unregister((StringProgramParameter) object);
 		return false;
 	}
-	
+
 	// TODO
 	protected boolean register(final Class<? extends RepositoryObject> c) {
+		if (ClusteringQualityMeasure.class.isAssignableFrom(c))
+			return this
+					.registerClusteringQualityMeasureClass((Class<? extends ClusteringQualityMeasure>) c);
+		else if (Context.class.isAssignableFrom(c))
+			return this.registerContextClass((Class<? extends Context>) c);
+		else if (DataSetFormat.class.isAssignableFrom(c))
+			return this
+					.registerDataSetFormatClass((Class<? extends DataSetFormat>) c);
+		else if (DataSetType.class.isAssignableFrom(c))
+			return this
+					.registerDataSetTypeClass((Class<? extends DataSetType>) c);
+		else if (DataStatistic.class.isAssignableFrom(c))
+			return this
+					.registerDataStatisticClass((Class<? extends DataStatistic>) c);
+		else if (ParameterOptimizationMethod.class.isAssignableFrom(c))
+			return this
+					.registerParameterOptimizationMethodClass((Class<? extends ParameterOptimizationMethod>) c);
+		else if (RunDataStatistic.class.isAssignableFrom(c))
+			return this
+					.registerRunDataStatisticClass((Class<? extends RunDataStatistic>) c);
+		else if (RunResultFormat.class.isAssignableFrom(c))
+			return this
+					.registerRunResultFormatClass((Class<? extends RunResultFormat>) c);
+		else if (RunStatistic.class.isAssignableFrom(c))
+			return this
+					.registerRunStatisticClass((Class<? extends RunStatistic>) c);
 		return false;
 	}
 
 	// TODO
 	protected boolean unregister(final Class<? extends RepositoryObject> c) {
+		if (ClusteringQualityMeasure.class.isAssignableFrom(c))
+			return this
+					.unregisterClusteringQualityMeasureClass((Class<? extends ClusteringQualityMeasure>) c);
+		else if (Context.class.isAssignableFrom(c))
+			return this.unregisterContextClass((Class<? extends Context>) c);
+		else if (DataSetFormat.class.isAssignableFrom(c))
+			return this
+					.unregisterDataSetFormatClass((Class<? extends DataSetFormat>) c);
+		else if (DataSetType.class.isAssignableFrom(c))
+			return this
+					.unregisterDataSetTypeClass((Class<? extends DataSetType>) c);
+		else if (DataStatistic.class.isAssignableFrom(c))
+			return this
+					.unregisterDataStatisticClass((Class<? extends DataStatistic>) c);
+		else if (ParameterOptimizationMethod.class.isAssignableFrom(c))
+			return this
+					.unregisterParameterOptimizationMethodClass((Class<? extends ParameterOptimizationMethod>) c);
+		else if (RunDataStatistic.class.isAssignableFrom(c))
+			return this
+					.unregisterRunDataStatisticClass((Class<? extends RunDataStatistic>) c);
+		else if (RunResultFormat.class.isAssignableFrom(c))
+			return this
+					.unregisterRunResultFormat((Class<? extends RunResultFormat>) c);
+		else if (RunStatistic.class.isAssignableFrom(c))
+			return this
+					.unregisterRunStatisticClass((Class<? extends RunStatistic>) c);
 		return false;
 	}
 
