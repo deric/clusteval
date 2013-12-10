@@ -153,6 +153,5 @@ public abstract class FileFinder<T extends RepositoryObject> extends Finder<T> {
 		super.findAndRegisterObjects();
 	}
 
-	protected abstract RepositoryObject parseObjectFromFile(final File file)
-			throws Exception;
+	protected abstract T parseObjectFromFile(final File file) throws Exception;
 }
