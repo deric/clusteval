@@ -235,6 +235,7 @@ public abstract class DataSet extends RepositoryObject {
 	 * @see AbsoluteDataSet
 	 * @see RelativeDataSet
 	 */
+	@Deprecated
 	public static DataSet parseFromFile(final File absPath)
 			throws NoRepositoryFoundException, DataSetNotFoundException,
 			UnknownDataSetFormatException, DataSetConfigurationException,
@@ -269,7 +270,8 @@ public abstract class DataSet extends RepositoryObject {
 			// throw exception
 			Collection<DataSet> dataSets;
 			if (repo instanceof RunResultRepository)
-				dataSets = repo.getParent().getCollectionStaticEntities(DataSet.class);
+				dataSets = repo.getParent().getCollectionStaticEntities(
+						DataSet.class);
 			else
 				dataSets = repo.getCollectionStaticEntities(DataSet.class);
 
@@ -337,35 +339,6 @@ public abstract class DataSet extends RepositoryObject {
 		} catch (IOException e) {
 			throw new UnknownDataSetFormatException(e);
 		}
-	}
-
-	/**
-	 * This method parses the header of a dataset file. A header is required for
-	 * a dataset file to be recognized by the framework as a valid dataset file.
-	 * If the file does not contain any header lines, it is ignored by the
-	 * framework. A header line is of the form '// attribute = value'. The
-	 * header should contain several lines:
-	 * 
-	 * <p>
-	 * The type of the dataset, e.g. '// dataSetType =
-	 * GeneExpressionDataSetType'
-	 * <p>
-	 * The format of the dataset, e.g. '// dataSetFormat = RowSimDataSetFormat'
-	 * <p>
-	 * The version of the dataset format, e.g. '// dataSetFormatVersion = 1'
-	 * 
-	 * @param absPath
-	 * @return
-	 * @throws IOException
-	 */
-	protected static Map<String, String> extractDataSetAttributes(
-			final File absPath) throws IOException {
-		DataSetAttributeParser attributeParser = new DataSetAttributeParser(
-				absPath.getAbsolutePath());
-		attributeParser.process();
-		Map<String, String> attributeValues = attributeParser
-				.getAttributeValues();
-		return attributeValues;
 	}
 
 	/**
@@ -849,4 +822,34 @@ public abstract class DataSet extends RepositoryObject {
 	 * @return The object ids contained in the dataset.
 	 */
 	public abstract List<String> getIds();
+
+	/**
+	 * This method parses the header of a dataset file. A header is required for
+	 * a dataset file to be recognized by the framework as a valid dataset file.
+	 * If the file does not contain any header lines, it is ignored by the
+	 * framework. A header line is of the form '// attribute = value'. The
+	 * header should contain several lines:
+	 * 
+	 * <p>
+	 * The type of the dataset, e.g. '// dataSetType =
+	 * GeneExpressionDataSetType'
+	 * <p>
+	 * The format of the dataset, e.g. '// dataSetFormat = RowSimDataSetFormat'
+	 * <p>
+	 * The version of the dataset format, e.g. '// dataSetFormatVersion = 1'
+	 * 
+	 * @param absPath
+	 * @return
+	 * @throws IOException
+	 */
+	@Deprecated
+	protected static Map<String, String> extractDataSetAttributes(
+			final File absPath) throws IOException {
+		DataSetAttributeParser attributeParser = new DataSetAttributeParser(
+				absPath.getAbsolutePath());
+		attributeParser.process();
+		Map<String, String> attributeValues = attributeParser
+				.getAttributeValues();
+		return attributeValues;
+	}
 }

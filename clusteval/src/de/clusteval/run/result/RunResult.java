@@ -52,6 +52,7 @@ import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
@@ -131,12 +132,17 @@ public abstract class RunResult extends RepositoryObject {
 	 * @throws UnknownParameterType
 	 * @throws InterruptedException
 	 */
+	// TODO: we cannot move this method into Parser#RunResultParser, because
+	// ParameterOptimizationRun.parseFromRunResultFolder() returns several
+	// RunResult objects per invocation. This is not compatible with the
+	// structure of the Parser class. Best solution: rewrite
+	// ParameterOptimizationRunResult class, such that it contains all results
+	// of the folder in one object.
 	public static Run parseFromRunResultFolder(
 			final Repository parentRepository, final File runResultFolder,
-			final List<ExecutionRunResult> result,
-			final boolean parseClusterings, final boolean storeClusterings)
-			throws IOException, UnknownRunResultFormatException,
-			UnknownDataSetFormatException,
+			final List<RunResult> result, final boolean parseClusterings,
+			final boolean storeClusterings) throws IOException,
+			UnknownRunResultFormatException, UnknownDataSetFormatException,
 			UnknownClusteringQualityMeasureException, InvalidRunModeException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
@@ -186,7 +192,7 @@ public abstract class RunResult extends RepositoryObject {
 			}
 		if (runFile == null)
 			return null;
-		final Run run = Run.parseFromFile(runFile);
+		final Run run = Parser.parseRunFromFile(runFile);
 
 		if (run instanceof ClusteringRun) {
 			return ClusteringRunResult.parseFromRunResultFolder(
@@ -199,15 +205,17 @@ public abstract class RunResult extends RepositoryObject {
 					storeClusterings, true);
 		} else if (run instanceof DataAnalysisRun) {
 			DataAnalysisRunResult.parseFromRunResultFolder(
-					(DataAnalysisRun) run, childRepository, runResultFolder);
+					(DataAnalysisRun) run, childRepository, runResultFolder,
+					result);
 			return run;
 		} else if (run instanceof RunDataAnalysisRun) {
 			RunDataAnalysisRunResult.parseFromRunResultFolder(
-					(RunDataAnalysisRun) run, childRepository, runResultFolder);
+					(RunDataAnalysisRun) run, childRepository, runResultFolder,
+					result);
 			return run;
 		} else if (run instanceof RunAnalysisRun) {
 			RunAnalysisRunResult.parseFromRunResultFolder((RunAnalysisRun) run,
-					childRepository, runResultFolder);
+					childRepository, runResultFolder, result);
 			return run;
 		}
 		return run;

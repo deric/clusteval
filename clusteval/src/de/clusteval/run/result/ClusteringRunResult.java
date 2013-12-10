@@ -52,6 +52,7 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
@@ -286,7 +287,7 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	 */
 	public static Run parseFromRunResultFolder(final ClusteringRun run,
 			final Repository repository, final File runResultFolder,
-			final List<ExecutionRunResult> result) throws RegisterException {
+			final List<RunResult> result) throws RegisterException {
 
 		File clusterFolder = new File(FileUtils.buildPath(
 				runResultFolder.getAbsolutePath(), "clusters"));
@@ -436,7 +437,7 @@ public class ClusteringRunResult extends ExecutionRunResult {
 			}
 		if (runFile == null)
 			return null;
-		final Run run = Run.parseFromFile(runFile);
+		final Run run = Parser.parseRunFromFile(runFile);
 
 		if (run instanceof ClusteringRun) {
 			final ClusteringRun paramRun = (ClusteringRun) run;

@@ -17,11 +17,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import utils.ArrayIterator;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
-import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.run.RUN_STATUS;
 import de.clusteval.run.Run;
@@ -32,6 +32,9 @@ import de.clusteval.utils.FileFinder;
  * 
  */
 public class RunResultFinder extends FileFinder<RunResult> {
+
+	// the iterator to have access to the parsed runresult objects
+	protected RunResultIterator iter;
 
 	/**
 	 * Instantiates a new run result finder.
@@ -50,10 +53,8 @@ public class RunResultFinder extends FileFinder<RunResult> {
 	 * @see utils.FileFinder#parseObjectFromFile(java.io.File)
 	 */
 	@Override
-	protected RepositoryObject parseObjectFromFile(File file)
-			throws InterruptedException, Exception {
-		return RunResult.parseFromRunResultFolder(getRepository(), file,
-				new ArrayList<ExecutionRunResult>(), false, false);
+	protected RunResult parseObjectFromFile(File file) throws Exception {
+		return iter.getRunResult();
 	}
 
 	/*
@@ -63,7 +64,8 @@ public class RunResultFinder extends FileFinder<RunResult> {
 	 */
 	@Override
 	protected Iterator<File> getIterator() {
-		return new ArrayIterator<File>(this.getBaseDir().listFiles());
+		iter = new RunResultIterator(this.repository, this.getBaseDir());
+		return iter;
 	}
 
 	/*
@@ -93,5 +95,73 @@ public class RunResultFinder extends FileFinder<RunResult> {
 		}
 		return false;
 	}
+}
 
+class RunResultIterator implements Iterator<File> {
+
+	protected Repository repo;
+
+	protected ArrayIterator<File> basePath;
+
+	protected List<RunResult> parsedResults;
+
+	protected RunResult lastReturnedResult;
+
+	public RunResultIterator(final Repository repo, final File basePath) {
+		this.repo = repo;
+		this.basePath = new ArrayIterator<File>(basePath.listFiles());
+		this.parsedResults = new ArrayList<RunResult>();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.util.Iterator#hasNext()
+	 */
+	@Override
+	public boolean hasNext() {
+		// take already parsed runresults
+		if (this.parsedResults.size() > 0)
+			return true;
+
+		// parse the next result folder
+		return basePath.hasNext();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.util.Iterator#next()
+	 */
+	@Override
+	public File next() {
+		// parse new runresults
+		if (this.parsedResults.size() == 0) {
+			try {
+				List<RunResult> newResults = new ArrayList<RunResult>();
+				RunResult.parseFromRunResultFolder(repo, basePath.next(),
+						newResults, false, false);
+				this.parsedResults.addAll(newResults);
+			} catch (Exception e) {
+				// just ignore that runresult if it cannot be parsed
+			}
+		}
+
+		this.lastReturnedResult = this.parsedResults.remove(0);
+		return new File(lastReturnedResult.getAbsolutePath());
+	}
+
+	public RunResult getRunResult() {
+		return this.lastReturnedResult;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.util.Iterator#remove()
+	 */
+	@Override
+	public void remove() {
+		// unsupported
+	}
 }

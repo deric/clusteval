@@ -89,6 +89,7 @@ public class RunResultDataSetConfig extends DataSetConfig {
 	 * @return The dataset configuration object.
 	 * @throws UnknownDataPreprocessorException
 	 */
+	@Deprecated
 	public static DataSetConfig parseFromFile(final File absConfigPath)
 			throws DataSetConfigurationException, NoRepositoryFoundException,
 			DataSetConfigNotFoundException, UnknownDistanceMeasureException,

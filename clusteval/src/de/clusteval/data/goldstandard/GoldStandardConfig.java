@@ -11,22 +11,13 @@
 package de.clusteval.data.goldstandard;
 
 import java.io.File;
-import java.util.NoSuchElementException;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.HierarchicalINIConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryEvent;
 import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.RepositoryRemoveEvent;
 import de.clusteval.framework.repository.RepositoryReplaceEvent;
-
-import file.FileUtils;
 
 /**
  * A goldstandard configuration encapsulates options and settings for a
@@ -107,65 +98,6 @@ public class GoldStandardConfig extends RepositoryObject {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	/**
-	 * This method parses a dataset configuration from a file on the filesystem.
-	 * 
-	 * <p>
-	 * A dataset configuration contains several options:
-	 * <ul>
-	 * <li><b>goldstandardName</b>: The folder the goldstandard file lies
-	 * within.</li>
-	 * <li><b>goldstandardFile</b>: The filename of the goldstandard file.</li>
-	 * </ul>
-	 * 
-	 * @param absConfigPath
-	 *            The absolute path to the goldstandard configuration file.
-	 * @throws GoldStandardConfigurationException
-	 * @throws NoRepositoryFoundException
-	 * @throws GoldStandardNotFoundException
-	 * @throws GoldStandardConfigNotFoundException
-	 * @throws RegisterException
-	 * @return The goldstandard configuration object
-	 */
-	public static GoldStandardConfig parseFromFile(final File absConfigPath)
-			throws GoldStandardConfigurationException,
-			NoRepositoryFoundException, GoldStandardNotFoundException,
-			GoldStandardConfigNotFoundException, RegisterException {
-
-		if (!absConfigPath.exists())
-			throw new GoldStandardConfigNotFoundException(
-					"Goldstandard config \"" + absConfigPath
-							+ "\" does not exist!");
-
-		Logger log = LoggerFactory.getLogger(GoldStandardConfig.class);
-		log.debug("Parsing goldstandard config \"" + absConfigPath + "\"");
-		GoldStandardConfig result;
-
-		try {
-			HierarchicalINIConfiguration props = new HierarchicalINIConfiguration(
-					absConfigPath);
-			props.setThrowExceptionOnMissing(true);
-
-			final long changeDate = absConfigPath.lastModified();
-			String gsName = props.getString("goldstandardName");
-			String gsFile = props.getString("goldstandardFile");
-
-			Repository repo = Repository.getRepositoryForPath(absConfigPath
-					.getAbsolutePath());
-
-			result = new GoldStandardConfig(repo, changeDate, absConfigPath,
-					GoldStandard.parseFromFile(new File(FileUtils.buildPath(
-							repo.getBasePath(GoldStandard.class), gsName, gsFile))));
-			result = repo.getRegisteredObject(result);
-			log.debug("Goldstandard config parsed");
-			return result;
-		} catch (ConfigurationException e) {
-			throw new GoldStandardConfigurationException(e);
-		} catch (NoSuchElementException e) {
-			throw new GoldStandardConfigurationException(e);
-		}
 	}
 
 	/**

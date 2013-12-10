@@ -23,14 +23,13 @@ import java.util.Set;
 
 import org.apache.commons.configuration.ConfigurationException;
 
+import utils.Pair;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
 import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
 import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.context.IncompatibleContextException;
 import de.clusteval.context.UnknownContextException;
-
-import utils.Pair;
 import de.clusteval.data.DataConfigNotFoundException;
 import de.clusteval.data.DataConfigurationException;
 import de.clusteval.data.dataset.DataSetConfigNotFoundException;
@@ -55,6 +54,7 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
@@ -255,7 +255,7 @@ public class RunDataAnalysisRunResult
 			}
 		if (runFile == null)
 			return null;
-		final Run run = Run.parseFromFile(runFile);
+		final Run run = Parser.parseRunFromFile(runFile);
 
 		RunDataAnalysisRunResult analysisResult = null;
 
@@ -352,7 +352,8 @@ public class RunDataAnalysisRunResult
 	 */
 	public static RunDataAnalysisRunResult parseFromRunResultFolder(
 			final RunDataAnalysisRun run, final Repository repository,
-			final File runResultFolder) throws RunResultParseException,
+			final File runResultFolder,
+			final List<RunResult> result) throws RunResultParseException,
 			RegisterException {
 
 		RunDataAnalysisRunResult analysisResult = null;
@@ -383,6 +384,8 @@ public class RunDataAnalysisRunResult
 		analysisResult.put(
 				Pair.getPair(run.getUniqueRunAnalysisRunIdentifiers(),
 						run.getUniqueDataAnalysisRunIdentifiers()), statistics);
+		
+		result.add(analysisResult);
 
 		analysisResult.register();
 		return analysisResult;

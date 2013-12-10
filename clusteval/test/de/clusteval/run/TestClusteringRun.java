@@ -34,12 +34,12 @@ import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
-import de.clusteval.framework.repository.Parser;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
@@ -124,7 +124,7 @@ public class TestClusteringRun extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException {
-		ClusteringRun run = Parser.parseClusteringRunFromFile(new File(
+		ClusteringRun run = Parser.parseFromFile(ClusteringRun.class, new File(
 				"testCaseRepository/runs/all_vs_DS1_clustering.run")
 				.getAbsoluteFile());
 
@@ -137,9 +137,8 @@ public class TestClusteringRun extends AbstractClustEvalTest {
 				"/home/chris/git/clusteval/clusteval/testCaseRepository", null)
 				.initialize();
 
-		ClusteringRun run2 = (ClusteringRun) ClusteringRun
-				.parseFromFile(new File(
-						"testCaseRepository/runs/all_vs_DS1_clustering.run")
+		ClusteringRun run2 = Parser.parseFromFile(ClusteringRun.class,
+				new File("testCaseRepository/runs/all_vs_DS1_clustering.run")
 						.getAbsoluteFile());
 
 		Assert.assertEquals(run2.logFilePath, run.logFilePath);

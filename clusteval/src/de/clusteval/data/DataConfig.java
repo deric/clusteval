@@ -13,38 +13,16 @@ package de.clusteval.data;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.HierarchicalINIConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.data.dataset.DataSetConfig;
-import de.clusteval.data.dataset.DataSetConfigNotFoundException;
-import de.clusteval.data.dataset.DataSetConfigurationException;
-import de.clusteval.data.dataset.DataSetNotFoundException;
-import de.clusteval.data.dataset.IncompatibleDataSetConfigPreprocessorException;
-import de.clusteval.data.dataset.NoDataSetException;
-import de.clusteval.data.dataset.RunResultDataSetConfig;
-import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
-import de.clusteval.data.dataset.type.UnknownDataSetTypeException;
-import de.clusteval.data.distance.UnknownDistanceMeasureException;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
-import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
-import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
-import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
-import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
-import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryEvent;
 import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.RepositoryRemoveEvent;
 import de.clusteval.framework.repository.RepositoryReplaceEvent;
-import de.clusteval.framework.repository.RunResultRepository;
-import file.FileUtils;
 
 /**
  * A data configuration encapsulates options and settings for all kinds of data
@@ -183,103 +161,6 @@ public class DataConfig extends RepositoryObject {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	/**
-	 * This method parses a data configuration from a file on the filesystem.
-	 * 
-	 * <p>
-	 * A data configuration contains several options:
-	 * <ul>
-	 * <li><b>datasetConfig</b>: The name of the dataset configuration to be
-	 * encapsulated by this data configuration.</li>
-	 * <li><b>goldstandardConfig</b>: The name of the goldstandard configuration
-	 * to be encapsulated by this data configuration.</li>
-	 * </ul>
-	 * 
-	 * @param absConfigPath
-	 *            The absolute path to the dataset configuration file.
-	 * @throws UnknownDataSetFormatException
-	 * @throws NoRepositoryFoundException
-	 * @throws GoldStandardNotFoundException
-	 * @throws GoldStandardConfigurationException
-	 * @throws DataSetConfigurationException
-	 * @throws DataSetNotFoundException
-	 * @throws DataSetConfigNotFoundException
-	 * @throws GoldStandardConfigNotFoundException
-	 * @throws DataConfigurationException
-	 * @throws DataConfigNotFoundException
-	 * @throws UnknownDistanceMeasureException
-	 * @throws RegisterException
-	 * @throws UnknownDataSetTypeException
-	 * @throws NumberFormatException
-	 * @throws NoDataSetException
-	 * @return The data configuration object.
-	 * @throws UnknownDataPreprocessorException
-	 * @throws IncompatibleDataSetConfigPreprocessorException
-	 */
-	public static DataConfig parseFromFile(final File absConfigPath)
-			throws UnknownDataSetFormatException, NoRepositoryFoundException,
-			GoldStandardNotFoundException, GoldStandardConfigurationException,
-			DataSetConfigurationException, DataSetNotFoundException,
-			DataSetConfigNotFoundException,
-			GoldStandardConfigNotFoundException, DataConfigurationException,
-			DataConfigNotFoundException, UnknownDistanceMeasureException,
-			RegisterException, UnknownDataSetTypeException,
-			NumberFormatException, NoDataSetException,
-			UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException {
-
-		if (!absConfigPath.exists())
-			throw new DataConfigNotFoundException("Data config \""
-					+ absConfigPath + "\" does not exist!");
-
-		Logger log = LoggerFactory.getLogger(DataConfig.class);
-
-		log.debug("Parsing data config \"" + absConfigPath + "\"");
-
-		try {
-
-			HierarchicalINIConfiguration props = new HierarchicalINIConfiguration(
-					absConfigPath);
-			props.setThrowExceptionOnMissing(true);
-
-			final long changeDate = absConfigPath.lastModified();
-
-			Repository repo = Repository.getRepositoryForPath(absConfigPath
-					.getAbsolutePath());
-
-			String datasetConfigName = props.getString("datasetConfig");
-			DataSetConfig dataSetConfig;
-			if (repo instanceof RunResultRepository)
-				dataSetConfig = RunResultDataSetConfig.parseFromFile(new File(
-						FileUtils.buildPath(repo.getBasePath(DataSetConfig.class),
-								datasetConfigName + ".dsconfig")));
-			else
-				dataSetConfig = DataSetConfig.parseFromFile(new File(FileUtils
-						.buildPath(repo.getBasePath(DataSetConfig.class),
-								datasetConfigName + ".dsconfig")));
-
-			GoldStandardConfig goldStandardConfig = null;
-			try {
-				String gsConfigName = props.getString("goldstandardConfig");
-				goldStandardConfig = GoldStandardConfig.parseFromFile(new File(
-						FileUtils.buildPath(
-								repo.getBasePath(GoldStandardConfig.class),
-								gsConfigName + ".gsconfig")));
-			} catch (NoSuchElementException e) {
-				// No goldstandard config given
-			}
-
-			DataConfig result = new DataConfig(repo, changeDate, absConfigPath,
-					dataSetConfig, goldStandardConfig);
-			result = repo.getRegisteredObject(result);
-			return result;
-		} catch (ConfigurationException e) {
-			throw new DataConfigurationException(e);
-		} catch (NoSuchElementException e) {
-			throw new DataConfigurationException(e);
-		}
 	}
 
 	/**

@@ -58,6 +58,7 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.UnknownParameterType;
@@ -190,7 +191,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 			}
 		if (runFile == null)
 			return null;
-		final Run run = Run.parseFromFile(runFile);
+		final Run run = Parser.parseRunFromFile(runFile);
 
 		if (run instanceof ParameterOptimizationRun) {
 			final ParameterOptimizationRun paramRun = (ParameterOptimizationRun) run;
@@ -752,7 +753,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 */
 	public static Run parseFromRunResultFolder(
 			final ParameterOptimizationRun run, final Repository repository,
-			final File runResultFolder, final List<ExecutionRunResult> result,
+			final File runResultFolder, final List<RunResult> result,
 			final boolean parseClusterings, final boolean storeClusterings,
 			final boolean register) throws RegisterException,
 			RunResultParseException {

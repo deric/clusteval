@@ -16,7 +16,6 @@ import java.util.Iterator;
 import utils.ArrayIterator;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
-import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.utils.FileFinder;
 
 /**
@@ -59,15 +58,5 @@ public class ProgramConfigFinder extends FileFinder<ProgramConfig> {
 	@Override
 	protected Iterator<File> getIterator() {
 		return new ArrayIterator<File>(getBaseDir().listFiles());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FileFinder#parseObjectFromFile(java.io.File)
-	 */
-	@Override
-	protected RepositoryObject parseObjectFromFile(File file) throws Exception {
-		return ProgramConfig.parseFromFile(file);
 	}
 }

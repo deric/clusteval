@@ -11,48 +11,17 @@
 package de.clusteval.run;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.HierarchicalINIConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import utils.ProgressPrinter;
-import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
-import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
-import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
-import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.context.Context;
-import de.clusteval.context.IncompatibleContextException;
-import de.clusteval.context.UnknownContextException;
-import de.clusteval.data.DataConfigNotFoundException;
-import de.clusteval.data.DataConfigurationException;
-import de.clusteval.data.dataset.DataSetConfigNotFoundException;
-import de.clusteval.data.dataset.DataSetConfigurationException;
-import de.clusteval.data.dataset.DataSetNotFoundException;
-import de.clusteval.data.dataset.IncompatibleDataSetConfigPreprocessorException;
-import de.clusteval.data.dataset.NoDataSetException;
-import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
-import de.clusteval.data.dataset.type.UnknownDataSetTypeException;
-import de.clusteval.data.distance.UnknownDistanceMeasureException;
-import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
-import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
-import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
-import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
-import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
-import de.clusteval.data.statistics.UnknownDataStatisticException;
-import de.clusteval.framework.repository.NoRepositoryFoundException;
-import de.clusteval.framework.repository.Parser;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryEvent;
@@ -60,22 +29,13 @@ import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.RepositoryRemoveEvent;
 import de.clusteval.framework.repository.RepositoryReplaceEvent;
 import de.clusteval.framework.threading.RunSchedulerThread;
-import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.ProgramParameter;
-import de.clusteval.program.UnknownParameterType;
-import de.clusteval.program.UnknownProgramParameterException;
-import de.clusteval.program.UnknownProgramTypeException;
-import de.clusteval.program.r.UnknownRProgramException;
 import de.clusteval.run.result.ClusteringRunResult;
 import de.clusteval.run.result.NoRunResultFormatParserException;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.format.RunResultFormat;
-import de.clusteval.run.result.format.UnknownRunResultFormatException;
 import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.runnable.RunRunnableInitializationException;
-import de.clusteval.run.statistics.UnknownRunDataStatisticException;
-import de.clusteval.run.statistics.UnknownRunStatisticException;
-import de.clusteval.utils.InvalidConfigurationFileException;
 import file.FileUtils;
 import format.Formatter;
 
@@ -131,158 +91,6 @@ public abstract class Run extends RepositoryObject {
 		}
 
 		return result;
-	}
-
-	/**
-	 * This method parses a {@link Run} object from a *.run file. It parses all
-	 * values from this file and ensures, that the values of the parameters are
-	 * valid.
-	 * 
-	 * <p>
-	 * Depending on the type of the run defined by the *.run file, this method
-	 * dedicates the parsing of the file to parseFromFile methods of the
-	 * corresponding subclass.
-	 * 
-	 * @param absPath
-	 *            the abs path
-	 * @return A {@link Run} object.
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 * @throws UnknownRunResultFormatException
-	 *             If the program configuration of one of the programs belonging
-	 *             to this run contains an unknown RunResultFormat, this
-	 *             exception is thrown.
-	 * @throws UnknownDataSetFormatException
-	 *             If the program configuration of one of the programs belonging
-	 *             to this run contains an unknown DataSetFormat, this exception
-	 *             is thrown.
-	 * @throws InvalidConfigurationFileException
-	 *             If any of the configuration files is missing a required
-	 *             value, this exception is thrown.
-	 * @throws UnknownClusteringQualityMeasureException
-	 *             the unknown clustering quality measure exception
-	 * @throws FileNotFoundException
-	 *             the file not found exception
-	 * @throws InvalidRunModeException
-	 * @throws UnknownParameterOptimizationMethodException
-	 * @throws NoOptimizableProgramParameterException
-	 * @throws UnknownGoldStandardFormatException
-	 * @throws UnknownProgramParameterException
-	 * @throws NoRepositoryFoundException
-	 * @throws GoldStandardNotFoundException
-	 * @throws InvalidOptimizationParameterException
-	 * @throws GoldStandardConfigurationException
-	 * @throws DataSetNotFoundException
-	 * @throws DataSetConfigurationException
-	 * @throws DataSetConfigNotFoundException
-	 * @throws GoldStandardConfigNotFoundException
-	 * @throws DataConfigNotFoundException
-	 * @throws DataConfigurationException
-	 * @throws RunException
-	 * @throws UnknownDataStatisticException
-	 * @throws UnknownProgramTypeException
-	 * @throws UnknownRProgramException
-	 * @throws IncompatibleParameterOptimizationMethodException
-	 * @throws UnknownDistanceMeasureException
-	 * @throws UnknownRunStatisticException
-	 * @throws UnknownRunDataStatisticException
-	 * @throws ConfigurationException
-	 * @throws RegisterException
-	 * @throws UnknownDataSetTypeException
-	 * @throws NoDataSetException
-	 * @throws NumberFormatException
-	 * @throws UnknownDataPreprocessorException
-	 * @throws IncompatibleDataSetConfigPreprocessorException
-	 * @throws UnknownContextException
-	 * @throws IncompatibleContextException
-	 * @throws UnknownParameterType
-	 */
-	@SuppressWarnings("unused")
-	public static Run parseFromFile(final File absPath) throws IOException,
-			UnknownRunResultFormatException, UnknownDataSetFormatException,
-			InvalidConfigurationFileException,
-			UnknownClusteringQualityMeasureException, FileNotFoundException,
-			InvalidRunModeException,
-			UnknownParameterOptimizationMethodException,
-			NoOptimizableProgramParameterException,
-			UnknownGoldStandardFormatException,
-			UnknownProgramParameterException, NoRepositoryFoundException,
-			GoldStandardNotFoundException,
-			InvalidOptimizationParameterException,
-			GoldStandardConfigurationException, DataSetConfigurationException,
-			DataSetNotFoundException, DataSetConfigNotFoundException,
-			GoldStandardConfigNotFoundException, DataConfigurationException,
-			DataConfigNotFoundException, RunException,
-			UnknownDataStatisticException, UnknownProgramTypeException,
-			UnknownRProgramException,
-			IncompatibleParameterOptimizationMethodException,
-			UnknownDistanceMeasureException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException, ConfigurationException,
-			RegisterException, UnknownDataSetTypeException,
-			NumberFormatException, NoDataSetException,
-			UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException,
-			UnknownContextException, IncompatibleContextException,
-			UnknownParameterType {
-
-		HierarchicalINIConfiguration props;
-		try {
-			props = new HierarchicalINIConfiguration(absPath.getAbsolutePath());
-		} catch (ConfigurationException e) {
-			throw new FileNotFoundException(
-					"The given run file does not exist or is not accessible.");
-		}
-		props.setThrowExceptionOnMissing(true);
-
-		Logger log = LoggerFactory.getLogger(Run.class);
-
-		log.debug("Parsing run \"" + absPath + "\"");
-		Run r = null;
-		try {
-			String runMode = props.getString("mode");
-
-			/*
-			 * If none is defined, default mode is clustering.
-			 */
-			if (runMode == null || runMode.equals("clustering"))
-				r = Parser.parseClusteringRunFromFile(absPath);
-			else if (runMode.equals("parameter_optimization"))
-				r = Parser.parseParameterOptimizationRunFromFile(absPath);
-			/*
-			 * Added at 3rd of july 2012
-			 */
-			else if (runMode.equals("internal_parameter_optimization"))
-				r = Parser
-						.parseInternalParameterOptimizationRunFromFile(absPath);
-			/*
-			 * Added 29 of july 2012
-			 */
-			else if (runMode.equals("dataAnalysis"))
-				r = Parser.parseDataAnalysisRunFromFile(absPath);
-			/*
-			 * Added 20 of august 2012
-			 */
-			else if (runMode.equals("runAnalysis"))
-				r = Parser.parseRunAnalysisRunFromFile(absPath);
-			/*
-			 * Added 22 of august 2012
-			 */
-			else if (runMode.equals("runDataAnalysis"))
-				r = Parser.parseRunDataAnalysisRunFromFile(absPath);
-			else
-				throw new InvalidRunModeException("The given mode is invalid: "
-						+ runMode);
-
-		} catch (NoSuchElementException e) {
-			throw new InvalidConfigurationFileException("The run file "
-					+ absPath + " is missing an entry: "
-					+ e.getLocalizedMessage());
-		} catch (ConfigurationException e) {
-			throw new FileNotFoundException(
-					"The given run configuration file does not exist or is not accessible.");
-		}
-		log.debug("Run parsed");
-		return r;
 	}
 
 	/**
@@ -973,8 +781,6 @@ public abstract class Run extends RepositoryObject {
 	public String toString() {
 		return this.getName();
 	}
-
-	
 
 	/**
 	 * @return A map with the optimization status of this run.

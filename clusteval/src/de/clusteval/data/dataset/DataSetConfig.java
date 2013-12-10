@@ -191,6 +191,7 @@ public class DataSetConfig extends RepositoryObject {
 	 * @throws UnknownDataPreprocessorException
 	 * @throws IncompatibleDataSetConfigPreprocessorException
 	 */
+	@Deprecated
 	public static DataSetConfig parseFromFile(final File absConfigPath)
 			throws DataSetConfigurationException,
 			UnknownDataSetFormatException, NoRepositoryFoundException,

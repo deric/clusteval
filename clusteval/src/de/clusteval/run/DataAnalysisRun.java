@@ -15,34 +15,11 @@ package de.clusteval.run;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.HierarchicalINIConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.clusteval.context.Context;
-import de.clusteval.context.UnknownContextException;
 import de.clusteval.data.DataConfig;
-import de.clusteval.data.DataConfigNotFoundException;
-import de.clusteval.data.DataConfigurationException;
-import de.clusteval.data.dataset.DataSetConfigNotFoundException;
-import de.clusteval.data.dataset.DataSetConfigurationException;
-import de.clusteval.data.dataset.DataSetNotFoundException;
-import de.clusteval.data.dataset.IncompatibleDataSetConfigPreprocessorException;
-import de.clusteval.data.dataset.NoDataSetException;
-import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
-import de.clusteval.data.dataset.type.UnknownDataSetTypeException;
-import de.clusteval.data.distance.UnknownDistanceMeasureException;
-import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
-import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
-import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
-import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
 import de.clusteval.data.statistics.DataStatistic;
-import de.clusteval.data.statistics.UnknownDataStatisticException;
-import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.RunSchedulerThread;
@@ -364,116 +341,5 @@ public class DataAnalysisRun extends AnalysisRun<DataStatistic> {
 				runCopy, runIdentString, true, dataConfig,
 				runCopy.getStatistics());
 		return t;
-	}
-
-	/**
-	 * Parses a data analysis run from a file.
-	 * 
-	 * <p>
-	 * A data analysis run file contains several options:
-	 * <ul>
-	 * <li><b>dataConfig</b>: The data configurations of this run (see
-	 * {@link #dataConfigs})</li>
-	 * <li><b>dataStatistics</b>: The data statistics of this run (see
-	 * {@link AnalysisRun#statistics})</li>
-	 * </ul>
-	 * 
-	 * @param absPath
-	 *            The absolute file path to the *.run file
-	 * @return The parsed data analysis run.
-	 * @throws ConfigurationException
-	 *             the configuration exception
-	 * @throws UnknownDataSetFormatException
-	 *             the unknown data set format exception
-	 * @throws NoRepositoryFoundException
-	 * @throws GoldStandardNotFoundException
-	 * @throws GoldStandardConfigurationException
-	 * @throws DataSetNotFoundException
-	 * @throws DataSetConfigurationException
-	 * @throws DataSetConfigNotFoundException
-	 * @throws GoldStandardConfigNotFoundException
-	 * @throws DataConfigNotFoundException
-	 * @throws DataConfigurationException
-	 * @throws UnknownDataStatisticException
-	 * @throws UnknownDistanceMeasureException
-	 * @throws RegisterException
-	 * @throws UnknownDataSetTypeException
-	 * @throws NoDataSetException
-	 * @throws NumberFormatException
-	 * @throws UnknownDataPreprocessorException
-	 * @throws IncompatibleDataSetConfigPreprocessorException
-	 * @throws UnknownContextException
-	 */
-	@Deprecated
-	public static Run parseFromFile(final File absPath)
-			throws ConfigurationException, UnknownDataSetFormatException,
-			NoRepositoryFoundException, GoldStandardNotFoundException,
-			GoldStandardConfigurationException, DataSetConfigurationException,
-			DataSetNotFoundException, DataSetConfigNotFoundException,
-			GoldStandardConfigNotFoundException, DataConfigurationException,
-			DataConfigNotFoundException, UnknownDataStatisticException,
-			UnknownDistanceMeasureException, RegisterException,
-			UnknownDataSetTypeException, NumberFormatException,
-			NoDataSetException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException,
-			UnknownContextException {
-		Logger log = LoggerFactory.getLogger(Run.class);
-		log.debug("Parsing data analysis run \"" + absPath + "\"");
-
-		Run result;
-		HierarchicalINIConfiguration props = new HierarchicalINIConfiguration(
-				absPath.getAbsolutePath());
-
-		Repository repo = Repository.getRepositoryForPath(absPath
-				.getAbsolutePath());
-
-		final long changeDate = absPath.lastModified();
-
-		Context context;
-		// by default we are in a clustering context
-		if (props.containsKey("context"))
-			context = Context.parseFromString(repo, props.getString("context"));
-		else
-			context = Context.parseFromString(repo, "ClusteringContext");
-
-		/*
-		 * An analysis run consists of a set of dataconfigs
-		 */
-		List<DataConfig> dataConfigs = new LinkedList<DataConfig>();
-
-		List<DataStatistic> dataStatistics = new LinkedList<DataStatistic>();
-
-		for (String dataConfig : props.getStringArray("dataConfig")) {
-			dataConfigs.add(repo.getRegisteredObject(DataConfig
-					.parseFromFile(new File(FileUtils.buildPath(
-							repo.getBasePath(DataConfig.class), dataConfig
-									+ ".dataconfig")))));
-		}
-
-		/**
-		 * We catch the exceptions such that all statistics are tried to be
-		 * loaded once so that they are ALL registered as missing in the
-		 * repository.
-		 */
-		List<UnknownDataStatisticException> thrownExceptions = new ArrayList<UnknownDataStatisticException>();
-		for (String dataStatistic : props.getStringArray("dataStatistics")) {
-			try {
-				dataStatistics.add(DataStatistic.parseFromString(repo,
-						dataStatistic));
-			} catch (UnknownDataStatisticException e) {
-				thrownExceptions.add(e);
-			}
-		}
-		if (thrownExceptions.size() > 0) {
-			// just throw the first exception
-			throw thrownExceptions.get(0);
-		}
-
-		result = new DataAnalysisRun(repo, context, changeDate, absPath,
-				dataConfigs, dataStatistics);
-		result = repo.getRegisteredObject(result, false);
-
-		log.debug("Data analysis run parsed");
-		return result;
 	}
 }

@@ -53,6 +53,7 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
@@ -249,7 +250,7 @@ public class RunAnalysisRunResult
 			}
 		if (runFile == null)
 			return null;
-		final Run object = Run.parseFromFile(runFile);
+		final Run object = Parser.parseRunFromFile(runFile);
 
 		RunAnalysisRunResult analysisResult = null;
 
@@ -358,8 +359,8 @@ public class RunAnalysisRunResult
 	 */
 	public static RunAnalysisRunResult parseFromRunResultFolder(
 			final RunAnalysisRun run, final Repository repository,
-			final File runResultFolder) throws RunResultParseException,
-			RegisterException {
+			final File runResultFolder, final List<RunResult> result)
+			throws RunResultParseException, RegisterException {
 
 		RunAnalysisRunResult analysisResult = null;
 
@@ -392,6 +393,8 @@ public class RunAnalysisRunResult
 			}
 			analysisResult.put(uniqueRunIdentifier, statistics);
 		}
+		
+		result.add(analysisResult);
 
 		analysisResult.register();
 		return analysisResult;

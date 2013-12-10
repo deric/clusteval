@@ -60,14 +60,4 @@ public class DataSetConfigFinder extends FileFinder<DataSetConfig> {
 	protected Iterator<File> getIterator() {
 		return new ArrayIterator<File>(getBaseDir().listFiles());
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FileFinder#parseObjectFromFile(java.io.File)
-	 */
-	@Override
-	protected RepositoryObject parseObjectFromFile(File file) throws Exception {
-		return DataSetConfig.parseFromFile(file);
-	}
 }

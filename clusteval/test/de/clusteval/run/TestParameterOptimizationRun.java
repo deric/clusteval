@@ -36,12 +36,12 @@ import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
-import de.clusteval.framework.repository.Parser;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.program.UnknownParameterType;
@@ -79,9 +79,10 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 			UnknownDistanceMeasureException, UnknownDataSetTypeException,
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
-			IncompatibleContextException {
-		ParameterOptimizationRun run = (ParameterOptimizationRun) ParameterOptimizationRun
-				.parseFromFile(new File(
+			IncompatibleContextException, UnknownDataStatisticException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
+		ParameterOptimizationRun run = Parser.parseFromFile(
+				ParameterOptimizationRun.class, new File(
 						"testCaseRepository/runs/testTwiceTheParam.run")
 						.getAbsoluteFile());
 		List<ProgramParameter<?>> paramList = new ArrayList<ProgramParameter<?>>();
@@ -160,8 +161,10 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 			RepositoryConfigurationException, UnknownDataStatisticException,
 			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		ParameterOptimizationRun run = Parser
-				.parseParameterOptimizationRunFromFile(new File(
-						"/home/chris/git/clusteval/clusteval/testCaseRepository/runs/baechler2003.run"));
+				.parseFromFile(
+						ParameterOptimizationRun.class,
+						new File(
+								"/home/chris/git/clusteval/clusteval/testCaseRepository/runs/baechler2003.run"));
 
 		getRepository().terminateSupervisorThread();
 
@@ -172,9 +175,11 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 				"/home/chris/git/clusteval/clusteval/testCaseRepository", null)
 				.initialize();
 
-		ParameterOptimizationRun run2 = (ParameterOptimizationRun) ParameterOptimizationRun
-				.parseFromFile(new File(
-						"/home/chris/git/clusteval/clusteval/testCaseRepository/runs/baechler2003.run"));
+		ParameterOptimizationRun run2 = Parser
+				.parseFromFile(
+						ParameterOptimizationRun.class,
+						new File(
+								"/home/chris/git/clusteval/clusteval/testCaseRepository/runs/baechler2003.run"));
 
 		Assert.assertEquals(run2.logFilePath, run.logFilePath);
 		Assert.assertEquals(run2.runIdentString, run.runIdentString);

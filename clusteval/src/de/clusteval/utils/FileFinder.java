@@ -24,6 +24,7 @@ import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.RepositoryRemoveEvent;
+import de.clusteval.framework.repository.parse.Parser;
 
 /**
  * @author Christian Wiwie
@@ -51,7 +52,7 @@ public abstract class FileFinder<T extends RepositoryObject> extends Finder<T> {
 	protected void doOnFileFound(File file) throws InterruptedException,
 			Exception {
 		try {
-			RepositoryObject newObject = parseObjectFromFile(file);
+			T newObject = parseObjectFromFile(file);
 			/*
 			 * We want to be informed when this object changed, such that we can
 			 * clear our known exceptions
@@ -153,5 +154,7 @@ public abstract class FileFinder<T extends RepositoryObject> extends Finder<T> {
 		super.findAndRegisterObjects();
 	}
 
-	protected abstract T parseObjectFromFile(final File file) throws Exception;
+	protected T parseObjectFromFile(final File file) throws Exception {
+		return Parser.parseFromFile(this.getClassToFind(), file);
+	}
 }

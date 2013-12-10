@@ -16,7 +16,7 @@ import java.util.Iterator;
 import utils.ArrayIterator;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
-import de.clusteval.framework.repository.RepositoryObject;
+import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.utils.FileFinder;
 
 /**
@@ -66,7 +66,7 @@ public class RunFinder extends FileFinder<Run> {
 	 * @see utils.FileFinder#parseObjectFromFile(java.io.File)
 	 */
 	@Override
-	protected RepositoryObject parseObjectFromFile(File file) throws Exception {
-		return Run.parseFromFile(file);
+	protected Run parseObjectFromFile(File file) throws Exception {
+		return Parser.parseRunFromFile(file);
 	}
 }
