@@ -449,7 +449,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws GoldStandardConfigurationException
 	 * @throws GoldStandardNotFoundException
 	 */
-	@Test(expected = DataSetNotFoundException.class)
+	@Test(expected = FileNotFoundException.class)
 	public void testParseFromNotExistingFile()
 			throws UnknownDataSetFormatException, NoRepositoryFoundException,
 			DataSetNotFoundException, DataSetNotFoundException,

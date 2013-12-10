@@ -72,4 +72,20 @@ public class NamedIntegerAttribute extends NamedAttribute<Integer> {
 		return null;
 	}
 
+
+	/* (non-Javadoc)
+	 * @see de.clusteval.framework.repository.RepositoryObject#register()
+	 */
+	@Override
+	public boolean register() throws RegisterException {
+		return this.repository.register(this);
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.clusteval.framework.repository.RepositoryObject#unregister()
+	 */
+	@Override
+	public boolean unregister() {
+		return this.repository.unregister(this);
+	}
 }

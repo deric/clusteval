@@ -618,7 +618,7 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 	 * @throws DataSetConfigurationException
 	 * @throws UnknownDataSetFormatException
 	 */
-	@Test(expected = GoldStandardConfigNotFoundException.class)
+	@Test(expected = FileNotFoundException.class)
 	public void testParseFromNotExistingFile() throws IOException,
 			NoRepositoryFoundException, GoldStandardNotFoundException,
 			GoldStandardConfigurationException,
