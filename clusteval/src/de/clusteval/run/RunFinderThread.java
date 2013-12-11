@@ -41,7 +41,7 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-public class RunFinderThread extends FinderThread {
+public class RunFinderThread extends FinderThread<Run> {
 
 	/**
 	 * @param supervisorThread
@@ -53,7 +53,7 @@ public class RunFinderThread extends FinderThread {
 	 */
 	public RunFinderThread(final SupervisorThread supervisorThread,
 			final Repository repository, final boolean checkOnce) {
-		super(supervisorThread, repository, 30000, checkOnce);
+		super(supervisorThread, repository, Run.class, 30000, checkOnce);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class RunFinderThread extends FinderThread {
 	public RunFinderThread(final SupervisorThread supervisorThread,
 			final Repository repository, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, repository, sleepTime, checkOnce);
+		super(supervisorThread, repository, Run.class, sleepTime, checkOnce);
 	}
 
 	/*
@@ -112,17 +112,7 @@ public class RunFinderThread extends FinderThread {
 			this.supervisorThread.getThread(ContextFinderThread.class)
 					.waitFor();
 
-		this.log.debug("Checking for Runs...");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#afterFind()
-	 */
-	@Override
-	protected void afterFind() {
-		this.repository.setInitialized(Run.class);
+		super.beforeFind();
 	}
 
 	/*
@@ -131,7 +121,7 @@ public class RunFinderThread extends FinderThread {
 	 * @see utils.FinderThread#getFinder()
 	 */
 	@Override
-	protected Finder getFinder() throws RegisterException {
+	protected Finder<Run> getFinder() throws RegisterException {
 		return new RunFinder(repository);
 	}
 }

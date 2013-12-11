@@ -28,6 +28,7 @@ import de.clusteval.data.dataset.format.DataSetFormat;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
+import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
@@ -45,11 +46,10 @@ import de.clusteval.utils.InternalAttributeException;
  * 
  * <p>
  * One parameter optimization method is created for every pair of program and
- * data configuration of the run in
- * {@link ParameterOptimizationRun#parseFromFile(File)}, that means for every
- * run runnable one method. The method objects are instantiated as soon as the
- * run is parsed from the filesystem. That means, when the same run is executed
- * several times, the same method object is used.
+ * data configuration of the run in {@link Parser#parseFromFile(File)}, that
+ * means for every run runnable one method. The method objects are instantiated
+ * as soon as the run is parsed from the filesystem. That means, when the same
+ * run is executed several times, the same method object is used.
  * 
  * <p>
  * The method determines the following aspects:

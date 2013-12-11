@@ -22,7 +22,7 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-public class RunResultFormatFinderThread extends FinderThread {
+public class RunResultFormatFinderThread extends FinderThread<RunResultFormat> {
 
 	/**
 	 * @param supervisorThread
@@ -32,7 +32,8 @@ public class RunResultFormatFinderThread extends FinderThread {
 	 */
 	public RunResultFormatFinderThread(final SupervisorThread supervisorThread,
 			final Repository framework, final boolean checkOnce) {
-		super(supervisorThread, framework, 30000, checkOnce);
+		super(supervisorThread, framework, RunResultFormat.class, 30000,
+				checkOnce);
 	}
 
 	/**
@@ -45,27 +46,8 @@ public class RunResultFormatFinderThread extends FinderThread {
 	public RunResultFormatFinderThread(final SupervisorThread supervisorThread,
 			final Repository framework, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, framework, sleepTime, checkOnce);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#beforeFind()
-	 */
-	@Override
-	protected void beforeFind() {
-		this.log.debug("Checking for new RunResultFormats...");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#afterFind()
-	 */
-	@Override
-	protected void afterFind() {
-		repository.setInitialized(RunResultFormat.class);
+		super(supervisorThread, framework, RunResultFormat.class, sleepTime,
+				checkOnce);
 	}
 
 	/*

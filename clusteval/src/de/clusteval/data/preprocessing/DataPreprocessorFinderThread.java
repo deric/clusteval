@@ -22,7 +22,9 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-public class DataPreprocessorFinderThread extends FinderThread {
+public class DataPreprocessorFinderThread
+		extends
+			FinderThread<DataPreprocessor> {
 
 	/**
 	 * @param supervisorThread
@@ -33,7 +35,8 @@ public class DataPreprocessorFinderThread extends FinderThread {
 	public DataPreprocessorFinderThread(
 			final SupervisorThread supervisorThread,
 			final Repository repository, final boolean checkOnce) {
-		super(supervisorThread, repository, 30000, checkOnce);
+		super(supervisorThread, repository, DataPreprocessor.class, 30000,
+				checkOnce);
 	}
 
 	/**
@@ -47,27 +50,8 @@ public class DataPreprocessorFinderThread extends FinderThread {
 			final SupervisorThread supervisorThread,
 			final Repository framework, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, framework, sleepTime, checkOnce);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#beforeFind()
-	 */
-	@Override
-	protected void beforeFind() {
-		this.log.debug("Checking for new DataPreprocessor...");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#afterFind()
-	 */
-	@Override
-	protected void afterFind() {
-		repository.setInitialized(DataPreprocessor.class);
+		super(supervisorThread, framework, DataPreprocessor.class, sleepTime,
+				checkOnce);
 	}
 
 	/*

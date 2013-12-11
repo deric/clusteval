@@ -23,7 +23,9 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-public class GoldStandardConfigFinderThread extends FinderThread {
+public class GoldStandardConfigFinderThread
+		extends
+			FinderThread<GoldStandardConfig> {
 
 	/**
 	 * @param supervisorThread
@@ -37,7 +39,8 @@ public class GoldStandardConfigFinderThread extends FinderThread {
 	public GoldStandardConfigFinderThread(
 			final SupervisorThread supervisorThread,
 			final Repository repository, final boolean checkOnce) {
-		super(supervisorThread, repository, 30000, checkOnce);
+		super(supervisorThread, repository, GoldStandardConfig.class, 30000,
+				checkOnce);
 	}
 
 	/**
@@ -55,27 +58,8 @@ public class GoldStandardConfigFinderThread extends FinderThread {
 			final SupervisorThread supervisorThread,
 			final Repository repository, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, repository, sleepTime, checkOnce);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#beforeFind()
-	 */
-	@Override
-	protected void beforeFind() {
-		this.log.debug("Checking for GoldStandardConfigs...");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#afterFind()
-	 */
-	@Override
-	protected void afterFind() {
-		this.repository.setInitialized(GoldStandardConfig.class);
+		super(supervisorThread, repository, GoldStandardConfig.class,
+				sleepTime, checkOnce);
 	}
 
 	/*
@@ -84,7 +68,7 @@ public class GoldStandardConfigFinderThread extends FinderThread {
 	 * @see utils.FinderThread#getFinder()
 	 */
 	@Override
-	protected Finder getFinder() throws RegisterException {
+	protected Finder<GoldStandardConfig> getFinder() throws RegisterException {
 		return new GoldStandardConfigFinder(repository);
 	}
 }

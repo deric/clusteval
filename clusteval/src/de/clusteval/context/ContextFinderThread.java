@@ -13,20 +13,16 @@
  */
 package de.clusteval.context;
 
-import de.clusteval.data.dataset.format.DataSetFormat;
-import de.clusteval.data.dataset.format.DataSetFormatFinderThread;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.SupervisorThread;
-import de.clusteval.run.result.format.RunResultFormat;
-import de.clusteval.run.result.format.RunResultFormatFinderThread;
 import de.clusteval.utils.FinderThread;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public class ContextFinderThread extends FinderThread {
+public class ContextFinderThread extends FinderThread<Context> {
 
 	/**
 	 * @param supervisorThread
@@ -36,7 +32,7 @@ public class ContextFinderThread extends FinderThread {
 	 */
 	public ContextFinderThread(final SupervisorThread supervisorThread,
 			final Repository repository, final boolean checkOnce) {
-		super(supervisorThread, repository, 30000, checkOnce);
+		super(supervisorThread, repository, Context.class, 30000, checkOnce);
 	}
 
 	/**
@@ -49,34 +45,7 @@ public class ContextFinderThread extends FinderThread {
 	public ContextFinderThread(final SupervisorThread supervisorThread,
 			final Repository framework, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, framework, sleepTime, checkOnce);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#beforeFind()
-	 */
-	@Override
-	protected void beforeFind() {
-		if (!this.repository.isInitialized(DataSetFormat.class)) {
-			this.supervisorThread.getThread(DataSetFormatFinderThread.class)
-					.waitFor();
-		}
-		if (!this.repository.isInitialized(RunResultFormat.class))
-			this.supervisorThread.getThread(RunResultFormatFinderThread.class)
-					.waitFor();
-		this.log.debug("Checking for new Contexts...");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#afterFind()
-	 */
-	@Override
-	protected void afterFind() {
-		repository.setInitialized(Context.class);
+		super(supervisorThread, framework, Context.class, sleepTime, checkOnce);
 	}
 
 	/*

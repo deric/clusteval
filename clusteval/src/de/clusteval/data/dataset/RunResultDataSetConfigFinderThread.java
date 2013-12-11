@@ -23,7 +23,9 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-public class RunResultDataSetConfigFinderThread extends FinderThread {
+public class RunResultDataSetConfigFinderThread
+		extends
+			FinderThread<RunResultDataSetConfig> {
 
 	/**
 	 * @param supervisorThread
@@ -37,7 +39,8 @@ public class RunResultDataSetConfigFinderThread extends FinderThread {
 	public RunResultDataSetConfigFinderThread(
 			final SupervisorThread supervisorThread,
 			final Repository repository, final boolean checkOnce) {
-		super(supervisorThread, repository, 30000, checkOnce);
+		super(supervisorThread, repository, RunResultDataSetConfig.class,
+				30000, checkOnce);
 	}
 
 	/**
@@ -55,7 +58,8 @@ public class RunResultDataSetConfigFinderThread extends FinderThread {
 			final SupervisorThread supervisorThread,
 			final Repository repository, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, repository, sleepTime, checkOnce);
+		super(supervisorThread, repository, RunResultDataSetConfig.class,
+				sleepTime, checkOnce);
 	}
 
 	/*
@@ -68,17 +72,7 @@ public class RunResultDataSetConfigFinderThread extends FinderThread {
 		if (!this.repository.isInitialized(DataSet.class))
 			this.supervisorThread.getThread(RunResultDataSetFinderThread.class)
 					.waitFor();
-		this.log.debug("Checking for DataSetConfigs...");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#afterFind()
-	 */
-	@Override
-	protected void afterFind() {
-		this.repository.setInitialized(DataSetConfig.class);
+		super.beforeFind();
 	}
 
 	/*

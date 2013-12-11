@@ -29,7 +29,7 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-public class ProgramConfigFinderThread extends FinderThread {
+public class ProgramConfigFinderThread extends FinderThread<ProgramConfig> {
 
 	/**
 	 * @param supervisorThread
@@ -42,7 +42,8 @@ public class ProgramConfigFinderThread extends FinderThread {
 	 */
 	public ProgramConfigFinderThread(final SupervisorThread supervisorThread,
 			final Repository repository, final boolean checkOnce) {
-		super(supervisorThread, repository, 30000, checkOnce);
+		super(supervisorThread, repository, ProgramConfig.class, 30000,
+				checkOnce);
 	}
 
 	/**
@@ -59,7 +60,8 @@ public class ProgramConfigFinderThread extends FinderThread {
 	public ProgramConfigFinderThread(final SupervisorThread supervisorThread,
 			final Repository repository, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, repository, sleepTime, checkOnce);
+		super(supervisorThread, repository, ProgramConfig.class, sleepTime,
+				checkOnce);
 	}
 
 	/*
@@ -81,17 +83,7 @@ public class ProgramConfigFinderThread extends FinderThread {
 		if (!this.repository.isInitialized(Context.class))
 			this.supervisorThread.getThread(ContextFinderThread.class)
 					.waitFor();
-		this.log.debug("Checking for ProgramConfigs...");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#afterFind()
-	 */
-	@Override
-	protected void afterFind() {
-		this.repository.setInitialized(ProgramConfig.class);
+		super.beforeFind();
 	}
 
 	/*
@@ -100,7 +92,7 @@ public class ProgramConfigFinderThread extends FinderThread {
 	 * @see utils.FinderThread#getFinder()
 	 */
 	@Override
-	protected Finder getFinder() throws RegisterException {
+	protected Finder<ProgramConfig> getFinder() throws RegisterException {
 		return new ProgramConfigFinder(repository);
 	}
 }

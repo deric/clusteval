@@ -22,7 +22,7 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-public class RProgramFinderThread extends FinderThread {
+public class RProgramFinderThread extends FinderThread<RProgram> {
 
 	/**
 	 * @param supervisorThread
@@ -32,7 +32,7 @@ public class RProgramFinderThread extends FinderThread {
 	 */
 	public RProgramFinderThread(final SupervisorThread supervisorThread,
 			final Repository framework, final boolean checkOnce) {
-		super(supervisorThread, framework, 30000, checkOnce);
+		super(supervisorThread, framework, RProgram.class, 30000, checkOnce);
 	}
 
 	/**
@@ -45,27 +45,7 @@ public class RProgramFinderThread extends FinderThread {
 	public RProgramFinderThread(final SupervisorThread supervisorThread,
 			final Repository framework, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, framework, sleepTime, checkOnce);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#beforeFind()
-	 */
-	@Override
-	protected void beforeFind() {
-		this.log.debug("Checking for RPrograms...");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#afterFind()
-	 */
-	@Override
-	protected void afterFind() {
-		this.repository.setInitialized(RProgram.class);
+		super(supervisorThread, framework, RProgram.class, sleepTime, checkOnce);
 	}
 
 	/*

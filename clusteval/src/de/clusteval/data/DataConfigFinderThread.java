@@ -27,7 +27,7 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-public class DataConfigFinderThread extends FinderThread {
+public class DataConfigFinderThread extends FinderThread<DataConfig> {
 
 	/**
 	 * @param supervisorThread
@@ -40,7 +40,7 @@ public class DataConfigFinderThread extends FinderThread {
 	 */
 	public DataConfigFinderThread(final SupervisorThread supervisorThread,
 			final Repository repository, final boolean checkOnce) {
-		super(supervisorThread, repository, 30000, checkOnce);
+		super(supervisorThread, repository, DataConfig.class, 30000, checkOnce);
 	}
 
 	/**
@@ -56,7 +56,8 @@ public class DataConfigFinderThread extends FinderThread {
 	public DataConfigFinderThread(final SupervisorThread supervisorThread,
 			final Repository repository, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, repository, sleepTime, checkOnce);
+		super(supervisorThread, repository, DataConfig.class, sleepTime,
+				checkOnce);
 	}
 
 	/*
@@ -73,17 +74,7 @@ public class DataConfigFinderThread extends FinderThread {
 		if (!this.repository.isInitialized(GoldStandardConfig.class))
 			this.supervisorThread.getThread(
 					GoldStandardConfigFinderThread.class).waitFor();
-		this.log.debug("Checking for DataConfigs...");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#afterFind()
-	 */
-	@Override
-	protected void afterFind() {
-		this.repository.setInitialized(DataConfig.class);
+		super.beforeFind();
 	}
 
 	/*
@@ -92,7 +83,7 @@ public class DataConfigFinderThread extends FinderThread {
 	 * @see utils.FinderThread#getFinder()
 	 */
 	@Override
-	protected Finder getFinder() throws RegisterException {
+	protected Finder<DataConfig> getFinder() throws RegisterException {
 		return new DataConfigFinder(repository);
 	}
 }

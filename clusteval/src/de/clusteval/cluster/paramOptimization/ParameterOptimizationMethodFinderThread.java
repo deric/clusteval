@@ -22,7 +22,9 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-public class ParameterOptimizationMethodFinderThread extends FinderThread {
+public class ParameterOptimizationMethodFinderThread
+		extends
+			FinderThread<ParameterOptimizationMethod> {
 
 	/**
 	 * @param supervisorThread
@@ -37,7 +39,8 @@ public class ParameterOptimizationMethodFinderThread extends FinderThread {
 	public ParameterOptimizationMethodFinderThread(
 			final SupervisorThread supervisorThread,
 			final Repository repository, final boolean checkOnce) {
-		super(supervisorThread, repository, 30000, checkOnce);
+		super(supervisorThread, repository, ParameterOptimizationMethod.class,
+				30000, checkOnce);
 	}
 
 	/**
@@ -56,27 +59,8 @@ public class ParameterOptimizationMethodFinderThread extends FinderThread {
 			final SupervisorThread supervisorThread,
 			final Repository repository, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, repository, sleepTime, checkOnce);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#beforeFind()
-	 */
-	@Override
-	protected void beforeFind() {
-		this.log.debug("Checking for parameter optimization methods...");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#afterFind()
-	 */
-	@Override
-	protected void afterFind() {
-		repository.setInitialized(ParameterOptimizationMethod.class);
+		super(supervisorThread, repository, ParameterOptimizationMethod.class,
+				sleepTime, checkOnce);
 	}
 
 	/*

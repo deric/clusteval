@@ -22,7 +22,7 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-public class DistanceMeasureFinderThread extends FinderThread {
+public class DistanceMeasureFinderThread extends FinderThread<DistanceMeasure> {
 
 	/**
 	 * @param supervisorThread
@@ -31,7 +31,8 @@ public class DistanceMeasureFinderThread extends FinderThread {
 	 */
 	public DistanceMeasureFinderThread(final SupervisorThread supervisorThread,
 			final Repository framework, final boolean checkOnce) {
-		super(supervisorThread, framework, 30000, checkOnce);
+		super(supervisorThread, framework, DistanceMeasure.class, 30000,
+				checkOnce);
 	}
 
 	/**
@@ -43,17 +44,8 @@ public class DistanceMeasureFinderThread extends FinderThread {
 	public DistanceMeasureFinderThread(final SupervisorThread supervisorThread,
 			final Repository framework, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, framework, sleepTime, checkOnce);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#beforeFind()
-	 */
-	@Override
-	protected void beforeFind() {
-		this.log.debug("Checking for new DistanceMeasures ...");
+		super(supervisorThread, framework, DistanceMeasure.class, sleepTime,
+				checkOnce);
 	}
 
 	/*
@@ -64,16 +56,6 @@ public class DistanceMeasureFinderThread extends FinderThread {
 	@Override
 	protected DistanceMeasureFinder getFinder() throws RegisterException {
 		return new DistanceMeasureFinder(repository);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#afterFind()
-	 */
-	@Override
-	protected void afterFind() {
-		repository.setInitialized(DistanceMeasure.class);
 	}
 
 }

@@ -22,8 +22,7 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-// TODO: those can be removed now, by make FinderThread parameterized
-public class DataSetFormatFinderThread extends FinderThread {
+public class DataSetFormatFinderThread extends FinderThread<DataSetFormat> {
 
 	/**
 	 * @param supervisorThread
@@ -33,7 +32,8 @@ public class DataSetFormatFinderThread extends FinderThread {
 	 */
 	public DataSetFormatFinderThread(final SupervisorThread supervisorThread,
 			final Repository repository, final boolean checkOnce) {
-		super(supervisorThread, repository, 30000, checkOnce);
+		super(supervisorThread, repository, DataSetFormat.class, 30000,
+				checkOnce);
 	}
 
 	/**
@@ -46,27 +46,8 @@ public class DataSetFormatFinderThread extends FinderThread {
 	public DataSetFormatFinderThread(final SupervisorThread supervisorThread,
 			final Repository framework, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, framework, sleepTime, checkOnce);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#beforeFind()
-	 */
-	@Override
-	protected void beforeFind() {
-		this.log.debug("Checking for new DataSetFormats...");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#afterFind()
-	 */
-	@Override
-	protected void afterFind() {
-		repository.setInitialized(DataSetFormat.class);
+		super(supervisorThread, framework, DataSetFormat.class, sleepTime,
+				checkOnce);
 	}
 
 	/*

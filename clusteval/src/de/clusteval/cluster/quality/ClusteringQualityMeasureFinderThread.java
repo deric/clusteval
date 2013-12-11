@@ -22,7 +22,9 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-public class ClusteringQualityMeasureFinderThread extends FinderThread {
+public class ClusteringQualityMeasureFinderThread
+		extends
+			FinderThread<ClusteringQualityMeasure> {
 
 	/**
 	 * @param supervisorThread
@@ -36,7 +38,8 @@ public class ClusteringQualityMeasureFinderThread extends FinderThread {
 	public ClusteringQualityMeasureFinderThread(
 			final SupervisorThread supervisorThread,
 			final Repository repository, final boolean checkOnce) {
-		super(supervisorThread, repository, 30000, checkOnce);
+		super(supervisorThread, repository, ClusteringQualityMeasure.class,
+				30000, checkOnce);
 	}
 
 	/**
@@ -54,27 +57,8 @@ public class ClusteringQualityMeasureFinderThread extends FinderThread {
 			final SupervisorThread supervisorThread,
 			final Repository repository, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, repository, sleepTime, checkOnce);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#beforeFind()
-	 */
-	@Override
-	protected void beforeFind() {
-		this.log.debug("Checking for clustering quality measures...");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#afterFind()
-	 */
-	@Override
-	protected void afterFind() {
-		repository.setInitialized(ClusteringQualityMeasure.class);
+		super(supervisorThread, repository, ClusteringQualityMeasure.class,
+				sleepTime, checkOnce);
 	}
 
 	/*

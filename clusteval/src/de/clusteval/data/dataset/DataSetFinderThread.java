@@ -26,7 +26,7 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-public class DataSetFinderThread extends FinderThread {
+public class DataSetFinderThread extends FinderThread<DataSet> {
 
 	/**
 	 * @param supervisorThread
@@ -36,7 +36,7 @@ public class DataSetFinderThread extends FinderThread {
 	 */
 	public DataSetFinderThread(final SupervisorThread supervisorThread,
 			final Repository framework, final boolean checkOnce) {
-		super(supervisorThread, framework, 30000, checkOnce);
+		super(supervisorThread, framework, DataSet.class, 30000, checkOnce);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class DataSetFinderThread extends FinderThread {
 	public DataSetFinderThread(final SupervisorThread supervisorThread,
 			final Repository framework, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, framework, sleepTime, checkOnce);
+		super(supervisorThread, framework, DataSet.class, sleepTime, checkOnce);
 	}
 
 	/*
@@ -67,17 +67,7 @@ public class DataSetFinderThread extends FinderThread {
 		if (!this.repository.isInitialized(DataSetType.class))
 			this.supervisorThread.getThread(DataSetTypeFinderThread.class)
 					.waitFor();
-		this.log.debug("Checking for Datasets...");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#afterFind()
-	 */
-	@Override
-	protected void afterFind() {
-		this.repository.setInitialized(DataSet.class);
+		super.beforeFind();
 	}
 
 	/*

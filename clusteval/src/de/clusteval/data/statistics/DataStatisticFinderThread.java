@@ -22,7 +22,7 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-public class DataStatisticFinderThread extends FinderThread {
+public class DataStatisticFinderThread extends FinderThread<DataStatistic> {
 
 	/**
 	 * @param supervisorThread
@@ -32,7 +32,8 @@ public class DataStatisticFinderThread extends FinderThread {
 	 */
 	public DataStatisticFinderThread(final SupervisorThread supervisorThread,
 			final Repository framework, final boolean checkOnce) {
-		super(supervisorThread, framework, 30000, checkOnce);
+		super(supervisorThread, framework, DataStatistic.class, 30000,
+				checkOnce);
 	}
 
 	/**
@@ -45,17 +46,8 @@ public class DataStatisticFinderThread extends FinderThread {
 	public DataStatisticFinderThread(final SupervisorThread supervisorThread,
 			final Repository framework, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, framework, sleepTime, checkOnce);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#runStart()
-	 */
-	@Override
-	protected void beforeFind() {
-		this.log.debug("Checking for new DataStatistics...");
+		super(supervisorThread, framework, DataStatistic.class, sleepTime,
+				checkOnce);
 	}
 
 	/*
@@ -66,15 +58,5 @@ public class DataStatisticFinderThread extends FinderThread {
 	@Override
 	protected DataStatisticFinder getFinder() throws RegisterException {
 		return new DataStatisticFinder(repository);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.FinderThread#runEnd()
-	 */
-	@Override
-	protected void afterFind() {
-		repository.setInitialized(DataStatistic.class);
 	}
 }

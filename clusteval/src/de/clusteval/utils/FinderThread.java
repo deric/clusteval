@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
+import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.threading.ClustevalThread;
 import de.clusteval.framework.threading.SupervisorThread;
 
@@ -25,9 +26,13 @@ import de.clusteval.framework.threading.SupervisorThread;
  * @author Christian Wiwie
  * 
  */
-public abstract class FinderThread extends ClustevalThread {
+public abstract class FinderThread<T extends RepositoryObject>
+		extends
+			ClustevalThread {
 
 	protected Repository repository;
+
+	protected Class<T> classToFind;
 
 	protected long sleepTime;
 
@@ -35,46 +40,52 @@ public abstract class FinderThread extends ClustevalThread {
 
 	protected Logger log;
 
-	protected Finder currentFinder;
+	protected Finder<T> currentFinder;
 
 	/**
 	 * @param supervisorThread
-	 * @param framework
+	 * @param repository
+	 * @param classToFind
 	 * @param checkOnce
 	 * 
 	 */
 	public FinderThread(final SupervisorThread supervisorThread,
-			final Repository framework, boolean checkOnce) {
-		this(supervisorThread, framework, 30000, checkOnce);
+			final Repository repository, final Class<T> classToFind,
+			boolean checkOnce) {
+		this(supervisorThread, repository, classToFind, 30000, checkOnce);
 	}
 
 	/**
 	 * @param supervisorThread
-	 * @param framework
+	 * @param repository
+	 * @param classToFind
 	 * @param sleepTime
 	 * @param checkOnce
 	 * 
 	 */
 	public FinderThread(final SupervisorThread supervisorThread,
-			final Repository framework, final long sleepTime, boolean checkOnce) {
+			final Repository repository, final Class<T> classToFind,
+			final long sleepTime, boolean checkOnce) {
 		super(supervisorThread);
+		this.classToFind = classToFind;
 		this.setName(this.getName().replace("Thread",
 				this.getClass().getSimpleName()));
 		this.log = LoggerFactory.getLogger(this.getClass());
-		this.repository = framework;
+		this.repository = repository;
 		this.sleepTime = sleepTime;
 		this.checkOnce = checkOnce;
-		// aquire the lock in the beginning, such that no other threads
-		// depending on termination of this thread start processing before this
-		// thread finished finding at least once
 		this.start();
 	}
 
-	protected abstract void beforeFind();
+	protected void beforeFind() {
+		this.log.debug("Checking for " + classToFind.getSimpleName() + "...");
+	}
 
-	protected abstract Finder getFinder() throws RegisterException;
+	protected abstract Finder<T> getFinder() throws RegisterException;
 
-	protected abstract void afterFind();
+	protected void afterFind() {
+		repository.setInitialized(classToFind);
+	}
 
 	/*
 	 * (non-Javadoc)

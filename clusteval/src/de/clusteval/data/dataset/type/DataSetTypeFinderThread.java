@@ -22,7 +22,7 @@ import de.clusteval.utils.FinderThread;
  * @author Christian Wiwie
  * 
  */
-public class DataSetTypeFinderThread extends FinderThread {
+public class DataSetTypeFinderThread extends FinderThread<DataSetType> {
 
 	/**
 	 * @param supervisorThread
@@ -32,7 +32,7 @@ public class DataSetTypeFinderThread extends FinderThread {
 	 */
 	public DataSetTypeFinderThread(final SupervisorThread supervisorThread,
 			final Repository repository, final boolean checkOnce) {
-		super(supervisorThread, repository, 30000, checkOnce);
+		super(supervisorThread, repository, DataSetType.class, 30000, checkOnce);
 	}
 
 	/**
@@ -45,7 +45,8 @@ public class DataSetTypeFinderThread extends FinderThread {
 	public DataSetTypeFinderThread(final SupervisorThread supervisorThread,
 			final Repository framework, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, framework, sleepTime, checkOnce);
+		super(supervisorThread, framework, DataSetType.class, sleepTime,
+				checkOnce);
 	}
 
 	/*
