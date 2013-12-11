@@ -1303,7 +1303,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								+ getProgramConfigId(object
 										.getRepository()
 										.getParent()
-										.getStaticObjectWithName(ProgramConfig.class,
+										.getStaticObjectWithName(
+												ProgramConfig.class,
 												object.toString()))};
 			} else {
 				columns = new String[]{
@@ -2086,7 +2087,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								+ getGoldStandardId(object
 										.getRepository()
 										.getParent()
-										.getStaticObjectWithName(GoldStandard.class,
+										.getStaticObjectWithName(
+												GoldStandard.class,
 												object.toString()))};
 			} else {
 				columns = new String[]{"repository_id", "absPath"};
@@ -2686,7 +2688,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								+ getDataSetConfigId(object
 										.getRepository()
 										.getParent()
-										.getStaticObjectWithName(DataSetConfig.class,
+										.getStaticObjectWithName(
+												DataSetConfig.class,
 												object.toString()))};
 			} else {
 				columns = new String[]{"repository_id", "absPath", "name",
@@ -3216,7 +3219,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								getProgramConfigId(object.getProgramConfig())
 										+ ""});
 			} catch (SQLException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
 				runResultParamOptId = getRunResultParameterOptimizationId(object
 						.getAbsolutePath());
 			}

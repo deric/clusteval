@@ -443,9 +443,10 @@ public abstract class SQLCommunicator {
 			return this.register((DataSet) object, updateOnly);
 		else if (object instanceof ClusteringRun)
 			return this.register((ClusteringRun) object, updateOnly);
-		else if (object instanceof ClusteringRunResult)
+		else if (object instanceof ClusteringRunResult) {
+			this.register((RunResult) object);
 			return this.register((ClusteringRunResult) object);
-		else if (object instanceof DataAnalysisRun)
+		} else if (object instanceof DataAnalysisRun)
 			return this.register((DataAnalysisRun) object, updateOnly);
 		else if (object instanceof DataAnalysisRunResult)
 			return this.register((DataAnalysisRunResult) object);
@@ -464,21 +465,26 @@ public abstract class SQLCommunicator {
 		else if (object instanceof InternalParameterOptimizationRun)
 			return this.register((InternalParameterOptimizationRun) object,
 					updateOnly);
-		else if (object instanceof ParameterOptimizationResult)
+		else if (object instanceof ParameterOptimizationResult) {
+			this.register((RunResult) object);
 			return this.register((ParameterOptimizationResult) object);
+		} else if (object instanceof ParameterOptimizationRun)
+			return this.register((ParameterOptimizationRun) object, updateOnly);
 		else if (object instanceof Program)
 			return this.register((Program) object, updateOnly);
 		else if (object instanceof ProgramConfig)
 			return this.register((ProgramConfig) object, updateOnly);
 		else if (object instanceof RunAnalysisRun)
 			return this.register((RunAnalysisRun) object, updateOnly);
-		else if (object instanceof RunAnalysisRunResult)
+		else if (object instanceof RunAnalysisRunResult) {
+			this.register((RunResult) object);
 			return this.register((RunAnalysisRunResult) object);
-		else if (object instanceof RunDataAnalysisRun)
+		} else if (object instanceof RunDataAnalysisRun)
 			return this.register((RunDataAnalysisRun) object, updateOnly);
-		else if (object instanceof RunDataAnalysisRunResult)
+		else if (object instanceof RunDataAnalysisRunResult) {
+			this.register((RunResult) object);
 			return this.register((RunDataAnalysisRunResult) object);
-		else if (object instanceof StringProgramParameter)
+		} else if (object instanceof StringProgramParameter)
 			return this.register((StringProgramParameter) object);
 		return false;
 	}

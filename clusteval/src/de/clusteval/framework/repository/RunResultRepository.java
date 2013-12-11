@@ -151,17 +151,41 @@ public class RunResultRepository extends Repository {
 		this.staticRepositoryEntities.put(Finder.class,
 				this.parent.staticRepositoryEntities.get(Finder.class));
 
-		this.staticRepositoryEntities.put(DoubleProgramParameter.class,
-				this.parent.staticRepositoryEntities
-						.get(DoubleProgramParameter.class));
+//		this.staticRepositoryEntities.put(DoubleProgramParameter.class,
+//				this.parent.staticRepositoryEntities
+//						.get(DoubleProgramParameter.class));
+//
+//		this.staticRepositoryEntities.put(IntegerProgramParameter.class,
+//				this.parent.staticRepositoryEntities
+//						.get(IntegerProgramParameter.class));
+//
+//		this.staticRepositoryEntities.put(StringProgramParameter.class,
+//				this.parent.staticRepositoryEntities
+//						.get(StringProgramParameter.class));
+		
 
-		this.staticRepositoryEntities.put(IntegerProgramParameter.class,
-				this.parent.staticRepositoryEntities
-						.get(IntegerProgramParameter.class));
 
-		this.staticRepositoryEntities.put(StringProgramParameter.class,
-				this.parent.staticRepositoryEntities
-						.get(StringProgramParameter.class));
+		this.staticRepositoryEntities.put(
+				DoubleProgramParameter.class,
+				new ProgramParameterRepositoryEntity<DoubleProgramParameter>(
+						this, this.parent != null
+								? this.parent.staticRepositoryEntities
+										.get(DoubleProgramParameter.class)
+								: null, null));
+		this.staticRepositoryEntities.put(
+				IntegerProgramParameter.class,
+				new ProgramParameterRepositoryEntity<IntegerProgramParameter>(
+						this, this.parent != null
+								? this.parent.staticRepositoryEntities
+										.get(IntegerProgramParameter.class)
+								: null, null));
+		this.staticRepositoryEntities.put(
+				StringProgramParameter.class,
+				new ProgramParameterRepositoryEntity<StringProgramParameter>(
+						this, this.parent != null
+								? this.parent.staticRepositoryEntities
+										.get(StringProgramParameter.class)
+								: null, null));
 
 		this.dynamicRepositoryEntities.put(DistanceMeasure.class,
 				this.parent.dynamicRepositoryEntities
