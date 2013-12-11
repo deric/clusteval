@@ -130,9 +130,8 @@ class RProgramURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends RProgram> rProgram = (Class<? extends RProgram>) result;
 
-				if (this.parent.getRepository().registerClass(RProgram.class,
-						rProgram))
-					this.parent.getLog().info("RProgram " + name + " loaded");
+				this.parent.getRepository().registerClass(RProgram.class,
+						rProgram);
 
 				RProgram program;
 				try {

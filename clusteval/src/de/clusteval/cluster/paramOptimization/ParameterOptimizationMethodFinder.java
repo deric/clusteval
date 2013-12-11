@@ -150,11 +150,9 @@ class ParameterOptimizationMethodURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends ParameterOptimizationMethod> parameterOptimizationMethod = (Class<? extends ParameterOptimizationMethod>) result;
 
-				if (this.parent.getRepository().registerClass(
+				this.parent.getRepository().registerClass(
 						ParameterOptimizationMethod.class,
-						parameterOptimizationMethod))
-					this.parent.getLog().info(
-							"ParameterOptimizationMethod " + name + " loaded");
+						parameterOptimizationMethod);
 			}
 		}
 		return result;

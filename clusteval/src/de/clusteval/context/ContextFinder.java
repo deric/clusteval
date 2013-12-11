@@ -128,9 +128,8 @@ class ContextURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends Context> context = (Class<? extends Context>) result;
 
-				if (this.parent.getRepository().registerClass(Context.class,
-						context))
-					this.parent.getLog().info("Context " + name + " loaded");
+				this.parent.getRepository().registerClass(Context.class,
+						context);
 			}
 		}
 		return result;

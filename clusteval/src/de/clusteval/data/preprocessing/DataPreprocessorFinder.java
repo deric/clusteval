@@ -128,10 +128,8 @@ class DataPreprocessorURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends DataPreprocessor> dataSetGenerator = (Class<? extends DataPreprocessor>) result;
 
-				if (this.parent.getRepository().registerClass(
-						DataPreprocessor.class, dataSetGenerator))
-					this.parent.getLog().info(
-							"DataPreprocessor " + name + " loaded");
+				this.parent.getRepository().registerClass(
+						DataPreprocessor.class, dataSetGenerator);
 			}
 		}
 		return result;

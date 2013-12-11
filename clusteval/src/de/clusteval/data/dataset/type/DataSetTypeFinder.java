@@ -134,10 +134,8 @@ class DataSetTypeURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends DataSetType> DataSetType = (Class<? extends DataSetType>) result;
 
-				if (this.parent.getRepository().registerClass(
-						DataSetType.class, DataSetType))
-					this.parent.getLog()
-							.info("DataSetType " + name + " loaded");
+				this.parent.getRepository().registerClass(DataSetType.class,
+						DataSetType);
 			}
 		}
 		return result;

@@ -148,10 +148,8 @@ class RunResultFormatURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends RunResultFormat> runResultFormat = (Class<? extends RunResultFormat>) result;
 
-				if (this.parent.getRepository().registerClass(
-						RunResultFormat.class, runResultFormat))
-					this.parent.getLog().info(
-							"RunResultFormat " + name + " loaded");
+				this.parent.getRepository().registerClass(
+						RunResultFormat.class, runResultFormat);
 				// /*
 				// * Set internal runresult format
 				// */
@@ -163,10 +161,8 @@ class RunResultFormatURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends RunResultFormatParser> runResultFormatParser = (Class<? extends RunResultFormatParser>) result;
 
-				if (this.parent.getRepository().registerRunResultFormatParser(
-						runResultFormatParser))
-					this.parent.getLog().info(
-							"RunResultFormatParser " + name + " loaded");
+				this.parent.getRepository().registerRunResultFormatParser(
+						runResultFormatParser);
 
 			}
 		}

@@ -128,10 +128,8 @@ class DistanceMeasureURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends DistanceMeasure> distanceMeasure = (Class<? extends DistanceMeasure>) result;
 
-				if (this.parent.getRepository().registerClass(
-						(Class<? extends DistanceMeasure>) distanceMeasure))
-					this.parent.getLog().info(
-							"DistanceMeasure " + name + " loaded");
+				this.parent.getRepository().registerClass(
+						(Class<? extends DistanceMeasure>) distanceMeasure);
 			}
 		}
 		return result;

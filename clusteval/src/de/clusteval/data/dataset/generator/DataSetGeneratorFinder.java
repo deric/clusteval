@@ -128,10 +128,8 @@ class DataSetGeneratorURLClassLoader extends URLClassLoader {
 				@SuppressWarnings("unchecked")
 				Class<? extends DataSetGenerator> dataSetGenerator = (Class<? extends DataSetGenerator>) result;
 
-				if (this.parent.getRepository().registerClass(
-						DataSetGenerator.class, dataSetGenerator))
-					this.parent.getLog().info(
-							"DataSetGenerator " + name + " loaded");
+				this.parent.getRepository().registerClass(
+						DataSetGenerator.class, dataSetGenerator);
 			}
 		}
 		return result;

@@ -147,10 +147,8 @@ class DataStatisticURLClassLoader extends URLClassLoader {
 			if (name.endsWith("DataStatistic")) {
 				@SuppressWarnings("unchecked")
 				Class<? extends DataStatistic> dataStatistic = (Class<? extends DataStatistic>) result;
-				if (this.parent.getRepository().registerClass(
-						DataStatistic.class, dataStatistic))
-					this.parent.getLog().info(
-							"DataStatistic " + name + " loaded");
+				this.parent.getRepository().registerClass(DataStatistic.class,
+						dataStatistic);
 
 			} else if (name.endsWith("DataStatisticCalculator")
 					&& !name.equals("DataStatisticRCalculator")) {

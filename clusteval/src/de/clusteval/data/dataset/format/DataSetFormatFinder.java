@@ -144,10 +144,8 @@ class DataSetFormatURLClassLoader extends URLClassLoader {
 					throw ex;
 				}
 
-				if (this.parent.getRepository().registerClass(
-						DataSetFormat.class, dataSetFormat))
-					this.parent.getLog().info(
-							"DataSetFormat " + name + " loaded");
+				this.parent.getRepository().registerClass(DataSetFormat.class,
+						dataSetFormat);
 
 				// get the annotation
 				FormatVersion anno = result.getAnnotation(FormatVersion.class);
@@ -189,10 +187,8 @@ class DataSetFormatURLClassLoader extends URLClassLoader {
 				} catch (UnknownDataSetFormatException e) {
 				}
 
-				if (this.parent.getRepository().registerDataSetFormatParser(
-						dataSetFormatParser))
-					this.parent.getLog().info(
-							"DataSetFormatParser " + name + " loaded");
+				this.parent.getRepository().registerDataSetFormatParser(
+						dataSetFormatParser);
 
 			}
 		}

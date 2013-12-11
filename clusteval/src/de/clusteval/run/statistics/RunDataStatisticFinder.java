@@ -142,10 +142,8 @@ class RunDataStatisticURLClassLoader extends URLClassLoader {
 			if (name.endsWith("RunDataStatistic")) {
 				@SuppressWarnings("unchecked")
 				Class<? extends RunDataStatistic> runStatistic = (Class<? extends RunDataStatistic>) result;
-				if (this.parent.getRepository().registerClass(
-						RunDataStatistic.class, runStatistic))
-					this.parent.getLog().info(
-							"RunDataStatistic " + name + " loaded");
+				this.parent.getRepository().registerClass(
+						RunDataStatistic.class, runStatistic);
 
 			} else if (name.endsWith("RunDataStatisticCalculator")
 					&& !name.equals("de.clusteval.run.statistics.RunDataStatisticRCalculator")) {
