@@ -16,7 +16,6 @@ import java.util.Iterator;
 import utils.ArrayIterator;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
-import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.utils.FileFinder;
 
 /**

@@ -25,7 +25,7 @@ import de.clusteval.utils.FinderThread;
  */
 public class RunResultDataSetConfigFinderThread
 		extends
-			FinderThread<RunResultDataSetConfig> {
+			FinderThread<DataSetConfig> {
 
 	/**
 	 * @param supervisorThread
@@ -39,8 +39,8 @@ public class RunResultDataSetConfigFinderThread
 	public RunResultDataSetConfigFinderThread(
 			final SupervisorThread supervisorThread,
 			final Repository repository, final boolean checkOnce) {
-		super(supervisorThread, repository, RunResultDataSetConfig.class,
-				30000, checkOnce);
+		super(supervisorThread, repository, DataSetConfig.class, 30000,
+				checkOnce);
 	}
 
 	/**
@@ -58,8 +58,8 @@ public class RunResultDataSetConfigFinderThread
 			final SupervisorThread supervisorThread,
 			final Repository repository, final long sleepTime,
 			final boolean checkOnce) {
-		super(supervisorThread, repository, RunResultDataSetConfig.class,
-				sleepTime, checkOnce);
+		super(supervisorThread, repository, DataSetConfig.class, sleepTime,
+				checkOnce);
 	}
 
 	/*
@@ -81,7 +81,7 @@ public class RunResultDataSetConfigFinderThread
 	 * @see utils.FinderThread#getFinder()
 	 */
 	@Override
-	protected Finder getFinder() throws RegisterException {
+	protected Finder<DataSetConfig> getFinder() throws RegisterException {
 		return new RunResultDataSetConfigFinder(repository);
 	}
 }
