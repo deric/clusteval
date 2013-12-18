@@ -54,7 +54,6 @@ import de.clusteval.data.preprocessing.DataPreprocessor;
 import de.clusteval.data.statistics.DataStatistic;
 import de.clusteval.data.statistics.DataStatisticCalculator;
 import de.clusteval.framework.ClustevalBackendServer;
-import de.clusteval.framework.MyRengine;
 import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.repository.config.DefaultRepositoryConfig;
 import de.clusteval.framework.repository.config.RepositoryConfig;

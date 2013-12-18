@@ -134,6 +134,9 @@ class RunResultIterator implements Iterator<File> {
 						newResults, false, false);
 				this.parsedResults.addAll(newResults);
 				exception = false;
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				return false;
 			} catch (Exception e) {
 				// just ignore that runresult if it cannot be parsed
 			}

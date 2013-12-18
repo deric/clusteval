@@ -24,7 +24,8 @@ import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
-import de.clusteval.framework.MyRengine;
+import de.clusteval.framework.repository.MyRengine;
+import de.clusteval.framework.repository.RException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.utils.RNotAvailableException;
@@ -86,14 +87,15 @@ public abstract class DataStatisticRCalculator<T extends DataStatistic>
 					return calculateResultHelper(rEngine);
 				} catch (REXPMismatchException e) {
 					// handle this type of exception as an REngineException
-					throw new REngineException(rEngine, e.getMessage());
+					throw new RException(rEngine, e.getMessage());
 				}
 			} catch (REngineException e) {
 				this.log.warn("R-framework (" + this.getClass().getSimpleName()
 						+ "): " + rEngine.getLastError());
 				throw e;
-			} finally {
-				rEngine.close();
+			}
+ finally {
+				rEngine.clear();
 			}
 		} catch (RserveException e) {
 			throw new RNotAvailableException(e.getMessage());
@@ -122,14 +124,14 @@ public abstract class DataStatisticRCalculator<T extends DataStatistic>
 					writeOutputToHelper(absFolderPath, rEngine);
 				} catch (REXPMismatchException e) {
 					// handle this type of exception as an REngineException
-					throw new REngineException(rEngine, e.getMessage());
+					throw new RException(rEngine, e.getMessage());
 				}
 			} catch (REngineException e) {
 				this.log.warn("R-framework (" + this.getClass().getSimpleName()
 						+ "): " + rEngine.getLastError());
 				throw e;
 			} finally {
-				rEngine.close();
+				rEngine.clear();
 			}
 		} catch (RserveException e) {
 			throw new RNotAvailableException(e.getMessage());

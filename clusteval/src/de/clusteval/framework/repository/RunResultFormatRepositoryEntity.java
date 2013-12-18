@@ -3,6 +3,7 @@
  */
 package de.clusteval.framework.repository;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import de.clusteval.run.result.format.RunResultFormat;
@@ -30,6 +31,7 @@ public class RunResultFormatRepositoryEntity
 	public RunResultFormatRepositoryEntity(Repository repository,
 			DynamicRepositoryEntity<RunResultFormat> parent, String basePath) {
 		super(repository, parent, basePath);
+		this.runResultFormatParser = new HashMap<String, Class<? extends RunResultFormatParser>>();
 	}
 
 	/**

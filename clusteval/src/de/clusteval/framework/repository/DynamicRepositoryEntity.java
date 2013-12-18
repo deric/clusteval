@@ -13,7 +13,6 @@ import java.util.Map;
 
 import org.rosuda.REngine.Rserve.RserveException;
 
-import de.clusteval.framework.MyRengine;
 import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.RLibraryRequirement;
 import de.clusteval.utils.UnsatisfiedRLibraryException;

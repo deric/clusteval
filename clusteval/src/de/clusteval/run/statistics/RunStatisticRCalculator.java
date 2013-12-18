@@ -41,9 +41,10 @@ import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.data.statistics.IncompatibleDataConfigDataStatisticException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
-import de.clusteval.framework.MyRengine;
 import de.clusteval.framework.repository.InvalidRepositoryException;
+import de.clusteval.framework.repository.MyRengine;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
+import de.clusteval.framework.repository.RException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
@@ -138,14 +139,14 @@ public abstract class RunStatisticRCalculator<T extends RunStatistic>
 					return calculateResultHelper(rEngine);
 				} catch (REXPMismatchException e) {
 					// handle this type of exception as an REngineException
-					throw new REngineException(rEngine, e.getMessage());
+					throw new RException(rEngine, e.getMessage());
 				}
 			} catch (REngineException e) {
 				this.log.warn("R-framework (" + this.getClass().getSimpleName()
 						+ "): " + rEngine.getLastError());
 				throw e;
 			} finally {
-				rEngine.close();
+				rEngine.clear();
 			}
 		} catch (RserveException e) {
 			throw new RNotAvailableException(e.getMessage());

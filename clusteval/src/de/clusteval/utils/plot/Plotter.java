@@ -28,7 +28,7 @@ import de.clusteval.data.dataset.DataMatrix;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
-import de.clusteval.framework.MyRengine;
+import de.clusteval.framework.repository.MyRengine;
 import de.clusteval.run.result.ParameterOptimizationResult;
 
 /**
@@ -76,7 +76,7 @@ public abstract class Plotter {
 						+ result.getAbsolutePath() + "', " + "'"
 						+ result.getMethod().getPlotDensityParameter() + "')");
 			} finally {
-				rEngine.close();
+				rEngine.clear();
 			}
 		} catch (RserveException e) {
 		}
@@ -157,7 +157,7 @@ public abstract class Plotter {
 			} catch (REXPMismatchException e) {
 				e.printStackTrace();
 			} finally {
-				rEngine.close();
+				rEngine.clear();
 			}
 		} catch (RserveException e) {
 			e.printStackTrace();
@@ -226,7 +226,7 @@ public abstract class Plotter {
 			} catch (REXPMismatchException e) {
 				e.printStackTrace();
 			} finally {
-				rEngine.close();
+				rEngine.clear();
 			}
 		} catch (RserveException e) {
 			e.printStackTrace();

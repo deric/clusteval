@@ -19,7 +19,8 @@ import org.rosuda.REngine.REXPMismatchException;
 import org.rosuda.REngine.REngineException;
 import org.rosuda.REngine.Rserve.RserveException;
 
-import de.clusteval.framework.MyRengine;
+import de.clusteval.framework.repository.MyRengine;
+import de.clusteval.framework.repository.RException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.utils.RNotAvailableException;
@@ -72,7 +73,7 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 					return getDistanceHelper(point1, point2, rEngine);
 				} catch (REXPMismatchException e) {
 					// handle this type of exception as an REngineException
-					throw new REngineException(rEngine, e.getMessage());
+					throw new RException(rEngine, e.getMessage());
 				}
 			} catch (REngineException e) {
 				this.log.warn("R-framework (" + this.getClass().getSimpleName()
@@ -80,7 +81,7 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 				// TODO
 				return -1.0;
 			} finally {
-				rEngine.close();
+				rEngine.clear();
 			}
 		} catch (RserveException e) {
 			throw new RNotAvailableException(e.getMessage());
@@ -102,15 +103,13 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 					return getDistancesHelper(matrix, rEngine);
 				} catch (REXPMismatchException e) {
 					// handle this type of exception as an REngineException
-					throw new REngineException(rEngine, e.getMessage());
+					throw new RException(rEngine, e.getMessage());
 				}
 			} catch (REngineException e) {
 				this.log.warn("R-framework (" + this.getClass().getSimpleName()
 						+ "): " + rEngine.getLastError());
 				// TODO
 				return null;
-			} finally {
-				rEngine.close();
 			}
 		} catch (RserveException e) {
 			throw new RNotAvailableException(e.getMessage());
