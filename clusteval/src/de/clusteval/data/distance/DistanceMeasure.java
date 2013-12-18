@@ -16,6 +16,9 @@ package de.clusteval.data.distance;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
+import org.osgi.framework.ServiceReference;
+import org.osgi.framework.launch.Framework;
+
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
@@ -92,35 +95,48 @@ public abstract class DistanceMeasure extends RepositoryObject
 	 * @return the distance measure
 	 * @throws UnknownDistanceMeasureException
 	 */
+	@SuppressWarnings("unchecked")
 	public static DistanceMeasure parseFromString(final Repository repository,
 			String distanceMeasure) throws UnknownDistanceMeasureException {
-		Class<? extends DistanceMeasure> c = repository.getRegisteredClass(
-				DistanceMeasure.class, "de.clusteval.data.distance."
-						+ distanceMeasure);
-		try {
-			DistanceMeasure measure = c.getConstructor(Repository.class,
-					boolean.class, long.class, File.class).newInstance(
-					repository, false, System.currentTimeMillis(),
-					new File(distanceMeasure));
 
-			return measure;
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (NullPointerException e) {
+		Framework fr = repository.getOSGiFramework();
+		ServiceReference<DistanceMeasureFactory> sRef = (ServiceReference<DistanceMeasureFactory>) fr
+				.getBundleContext().getServiceReference(
+						"de.clusteval.data.distance." + distanceMeasure
+								+ "Factory");
+		if (sRef == null)
+			throw new UnknownDistanceMeasureException("\"" + distanceMeasure
+					+ "\" is not a known distance measure.");
 
-		} catch (IllegalArgumentException e1) {
-			e1.printStackTrace();
-		} catch (SecurityException e1) {
-			e1.printStackTrace();
-		} catch (InvocationTargetException e1) {
-			e1.printStackTrace();
-		} catch (NoSuchMethodException e1) {
-			e1.printStackTrace();
-		}
-		throw new UnknownDistanceMeasureException("\"" + distanceMeasure
-				+ "\" is not a known distance measure.");
+		DistanceMeasureFactory factory = fr.getBundleContext().getService(sRef);
+
+		return factory.newInstance(repository);
+		//
+		// Class<? extends DistanceMeasure> c = repository.getRegisteredClass(
+		// DistanceMeasure.class, "de.clusteval.data.distance."
+		// + distanceMeasure);
+		// try {
+		// DistanceMeasure measure = c.getConstructor(Repository.class,
+		// boolean.class, long.class, File.class).newInstance(
+		// repository, false, System.currentTimeMillis(),
+		// new File(distanceMeasure));
+		//
+		// return measure;
+		// } catch (InstantiationException e) {
+		// e.printStackTrace();
+		// } catch (IllegalAccessException e) {
+		// e.printStackTrace();
+		// } catch (NullPointerException e) {
+		//
+		// } catch (IllegalArgumentException e1) {
+		// e1.printStackTrace();
+		// } catch (SecurityException e1) {
+		// e1.printStackTrace();
+		// } catch (InvocationTargetException e1) {
+		// e1.printStackTrace();
+		// } catch (NoSuchMethodException e1) {
+		// e1.printStackTrace();
+		// }
 	}
 
 	/**

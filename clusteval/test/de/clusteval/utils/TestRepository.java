@@ -20,6 +20,7 @@ import java.security.NoSuchAlgorithmException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.osgi.framework.BundleException;
 
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
@@ -28,7 +29,6 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
-
 
 /**
  * @author Christian Wiwie
@@ -46,14 +46,16 @@ public class TestRepository {
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws NoSuchAlgorithmException
+	 * @throws BundleException
 	 */
 	@Before
 	public void setUp() throws FileNotFoundException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			NoSuchAlgorithmException {
-		parent = new Repository(new File("testCaseRepository").getAbsolutePath(), null);
+			NoSuchAlgorithmException, BundleException {
+		parent = new Repository(
+				new File("testCaseRepository").getAbsolutePath(), null);
 	}
 
 	/**
@@ -73,13 +75,14 @@ public class TestRepository {
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws NoSuchAlgorithmException
+	 * @throws BundleException
 	 */
 	@Test(expected = InvalidRepositoryException.class)
 	public void test1() throws FileNotFoundException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			NoSuchAlgorithmException {
+			NoSuchAlgorithmException, BundleException {
 		/*
 		 * Nested without parantal relationship not allowed
 		 */
@@ -96,13 +99,14 @@ public class TestRepository {
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws NoSuchAlgorithmException
+	 * @throws BundleException
 	 */
 	@Test
 	public void test2() throws FileNotFoundException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			NoSuchAlgorithmException {
+			NoSuchAlgorithmException, BundleException {
 		Repository child = new RunResultRepository(
 				"testCaseRepository/results/01_30_2013-21_31_25_tc_vs_DS1",
 				parent);
@@ -116,13 +120,15 @@ public class TestRepository {
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws NoSuchAlgorithmException
+	 * @throws BundleException
 	 * 
 	 */
 	@Test
 	public void testGetRepositoryForPathString() throws FileNotFoundException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, NoRepositoryFoundException, NoSuchAlgorithmException {
+			RepositoryConfigurationException, NoRepositoryFoundException,
+			NoSuchAlgorithmException, BundleException {
 		File f = new File("repository2");
 		f.deleteOnExit();
 		Repository child = new Repository(f.getAbsolutePath(), null);

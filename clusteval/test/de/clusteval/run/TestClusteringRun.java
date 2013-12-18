@@ -10,6 +10,7 @@ import junit.framework.Assert;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Test;
+import org.osgi.framework.BundleException;
 
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
@@ -97,6 +98,7 @@ public class TestClusteringRun extends AbstractClustEvalTest {
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws BundleException 
 	 */
 	@Test
 	public void testNewParser() throws InterruptedException,
@@ -123,7 +125,7 @@ public class TestClusteringRun extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException, BundleException {
 		ClusteringRun run = Parser.parseFromFile(ClusteringRun.class, new File(
 				"testCaseRepository/runs/all_vs_DS1_clustering.run")
 				.getAbsoluteFile());

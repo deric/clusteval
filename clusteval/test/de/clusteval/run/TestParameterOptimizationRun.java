@@ -12,6 +12,7 @@ import junit.framework.Assert;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Test;
+import org.osgi.framework.BundleException;
 
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
@@ -135,6 +136,7 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 * @throws BundleException 
 	 */
 	@Test
 	public void testNewParser() throws UnknownDataSetFormatException,
@@ -159,7 +161,7 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 			InterruptedException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, UnknownDataStatisticException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException, BundleException {
 		ParameterOptimizationRun run = Parser
 				.parseFromFile(
 						ParameterOptimizationRun.class,

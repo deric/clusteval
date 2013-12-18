@@ -24,6 +24,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.osgi.framework.BundleException;
 
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.InvalidRepositoryException;
@@ -80,7 +81,7 @@ public class TestRunResultFinder {
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			InterruptedException, NoSuchAlgorithmException {
+			InterruptedException, NoSuchAlgorithmException, BundleException {
 
 		TestRepository repository = new TestRepository(new File(
 				"testCaseRepository").getAbsolutePath(), null);
@@ -99,7 +100,7 @@ public class TestRunResultFinder {
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			InterruptedException, NoSuchAlgorithmException {
+			InterruptedException, NoSuchAlgorithmException, BundleException {
 
 		TestRepository repository = new TestRepository(new File(
 				"testCaseRepository").getAbsolutePath(), null);
@@ -130,12 +131,13 @@ class TestRepository extends Repository {
 	 * @throws RepositoryConfigurationException
 	 * @throws NoRepositoryFoundException
 	 * @throws NoSuchAlgorithmException
+	 * @throws BundleException 
 	 */
 	public TestRepository(String basePath, Repository parent)
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			NoSuchAlgorithmException {
+			NoSuchAlgorithmException, BundleException {
 		super(basePath, parent);
 	}
 
@@ -163,7 +165,8 @@ class TestRepository extends Repository {
 
 	public boolean register(RunResult object) throws RegisterException {
 		String runIdent = object.runIdentString;
-		Run run = this.getStaticObjectWithName(Run.class, object.run.toString());
+		Run run = this
+				.getStaticObjectWithName(Run.class, object.run.toString());
 		if (!assertionFailed)
 			assertionFailed = !(run.getStatus().equals(RUN_STATUS.FINISHED) || run
 					.getStatus().equals(RUN_STATUS.INACTIVE))

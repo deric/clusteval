@@ -14,12 +14,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
@@ -28,10 +30,16 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.launch.Framework;
+import org.osgi.framework.launch.FrameworkFactory;
 import org.rosuda.REngine.Rserve.RserveException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import utils.ArraysExt;
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
@@ -378,6 +386,11 @@ public class Repository {
 	private Map<Thread, MyRengine> rEngines;
 
 	/**
+	 * The OSGi framework
+	 */
+	protected Framework osgi;
+
+	/**
 	 * Instantiates a new repository.
 	 * 
 	 * @param parent
@@ -389,11 +402,12 @@ public class Repository {
 	 * @throws RepositoryAlreadyExistsException
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
+	 * @throws BundleException
 	 */
 	public Repository(final String basePath, final Repository parent)
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException {
+			RepositoryConfigurationException, BundleException {
 		this(basePath, parent, null);
 	}
 
@@ -412,12 +426,13 @@ public class Repository {
 	 * @throws RepositoryAlreadyExistsException
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
+	 * @throws BundleException
 	 */
 	public Repository(final String basePath, final Repository parent,
 			final RepositoryConfig overrideConfig)
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException {
+			RepositoryConfigurationException, BundleException {
 		super();
 
 		this.log = LoggerFactory.getLogger(this.getClass());
@@ -469,6 +484,8 @@ public class Repository {
 		// this.rEngineException = e;
 		// }
 		this.rEngines = new HashMap<Thread, MyRengine>();
+
+		initOSGi(this.basePath);
 	}
 
 	/**
@@ -1966,6 +1983,37 @@ public class Repository {
 	 */
 	public Map<String, Long> getFinderLoadedJarFileChangeDates() {
 		return this.finderLoadedJarFileChangeDates;
+	}
+
+	/**
+	 * Init the OSGi framework.
+	 * 
+	 * @param repositoryPath
+	 * @throws BundleException
+	 */
+	protected void initOSGi(String repositoryPath) throws BundleException {
+//		FrameworkFactory frameworkFactory = ServiceLoader
+//				.load(FrameworkFactory.class).iterator().next();
+//		Map<String, String> map = new HashMap<String, String>();
+//		map.put("felix.fileinstall.dir",
+//				FileUtils.buildPath(repositoryPath, "test"));
+//		map.put("felix.fileinstall.noInitialDelay", "true");
+//		map.put("felix.fileinstall.bundles.new.start", "true");
+//		osgi = frameworkFactory.newFramework(map);
+//		osgi.start();
+//
+//		for (Bundle bundle : osgi.getBundleContext().getBundles()) {
+//			System.out.println(bundle.getState());
+//			bundle.start();
+//		}
+
+	}
+
+	/**
+	 * @return The OSGi framework used by this server.
+	 */
+	public Framework getOSGiFramework() {
+		return this.osgi;
 	}
 }
 // Repository class before: 7311 lines

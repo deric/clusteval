@@ -25,6 +25,7 @@ import junit.framework.Assert;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Test;
+import org.osgi.framework.BundleException;
 
 import utils.SimilarityMatrix;
 import ch.qos.logback.classic.Level;
@@ -207,6 +208,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws DataSetConfigNotFoundException
 	 * @throws GoldStandardConfigurationException
 	 * @throws GoldStandardNotFoundException
+	 * @throws BundleException 
 	 */
 	@Test(expected = DataSetRegisterException.class)
 	public void testRegisterRunResultRepositoryNotPresentInParent()
@@ -234,7 +236,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException, BundleException {
 		Repository runResultRepository = new RunResultRepository(
 				new File(
 						"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1")

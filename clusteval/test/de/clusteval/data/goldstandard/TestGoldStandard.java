@@ -20,6 +20,7 @@ import java.security.NoSuchAlgorithmException;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.osgi.framework.BundleException;
 
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
@@ -94,6 +95,7 @@ public class TestGoldStandard extends AbstractClustEvalTest {
 	 * @throws RegisterException
 	 * @throws GoldStandardNotFoundException
 	 * @throws NoSuchAlgorithmException
+	 * @throws BundleException 
 	 */
 	@Test(expected = RegisterException.class)
 	public void testRegisterRunResultRepositoryNotPresentInParent()
@@ -101,7 +103,7 @@ public class TestGoldStandard extends AbstractClustEvalTest {
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
 			GoldStandardNotFoundException, RegisterException,
-			NoSuchAlgorithmException, InterruptedException {
+			NoSuchAlgorithmException, InterruptedException, BundleException {
 		getRepository().initialize();
 		Repository runResultRepository = new RunResultRepository(
 				new File(

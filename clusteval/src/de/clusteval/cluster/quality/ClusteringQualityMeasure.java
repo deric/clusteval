@@ -19,6 +19,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.osgi.framework.ServiceReference;
+import org.osgi.framework.launch.Framework;
+
 import de.clusteval.cluster.Clustering;
 import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
@@ -137,10 +140,16 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 	public static ClusteringQualityMeasure parseFromString(
 			final Repository repository, String qualityMeasure)
 			throws UnknownClusteringQualityMeasureException {
+//
+//		Framework fr = repository.getOSGiFramework();
+//		ServiceReference<ClusteringQualityMeasure> sRef = (ServiceReference<ClusteringQualityMeasure>) fr
+//				.getBundleContext().getServiceReference(
+//						"de.clusteval.cluster.quality." + qualityMeasure);
+//		sRef.
 
 		Class<? extends ClusteringQualityMeasure> c = repository
-				.getRegisteredClass(ClusteringQualityMeasure.class, "de.clusteval.cluster.quality."
-						+ qualityMeasure);
+				.getRegisteredClass(ClusteringQualityMeasure.class,
+						"de.clusteval.cluster.quality." + qualityMeasure);
 		try {
 			ClusteringQualityMeasure measure = c.getConstructor(
 					Repository.class, boolean.class, long.class, File.class)

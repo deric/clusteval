@@ -42,6 +42,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 import org.apache.commons.configuration.ConfigurationException;
+import org.osgi.framework.BundleException;
 import org.rosuda.REngine.Rserve.RserveException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,9 +146,6 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	protected static BackendServerConfig config = new BackendServerConfig();
 
-	protected static String VERSION = "1.0 build1/"
-			+ Formatter.currentTimeAsString(true, "MM.dd.yyyy", Locale.UK);
-
 	/**
 	 * @return The configuration of this backend server.
 	 */
@@ -247,11 +245,13 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws InterruptedException
+	 * @throws BundleException
 	 */
 	public ClustevalBackendServer(final String absRepositoryPath)
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, InterruptedException {
+			RepositoryConfigurationException, InterruptedException,
+			BundleException {
 		this(new Repository(absRepositoryPath, null));
 	}
 
@@ -262,9 +262,10 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * @param repository
 	 *            The repository used by this server.
 	 * @throws InterruptedException
+	 * @throws BundleException
 	 */
 	public ClustevalBackendServer(final Repository repository)
-			throws InterruptedException {
+			throws InterruptedException, BundleException {
 		this(repository, true);
 	}
 
@@ -357,11 +358,14 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws InterruptedException
+	 * @throws BundleException
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws FileNotFoundException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, InterruptedException {
+			RepositoryConfigurationException, InterruptedException,
+			BundleException {
 
 		// bugfix for log4j warning
 		org.apache.log4j.Logger.getRootLogger().setLevel(
@@ -378,8 +382,7 @@ public class ClustevalBackendServer implements IBackendServer {
 			if (cmd.hasOption("help")) {
 				HelpFormatter formatter = new HelpFormatter();
 				formatter.printHelp("clustevalServer",
-						"clusteval backend server " + VERSION,
-						serverCLIOptions, "");
+						"clusteval backend server", serverCLIOptions, "");
 				System.exit(0);
 			}
 
@@ -406,7 +409,6 @@ public class ClustevalBackendServer implements IBackendServer {
 
 			try {
 				// try to establish a connection to R
-				@SuppressWarnings("unused")
 				MyRengine myRengine = new MyRengine("");
 				isRAvailable = true;
 			} catch (RserveException e) {
@@ -418,21 +420,20 @@ public class ClustevalBackendServer implements IBackendServer {
 				isRAvailable = false;
 			}
 
-			@SuppressWarnings("unused")
-			ClustevalBackendServer clusteringEvalFramework;
+			String repositoryPath;
 			if (cmd.hasOption("absRepoPath"))
-				clusteringEvalFramework = new ClustevalBackendServer(
-						cmd.getOptionValue("absRepoPath"));
+				repositoryPath = cmd.getOptionValue("absRepoPath");
 			else
-				clusteringEvalFramework = new ClustevalBackendServer(new File(
-						"repository").getAbsolutePath());
+				repositoryPath = new File("repository").getAbsolutePath();
+
+			new ClustevalBackendServer(repositoryPath);
 
 		} catch (ParseException e1) {
 			System.err.println("Parsing failed.  Reason: " + e1.getMessage());
 
 			HelpFormatter formatter = new HelpFormatter();
-			formatter.printHelp("clustevalServer", "clusteval backend server "
-					+ VERSION, serverCLIOptions, "");
+			formatter.printHelp("clustevalServer", "clusteval backend server",
+					serverCLIOptions, "");
 		}
 	}
 
@@ -462,7 +463,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	 *            logging
 	 * @throws ParseException
 	 */
-	private static void initLogging(CommandLine cmd) throws ParseException {
+	static void initLogging(CommandLine cmd) throws ParseException {
 		Logger log = LoggerFactory.getLogger(ClustevalBackendServer.class);
 
 		Level logLevel;
@@ -869,6 +870,8 @@ public class ClustevalBackendServer implements IBackendServer {
 		} catch (UnknownParameterType e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (BundleException e) {
 			e.printStackTrace();
 		}
 

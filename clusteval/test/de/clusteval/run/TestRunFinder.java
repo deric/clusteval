@@ -26,6 +26,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.osgi.framework.BundleException;
 
 import ch.qos.logback.classic.Level;
 import de.clusteval.framework.ClustevalBackendServer;
@@ -86,6 +87,7 @@ public class TestRunFinder {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws NoSuchAlgorithmException
+	 * @throws BundleException 
 	 */
 	@SuppressWarnings("unused")
 	@Test
@@ -93,7 +95,7 @@ public class TestRunFinder {
 			throws RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			IOException, InterruptedException, NoSuchAlgorithmException {
+			IOException, InterruptedException, NoSuchAlgorithmException, BundleException {
 		String base = new File("testCaseRepository").getAbsolutePath();
 		TestRepository repo = new TestRepository(base, null);
 		repo.setSQLCommunicator(new StubSQLCommunicator(repo));
@@ -158,11 +160,12 @@ class TestRepository extends Repository {
 	 * @throws InvalidRepositoryException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws RepositoryConfigurationException
+	 * @throws BundleException 
 	 */
 	public TestRepository(String basePath, Repository parent)
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException {
+			RepositoryConfigurationException, BundleException {
 		super(basePath, parent);
 
 		this.staticRepositoryEntities.put(

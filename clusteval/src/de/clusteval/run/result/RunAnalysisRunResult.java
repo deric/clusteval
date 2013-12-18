@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.osgi.framework.BundleException;
 
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
@@ -203,6 +204,7 @@ public class RunAnalysisRunResult
 	 * @throws IncompatibleContextException
 	 * @throws UnknownParameterType
 	 * @throws InterruptedException
+	 * @throws BundleException 
 	 */
 	public static RunAnalysisRunResult parseFromRunResultFolder(
 			final Repository repository, final File runResultFolder)
@@ -233,7 +235,7 @@ public class RunAnalysisRunResult
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
-			UnknownParameterType, InterruptedException {
+			UnknownParameterType, InterruptedException, BundleException {
 		Repository childRepository = new RunResultRepository(
 				runResultFolder.getAbsolutePath(), repository);
 		childRepository.initialize();

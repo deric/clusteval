@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +56,8 @@ public class ClustQualityEval {
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException,
-			UnknownClusteringQualityMeasureException, InterruptedException {
+			UnknownClusteringQualityMeasureException, InterruptedException,
+			BundleException {
 		super();
 		ClustevalBackendServer.logLevel(Level.INFO);
 		this.repo = new Repository(absRepoPath, null);
@@ -119,7 +121,8 @@ public class ClustQualityEval {
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException,
-			UnknownClusteringQualityMeasureException, InterruptedException {
+			UnknownClusteringQualityMeasureException, InterruptedException,
+			BundleException {
 		new ClustQualityEval(args[0], args[1]);
 	}
 }

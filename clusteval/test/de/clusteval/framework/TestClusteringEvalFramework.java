@@ -25,6 +25,7 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.osgi.framework.BundleException;
 
 import ch.qos.logback.classic.Level;
 import de.clusteval.framework.repository.InvalidRepositoryException;
@@ -59,13 +60,14 @@ public class TestClusteringEvalFramework {
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws ParseException
 	 * @throws NoSuchAlgorithmException
+	 * @throws BundleException 
 	 */
 	@BeforeClass
 	public static void setUp() throws FileNotFoundException, ConnectException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			ParseException, NoSuchAlgorithmException, InterruptedException {
+			ParseException, NoSuchAlgorithmException, InterruptedException, BundleException {
 		ClustevalBackendServer.logLevel(Level.INFO);
 		framework = new ClustevalBackendServer(new Repository(new File(
 				"testCaseRepository").getAbsolutePath(), null), false);

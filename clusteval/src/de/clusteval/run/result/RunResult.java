@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -131,6 +132,7 @@ public abstract class RunResult extends RepositoryObject {
 	 * @throws IncompatibleContextException
 	 * @throws UnknownParameterType
 	 * @throws InterruptedException
+	 * @throws BundleException 
 	 */
 	// TODO: we cannot move this method into Parser#RunResultParser, because
 	// ParameterOptimizationRun.parseFromRunResultFolder() returns several
@@ -168,7 +170,7 @@ public abstract class RunResult extends RepositoryObject {
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
-			UnknownParameterType, InterruptedException {
+			UnknownParameterType, InterruptedException, BundleException {
 
 		Logger log = LoggerFactory.getLogger(RunResult.class);
 		log.debug("Parsing run result from '" + runResultFolder + "'");

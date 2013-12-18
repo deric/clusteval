@@ -16,6 +16,8 @@ package de.clusteval.framework.repository;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.osgi.framework.BundleException;
+
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.context.Context;
@@ -76,11 +78,12 @@ public class RunResultRepository extends Repository {
 	 * @throws InvalidRepositoryException
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
+	 * @throws BundleException
 	 */
 	public RunResultRepository(String basePath, Repository parent)
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException {
+			RepositoryConfigurationException, BundleException {
 		super(basePath, parent);
 	}
 
@@ -151,19 +154,17 @@ public class RunResultRepository extends Repository {
 		this.staticRepositoryEntities.put(Finder.class,
 				this.parent.staticRepositoryEntities.get(Finder.class));
 
-//		this.staticRepositoryEntities.put(DoubleProgramParameter.class,
-//				this.parent.staticRepositoryEntities
-//						.get(DoubleProgramParameter.class));
-//
-//		this.staticRepositoryEntities.put(IntegerProgramParameter.class,
-//				this.parent.staticRepositoryEntities
-//						.get(IntegerProgramParameter.class));
-//
-//		this.staticRepositoryEntities.put(StringProgramParameter.class,
-//				this.parent.staticRepositoryEntities
-//						.get(StringProgramParameter.class));
-		
-
+		// this.staticRepositoryEntities.put(DoubleProgramParameter.class,
+		// this.parent.staticRepositoryEntities
+		// .get(DoubleProgramParameter.class));
+		//
+		// this.staticRepositoryEntities.put(IntegerProgramParameter.class,
+		// this.parent.staticRepositoryEntities
+		// .get(IntegerProgramParameter.class));
+		//
+		// this.staticRepositoryEntities.put(StringProgramParameter.class,
+		// this.parent.staticRepositoryEntities
+		// .get(StringProgramParameter.class));
 
 		this.staticRepositoryEntities.put(
 				DoubleProgramParameter.class,
