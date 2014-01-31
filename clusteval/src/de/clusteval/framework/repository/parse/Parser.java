@@ -1473,18 +1473,18 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 					params, optimizableParameters, expectsNormalizedDataSet);
 		}
 
-		// add parameter objects for input (i), executable (e), output (o)
-		// and goldstandard (gs)
-		params.add(new StringProgramParameter(repo, false, result, "i",
-				"Input", null, null));
-		params.add(new StringProgramParameter(repo, false, result, "e",
-				"Executable", null, null));
-		params.add(new StringProgramParameter(repo, false, result, "o",
-				"Output", null, null));
-		params.add(new StringProgramParameter(repo, false, result, "q",
-				"Quality", null, null));
-		params.add(new StringProgramParameter(repo, false, result, "gs",
-				"Goldstandard", null, null));
+//		// add parameter objects for input (i), executable (e), output (o)
+//		// and goldstandard (gs)
+//		params.add(new StringProgramParameter(repo, false, result, "i",
+//				"Input", null, null));
+//		params.add(new StringProgramParameter(repo, false, result, "e",
+//				"Executable", null, null));
+//		params.add(new StringProgramParameter(repo, false, result, "o",
+//				"Output", null, null));
+//		params.add(new StringProgramParameter(repo, false, result, "q",
+//				"Quality", null, null));
+//		params.add(new StringProgramParameter(repo, false, result, "gs",
+//				"Goldstandard", null, null));
 
 		/*
 		 * Get the optimization parameters (parameters, that can be optimized

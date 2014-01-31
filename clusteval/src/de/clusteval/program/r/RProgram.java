@@ -38,6 +38,7 @@ import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.program.Program;
 import de.clusteval.program.ProgramConfig;
+import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.result.format.RunResultFormat;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
 import de.clusteval.utils.RNotAvailableException;
@@ -304,9 +305,20 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 				getFuzzyCoeffMatrixFromExecResult());
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("k\tClustering\n");
+		// TODO: changed 31.01.2014
+		for (ProgramParameter<?> p : programConfig.getParams()) {
+			sb.append(p.getName());
+			sb.append(",");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		sb.append("\tClustering\n");
 
-		sb.append(getParameterValueForResultFile(effectiveParams) + "\t");
+		for (ProgramParameter<?> p : programConfig.getParams()) {
+			sb.append(effectiveParams.get(p.getName()));
+			sb.append(",");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		sb.append("\t");
 		sb.append(resultClustering.toFormattedString());
 		return sb.toString();
 	}
