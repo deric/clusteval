@@ -29,12 +29,15 @@ public class StaticRepositoryEntity<T extends RepositoryObject>
 	}
 
 	public Collection<T> asCollection() {
-		Collection<T> result = new HashSet<T>(this.objects.values());
 
-		if (parent != null)
-			result.addAll(parent.asCollection());
+		synchronized (this.objects) {
+			Collection<T> result = new HashSet<T>(this.objects.values());
 
-		return result;
+			if (parent != null)
+				result.addAll(parent.asCollection());
+
+			return result;
+		}
 	}
 
 	/**
@@ -84,16 +87,19 @@ public class StaticRepositoryEntity<T extends RepositoryObject>
 	public <S extends T> S getRegisteredObject(final S object,
 			final boolean ignoreChangeDate) {
 		// get object without changedate
-		S other = (S) this.objects.get(object);
-		// inserted parent, 02.06.2012
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object, ignoreChangeDate);
-		else if (ignoreChangeDate || other == null)
-			return other;
-		else if (other.changeDate == object.changeDate) {
-			return other;
+
+		synchronized (this.objects) {
+			S other = (S) this.objects.get(object);
+			// inserted parent, 02.06.2012
+			if (other == null && parent != null)
+				return parent.getRegisteredObject(object, ignoreChangeDate);
+			else if (ignoreChangeDate || other == null)
+				return other;
+			else if (other.changeDate == object.changeDate) {
+				return other;
+			}
+			return object;
 		}
-		return object;
 	}
 
 	/**
@@ -151,27 +157,31 @@ public class StaticRepositoryEntity<T extends RepositoryObject>
 		 * replace old object by new object
 		 */
 		RepositoryReplaceEvent event = new RepositoryReplaceEvent(old, object);
-		this.objects.put(object, object);
-		this.nameToObject.put(object.toString(), object);
-		this.repository.pathToRepositoryObject.put(object.absPath, object);
-		old.notify(event);
+		synchronized (this.objects) {
+			this.objects.put(object, object);
+			this.nameToObject.put(object.toString(), object);
+			this.repository.pathToRepositoryObject.put(object.absPath, object);
+			old.notify(event);
 
-		this.repository.sqlCommunicator.register(object, true);
+			this.repository.sqlCommunicator.register(object, true);
 
-		return true;
+			return true;
+		}
 	}
 
 	protected <S extends T> boolean registerWithoutExisting(final S object) {
-		this.objects.put(object, object);
-		this.nameToObject.put(object.toString(), object);
-		this.repository.pathToRepositoryObject.put(object.absPath, object);
-		if (this.printOnRegister)
-			this.repository.info("New " + object.getClass().getSimpleName()
-					+ ": " + object.toString());
+		synchronized (this.objects) {
+			this.objects.put(object, object);
+			this.nameToObject.put(object.toString(), object);
+			this.repository.pathToRepositoryObject.put(object.absPath, object);
+			if (this.printOnRegister)
+				this.repository.info("New " + object.getClass().getSimpleName()
+						+ ": " + object.toString());
 
-		this.repository.sqlCommunicator.register(object, false);
+			this.repository.sqlCommunicator.register(object, false);
 
-		return true;
+			return true;
+		}
 	}
 
 	/**
@@ -188,11 +198,13 @@ public class StaticRepositoryEntity<T extends RepositoryObject>
 	 */
 	@Override
 	public <S extends T> boolean unregister(final S object) {
-		boolean result = this.objects.remove(object) != null;
-		if (result) {
-			this.unregisterAfterRemove(object);
+		synchronized (this.objects) {
+			boolean result = this.objects.remove(object) != null;
+			if (result) {
+				this.unregisterAfterRemove(object);
+			}
+			return result;
 		}
-		return result;
 	}
 
 	protected <S extends T> void unregisterAfterRemove(final S object) {

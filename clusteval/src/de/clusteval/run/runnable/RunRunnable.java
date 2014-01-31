@@ -18,6 +18,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -243,6 +245,14 @@ public abstract class RunRunnable implements Runnable {
 			this.log.warn("During the execution of this run runnable exceptions were thrown:");
 			for (Throwable t : this.exceptions) {
 				this.log.warn(t.toString());
+
+				StringWriter writer = new StringWriter();
+				t.printStackTrace(new PrintWriter(writer));
+				String message = writer.toString();
+				String[] split = message.split(System
+						.getProperty("line.separator"));
+				for (int i = 1; i < split.length; i++)
+					this.log.warn("|--> " + split[i]);
 			}
 		}
 	}

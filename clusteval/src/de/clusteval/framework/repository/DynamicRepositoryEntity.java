@@ -80,22 +80,25 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 			final boolean ignoreChangeDate) {
 		// get object without changedate
 		S other = null;
-		for (List<T> list : this.objects.values()) {
-			for (T elem : list)
-				if (elem.equals(object)) {
-					other = (S) elem;
-					break;
-				}
+
+		synchronized (this.objects) {
+			for (List<T> list : this.objects.values()) {
+				for (T elem : list)
+					if (elem.equals(object)) {
+						other = (S) elem;
+						break;
+					}
+			}
+			// inserted parent, 02.06.2012
+			if (other == null && parent != null)
+				return parent.getRegisteredObject(object, ignoreChangeDate);
+			else if (ignoreChangeDate || other == null)
+				return other;
+			else if (other.changeDate == object.changeDate) {
+				return other;
+			}
+			return object;
 		}
-		// inserted parent, 02.06.2012
-		if (other == null && parent != null)
-			return parent.getRegisteredObject(object, ignoreChangeDate);
-		else if (ignoreChangeDate || other == null)
-			return other;
-		else if (other.changeDate == object.changeDate) {
-			return other;
-		}
-		return object;
 	}
 
 	/**
@@ -113,20 +116,25 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 		}
 		this.classes.put(object.getName(), object);
 
-		this.objects.put(object.getSimpleName(),
-				Collections.synchronizedList(new ArrayList<T>()));
+		synchronized (this.objects) {
+			// is this right, to always put an empty list even though there was
+			// an
+			// old class before?
+			this.objects.put(object.getSimpleName(),
+					Collections.synchronizedList(new ArrayList<T>()));
 
-		if (!ensureLibraries(object))
-			return false;
+			if (!ensureLibraries(object))
+				return false;
 
-		DynamicRepositoryEntity.loadedClasses.put(object.getName(), object);
+			DynamicRepositoryEntity.loadedClasses.put(object.getName(), object);
 
-		this.repository.log.info("Dynamic class registered: "
-				+ object.getSimpleName());
-		
-		this.repository.sqlCommunicator.register(object);
+			this.repository.log.info("Dynamic class registered: "
+					+ object.getSimpleName());
 
-		return true;
+			this.repository.sqlCommunicator.register(object);
+
+			return true;
+		}
 	}
 
 	/**
@@ -189,9 +197,10 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 	@Override
 	public <S extends T> boolean register(final S object)
 			throws RegisterException {
-		this.objects.get(object.getClass().getSimpleName()).add(object);
-		// TODO: check duplicates in list?
-
+		synchronized (this.objects) {
+			this.objects.get(object.getClass().getSimpleName()).add(object);
+			// TODO: check duplicates in list?
+		}
 		return true;
 	}
 
@@ -209,16 +218,18 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 	 */
 	@Override
 	public <S extends T> boolean unregister(final S object) {
-		boolean result = this.objects.get(object.getClass().getSimpleName())
-				.remove(object);
-		if (result) {
-			try {
-				object.notify(new RepositoryRemoveEvent(object));
-			} catch (RegisterException e) {
-				e.printStackTrace();
+		synchronized (this.objects) {
+			boolean result = this.objects
+					.get(object.getClass().getSimpleName()).remove(object);
+			if (result) {
+				try {
+					object.notify(new RepositoryRemoveEvent(object));
+				} catch (RegisterException e) {
+					e.printStackTrace();
+				}
 			}
+			return result;
 		}
-		return result;
 	}
 
 	/**
@@ -242,14 +253,17 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 			// we inform all listeners about the new class. that
 			// means those objects are deleted such that new instances instances
 			// can be created using the new class.
-			for (S object : Collections.synchronizedList(new ArrayList<S>(
-					(List<S>) objects.get(c.getSimpleName())))) {
-				object.unregister();
+
+			synchronized (this.objects) {
+				for (S object : Collections.synchronizedList(new ArrayList<S>(
+						(List<S>) objects.get(c.getSimpleName())))) {
+					object.unregister();
+				}
+
+				DynamicRepositoryEntity.loadedClasses.remove(c.getName());
+
+				this.repository.sqlCommunicator.unregister(c);
 			}
-
-			DynamicRepositoryEntity.loadedClasses.remove(c.getName());
-
-			this.repository.sqlCommunicator.unregister(c);
 		}
 		return result;
 	}

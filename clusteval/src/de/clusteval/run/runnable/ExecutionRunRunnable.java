@@ -321,6 +321,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			DataSetConfig dataSetConfig, GoldStandardConfig goldStandardConfig)
 			throws UnknownGoldStandardFormatException,
 			IncompleteGoldStandardException, IllegalArgumentException {
+		this.log.info("Checking compatibility of goldstandard and dataset ...");
 		DataSet dataSet = dataSetConfig.getDataSet().getInStandardFormat();
 		File dataSetFile = ClustevalBackendServer.getCommonFile(new File(
 				dataSet.getAbsolutePath()));
@@ -1174,7 +1175,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			}
 		}
 		this.runParams = this.getRun().getParameterValues().get(p);
-
+		this.log.info("Converting and preprocessing dataset ...");
 		boolean found = preprocessAndCheckCompatibleDataSetFormat();
 		if (!found) {
 			IncompatibleDataSetFormatException ex = new IncompatibleDataSetFormatException(
@@ -1188,6 +1189,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		}
 
 		try {
+			this.log.info("Loading the input similarities into memory ...");
 			// Load the dataset into memory
 			DataSet dataSet = this.dataConfig.getDatasetConfig().getDataSet()
 					.getInStandardFormat();
@@ -1196,8 +1198,10 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			// memory as well
 			dataSet = this.dataConfig.getDatasetConfig().getDataSet()
 					.getOriginalDataSet();
-			if (dataSet instanceof AbsoluteDataSet)
+			if (dataSet instanceof AbsoluteDataSet) {
+				this.log.info("Loading the input coordinates into memory ...");
 				dataSet.loadIntoMemory();
+			}
 
 			/*
 			 * Check compatibility of dataset with goldstandard
@@ -1218,11 +1222,13 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			throw e1;
 		}
 		try {
+			this.log.info("Assessing isoMDS coordinates of dataset samples ...");
 			Plotter.assessAndWriteIsoMDSCoordinates(this.dataConfig);
 		} catch (Exception e) {
 		}
 
 		try {
+			this.log.info("Assessing PCA coordinates of dataset samples ...");
 			Plotter.assessAndWritePCACoordinates(this.dataConfig);
 		} catch (Exception e) {
 		}
