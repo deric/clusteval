@@ -208,16 +208,16 @@ public interface IBackendServer extends Remote {
 	public Map<String, Pair<RUN_STATUS, Float>> getRunStatusForClientId(
 			String clientId) throws RemoteException;
 
-	// /**
-	// * @param clientId
-	// * @return
-	// * @throws RemoteException
-	// */
+	/**
+	 * @param clientId
+	 * @return
+	 * @throws RemoteException
+	 */
 	// TODO
 	// public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String,
 	// String>, Map<String, Pair<Map<String, Double>, Double>>>>>
 	// getOptimizationRunStatusForClientId(
-	// String clientId) throws RemoteException;
+	//	String clientId) throws RemoteException;
 
 	/**
 	 * This method allows to set the log level of this server.

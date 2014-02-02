@@ -405,7 +405,6 @@ public class BackendClient extends Thread {
 	public void run() {
 		boolean checkForRunStatus = false;
 		boolean checkForOptRunStatus = false;
-		boolean waitForRunsToFinish = false;
 		try {
 			if (params.hasOption("performRun")) {
 				this.performRun(params.getOptionValue("performRun"));
@@ -457,9 +456,6 @@ public class BackendClient extends Thread {
 			if (params.hasOption("getOptRunStatus")) {
 				checkForOptRunStatus = true;
 			}
-			if (params.hasOption("waitForRuns")) {
-				waitForRunsToFinish = true;
-			}
 			if (params.hasOption("shutdown")) {
 				this.shutdownFramework();
 			}
@@ -486,74 +482,25 @@ public class BackendClient extends Thread {
 				}
 			}
 
-			if (checkForRunStatus || checkForOptRunStatus
-					|| waitForRunsToFinish) {
+			if (checkForRunStatus) {
 				try {
-
-					String runName = null;
-					if (checkForRunStatus)
-						runName = params.getOptionValue("getRunStatus");
-					else if (checkForOptRunStatus)
-						runName = params.getOptionValue("getOptRunStatus");
+					String runName = params.getOptionValue("getRunStatus");
 
 					Map<String, Pair<RUN_STATUS, Float>> status = null;
-					// Map<String, Pair<Pair<RUN_STATUS, Float>,
-					// Map<Pair<String, String>, Map<String, Pair<Map<String,
-					// Double>, Double>>>>> optStatus = null;
-					RUN_STATUS lastStatus = null;
-					while ((waitForRunsToFinish || checkForRunStatus)
-							&& ((status = this.getMyRunStatus()) != null)
-							&& status.size() > 0
-					// || (checkForOptRunStatus && (optStatus = this
-					// .getMyOptimizationRunStatus()) != null)
-					// && optStatus.size() > 0
-					) {
+					if ((status = this.getMyRunStatus()) != null
+							&& status.size() > 0) {
 						RUN_STATUS newStatus;
 						Float percent;
-						if (checkForRunStatus) {
-							if (!status.containsKey(runName)) {
-								log.info("No run with name " + runName
-										+ " running.");
-								return;
-							}
-							newStatus = status.get(runName).getFirst();
-							percent = status.get(runName).getSecond();
-							if (!newStatus.equals(lastStatus)) {
-								System.out.println();
-								lastStatus = newStatus;
-							}
-							System.out.print("\r" + newStatus + " " + percent
-									+ "%");
-
+						if (!status.containsKey(runName)) {
+							log.info("No run with name " + runName
+									+ " running.");
+							return;
 						}
-						// else {
-						// if (!optStatus.containsKey(runName)) {
-						// log.info("No run with name " + runName
-						// + " running.");
-						// return;
-						// }
-						// newStatus = optStatus.get(runName).getFirst()
-						// .getFirst();
-						// percent = optStatus.get(runName).getFirst()
-						// .getSecond();
-						// if (!newStatus.equals(lastStatus)) {
-						// System.out.println();
-						// lastStatus = newStatus;
-						// }
-						//
-						// System.out.print("\r" + newStatus + " " + percent
-						// + "%\t"
-						// + optStatus.get(runName).getSecond());
-						//
-						// }
-
-						if (!waitForRunsToFinish)
-							break;
-						try {
-							Thread.sleep(100);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
+						newStatus = status.get(runName).getFirst();
+						percent = status.get(runName).getSecond();
+						System.out.println();
+						System.out
+								.print("\r" + newStatus + " " + percent + "%");
 					}
 					System.out.println();
 				} catch (ConnectException e2) {
@@ -562,6 +509,38 @@ public class BackendClient extends Thread {
 					e2.printStackTrace();
 				}
 			}
+
+//			if (checkForOptRunStatus) {
+//				try {
+//
+//					String runName = params.getOptionValue("getOptRunStatus");
+//
+//					Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, Double>, Double>>>>> optStatus = null;
+//					if ((optStatus = this.getMyOptimizationRunStatus()) != null
+//							&& optStatus.size() > 0) {
+//						RUN_STATUS newStatus;
+//						Float percent;
+//
+//						if (!optStatus.containsKey(runName)) {
+//							log.info("No run with name " + runName
+//									+ " running.");
+//							return;
+//						}
+//						newStatus = optStatus.get(runName).getFirst()
+//								.getFirst();
+//						percent = optStatus.get(runName).getFirst().getSecond();
+//
+//						System.out.println();
+//						System.out.print("\r" + newStatus + " " + percent
+//								+ "%\t" + optStatus.get(runName).getSecond());
+//					}
+//					System.out.println();
+//				} catch (ConnectException e2) {
+//					this.log.warn("The server terminated the connection...");
+//				} catch (RemoteException e2) {
+//					e2.printStackTrace();
+//				}
+//			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -635,12 +614,10 @@ public class BackendClient extends Thread {
 		return server.getRunResumes();
 	}
 
-	// public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String,
-	// String>, Map<String, Pair<Map<String, Double>, Double>>>>>
-	// getMyOptimizationRunStatus()
-	// throws RemoteException {
-	// return server.getOptimizationRunStatusForClientId(this.clientId);
-	// }
+//	public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, Double>, Double>>>>> getMyOptimizationRunStatus()
+//			throws RemoteException {
+//		return server.getOptimizationRunStatusForClientId(this.clientId);
+//	}
 
 	/**
 	 * @return The id of this client.

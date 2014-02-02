@@ -110,12 +110,22 @@ public class MyRengine {
 	 * @throws REngineException
 	 */
 	public void assign(String arg0, double[][] arg1) throws REngineException {
-		this.eval(arg0 + " <- c()");
-		for (int i = 0; i < arg1.length; i++) {
-			this.connection.assign(arg0 + "_" + i, arg1[i]);
-			this.eval(arg0 + " <- rbind(" + arg0 + "," + arg0 + "_" + i + ")");
-			this.eval("remove(" + arg0 + "_" + i + ")");
+		int x = arg1.length;
+		int y = x > 0 ? arg1[0].length : 0;
+		double[] oneDim = new double[x * y];
+		for (int i = 0; i < x; i++) {
+			for (int j = 0; j < y; j++) {
+				oneDim[j + i * y] = arg1[i][j];
+			}
 		}
+		this.eval(arg0 + " <- c()");
+		this.connection.assign(arg0, oneDim);
+		this.eval(arg0 + " <- matrix(" + arg0 + ",nrow=" + x + ",ncol=" + y + ",byrow=T)");
+//		for (int i = 0; i < arg1.length; i++) {
+//			this.connection.assign(arg0 + "_" + i, arg1[i]);
+//			this.eval(arg0 + " <- rbind(" + arg0 + "," + arg0 + "_" + i + ")");
+//			this.eval("remove(" + arg0 + "_" + i + ")");
+//		}
 	}
 
 	/*
