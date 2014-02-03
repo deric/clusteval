@@ -25,6 +25,7 @@ import org.apache.commons.configuration.SubnodeConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.Repository;
 
 /**
@@ -91,7 +92,9 @@ public class RepositoryConfig {
 			boolean usesMysql = false;
 			MysqlConfig mysqlConfig = null;
 
-			if (props.getSections().contains("mysql")) {
+			if (props.getSections().contains("mysql")
+					&& !ClustevalBackendServer.getBackendServerConfiguration()
+							.getNoDatabase()) {
 				usesMysql = true;
 				String mysqlUsername, mysqlDatabase, mysqlHost;
 				SubnodeConfiguration mysql = props.getSection("mysql");

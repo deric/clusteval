@@ -198,6 +198,11 @@ public class ClustevalBackendServer implements IBackendServer {
 		OptionBuilder.withType(Boolean.class);
 		Option checkForRunResults = OptionBuilder.create("checkForRunResults");
 		serverCLIOptions.addOption(checkForRunResults);
+
+		OptionBuilder
+				.withDescription("Indicates, whether this server should connect to a database.");
+		Option noDatabase = OptionBuilder.create("noDatabase");
+		serverCLIOptions.addOption(noDatabase);
 	}
 
 	/**
@@ -402,6 +407,9 @@ public class ClustevalBackendServer implements IBackendServer {
 			if (cmd.hasOption("checkForRunResults"))
 				config.setCheckForRunResults(Boolean.parseBoolean(cmd
 						.getOptionValue("checkForRunResults")));
+			
+			if (cmd.hasOption("noDatabase"))
+				config.setNoDatabase(true);
 
 			Logger log = LoggerFactory.getLogger(ClustevalBackendServer.class);
 

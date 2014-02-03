@@ -23,6 +23,8 @@ public class BackendServerConfig {
 
 	protected boolean checkForRunResults;
 
+	protected boolean noDatabase;
+
 	/**
 	 * 
 	 */
@@ -33,6 +35,7 @@ public class BackendServerConfig {
 		this.numberOfThreads = Math.max((int) (Runtime.getRuntime()
 				.availableProcessors() / 2.0), 1);
 		this.checkForRunResults = true;
+		this.noDatabase = false;
 	}
 
 	/**
@@ -58,5 +61,17 @@ public class BackendServerConfig {
 	 */
 	public void setCheckForRunResults(final boolean checkForRunResults) {
 		this.checkForRunResults = checkForRunResults;
+	}
+
+	/**
+	 * @param noDatabase
+	 *            True, if this backend server should use a database.
+	 */
+	public void setNoDatabase(final boolean noDatabase) {
+		this.noDatabase = noDatabase;
+	}
+
+	public boolean getNoDatabase() {
+		return this.noDatabase;
 	}
 }
