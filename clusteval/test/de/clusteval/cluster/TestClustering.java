@@ -13,48 +13,27 @@
  */
 package de.clusteval.cluster;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import junit.framework.Assert;
 import junitx.framework.ArrayAssert;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+
+import utils.Pair;
+import de.clusteval.program.ParameterSet;
+import de.clusteval.utils.AbstractClustEvalTest;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public class TestClustering {
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
+public class TestClustering extends AbstractClustEvalTest {
 
 	@Test
 	public void testParseFromIntArray() {
@@ -148,4 +127,104 @@ public class TestClustering {
 			ArrayAssert.assertEquals(expected[i], result[i], 0f);
 	}
 
+	@Test
+	public void testFuzzyClustering() throws IOException {
+		Pair<ParameterSet, Clustering> p = Clustering
+				.parseFromFile(
+						null,
+						new File(
+								"testCaseRepository/results/01_30_2013-21_31_25_tc_vs_DS1/clusters/fuzzyClustering.txt")
+								.getAbsoluteFile(), false);
+		Set<ClusterItem> clusterItems = new HashSet<ClusterItem>();
+		ClusterItem expectedItem1 = new ClusterItem("id1");
+		ClusterItem expectedItem2 = new ClusterItem("id2");
+		ClusterItem expectedItem3 = new ClusterItem("id3");
+		clusterItems.add(expectedItem1);
+		clusterItems.add(expectedItem2);
+		clusterItems.add(expectedItem3);
+		Assert.assertEquals(clusterItems, p.getSecond().getClusterItems());
+
+		Cluster expectedCluster1 = new Cluster("1");
+		expectedCluster1.add(expectedItem1, 0.6f);
+		expectedCluster1.add(expectedItem2, 0.2f);
+		expectedCluster1.add(expectedItem3, 0.9f);
+		Cluster expectedCluster2 = new Cluster("2");
+		expectedCluster2.add(expectedItem1, 0.3f);
+		expectedCluster2.add(expectedItem2, 0.7f);
+		expectedCluster2.add(expectedItem3, 0.05f);
+		Cluster expectedCluster3 = new Cluster("3");
+		expectedCluster3.add(expectedItem1, 0.1f);
+		expectedCluster3.add(expectedItem2, 0.1f);
+		expectedCluster3.add(expectedItem3, 0.05f);
+
+		Map<ClusterItem, Map<Cluster, Float>> expectedClusters = new HashMap<ClusterItem, Map<Cluster, Float>>();
+
+		Map<Cluster, Float> expectedClusters1 = new HashMap<Cluster, Float>();
+		expectedClusters1.put(expectedCluster1, 0.6f);
+		expectedClusters1.put(expectedCluster2, 0.3f);
+		expectedClusters1.put(expectedCluster3, 0.1f);
+		expectedClusters.put(expectedItem1, expectedClusters1);
+
+		Map<Cluster, Float> expectedClusters2 = new HashMap<Cluster, Float>();
+		expectedClusters2.put(expectedCluster1, 0.2f);
+		expectedClusters2.put(expectedCluster2, 0.7f);
+		expectedClusters2.put(expectedCluster3, 0.1f);
+		expectedClusters.put(expectedItem2, expectedClusters2);
+
+		Map<Cluster, Float> expectedClusters3 = new HashMap<Cluster, Float>();
+		expectedClusters3.put(expectedCluster1, 0.9f);
+		expectedClusters3.put(expectedCluster2, 0.05f);
+		expectedClusters3.put(expectedCluster3, 0.05f);
+		expectedClusters.put(expectedItem3, expectedClusters3);
+
+		for (ClusterItem i : p.getSecond().getClusterItems()) {
+			Assert.assertEquals(expectedClusters.get(i), i.getFuzzyClusters());
+		}
+	}
+
+	@Test
+	public void testFuzzyToHardClustering() throws IOException {
+		Pair<ParameterSet, Clustering> p = Clustering
+				.parseFromFile(
+						null,
+						new File(
+								"testCaseRepository/results/01_30_2013-21_31_25_tc_vs_DS1/clusters/fuzzyClustering.txt")
+								.getAbsoluteFile(), false);
+
+		Clustering hardClustering = p.getSecond().toHardClustering();
+		System.out.println(hardClustering);
+
+		Set<ClusterItem> clusterItems = new HashSet<ClusterItem>();
+		ClusterItem expectedItem1 = new ClusterItem("id1");
+		ClusterItem expectedItem2 = new ClusterItem("id2");
+		ClusterItem expectedItem3 = new ClusterItem("id3");
+		clusterItems.add(expectedItem1);
+		clusterItems.add(expectedItem2);
+		clusterItems.add(expectedItem3);
+		Assert.assertEquals(clusterItems, hardClustering.getClusterItems());
+
+		Cluster expectedCluster1 = new Cluster("1");
+		expectedCluster1.add(expectedItem1, 1.0f);
+		expectedCluster1.add(expectedItem3, 1.0f);
+		Cluster expectedCluster2 = new Cluster("2");
+		expectedCluster2.add(expectedItem2, 1.0f);
+
+		Map<ClusterItem, Map<Cluster, Float>> expectedClusters = new HashMap<ClusterItem, Map<Cluster, Float>>();
+
+		Map<Cluster, Float> expectedClusters1 = new HashMap<Cluster, Float>();
+		expectedClusters1.put(expectedCluster1, 1.0f);
+		expectedClusters.put(expectedItem1, expectedClusters1);
+
+		Map<Cluster, Float> expectedClusters2 = new HashMap<Cluster, Float>();
+		expectedClusters2.put(expectedCluster2, 1.0f);
+		expectedClusters.put(expectedItem2, expectedClusters2);
+
+		Map<Cluster, Float> expectedClusters3 = new HashMap<Cluster, Float>();
+		expectedClusters3.put(expectedCluster1, 1.0f);
+		expectedClusters.put(expectedItem3, expectedClusters3);
+
+		for (ClusterItem i : hardClustering.getClusterItems()) {
+			Assert.assertEquals(expectedClusters.get(i), i.getFuzzyClusters());
+		}
+	}
 }

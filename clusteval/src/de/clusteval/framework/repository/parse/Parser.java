@@ -1473,18 +1473,18 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 					params, optimizableParameters, expectsNormalizedDataSet);
 		}
 
-//		// add parameter objects for input (i), executable (e), output (o)
-//		// and goldstandard (gs)
-//		params.add(new StringProgramParameter(repo, false, result, "i",
-//				"Input", null, null));
-//		params.add(new StringProgramParameter(repo, false, result, "e",
-//				"Executable", null, null));
-//		params.add(new StringProgramParameter(repo, false, result, "o",
-//				"Output", null, null));
-//		params.add(new StringProgramParameter(repo, false, result, "q",
-//				"Quality", null, null));
-//		params.add(new StringProgramParameter(repo, false, result, "gs",
-//				"Goldstandard", null, null));
+		// // add parameter objects for input (i), executable (e), output (o)
+		// // and goldstandard (gs)
+		// params.add(new StringProgramParameter(repo, false, result, "i",
+		// "Input", null, null));
+		// params.add(new StringProgramParameter(repo, false, result, "e",
+		// "Executable", null, null));
+		// params.add(new StringProgramParameter(repo, false, result, "o",
+		// "Output", null, null));
+		// params.add(new StringProgramParameter(repo, false, result, "q",
+		// "Quality", null, null));
+		// params.add(new StringProgramParameter(repo, false, result, "gs",
+		// "Goldstandard", null, null));
 
 		/*
 		 * Get the optimization parameters (parameters, that can be optimized
@@ -1523,7 +1523,8 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 				 * Check if min and max values are given for this parameter,
 				 * which is necessary for optimizing it
 				 */
-				if (!(param.isMinValueSet()) || !(param.isMaxValueSet()))
+				if (!(param.isMinValueSet() || !param.isMaxValueSet())
+						&& !param.isOptionsSet())
 					throw new InvalidOptimizationParameterException(
 							"The parameter "
 									+ param

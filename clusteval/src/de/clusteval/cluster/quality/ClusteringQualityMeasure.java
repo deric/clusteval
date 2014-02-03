@@ -106,6 +106,15 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 			RCalculationException;
 
 	/**
+	 * This method has to be implemented in subclasses to indiciate, whether a
+	 * quality measure supports validating fuzzy clusterings.
+	 * 
+	 * @return True, if this measure supports fuzzy clusterings, false
+	 *         otherwise.
+	 */
+	public abstract boolean supportsFuzzyClusterings();
+
+	/**
 	 * This is a helper method for cloning a list of clustering quality
 	 * measures.
 	 * 
@@ -139,8 +148,8 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 			throws UnknownClusteringQualityMeasureException {
 
 		Class<? extends ClusteringQualityMeasure> c = repository
-				.getRegisteredClass(ClusteringQualityMeasure.class, "de.clusteval.cluster.quality."
-						+ qualityMeasure);
+				.getRegisteredClass(ClusteringQualityMeasure.class,
+						"de.clusteval.cluster.quality." + qualityMeasure);
 		try {
 			ClusteringQualityMeasure measure = c.getConstructor(
 					Repository.class, boolean.class, long.class, File.class)

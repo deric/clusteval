@@ -337,7 +337,4 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 	 */
 	protected abstract float[][] getFuzzyCoeffMatrixFromExecResult()
 			throws RserveException, REXPMismatchException;
-
-	protected abstract String getParameterValueForResultFile(
-			final Map<String, String> effectiveParams);
 }

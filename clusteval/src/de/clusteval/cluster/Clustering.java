@@ -339,6 +339,46 @@ public class Clustering implements Iterable<Cluster> {
 	}
 
 	/**
+	 * This method converts a fuzzy to a hard clustering by assigning each item
+	 * to the cluster, with the highest according fuzzy coefficient. If there
+	 * are ties, the assigned cluster is randomly selected.
+	 * 
+	 * @return A hard clustering resulting from converting this fuzzy
+	 *         clustering.
+	 */
+	public Clustering toHardClustering() {
+
+		final Clustering result = new Clustering();
+
+		// assign each item to the cluster with the maximal fuzzy coefficient.
+		Map<String, Cluster> newClusters = new HashMap<String, Cluster>();
+		Set<ClusterItem> items = this.getClusterItems();
+		for (ClusterItem item : items) {
+			Cluster cl = null;
+			double maxFuzzyCoeff = -0.1;
+
+			for (Map.Entry<Cluster, Float> p : item.getFuzzyClusters()
+					.entrySet()) {
+				if (p.getValue() > maxFuzzyCoeff) {
+					cl = p.getKey();
+					maxFuzzyCoeff = p.getValue();
+				}
+			}
+
+			if (cl == null)
+				continue;
+
+			if (!newClusters.containsKey(cl.id))
+				newClusters.put(cl.id, new Cluster(cl.id));
+			newClusters.get(cl.id).add(new ClusterItem(item.id), 1.0f);
+		}
+		for (Cluster cl : newClusters.values())
+			result.addCluster(cl);
+
+		return result;
+	}
+
+	/**
 	 * This method parses clusterings together with the corresponding parameter
 	 * sets from a file.
 	 * 
@@ -468,7 +508,13 @@ public class Clustering implements Iterable<Cluster> {
 				if (dataConfig.hasGoldStandardConfig())
 					goldStandard = dataConfig.getGoldstandardConfig()
 							.getGoldstandard().getClustering();
-				quality = qualityMeasure.getQualityOfClustering(this,
+				// convert the clustering to a hard clustering if the measure
+				// does not support fuzzy clusterings
+				Clustering cl = this;
+				if (!qualityMeasure.supportsFuzzyClusterings())
+					cl = this.toHardClustering();
+
+				quality = qualityMeasure.getQualityOfClustering(cl,
 						goldStandard, dataConfig);
 				if (dataConfig.hasGoldStandardConfig())
 					dataConfig.getGoldstandardConfig().getGoldstandard()

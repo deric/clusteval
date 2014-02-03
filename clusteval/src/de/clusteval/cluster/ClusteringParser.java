@@ -115,8 +115,12 @@ public class ClusteringParser extends TextFileParser {
 				String[] items = cluster.split(",");
 				for (String item : items) {
 					String[] itemSplit = item.split(":");
-					c.add(new ClusterItem(itemSplit[0].intern()), Float
-							.valueOf(Float.valueOf(itemSplit[1]).floatValue()));
+					String id = itemSplit[0].intern();
+					ClusterItem cItem = result.getClusterItemWithId(id);
+					if (cItem == null)
+						cItem = new ClusterItem(id);
+					c.add(cItem, Float.valueOf(Float.valueOf(itemSplit[1])
+							.floatValue()));
 				}
 				result.addCluster(c);
 			}
