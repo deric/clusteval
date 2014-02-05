@@ -3,10 +3,11 @@
  */
 package de.clusteval.framework.repository;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import de.clusteval.run.statistics.RunStatistic;
-import de.clusteval.run.statistics.RunStatisticCalculator;
+import de.clusteval.data.statistics.DataStatistic;
+import de.clusteval.data.statistics.DataStatisticCalculator;
 import de.clusteval.run.statistics.RunStatistic;
 import de.clusteval.run.statistics.RunStatisticCalculator;
 
@@ -32,6 +33,8 @@ public class RunStatisticRepositoryEntity
 	public RunStatisticRepositoryEntity(Repository repository,
 			RunStatisticRepositoryEntity parent, String basePath) {
 		super(repository, parent, basePath);
+
+		this.runStatisticCalculatorClasses = new HashMap<String, Class<? extends RunStatisticCalculator<? extends RunStatistic>>>();
 	}
 
 	/**

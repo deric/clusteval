@@ -3,12 +3,11 @@
  */
 package de.clusteval.framework.repository;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import de.clusteval.data.statistics.DataStatistic;
 import de.clusteval.data.statistics.DataStatisticCalculator;
-import de.clusteval.run.statistics.RunDataStatistic;
-import de.clusteval.run.statistics.RunDataStatisticCalculator;
 
 /**
  * @author Christian Wiwie
@@ -32,6 +31,8 @@ public class DataStatisticRepositoryEntity
 	public DataStatisticRepositoryEntity(Repository repository,
 			DataStatisticRepositoryEntity parent, String basePath) {
 		super(repository, parent, basePath);
+
+		this.dataStatisticCalculatorClasses = new HashMap<String, Class<? extends DataStatisticCalculator<? extends DataStatistic>>>();
 	}
 
 	/**
