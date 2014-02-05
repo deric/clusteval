@@ -14,17 +14,15 @@
 package de.clusteval.data.preprocessing;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ch.qos.logback.classic.Level;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
 import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
@@ -40,18 +38,19 @@ import de.clusteval.data.dataset.DataSetConfigurationException;
 import de.clusteval.data.dataset.DataSetNotFoundException;
 import de.clusteval.data.dataset.IncompatibleDataSetConfigPreprocessorException;
 import de.clusteval.data.dataset.NoDataSetException;
+import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
+import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.dataset.type.UnknownDataSetTypeException;
+import de.clusteval.data.distance.DistanceMeasure;
 import de.clusteval.data.distance.UnknownDistanceMeasureException;
 import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
 import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
-import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
-import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
@@ -65,47 +64,16 @@ import de.clusteval.run.RunException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
+import de.clusteval.utils.AbstractClustEvalTest;
+import de.clusteval.utils.RNotAvailableException;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public class TestRangeNormalizationDataPreprocesser {
-
-	Repository repo;
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		ClustevalBackendServer.logLevel(Level.INFO);
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		repo = new Repository(new File("testCaseRepository").getAbsolutePath(),
-				null);
-		repo.initialize();
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-		repo.terminateSupervisorThread();
-	}
+public class TestRangeNormalizationDataPreprocesser
+		extends
+			AbstractClustEvalTest {
 
 	@Test
 	public void test() throws RepositoryAlreadyExistsException,
@@ -144,10 +112,58 @@ public class TestRangeNormalizationDataPreprocesser {
 		ds.setAbsolutePath(new File(
 				"testCaseRepository/data/datasets/synthetic/cassini250.strip"));
 
-		DataPreprocessor proc = DataPreprocessor.parseFromString(repo,
-				"RangeNormalizationDataPreprocessor");
+		DataPreprocessor proc = DataPreprocessor.parseFromString(
+				this.getRepository(), "RangeNormalizationDataPreprocessor");
 
 		DataSet newDs = proc.preprocess(ds);
 		Assert.assertTrue(new File(newDs.getAbsolutePath()).exists());
+	}
+
+	@Test
+	public void testLargeDataset() throws UnknownDataSetFormatException,
+			GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigurationException, DataSetNotFoundException,
+			DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, ConfigurationException,
+			UnknownContextException, RegisterException, UnknownParameterType,
+			NoRepositoryFoundException,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException,
+			InvalidDataSetFormatVersionException, RNotAvailableException,
+			IOException {
+		
+		File f = new File(
+				"testCaseRepository/data/datasets/mandrup_dhs/Merged_DHS_both_experiments.txt.conv")
+				.getAbsoluteFile();
+		DataSet ds = Parser.parseFromFile(DataSet.class, f);
+
+		new File(ds.getAbsolutePath() + ".rangeNorm").delete();
+		new File(ds.getAbsolutePath() + ".rangeNorm.SimMatrix").delete();
+
+		DataPreprocessor proc = DataPreprocessor.parseFromString(
+				this.getRepository(), "RangeNormalizationDataPreprocessor");
+		List<DataPreprocessor> preprocessors = new ArrayList<DataPreprocessor>();
+		preprocessors.add(proc);
+
+		DataSet newDs = proc.preprocess(ds);
+
+		newDs.getDataSetFormat().convertToStandardFormat(
+				newDs,
+				new ConversionInputToStandardConfiguration(DistanceMeasure
+						.parseFromString(getRepository(),
+								"EuclidianDistanceMeasure"), preprocessors,
+						new ArrayList<DataPreprocessor>()));
 	}
 }

@@ -80,6 +80,7 @@ public class RunResultFinder extends FileFinder<RunResult> {
 				&& !isRunning(file.getName());
 	}
 
+	// TODO: seems not to work reliably
 	protected boolean isRunning(final String uniqueRunIdentifier) {
 		RunSchedulerThread runScheduler = repository.getSupervisorThread()
 				.getRunScheduler();

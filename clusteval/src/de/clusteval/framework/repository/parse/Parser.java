@@ -74,7 +74,6 @@ import de.clusteval.program.Program;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.program.StandaloneProgram;
-import de.clusteval.program.StringProgramParameter;
 import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
 import de.clusteval.program.UnknownProgramTypeException;
