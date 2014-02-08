@@ -16,6 +16,8 @@ package de.clusteval.data.dataset.format;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.SimilarityMatrix.NUMBER_PRECISION;
+
 import de.clusteval.data.distance.DistanceMeasure;
 import de.clusteval.data.preprocessing.DataPreprocessor;
 
@@ -43,6 +45,8 @@ public class ConversionInputToStandardConfiguration
 
 	protected List<DataPreprocessor> preprocessorsAfterDistance;
 
+	protected NUMBER_PRECISION similarityPrecision;
+
 	/**
 	 * @param distanceMeasure
 	 * @param preprocessorsBeforeDistance
@@ -51,10 +55,12 @@ public class ConversionInputToStandardConfiguration
 	 */
 	public ConversionInputToStandardConfiguration(
 			final DistanceMeasure distanceMeasure,
+			final NUMBER_PRECISION similarityPrecision,
 			final List<DataPreprocessor> preprocessorsBeforeDistance,
 			final List<DataPreprocessor> preprocessorsAfterDistance) {
 		super();
 
+		this.similarityPrecision = similarityPrecision;
 		this.distanceMeasureAbsoluteToRelative = distanceMeasure;
 		this.preprocessorsBeforeDistance = preprocessorsBeforeDistance;
 		this.preprocessorsAfterDistance = preprocessorsAfterDistance;
@@ -70,6 +76,7 @@ public class ConversionInputToStandardConfiguration
 			final ConversionInputToStandardConfiguration other) {
 		super();
 
+		this.similarityPrecision = other.similarityPrecision;
 		this.distanceMeasureAbsoluteToRelative = other.distanceMeasureAbsoluteToRelative
 				.clone();
 		this.preprocessorsBeforeDistance = clonePreprocessors(other.preprocessorsBeforeDistance);
@@ -84,6 +91,10 @@ public class ConversionInputToStandardConfiguration
 	@Override
 	public ConversionInputToStandardConfiguration clone() {
 		return new ConversionInputToStandardConfiguration(this);
+	}
+
+	public NUMBER_PRECISION getSimilarityPrecision() {
+		return this.similarityPrecision;
 	}
 
 	/**
@@ -123,7 +134,8 @@ public class ConversionInputToStandardConfiguration
 		ConversionInputToStandardConfiguration other = (ConversionInputToStandardConfiguration) obj;
 
 		return this.distanceMeasureAbsoluteToRelative
-				.equals(other.distanceMeasureAbsoluteToRelative);
+				.equals(other.distanceMeasureAbsoluteToRelative)
+				&& this.similarityPrecision.equals(other.similarityPrecision);
 	}
 
 	/*
@@ -133,7 +145,8 @@ public class ConversionInputToStandardConfiguration
 	 */
 	@Override
 	public int hashCode() {
-		return this.distanceMeasureAbsoluteToRelative.hashCode();
+		return (this.distanceMeasureAbsoluteToRelative.toString() + this.similarityPrecision
+				.toString()).hashCode();
 	}
 
 }

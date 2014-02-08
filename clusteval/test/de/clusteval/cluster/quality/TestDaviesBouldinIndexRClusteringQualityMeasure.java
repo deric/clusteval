@@ -20,6 +20,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import utils.SimilarityMatrix.NUMBER_PRECISION;
+
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
@@ -77,8 +79,8 @@ public class TestDaviesBouldinIndexRClusteringQualityMeasure
 			cluster2.add(new ClusterItem("id3"), 1.0f);
 			clustering.addCluster(cluster2);
 
-			DataConfig dc = this.getRepository().getStaticObjectWithName(DataConfig.class,
-					"dunnIndexMatrixTest");
+			DataConfig dc = this.getRepository().getStaticObjectWithName(
+					DataConfig.class, "dunnIndexMatrixTest");
 			DataSetConfig dsc = dc.getDatasetConfig();
 			DataSet ds = dsc.getDataSet();
 			ds.preprocessAndConvertTo(
@@ -88,6 +90,7 @@ public class TestDaviesBouldinIndexRClusteringQualityMeasure
 					new ConversionInputToStandardConfiguration(DistanceMeasure
 							.parseFromString(getRepository(),
 									"EuclidianDistanceMeasure"),
+							NUMBER_PRECISION.DOUBLE,
 							new ArrayList<DataPreprocessor>(),
 							new ArrayList<DataPreprocessor>()),
 					new ConversionStandardToInputConfiguration());

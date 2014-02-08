@@ -22,6 +22,8 @@ import org.apache.commons.configuration.HierarchicalINIConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import utils.SimilarityMatrix.NUMBER_PRECISION;
+
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
@@ -501,6 +503,17 @@ class DataSetConfigParser extends RepositoryObjectParser<DataSetConfig> {
 				distanceMeasure = DistanceMeasure.parseFromString(repo,
 						"EuclidianDistanceMeasure");
 
+			NUMBER_PRECISION similarityPrecision = NUMBER_PRECISION.DOUBLE;
+			if (getProps().containsKey("similarityPrecision")) {
+				String val = getProps().getString("similarityPrecision");
+				if (val.equals("double"))
+					similarityPrecision = NUMBER_PRECISION.DOUBLE;
+				else if (val.equals("float"))
+					similarityPrecision = NUMBER_PRECISION.FLOAT;
+				else if (val.equals("short"))
+					similarityPrecision = NUMBER_PRECISION.SHORT;
+			}
+
 			dataSet = this.getDataSet();
 
 			// added 12.04.2013
@@ -536,8 +549,8 @@ class DataSetConfigParser extends RepositoryObjectParser<DataSetConfig> {
 				preprocessorAfterDistance = new ArrayList<DataPreprocessor>();
 
 			configInputToStandard = new ConversionInputToStandardConfiguration(
-					distanceMeasure, preprocessorBeforeDistance,
-					preprocessorAfterDistance);
+					distanceMeasure, similarityPrecision,
+					preprocessorBeforeDistance, preprocessorAfterDistance);
 			configStandardToInput = new ConversionStandardToInputConfiguration();
 
 			result = new DataSetConfig(repo, changeDate, absPath, dataSet,

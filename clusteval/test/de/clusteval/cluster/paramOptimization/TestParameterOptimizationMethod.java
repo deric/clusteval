@@ -27,6 +27,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import utils.SimilarityMatrix.NUMBER_PRECISION;
+
 import ch.qos.logback.classic.Level;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.cluster.quality.ClusteringQualityMeasureValue;
@@ -129,6 +131,7 @@ public class TestParameterOptimizationMethod {
 				internal,
 				new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(repo, "EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
@@ -263,6 +266,7 @@ public class TestParameterOptimizationMethod {
 				internal,
 				new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(repo, "EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
@@ -380,6 +384,7 @@ public class TestParameterOptimizationMethod {
 				internal,
 				new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(repo, "EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
@@ -471,6 +476,7 @@ public class TestParameterOptimizationMethod {
 				new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(repo,
 								"SpearmanCorrelationRDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
@@ -520,7 +526,8 @@ public class TestParameterOptimizationMethod {
 		ClusteringQualityMeasure f2 = ClusteringQualityMeasure.parseFromString(
 				repo, "TransClustF2ClusteringQualityMeasure");
 		ParameterOptimizationMethod method = ParameterOptimizationMethod
-				.parseFromString(repo,
+				.parseFromString(
+						repo,
 						"LayeredDivisiveParameterOptimizationMethod",
 						repo.getStaticObjectWithName(Run.class, "baechler2003"),
 						programConfig, dataConfig,

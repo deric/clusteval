@@ -27,6 +27,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Test;
 
 import utils.SimilarityMatrix;
+import utils.SimilarityMatrix.NUMBER_PRECISION;
 import ch.qos.logback.classic.Level;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
@@ -919,6 +920,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 								DistanceMeasure.parseFromString(
 										getRepository(),
 										"EuclidianDistanceMeasure"),
+								NUMBER_PRECISION.DOUBLE,
 								new ArrayList<DataPreprocessor>(),
 								new ArrayList<DataPreprocessor>()),
 						new ConversionStandardToInputConfiguration());
@@ -1009,6 +1011,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 								DistanceMeasure.parseFromString(
 										getRepository(),
 										"EuclidianDistanceMeasure"),
+								NUMBER_PRECISION.DOUBLE,
 								new ArrayList<DataPreprocessor>(),
 								new ArrayList<DataPreprocessor>()),
 						new ConversionStandardToInputConfiguration());
@@ -1104,6 +1107,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 								DistanceMeasure.parseFromString(
 										getRepository(),
 										"EuclidianDistanceMeasure"),
+								NUMBER_PRECISION.DOUBLE,
 								new ArrayList<DataPreprocessor>(),
 								new ArrayList<DataPreprocessor>()),
 						new ConversionStandardToInputConfiguration());
@@ -1164,6 +1168,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 								DistanceMeasure.parseFromString(
 										getRepository(),
 										"EuclidianDistanceMeasure"),
+								NUMBER_PRECISION.DOUBLE,
 								new ArrayList<DataPreprocessor>(),
 								new ArrayList<DataPreprocessor>()),
 						new ConversionStandardToInputConfiguration());
@@ -1183,6 +1188,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 				new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(getRepository(),
 								"EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
@@ -1201,6 +1207,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 				new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(getRepository(),
 								"EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
@@ -1222,6 +1229,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 				new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(getRepository(),
 								"EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
@@ -1283,6 +1291,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 				new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(getRepository(),
 								"EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
@@ -1378,6 +1387,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 				new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(getRepository(),
 								"EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()));
 		Assert.assertTrue(targetFile.exists());
@@ -1468,6 +1478,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 				new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(getRepository(),
 								"EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()));
 		DataSet standard = ((DataSet) this.repositoryObject)
@@ -1518,6 +1529,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 								DistanceMeasure.parseFromString(
 										getRepository(),
 										"EuclidianDistanceMeasure"),
+								NUMBER_PRECISION.DOUBLE,
 								new ArrayList<DataPreprocessor>(),
 								new ArrayList<DataPreprocessor>()),
 						new ConversionStandardToInputConfiguration());
@@ -1569,6 +1581,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 								DistanceMeasure.parseFromString(
 										getRepository(),
 										"EuclidianDistanceMeasure"),
+								NUMBER_PRECISION.DOUBLE,
 								new ArrayList<DataPreprocessor>(),
 								new ArrayList<DataPreprocessor>()),
 						new ConversionStandardToInputConfiguration());
@@ -1602,6 +1615,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 				new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(getRepository(),
 								"EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());

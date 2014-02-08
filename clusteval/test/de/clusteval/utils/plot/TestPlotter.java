@@ -26,6 +26,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.rosuda.REngine.REngineException;
 
+import utils.SimilarityMatrix.NUMBER_PRECISION;
+
 import ch.qos.logback.classic.Level;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
@@ -173,6 +175,7 @@ public class TestPlotter {
 				DataSetFormat.parseFromString(parent, "SimMatrixDataSetFormat"),
 				new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(parent, "EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
@@ -184,6 +187,7 @@ public class TestPlotter {
 						"testCaseRepository/results/04_07_2013-14_41_00_paper_run_synthetic/configs/synthetic_cassini250.dsconfig"),
 				ds, new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(parent, "EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
@@ -244,6 +248,7 @@ public class TestPlotter {
 				DataSetFormat.parseFromString(parent, "SimMatrixDataSetFormat"),
 				new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(parent, "EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
@@ -255,6 +260,7 @@ public class TestPlotter {
 						"testCaseRepository/results/04_07_2013-14_41_00_paper_run_synthetic/configs/synthetic_cassini250.dsconfig"),
 				ds, new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(parent, "EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());

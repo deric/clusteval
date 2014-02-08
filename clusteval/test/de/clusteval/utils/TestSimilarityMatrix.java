@@ -130,7 +130,7 @@ public class TestSimilarityMatrix {
 		idToClass.put("1", 0);
 		idToClass.put("2", 1);
 		distribution = matrix.toIntraInterDistributionArray(10, idToClass);
-		
+
 		expected1 = new double[]{0.200000, 0.288889, 0.377778, 0.466667,
 				0.555556, 0.644444, 0.733333, 0.822222, 0.911111, 1.000000};
 		expected2 = new int[][]{new int[]{2, 0, 0, 0, 0, 0, 0, 0, 0, 3},

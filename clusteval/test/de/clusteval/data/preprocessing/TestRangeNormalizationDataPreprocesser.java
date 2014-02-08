@@ -23,6 +23,8 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import utils.SimilarityMatrix.NUMBER_PRECISION;
+
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
 import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
@@ -143,7 +145,7 @@ public class TestRangeNormalizationDataPreprocesser
 			UnknownRunDataStatisticException,
 			InvalidDataSetFormatVersionException, RNotAvailableException,
 			IOException {
-		
+
 		File f = new File(
 				"testCaseRepository/data/datasets/mandrup_dhs/Merged_DHS_both_experiments.txt.conv")
 				.getAbsoluteFile();
@@ -163,7 +165,8 @@ public class TestRangeNormalizationDataPreprocesser
 				newDs,
 				new ConversionInputToStandardConfiguration(DistanceMeasure
 						.parseFromString(getRepository(),
-								"EuclidianDistanceMeasure"), preprocessors,
+								"EuclidianDistanceMeasure"),
+						NUMBER_PRECISION.DOUBLE, preprocessors,
 						new ArrayList<DataPreprocessor>()));
 	}
 }

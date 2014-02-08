@@ -22,6 +22,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import utils.SimilarityMatrix.NUMBER_PRECISION;
+
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
@@ -56,7 +58,7 @@ import de.clusteval.utils.RNotAvailableException;
  */
 public class TestDunnIndexRClusteringQualityMeasure
 		extends
-		AbstractClustEvalTest {
+			AbstractClustEvalTest {
 
 	@Test
 	public void test() throws InstantiationException, IllegalAccessException,
@@ -65,7 +67,8 @@ public class TestDunnIndexRClusteringQualityMeasure
 			RepositoryConfigurationException, NoRepositoryFoundException,
 			RegisterException, NoSuchAlgorithmException,
 			FormatConversionException, UnknownDistanceMeasureException,
-			UnknownContextException, RNotAvailableException, RCalculationException {
+			UnknownContextException, RNotAvailableException,
+			RCalculationException {
 		try {
 
 			Context context = Context.parseFromString(getRepository(),
@@ -80,8 +83,8 @@ public class TestDunnIndexRClusteringQualityMeasure
 			cluster2.add(new ClusterItem("id3"), 1.0f);
 			clustering.addCluster(cluster2);
 
-			DataConfig dc = this.getRepository()
-					.getStaticObjectWithName(DataConfig.class,"dunnIndexMatrixTest");
+			DataConfig dc = this.getRepository().getStaticObjectWithName(
+					DataConfig.class, "dunnIndexMatrixTest");
 			DataSetConfig dsc = dc.getDatasetConfig();
 			DataSet ds = dsc.getDataSet();
 			ds.preprocessAndConvertTo(
@@ -91,6 +94,7 @@ public class TestDunnIndexRClusteringQualityMeasure
 					new ConversionInputToStandardConfiguration(DistanceMeasure
 							.parseFromString(getRepository(),
 									"EuclidianDistanceMeasure"),
+							NUMBER_PRECISION.DOUBLE,
 							new ArrayList<DataPreprocessor>(),
 							new ArrayList<DataPreprocessor>()),
 					new ConversionStandardToInputConfiguration());

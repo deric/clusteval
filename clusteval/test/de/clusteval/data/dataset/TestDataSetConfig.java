@@ -22,6 +22,8 @@ import junit.framework.Assert;
 import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Test;
 
+import utils.SimilarityMatrix.NUMBER_PRECISION;
+
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
 import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
@@ -501,6 +503,7 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 								DistanceMeasure.parseFromString(
 										getRepository(),
 										"EuclidianDistanceMeasure"),
+								NUMBER_PRECISION.DOUBLE,
 								new ArrayList<DataPreprocessor>(),
 								new ArrayList<DataPreprocessor>()),
 						new ConversionStandardToInputConfiguration()), gsConfig);

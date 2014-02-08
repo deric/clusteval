@@ -148,6 +148,13 @@ public abstract class DistanceMeasure extends RepositoryObject
 	public abstract boolean supportsMatrix();
 
 	/**
+	 * This method indicates whether the similarity s(x,y)==s(y,x).
+	 * 
+	 * @return True, if this distance measure is symmetric, false otherwise.
+	 */
+	public abstract boolean isSymmetric();
+
+	/**
 	 * This method calculates all pairwise distances between the rows of a
 	 * matrix.
 	 * 
