@@ -102,6 +102,7 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 		try {
 			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
+				this.log.info("Transferring coordinates to R");
 				rEngine.assign("matrix", matrix);
 				rEngine.eval("matrix.t <- t(matrix)");
 				try {
@@ -111,6 +112,7 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 					// calculate similarities package-wise (in each iteration
 					// all
 					// similarities of 1/100 of all objects
+					this.log.info("Calculating pairwise similarities in R and transferring back to Java");
 					int rowsPerInvocation = matrix.length / 100;
 					for (int i = 0; i < matrix.length; i += rowsPerInvocation) {
 						int firstRow = i + 1;
@@ -121,6 +123,7 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 						for (int x = 0; x < vector.length; x++)
 							for (int y = 0; y < vector[x].length; y++)
 								result.setSimilarity(i + x, y, vector[x][y]);
+						this.log.info(String.format("%d\\%", i));
 					}
 					return result;
 				} catch (REXPMismatchException e) {

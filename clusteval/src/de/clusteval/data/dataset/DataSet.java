@@ -429,7 +429,7 @@ public abstract class DataSet extends RepositoryObject {
 
 			// 13.04.2013: update the original dataset of the dataset to itself
 			this.originalDataSet = this;
-
+			this.log.info("Apply preprocessors");
 			// 13.04.2013: apply all data preprocessors before distance
 			// conversion
 			DataSet preprocessed = this;
@@ -447,6 +447,10 @@ public abstract class DataSet extends RepositoryObject {
 				// .getSimpleName());
 				standardFormat.setNormalized(targetFormat.getNormalized());
 
+				this.log.info(String.format(
+						"Convert input to standard format %s",
+						standardFormat.toString()));
+
 				// Remove dataset attributes from file and write the result to
 				// dataSet.getAbsolutePath() + ".strip"
 				final File strippedFilePath = new File(this.getAbsolutePath()
@@ -463,12 +467,16 @@ public abstract class DataSet extends RepositoryObject {
 
 				// 13.04.2013: apply all data preprocessors after distance
 				// conversion
+				this.log.info("Apply preprocessors");
 				preprocessors = configInputToStandard
 						.getPreprocessorsAfterDistance();
 				for (DataPreprocessor proc : preprocessors) {
 					preprocessed = proc.preprocess(result);
 				}
 
+				this.log.info(String.format(
+						"Convert to input format of method %s",
+						targetFormat.toString()));
 				/*
 				 * This temporary dataset is now in our standard format. Store
 				 * it and convert it to the target format.
