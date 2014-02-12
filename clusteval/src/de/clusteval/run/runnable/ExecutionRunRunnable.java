@@ -1224,13 +1224,15 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		try {
 			this.log.info("Assessing isoMDS coordinates of dataset samples ...");
 			Plotter.assessAndWriteIsoMDSCoordinates(this.dataConfig);
-		} catch (Exception e) {
+		} catch (Throwable e) {
+			e.printStackTrace();
 		}
 
 		try {
 			this.log.info("Assessing PCA coordinates of dataset samples ...");
 			Plotter.assessAndWritePCACoordinates(this.dataConfig);
-		} catch (Exception e) {
+		} catch (Throwable e) {
+			e.printStackTrace();
 		}
 
 		setInternalAttributes();

@@ -127,7 +127,7 @@ public abstract class Plotter {
 					absStandard.unloadFromMemory();
 
 				rEngine.assign("x",
-						ArraysExt.subtract(ArraysExt.max(sims), sims));
+						ArraysExt.subtract(ArraysExt.max(sims), sims, true));
 				rEngine.assign("labels", ids);
 				rEngine.eval("rownames(x) <- labels;");
 				rEngine.eval("colnames(x) <- labels;");

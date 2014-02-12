@@ -16,6 +16,8 @@ package de.clusteval.data.distance;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
+import utils.SimilarityMatrix;
+import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
@@ -164,7 +166,8 @@ public abstract class DistanceMeasure extends RepositoryObject
 	 * @return Matrix containing all pairwise distances of rows of the matrix
 	 * @throws RNotAvailableException
 	 */
-	public abstract double[][] getDistances(double[][] matrix)
+	public abstract SimilarityMatrix getDistances(
+			ConversionInputToStandardConfiguration config, double[][] matrix)
 			throws RNotAvailableException;
 
 	/*

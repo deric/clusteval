@@ -19,6 +19,8 @@ import org.rosuda.REngine.REXPMismatchException;
 import org.rosuda.REngine.REngineException;
 import org.rosuda.REngine.Rserve.RserveException;
 
+import utils.SimilarityMatrix;
+import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
 import de.clusteval.framework.repository.MyRengine;
 import de.clusteval.framework.repository.RException;
 import de.clusteval.framework.repository.RegisterException;
@@ -94,13 +96,33 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 	 * @see de.clusteval.data.distance.DistanceMeasure#getDistances(double[][])
 	 */
 	@Override
-	public double[][] getDistances(double[][] matrix)
+	public final SimilarityMatrix getDistances(
+			ConversionInputToStandardConfiguration config, double[][] matrix)
 			throws RNotAvailableException {
 		try {
 			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
+				rEngine.assign("matrix", matrix);
+				rEngine.eval("matrix.t <- t(matrix)");
 				try {
-					return getDistancesHelper(matrix, rEngine);
+					SimilarityMatrix result = new SimilarityMatrix(null,
+							matrix.length, matrix.length,
+							config.getSimilarityPrecision(), this.isSymmetric());
+					// calculate similarities package-wise (in each iteration
+					// all
+					// similarities of 1/100 of all objects
+					int rowsPerInvocation = matrix.length / 100;
+					for (int i = 0; i < matrix.length; i += rowsPerInvocation) {
+						int firstRow = i + 1;
+						int lastRow = Math.min(firstRow + rowsPerInvocation,
+								matrix.length);
+						double[][] vector = getDistancesHelper(config, matrix,
+								rEngine, firstRow, lastRow);
+						for (int x = 0; x < vector.length; x++)
+							for (int y = 0; y < vector[x].length; y++)
+								result.setSimilarity(i + x, y, vector[x][y]);
+					}
+					return result;
 				} catch (REXPMismatchException e) {
 					// handle this type of exception as an REngineException
 					throw new RException(rEngine, e.getMessage());
@@ -120,7 +142,8 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 			double[] point2, final MyRengine rEngine) throws REngineException,
 			REXPMismatchException;
 
-	protected abstract double[][] getDistancesHelper(double[][] matrix,
-			final MyRengine rEngine) throws REngineException,
-			REXPMismatchException;
+	protected abstract double[][] getDistancesHelper(
+			ConversionInputToStandardConfiguration config, double[][] matrix,
+			final MyRengine rEngine, int firstRow, int lastRow)
+			throws REngineException, REXPMismatchException;
 }
