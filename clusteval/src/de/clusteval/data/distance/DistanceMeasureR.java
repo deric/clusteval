@@ -123,7 +123,8 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 						for (int x = 0; x < vector.length; x++)
 							for (int y = 0; y < vector[x].length; y++)
 								result.setSimilarity(i + x, y, vector[x][y]);
-						this.log.info(String.format("%d%%", i));
+						this.log.info(String.format("%d%%", i
+								/ rowsPerInvocation + 1));
 					}
 					return result;
 				} catch (REXPMismatchException e) {
