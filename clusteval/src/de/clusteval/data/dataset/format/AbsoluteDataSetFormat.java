@@ -13,6 +13,8 @@ package de.clusteval.data.dataset.format;
 import java.io.File;
 import java.io.IOException;
 
+import utils.SimilarityMatrix.NUMBER_PRECISION;
+
 import de.clusteval.data.dataset.DataMatrix;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.framework.repository.RegisterException;
@@ -55,9 +57,9 @@ public abstract class AbsoluteDataSetFormat extends DataSetFormat {
 	}
 
 	@Override
-	public final DataMatrix parse(final DataSet dataSet)
-			throws IllegalArgumentException, IOException,
-			InvalidDataSetFormatVersionException {
-		return (DataMatrix) super.parse(dataSet);
+	public final DataMatrix parse(final DataSet dataSet,
+			NUMBER_PRECISION precision) throws IllegalArgumentException,
+			IOException, InvalidDataSetFormatVersionException {
+		return (DataMatrix) super.parse(dataSet, precision);
 	}
 }

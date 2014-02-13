@@ -16,6 +16,8 @@ import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 
+import utils.SimilarityMatrix.NUMBER_PRECISION;
+
 import de.clusteval.context.Context;
 import de.clusteval.data.dataset.format.AbsoluteDataSetFormat;
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
@@ -319,7 +321,29 @@ public abstract class DataSet extends RepositoryObject {
 	 * @throws IOException
 	 * @throws IllegalArgumentException
 	 */
-	public abstract boolean loadIntoMemory()
+	public boolean loadIntoMemory() throws IllegalArgumentException,
+			IOException, InvalidDataSetFormatVersionException,
+			UnknownDataSetFormatException {
+		return this.loadIntoMemory(NUMBER_PRECISION.DOUBLE);
+	}
+
+	/**
+	 * Load this dataset into memory. When this method is invoked, it parses the
+	 * dataset file on the filesystem using the
+	 * {@link DataSetFormatParser#parse(DataSet)} method corresponding to the
+	 * dataset format of this dataset. Then the contents of the dataset is
+	 * stored in a member variable. Depending on whether this dataset is
+	 * relative or absolute, this member variable varies: For absolute datasets
+	 * the data is stored in {@link AbsoluteDataSet#dataMatrix}, for relative
+	 * datasets in {@link RelativeDataSet#similarities}
+	 * 
+	 * @return true, if successful
+	 * @throws UnknownDataSetFormatException
+	 * @throws InvalidDataSetFormatVersionException
+	 * @throws IOException
+	 * @throws IllegalArgumentException
+	 */
+	public abstract boolean loadIntoMemory(NUMBER_PRECISION precision)
 			throws UnknownDataSetFormatException, IllegalArgumentException,
 			IOException, InvalidDataSetFormatVersionException;
 

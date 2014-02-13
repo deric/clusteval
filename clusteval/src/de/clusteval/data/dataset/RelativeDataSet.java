@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import utils.SimilarityMatrix;
+import utils.SimilarityMatrix.NUMBER_PRECISION;
 import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.RelativeDataSetFormat;
 import de.clusteval.data.dataset.type.DataSetType;
@@ -104,10 +105,11 @@ public class RelativeDataSet extends DataSet {
 	 * @see data.dataset.DataSet#loadIntoMemory()
 	 */
 	@Override
-	public boolean loadIntoMemory() throws IllegalArgumentException,
-			IOException, InvalidDataSetFormatVersionException {
+	public boolean loadIntoMemory(NUMBER_PRECISION precision)
+			throws IllegalArgumentException, IOException,
+			InvalidDataSetFormatVersionException {
 		if (!isInMemory())
-			this.similarities = this.getDataSetFormat().parse(this);
+			this.similarities = this.getDataSetFormat().parse(this, precision);
 		return true;
 	}
 

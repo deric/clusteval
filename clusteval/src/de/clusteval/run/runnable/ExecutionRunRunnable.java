@@ -1193,7 +1193,9 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			// Load the dataset into memory
 			DataSet dataSet = this.dataConfig.getDatasetConfig().getDataSet()
 					.getInStandardFormat();
-			dataSet.loadIntoMemory();
+			dataSet.loadIntoMemory(this.dataConfig.getDatasetConfig()
+					.getConversionInputToStandardConfiguration()
+					.getSimilarityPrecision());
 			// if the original dataset is an absolute dataset, load it into
 			// memory as well
 			dataSet = this.dataConfig.getDatasetConfig().getDataSet()

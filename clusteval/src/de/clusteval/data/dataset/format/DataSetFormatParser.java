@@ -21,6 +21,8 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import utils.SimilarityMatrix.NUMBER_PRECISION;
+
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.utils.RNotAvailableException;
@@ -119,13 +121,15 @@ public abstract class DataSetFormatParser {
 	/**
 	 * @param dataSet
 	 *            The dataset to be parsed.
+	 * @param precision
+	 *            The precision with which to store the similarities in memory.
 	 * @return A wrapper object containing the contents of the dataset
 	 * @throws IllegalArgumentException
 	 * @throws InvalidDataSetFormatVersionException
 	 * @throws IOException
 	 */
-	protected abstract Object parse(DataSet dataSet) throws IOException,
-			InvalidDataSetFormatVersionException;
+	protected abstract Object parse(DataSet dataSet, NUMBER_PRECISION precision)
+			throws IOException, InvalidDataSetFormatVersionException;
 
 	/**
 	 * This method writes the contents of the dataset hold in memory to the

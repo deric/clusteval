@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 import utils.SimilarityMatrix;
+import utils.SimilarityMatrix.NUMBER_PRECISION;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
@@ -55,9 +56,9 @@ public abstract class RelativeDataSetFormat extends DataSetFormat {
 	}
 
 	@Override
-	public final SimilarityMatrix parse(final DataSet dataSet)
-			throws IllegalArgumentException, IOException,
-			InvalidDataSetFormatVersionException {
-		return (SimilarityMatrix) super.parse(dataSet);
+	public final SimilarityMatrix parse(final DataSet dataSet,
+			NUMBER_PRECISION precision) throws IllegalArgumentException,
+			IOException, InvalidDataSetFormatVersionException {
+		return (SimilarityMatrix) super.parse(dataSet, precision);
 	}
 }

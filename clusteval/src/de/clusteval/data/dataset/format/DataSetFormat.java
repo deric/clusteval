@@ -20,6 +20,8 @@ import java.util.List;
 
 import org.slf4j.LoggerFactory;
 
+import utils.SimilarityMatrix.NUMBER_PRECISION;
+
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
@@ -168,13 +170,14 @@ public abstract class DataSetFormat extends RepositoryObject {
 	 * @throws InvalidDataSetFormatVersionException
 	 * @throws IOException
 	 */
-	public Object parse(final DataSet dataSet) throws IllegalArgumentException,
-			IOException, InvalidDataSetFormatVersionException {
+	public Object parse(final DataSet dataSet, NUMBER_PRECISION precision)
+			throws IllegalArgumentException, IOException,
+			InvalidDataSetFormatVersionException {
 		final DataSetFormatParser parser = getDataSetFormatParser();
 		if (parser == null)
 			throw new IllegalArgumentException(
 					"Operation only supported for the standard dataset format");
-		return parser.parse(dataSet);
+		return parser.parse(dataSet, precision);
 	}
 
 	/**

@@ -170,10 +170,12 @@ public abstract class Plotter {
 	 * @throws IllegalArgumentException
 	 * @throws IOException
 	 * @throws REngineException
+	 * @throws UnknownDataSetFormatException
 	 */
 	public static void assessAndWritePCACoordinates(final DataConfig dataConfig)
 			throws InvalidDataSetFormatVersionException,
-			IllegalArgumentException, IOException, REngineException {
+			IllegalArgumentException, IOException, REngineException,
+			UnknownDataSetFormatException {
 
 		try {
 			MyRengine rEngine = dataConfig.getRepository()
