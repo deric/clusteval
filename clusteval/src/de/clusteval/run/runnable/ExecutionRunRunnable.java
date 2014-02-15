@@ -1142,6 +1142,9 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 				+ this.dataConfig + ") " + (!isResume ? "started" : "RESUMED")
 				+ " (asynchronously)");
 
+		if (checkForInterrupted())
+			return;
+
 		lastStartTime = System.currentTimeMillis();
 
 		FileUtils.appendStringToFile(
@@ -1188,6 +1191,9 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			throw ex;
 		}
 
+		if (checkForInterrupted())
+			return;
+
 		try {
 			this.log.info("Loading the input similarities into memory ...");
 			// Load the dataset into memory
@@ -1204,6 +1210,9 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 				this.log.info("Loading the input coordinates into memory ...");
 				dataSet.loadIntoMemory();
 			}
+
+			if (checkForInterrupted())
+				return;
 
 			/*
 			 * Check compatibility of dataset with goldstandard
@@ -1223,12 +1232,17 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			// data if this is the case.
 			throw e1;
 		}
+		if (checkForInterrupted())
+			return;
 		try {
 			this.log.info("Assessing isoMDS coordinates of dataset samples ...");
 			Plotter.assessAndWriteIsoMDSCoordinates(this.dataConfig);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+
+		if (checkForInterrupted())
+			return;
 
 		try {
 			this.log.info("Assessing PCA coordinates of dataset samples ...");

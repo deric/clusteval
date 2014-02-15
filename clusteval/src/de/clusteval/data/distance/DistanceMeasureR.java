@@ -112,7 +112,7 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 					// calculate similarities package-wise (in each iteration
 					// all
 					// similarities of 1/100 of all objects
-					this.log.info("Calculating pairwise similarities in R and transferring back to Java");
+					this.log.info("Calculating pairwise distances in R and transferring back to Java");
 					int rowsPerInvocation = matrix.length / 100;
 					for (int i = 0; i < matrix.length; i += rowsPerInvocation) {
 						int firstRow = i + 1;
