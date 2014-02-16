@@ -1,0 +1,10 @@
+programConfig = Hierarchical_Clustering
+dataConfig = DS1
+qualityMeasures = SilhouetteValueRClusteringQualityMeasure,TransClustF2ClusteringQualityMeasure
+mode = parameter_optimization
+optimizationMethod = DivisiveParameterOptimizationMethod
+optimizationCriterion = TransClustF2ClusteringQualityMeasure
+optimizationIterations = 70
+
+[Hierarchical_Clustering]
+optimizationParameters = k,method
