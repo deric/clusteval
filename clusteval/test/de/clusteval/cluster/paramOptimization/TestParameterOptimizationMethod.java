@@ -15,20 +15,16 @@ package de.clusteval.cluster.paramOptimization;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import utils.SimilarityMatrix.NUMBER_PRECISION;
-
 import ch.qos.logback.classic.Level;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.cluster.quality.ClusteringQualityMeasureValue;
@@ -50,7 +46,6 @@ import de.clusteval.data.preprocessing.DataPreprocessor;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.RegisterException;
-import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
@@ -58,6 +53,7 @@ import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.run.Run;
 import de.clusteval.run.result.RunResultParseException;
+import de.clusteval.utils.AbstractClustEvalTest;
 import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.InternalAttributeException;
 import de.clusteval.utils.RNotAvailableException;
@@ -66,41 +62,7 @@ import de.clusteval.utils.RNotAvailableException;
  * @author Christian Wiwie
  * 
  */
-public class TestParameterOptimizationMethod {
-
-	Repository repo;
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		repo = new Repository(new File("testCaseRepository").getAbsolutePath(),
-				null);
-		repo.initialize();
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-		repo.terminateSupervisorThread();
-	}
+public class TestParameterOptimizationMethod extends AbstractClustEvalTest {
 
 	@Test
 	public void testTransClustCassini250()
@@ -119,18 +81,20 @@ public class TestParameterOptimizationMethod {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
 
-		Context context = Context.parseFromString(repo, "ClusteringContext");
+		Context context = Context.parseFromString(getRepository(),
+				"ClusteringContext");
 
-		DataConfig dataConfig = repo.getStaticObjectWithName(DataConfig.class,
-				"synthetic_cassini250");
+		DataConfig dataConfig = getRepository().getStaticObjectWithName(
+				DataConfig.class, "synthetic_cassini250");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
-		DataSetFormat internal = DataSetFormat.parseFromString(repo,
+		DataSetFormat internal = DataSetFormat.parseFromString(getRepository(),
 				"SimMatrixDataSetFormat");
 		ds = ds.preprocessAndConvertTo(
 				context,
 				internal,
 				new ConversionInputToStandardConfiguration(DistanceMeasure
-						.parseFromString(repo, "EuclidianDistanceMeasure"),
+						.parseFromString(getRepository(),
+								"EuclidianDistanceMeasure"),
 						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
@@ -175,16 +139,17 @@ public class TestParameterOptimizationMethod {
 								+ ":numberOfElements)")
 				.setValue(ds.getIds().size());
 		ds.unloadFromMemory();
-		ProgramConfig programConfig = repo.getStaticObjectWithName(
+		ProgramConfig programConfig = getRepository().getStaticObjectWithName(
 				ProgramConfig.class, "TransClust_2");
 
 		ClusteringQualityMeasure f2 = ClusteringQualityMeasure.parseFromString(
-				repo, "TransClustF2ClusteringQualityMeasure");
+				getRepository(), "TransClustF2ClusteringQualityMeasure");
 		ParameterOptimizationMethod method = ParameterOptimizationMethod
-				.parseFromString(repo,
-						"LayeredDivisiveParameterOptimizationMethod", repo
-								.getStaticObjectWithName(Run.class,
-										"paper_run_synthetic"), programConfig,
+				.parseFromString(
+						getRepository(),
+						"LayeredDivisiveParameterOptimizationMethod",
+						getRepository().getStaticObjectWithName(Run.class,
+								"paper_run_synthetic"), programConfig,
 						dataConfig, programConfig.getOptimizableParams(), f2,
 						1001, false);
 		method.reset(new File(
@@ -254,18 +219,20 @@ public class TestParameterOptimizationMethod {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
 
-		Context context = Context.parseFromString(repo, "ClusteringContext");
+		Context context = Context.parseFromString(getRepository(),
+				"ClusteringContext");
 
-		DataConfig dataConfig = repo.getStaticObjectWithName(DataConfig.class,
-				"synthetic_cassini250");
+		DataConfig dataConfig = getRepository().getStaticObjectWithName(
+				DataConfig.class, "synthetic_cassini250");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
-		DataSetFormat internal = DataSetFormat.parseFromString(repo,
+		DataSetFormat internal = DataSetFormat.parseFromString(getRepository(),
 				"SimMatrixDataSetFormat");
 		ds = ds.preprocessAndConvertTo(
 				context,
 				internal,
 				new ConversionInputToStandardConfiguration(DistanceMeasure
-						.parseFromString(repo, "EuclidianDistanceMeasure"),
+						.parseFromString(getRepository(),
+								"EuclidianDistanceMeasure"),
 						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
@@ -310,16 +277,17 @@ public class TestParameterOptimizationMethod {
 								+ ":numberOfElements)")
 				.setValue(ds.getIds().size());
 		ds.unloadFromMemory();
-		ProgramConfig programConfig = repo.getStaticObjectWithName(
+		ProgramConfig programConfig = getRepository().getStaticObjectWithName(
 				ProgramConfig.class, "TransClust_2");
 
 		ClusteringQualityMeasure f2 = ClusteringQualityMeasure.parseFromString(
-				repo, "TransClustF2ClusteringQualityMeasure");
+				getRepository(), "TransClustF2ClusteringQualityMeasure");
 		ParameterOptimizationMethod method = ParameterOptimizationMethod
-				.parseFromString(repo,
-						"LayeredDivisiveParameterOptimizationMethod", repo
-								.getStaticObjectWithName(Run.class,
-										"paper_run_synthetic"), programConfig,
+				.parseFromString(
+						getRepository(),
+						"LayeredDivisiveParameterOptimizationMethod",
+						getRepository().getStaticObjectWithName(Run.class,
+								"paper_run_synthetic"), programConfig,
 						dataConfig, programConfig.getOptimizableParams(), f2,
 						1001, true);
 		method.reset(new File(
@@ -372,18 +340,20 @@ public class TestParameterOptimizationMethod {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
 
-		Context context = Context.parseFromString(repo, "ClusteringContext");
+		Context context = Context.parseFromString(getRepository(),
+				"ClusteringContext");
 
-		DataConfig dataConfig = repo.getStaticObjectWithName(DataConfig.class,
-				"synthetic_cassini250");
+		DataConfig dataConfig = getRepository().getStaticObjectWithName(
+				DataConfig.class, "synthetic_cassini250");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
-		DataSetFormat internal = DataSetFormat.parseFromString(repo,
+		DataSetFormat internal = DataSetFormat.parseFromString(getRepository(),
 				"SimMatrixDataSetFormat");
 		ds = ds.preprocessAndConvertTo(
 				context,
 				internal,
 				new ConversionInputToStandardConfiguration(DistanceMeasure
-						.parseFromString(repo, "EuclidianDistanceMeasure"),
+						.parseFromString(getRepository(),
+								"EuclidianDistanceMeasure"),
 						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
@@ -428,16 +398,17 @@ public class TestParameterOptimizationMethod {
 								+ ":numberOfElements)")
 				.setValue(ds.getIds().size());
 		ds.unloadFromMemory();
-		ProgramConfig programConfig = repo.getStaticObjectWithName(
+		ProgramConfig programConfig = getRepository().getStaticObjectWithName(
 				ProgramConfig.class, "TransClust_2");
 
 		ClusteringQualityMeasure f2 = ClusteringQualityMeasure.parseFromString(
-				repo, "TransClustF2ClusteringQualityMeasure");
+				getRepository(), "TransClustF2ClusteringQualityMeasure");
 		ParameterOptimizationMethod method = ParameterOptimizationMethod
-				.parseFromString(repo,
-						"LayeredDivisiveParameterOptimizationMethod", repo
-								.getStaticObjectWithName(Run.class,
-										"paper_run_synthetic"), programConfig,
+				.parseFromString(
+						getRepository(),
+						"LayeredDivisiveParameterOptimizationMethod",
+						getRepository().getStaticObjectWithName(Run.class,
+								"paper_run_synthetic"), programConfig,
 						dataConfig, programConfig.getOptimizableParams(), f2,
 						1001, true);
 		method.reset(new File(
@@ -463,18 +434,19 @@ public class TestParameterOptimizationMethod {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
 
-		Context context = Context.parseFromString(repo, "ClusteringContext");
+		Context context = Context.parseFromString(getRepository(),
+				"ClusteringContext");
 
-		DataConfig dataConfig = repo.getStaticObjectWithName(DataConfig.class,
-				"baechler2003");
+		DataConfig dataConfig = getRepository().getStaticObjectWithName(
+				DataConfig.class, "baechler2003");
 		DataSet ds = dataConfig.getDatasetConfig().getDataSet();
-		DataSetFormat internal = DataSetFormat.parseFromString(repo,
+		DataSetFormat internal = DataSetFormat.parseFromString(getRepository(),
 				"SimMatrixDataSetFormat");
 		ds = ds.preprocessAndConvertTo(
 				context,
 				internal,
 				new ConversionInputToStandardConfiguration(DistanceMeasure
-						.parseFromString(repo,
+						.parseFromString(getRepository(),
 								"SpearmanCorrelationRDistanceMeasure"),
 						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
@@ -520,17 +492,17 @@ public class TestParameterOptimizationMethod {
 								+ ":numberOfElements)")
 				.setValue(ds.getIds().size());
 		ds.unloadFromMemory();
-		ProgramConfig programConfig = repo.getStaticObjectWithName(
+		ProgramConfig programConfig = getRepository().getStaticObjectWithName(
 				ProgramConfig.class, "TransClust_2");
 
 		ClusteringQualityMeasure f2 = ClusteringQualityMeasure.parseFromString(
-				repo, "TransClustF2ClusteringQualityMeasure");
+				getRepository(), "TransClustF2ClusteringQualityMeasure");
 		ParameterOptimizationMethod method = ParameterOptimizationMethod
 				.parseFromString(
-						repo,
+						getRepository(),
 						"LayeredDivisiveParameterOptimizationMethod",
-						repo.getStaticObjectWithName(Run.class, "baechler2003"),
-						programConfig, dataConfig,
+						getRepository().getStaticObjectWithName(Run.class,
+								"baechler2003"), programConfig, dataConfig,
 						programConfig.getOptimizableParams(), f2, 1001, true);
 		method.reset(new File(
 				"testCaseRepository/results/04_15_2013-16_39_59_baechler2003/clusters/TransClust_2_baechler2003.results.qual.complete.test"));
@@ -565,4 +537,92 @@ public class TestParameterOptimizationMethod {
 		}
 	}
 
+	@Test
+	public void testDivisiveNumberIterationsTwoParamsWithOptions()
+			throws UnknownClusteringQualityMeasureException,
+			UnknownParameterOptimizationMethodException,
+			UnknownContextException, IllegalArgumentException,
+			SecurityException, IllegalAccessException, NoSuchFieldException,
+			InternalAttributeException, ParameterOptimizationException {
+
+		ClustevalBackendServer.logLevel(Level.INFO);
+
+		Context context = Context.parseFromString(getRepository(),
+				"ClusteringContext");
+
+		DataConfig dataConfig = getRepository().getStaticObjectWithName(
+				DataConfig.class, "DS1");
+		// DataSet ds = dataConfig.getDatasetConfig().getDataSet();
+		// DataSetFormat internal =
+		// DataSetFormat.parseFromString(getRepository(),
+		// "SimMatrixDataSetFormat");
+		// ds = ds.preprocessAndConvertTo(
+		// context,
+		// internal,
+		// new ConversionInputToStandardConfiguration(DistanceMeasure
+		// .parseFromString(getRepository(),
+		// "EuclidianDistanceMeasure"),
+		// NUMBER_PRECISION.DOUBLE,
+		// new ArrayList<DataPreprocessor>(),
+		// new ArrayList<DataPreprocessor>()),
+		// new ConversionStandardToInputConfiguration());
+		// ds.loadIntoMemory();
+		// if (ds instanceof RelativeDataSet) {
+		// RelativeDataSet dataSet = (RelativeDataSet) ds;
+		// dataConfig
+		// .getRepository()
+		// .getInternalDoubleAttribute(
+		// "$("
+		// + dataConfig.getDatasetConfig()
+		// .getDataSet().getOriginalDataSet()
+		// .getAbsolutePath()
+		// + ":minSimilarity)")
+		// .setValue(dataSet.getDataSetContent().getMinValue());
+		// dataConfig
+		// .getRepository()
+		// .getInternalDoubleAttribute(
+		// "$("
+		// + dataConfig.getDatasetConfig()
+		// .getDataSet().getOriginalDataSet()
+		// .getAbsolutePath()
+		// + ":maxSimilarity)")
+		// .setValue(dataSet.getDataSetContent().getMaxValue());
+		// dataConfig
+		// .getRepository()
+		// .getInternalDoubleAttribute(
+		// "$("
+		// + dataConfig.getDatasetConfig()
+		// .getDataSet().getOriginalDataSet()
+		// .getAbsolutePath()
+		// + ":meanSimilarity)")
+		// .setValue(dataSet.getDataSetContent().getMean());
+		// }
+		// dataConfig
+		// .getRepository()
+		// .getInternalIntegerAttribute(
+		// "$("
+		// + dataConfig.getDatasetConfig().getDataSet()
+		// .getOriginalDataSet().getAbsolutePath()
+		// + ":numberOfElements)")
+		// .setValue(ds.getIds().size());
+		// ds.unloadFromMemory();
+		ProgramConfig programConfig = getRepository().getStaticObjectWithName(
+				ProgramConfig.class, "Hierarchical_Clustering");
+
+		ClusteringQualityMeasure f2 = ClusteringQualityMeasure.parseFromString(
+				getRepository(), "TransClustF2ClusteringQualityMeasure");
+		ParameterOptimizationMethod method = ParameterOptimizationMethod
+				.parseFromString(
+						getRepository(),
+						"DivisiveParameterOptimizationMethod",
+						getRepository().getStaticObjectWithName(Run.class,
+								"hclust_vs_DS1"), programConfig, dataConfig,
+						programConfig.getOptimizableParams(), f2, 70, true);
+		method.initParameterValues();
+		Field field = method.getClass().getDeclaredField(
+				"iterationPerParameter");
+		field.setAccessible(true);
+		int[] iterations = (int[]) field.get(method);
+		Assert.assertArrayEquals(new int[]{10, 7}, iterations);
+	}
 }

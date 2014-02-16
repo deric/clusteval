@@ -497,6 +497,7 @@ public abstract class ProgramParameter<T> extends RepositoryObject {
 		String description = paramValues.get("desc");
 		String def = paramValues.get("def");
 
+		// TODO: options for float and integer not supported yet! add it!
 		ProgramParameter<?> param = null;
 		if (type.equals(ParameterType.FLOAT)) {
 			String minValue = paramValues.get("minValue");
