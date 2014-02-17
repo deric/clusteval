@@ -495,7 +495,7 @@ public abstract class DataSet extends RepositoryObject {
 				preprocessors = configInputToStandard
 						.getPreprocessorsAfterDistance();
 				for (DataPreprocessor proc : preprocessors) {
-					preprocessed = proc.preprocess(result);
+					result = proc.preprocess(result);
 				}
 
 				this.log.info(String.format(
