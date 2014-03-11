@@ -386,4 +386,14 @@ public class DataAnalysisRunResult
 	public DataAnalysisRun getRun() {
 		return (DataAnalysisRun) super.getRun();
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.getAbsolutePath();
+	}
 }

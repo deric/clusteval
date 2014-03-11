@@ -111,9 +111,9 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 							config.getSimilarityPrecision(), this.isSymmetric());
 					// calculate similarities package-wise (in each iteration
 					// all
-					// similarities of 1/100 of all objects
+					// similarities of 1/100 of all objects, but at least 100
 					this.log.info("Calculating pairwise distances in R and transferring back to Java");
-					int rowsPerInvocation = matrix.length / 100;
+					int rowsPerInvocation = Math.max(matrix.length / 100, 100);
 					for (int i = 0; i < matrix.length; i += rowsPerInvocation) {
 						int firstRow = i + 1;
 						int lastRow = Math.min(firstRow + rowsPerInvocation,
@@ -123,8 +123,8 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 						for (int x = 0; x < vector.length; x++)
 							for (int y = 0; y < vector[x].length; y++)
 								result.setSimilarity(i + x, y, vector[x][y]);
-						this.log.info(String.format("%d%%", i
-								/ rowsPerInvocation + 1));
+//						this.log.info(String.format("%d%%", i
+//								/ rowsPerInvocation + 1));
 					}
 					return result;
 				} catch (REXPMismatchException e) {

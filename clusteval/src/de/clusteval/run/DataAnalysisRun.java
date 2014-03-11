@@ -182,8 +182,8 @@ public class DataAnalysisRun extends AnalysisRun<DataStatistic> {
 		String movedInput = FileUtils.buildPath(new File(runCopy
 				.getRepository().getClusterResultsBasePath()).getParentFile()
 				.getAbsolutePath().replace("%RUNIDENTSTRING", runIdentString),
-				"inputs", new File(input).getParentFile().getName(), new File(
-						input).getName());
+				"inputs", dataConfig.getName(), new File(input).getParentFile()
+						.getName(), new File(input).getName());
 		if (!(new File(movedInput).exists()))
 			dataConfig.getDatasetConfig().getDataSet()
 					.copyTo(new File(movedInput));

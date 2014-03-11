@@ -583,6 +583,9 @@ class DataSetConfigParser extends RepositoryObjectParser<DataSetConfig> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException {
+		if (repo instanceof RunResultRepository)
+			return repo.getStaticObjectWithName(DataSet.class, datasetName
+					+ "/" + datasetFile);
 		return Parser.parseFromFile(
 				DataSet.class,
 				new File(FileUtils.buildPath(repo.getBasePath(DataSet.class),

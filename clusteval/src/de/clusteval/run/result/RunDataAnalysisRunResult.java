@@ -352,9 +352,8 @@ public class RunDataAnalysisRunResult
 	 */
 	public static RunDataAnalysisRunResult parseFromRunResultFolder(
 			final RunDataAnalysisRun run, final Repository repository,
-			final File runResultFolder,
-			final List<RunResult> result) throws RunResultParseException,
-			RegisterException {
+			final File runResultFolder, final List<RunResult> result)
+			throws RunResultParseException, RegisterException {
 
 		RunDataAnalysisRunResult analysisResult = null;
 
@@ -384,10 +383,20 @@ public class RunDataAnalysisRunResult
 		analysisResult.put(
 				Pair.getPair(run.getUniqueRunAnalysisRunIdentifiers(),
 						run.getUniqueDataAnalysisRunIdentifiers()), statistics);
-		
+
 		result.add(analysisResult);
 
 		analysisResult.register();
 		return analysisResult;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.getAbsolutePath();
 	}
 }

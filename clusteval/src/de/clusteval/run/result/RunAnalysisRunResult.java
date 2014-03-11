@@ -393,10 +393,20 @@ public class RunAnalysisRunResult
 			}
 			analysisResult.put(uniqueRunIdentifier, statistics);
 		}
-		
+
 		result.add(analysisResult);
 
 		analysisResult.register();
 		return analysisResult;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.getAbsolutePath();
 	}
 }
