@@ -359,8 +359,12 @@ public class DataAnalysisRunResult
 				final String fileContents = FileUtils
 						.readStringFromFile(completeFile.getAbsolutePath());
 
-				dataStatistic.parseFromString(fileContents);
-				statistics.add((DataStatistic) dataStatistic);
+				try {
+					dataStatistic.parseFromString(fileContents);
+					statistics.add((DataStatistic) dataStatistic);
+				} catch (Exception e) {
+
+				}
 
 			}
 			this.put(dataConfig, statistics);

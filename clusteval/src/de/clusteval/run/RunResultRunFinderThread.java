@@ -17,6 +17,8 @@ import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethodFinderThread;
 import de.clusteval.context.Context;
 import de.clusteval.context.ContextFinderThread;
+import de.clusteval.data.DataConfig;
+import de.clusteval.data.RunResultDataConfigFinderThread;
 import de.clusteval.data.dataset.DataSetConfig;
 import de.clusteval.data.dataset.RunResultDataSetConfigFinderThread;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
@@ -81,6 +83,11 @@ public class RunResultRunFinderThread extends RunFinderThread {
 		if (!this.repository.isInitialized(GoldStandardConfig.class))
 			this.supervisorThread.getThread(
 					GoldStandardConfigFinderThread.class).waitFor();
+		
+		if (!this.repository.isInitialized(DataConfig.class))
+			this.supervisorThread.getThread(
+					RunResultDataConfigFinderThread.class).waitFor();
+
 
 		if (!this.repository.isInitialized(ProgramConfig.class))
 			this.supervisorThread.getThread(ProgramConfigFinderThread.class)

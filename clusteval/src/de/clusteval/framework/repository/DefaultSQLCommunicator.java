@@ -3219,7 +3219,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								getProgramConfigId(object.getProgramConfig())
 										+ ""});
 			} catch (SQLException e) {
-//				e.printStackTrace();
+				// e.printStackTrace();
 				runResultParamOptId = getRunResultParameterOptimizationId(object
 						.getAbsolutePath());
 			}
@@ -3672,15 +3672,27 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 		try {
 			stmt = conn.createStatement();
 
-			stmt.execute("DELETE FROM `"
-					+ this.getDatabase()
-					+ "`.`"
+			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
 					+ this.getTableRunResultsParameterOptimization()
 					+ "` WHERE `repository_id`='"
-					+ this.getRepositoryId(this.repository.getParent()
-							.getBasePath()) + "' AND  `absPath`='"
-					+ object.getAbsolutePath() + "';");
+					+ this.getRepositoryId(this.repository.getBasePath())
+					+ "' AND  `absPath`='" + object.getAbsolutePath() + "';");
+
+			try {
+				stmt.execute("DELETE FROM `"
+						+ this.getDatabase()
+						+ "`.`"
+						+ this.getTableRepositories()
+						+ "` WHERE `id`='"
+						+ this.getRepositoryId(object.getRepository()
+								.getBasePath()) + "';");
+			} catch (SQLException e) {
+				// might have been deleted by another parameter optimization
+				// run result contained in that folder
+			}
 			stmt.close();
+
+			this.unregister((RunResult) object);
 			return true;
 		} catch (SQLException e) {
 
@@ -3708,29 +3720,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 		try {
 			stmt = conn.createStatement();
 
-			stmt.execute("DELETE FROM `"
-					+ this.getDatabase()
-					+ "`.`"
-					+ this.getTableRunResults()
-					+ "` WHERE `repository_id`='"
-					+ this.getRepositoryId(this.repository.getParent()
-							.getBasePath()) + "' AND  `uniqueRunIdentifier`='"
-					+ object.getIdentifier() + "';");
-			// remove the repository for the runresult
-			if (object instanceof ParameterOptimizationResult) {
-				try {
-					stmt.execute("DELETE FROM `"
-							+ this.getDatabase()
-							+ "`.`"
-							+ this.getTableRepositories()
-							+ "` WHERE `id`='"
-							+ this.getRepositoryId(object.getRepository()
-									.getBasePath()) + "';");
-				} catch (SQLException e) {
-					// might have been deleted by another parameter optimization
-					// run result contained in that folder
-				}
-			}
+			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
+					+ this.getTableRunResults() + "` WHERE `repository_id`='"
+					+ this.getRepositoryId(this.repository.getBasePath())
+					+ "' AND  `uniqueRunIdentifier`='" + object.getIdentifier()
+					+ "';");
 			stmt.close();
 			return true;
 		} catch (SQLException e) {
