@@ -33,6 +33,7 @@ import de.clusteval.data.dataset.format.DataSetFormat;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.RLibraryRequirement;
+import de.clusteval.framework.RProcess;
 import de.clusteval.framework.repository.MyRengine;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
@@ -225,9 +226,8 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 					internalParams);
 			afterExec(dataConfig, programConfig, invocationLine,
 					effectiveParams, internalParams);
-			return null;
+			return new RProcess(this.rEngine);
 		} finally {
-
 		}
 	}
 

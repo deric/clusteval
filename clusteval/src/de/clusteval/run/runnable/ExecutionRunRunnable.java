@@ -52,6 +52,7 @@ import de.clusteval.data.goldstandard.IncompleteGoldStandardException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.RLibraryNotLoadedException;
+import de.clusteval.framework.RProcess;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
@@ -746,16 +747,17 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		this.result = new ClusteringRunResult(this.getRun().getRepository(),
 				System.currentTimeMillis(), clusteringResultFile, dataConfig,
 				programConfig, format, runThreadIdentString, run);
-		try {
-			/*
-			 * We check from time to time, whether this run got the order to
-			 * terminate.
-			 */
-			if (checkForInterrupted())
-				return;
+		/*
+		 * We check from time to time, whether this run got the order to
+		 * terminate.
+		 */
+		if (checkForInterrupted())
+			return;
 
-			Process proc = programConfig.getProgram().exec(dataConfig,
-					programConfig, invocation, effectiveParams, internalParams);
+		Process proc = null;
+		try {
+			proc = programConfig.getProgram().exec(dataConfig, programConfig,
+					invocation, effectiveParams, internalParams);
 
 			BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
 
@@ -819,6 +821,12 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			this.handleMissingRunResult();
 		} catch (REXPMismatchException e1) {
 			this.handleMissingRunResult();
+		} finally {
+			if (proc != null && proc instanceof RProcess) {
+				BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
+				bw.append(((RProcess) proc).getRengine().getLastError());
+				bw.close();
+			}
 		}
 	}
 
