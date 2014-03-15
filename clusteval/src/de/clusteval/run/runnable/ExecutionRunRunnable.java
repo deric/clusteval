@@ -761,7 +761,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 			BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
 
-			if (proc != null) {
+			if (proc != null && !(proc instanceof RProcess)) {
 				new StreamGobbler(proc.getInputStream(), bw).start();
 				new StreamGobbler(proc.getErrorStream(), bw).start();
 
