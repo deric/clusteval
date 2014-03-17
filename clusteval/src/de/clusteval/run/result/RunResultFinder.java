@@ -74,13 +74,13 @@ public class RunResultFinder extends FileFinder<RunResult> {
 	 * @see utils.Finder#checkFile(java.io.File)
 	 */
 	@Override
+	// Fixed 17.03.2014: changed !isRunning(file.getName()) to
+	// !isRunning(file.getParentFile().getParentFile().getName())
 	protected boolean checkFile(File file) {
-		return file.isDirectory()
-				&& (repository.getRegisteredRunResult(file.getName()) == null)
-				&& !isRunning(file.getName());
+		return (repository.getRegisteredRunResult(file.getName()) == null)
+				&& !isRunning(file.getParentFile().getParentFile().getName());
 	}
 
-	// TODO: seems not to work reliably
 	protected boolean isRunning(final String uniqueRunIdentifier) {
 		RunSchedulerThread runScheduler = repository.getSupervisorThread()
 				.getRunScheduler();

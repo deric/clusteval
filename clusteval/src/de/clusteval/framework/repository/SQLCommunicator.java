@@ -786,9 +786,13 @@ public abstract class SQLCommunicator {
 			while (conn == null) {
 				// first try or wrong password
 				try {
-					conn = DriverManager.getConnection("jdbc:mysql://"
-							+ getServer() + "/" + getDatabase() + "?",
-							getDBUsername(), password);
+					conn = DriverManager
+							.getConnection(
+									"jdbc:mysql://" + getServer() + "/"
+											+ getDatabase() + "?",
+									getDBUsername()
+											+ "&useServerPrepStmts=false&rewriteBatchedStatements=true",
+									password);
 					conn.setAutoCommit(false);
 				} catch (SQLException e) {
 					if (e instanceof CommunicationsException
