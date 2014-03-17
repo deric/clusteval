@@ -822,9 +822,10 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		} catch (REXPMismatchException e1) {
 			this.handleMissingRunResult();
 		} finally {
-			if (proc != null && proc instanceof RProcess) {
+			if (programConfig.getProgram() instanceof RProgram) {
 				BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
-				bw.append(((RProcess) proc).getRengine().getLastError());
+				bw.append(((RProgram) (programConfig.getProgram()))
+						.getRengine().getLastError());
 				bw.close();
 			}
 		}

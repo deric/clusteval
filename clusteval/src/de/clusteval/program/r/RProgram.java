@@ -231,6 +231,10 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 		}
 	}
 
+	public MyRengine getRengine() {
+		return this.rEngine;
+	}
+
 	@SuppressWarnings("unused")
 	protected void beforeExec(DataConfig dataConfig,
 			ProgramConfig programConfig, String[] invocationLine,
@@ -290,6 +294,7 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(output));
 		bw.append(resultAsString);
 		bw.close();
+
 		// } finally {
 		// rEngine.close();
 		// }
