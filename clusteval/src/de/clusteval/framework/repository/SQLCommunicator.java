@@ -156,6 +156,38 @@ public abstract class SQLCommunicator {
 		}
 	}
 
+	public void disableKeys(final String tableName) throws SQLException {
+		StringBuilder sb = new StringBuilder();
+		sb.append("ALTER TABLE `");
+		sb.append(this.getDatabase());
+		sb.append("`.`");
+		sb.append(tableName);
+		sb.append("` DISABLE KEYS");
+		PreparedStatement prepStmt = conn.prepareStatement(sb.toString(),
+				Statement.NO_GENERATED_KEYS);
+		try {
+			prepStmt.executeUpdate();
+		} finally {
+			prepStmt.close();
+		}
+	}
+
+	public void enableKeys(final String tableName) throws SQLException {
+		StringBuilder sb = new StringBuilder();
+		sb.append("ALTER TABLE `");
+		sb.append(this.getDatabase());
+		sb.append("`.`");
+		sb.append(tableName);
+		sb.append("` ENABLE KEYS");
+		PreparedStatement prepStmt = conn.prepareStatement(sb.toString(),
+				Statement.NO_GENERATED_KEYS);
+		try {
+			prepStmt.executeUpdate();
+		} finally {
+			prepStmt.close();
+		}
+	}
+
 	protected void tryInsert(final String tableName,
 			final String[] columnNames, final String[] values) {
 		try {

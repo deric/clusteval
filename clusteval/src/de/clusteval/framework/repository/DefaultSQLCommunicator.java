@@ -15,6 +15,7 @@ package de.clusteval.framework.repository;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -3252,6 +3253,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								"" + program_parameter_id});
 			}
 
+			// disable keys to improve performance
+			disableKeys(this.getTableParameterSetIterations());
+			disableKeys(this.getTableParameterSetParameterValues());
+			disableKeys(this.getTableParameterOptimizationQualities());
+
 			/*
 			 * For every iteration in the result insert the parameter values
 			 */
@@ -3350,6 +3356,23 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			// reenable keys
+			try {
+				enableKeys(this.getTableParameterSetIterations());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				enableKeys(this.getTableParameterSetParameterValues());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				enableKeys(this.getTableParameterOptimizationQualities());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return false;
