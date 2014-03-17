@@ -788,11 +788,12 @@ public abstract class SQLCommunicator {
 				try {
 					conn = DriverManager
 							.getConnection(
-									"jdbc:mysql://" + getServer() + "/"
-											+ getDatabase() + "?",
-									getDBUsername()
-											+ "&useServerPrepStmts=false&rewriteBatchedStatements=true",
-									password);
+									"jdbc:mysql://"
+											+ getServer()
+											+ "/"
+											+ getDatabase()
+											+ "?useServerPrepStmts=false&rewriteBatchedStatements=true",
+									getDBUsername(), password);
 					conn.setAutoCommit(false);
 				} catch (SQLException e) {
 					if (e instanceof CommunicationsException
