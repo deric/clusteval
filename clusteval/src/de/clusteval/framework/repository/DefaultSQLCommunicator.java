@@ -3257,6 +3257,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			disableKeys(this.getTableParameterSetIterations());
 			disableKeys(this.getTableParameterSetParameterValues());
 			disableKeys(this.getTableParameterOptimizationQualities());
+			conn.commit();
 
 			/*
 			 * For every iteration in the result insert the parameter values
@@ -3360,16 +3361,9 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			// reenable keys
 			try {
 				enableKeys(this.getTableParameterSetIterations());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			try {
 				enableKeys(this.getTableParameterSetParameterValues());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			try {
 				enableKeys(this.getTableParameterOptimizationQualities());
+				conn.commit();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
