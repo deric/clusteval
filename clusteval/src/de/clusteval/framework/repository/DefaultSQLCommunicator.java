@@ -3253,12 +3253,6 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								"" + program_parameter_id});
 			}
 
-			// disable keys to improve performance
-			disableKeys(this.getTableParameterSetIterations());
-			disableKeys(this.getTableParameterSetParameterValues());
-			disableKeys(this.getTableParameterOptimizationQualities());
-			conn.commit();
-
 			/*
 			 * For every iteration in the result insert the parameter values
 			 */
@@ -3357,16 +3351,6 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			// reenable keys
-			try {
-				enableKeys(this.getTableParameterSetIterations());
-				enableKeys(this.getTableParameterSetParameterValues());
-				enableKeys(this.getTableParameterOptimizationQualities());
-				conn.commit();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 
 		return false;

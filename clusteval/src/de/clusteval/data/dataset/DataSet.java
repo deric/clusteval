@@ -561,10 +561,16 @@ public abstract class DataSet extends RepositoryObject {
 		else if (this.getDataSetFormat() instanceof RelativeDataSetFormat
 				&& targetFormat instanceof AbsoluteDataSetFormat) {
 			if (this.getOriginalDataSet().getDataSetFormat() instanceof AbsoluteDataSetFormat) {
+				// changed 18.03.2014: returning a new dataset object instead of
+				// the originalDataSet with changed path here
 				this.originalDataSet.copyTo(
 						new File(this.originalDataSet.getAbsolutePath()
-								+ ".conv"), false, true);
-				result = this.originalDataSet;
+								+ ".conv"), false, false);
+				DataSet tmp = this.originalDataSet.clone();
+				tmp.setAbsolutePath(new File(this.originalDataSet
+						.getAbsolutePath() + ".conv"));
+				tmp.originalDataSet = this.originalDataSet;
+				result = tmp;
 			} else
 				throw new FormatConversionException(
 						"No conversion from relative to absolute dataset format possible.");
