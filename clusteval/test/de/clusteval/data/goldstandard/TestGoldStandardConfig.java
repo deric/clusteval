@@ -15,7 +15,9 @@ package de.clusteval.data.goldstandard;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import junit.framework.Assert;
 
@@ -56,6 +58,7 @@ import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.AbstractClustEvalTest;
 import de.clusteval.utils.StubRepositoryObject;
+import file.FileUtils;
 
 /**
  * @author Christian Wiwie
@@ -409,17 +412,20 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException {
+		// create empty file
+		File f = new File(
+				"testCaseRepository/data/goldstandards/configs/goldStandardConfigTest.gsconfig")
+				.getAbsoluteFile();
+		f.createNewFile();
 		try {
-			Parser.parseFromFile(
-					GoldStandardConfig.class,
-					new File(
-							"testCaseRepository/data/goldstandards/configs/goldStandardConfigTest.gsconfig")
-							.getAbsoluteFile());
+			Parser.parseFromFile(GoldStandardConfig.class, f);
 		} catch (GoldStandardConfigurationException e) {
 			// Assert.assertEquals(
 			// "'goldstandardName' doesn't map to an existing object",
 			// e.getMessage());
 			throw e;
+		} finally {
+			f.delete();
 		}
 	}
 
@@ -567,17 +573,26 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException {
+
+		File f = new File(
+				"testCaseRepository/data/goldstandards/configs/goldStandardConfigTest2.gsconfig")
+				.getAbsoluteFile();
+		f.createNewFile();
+
 		try {
-			Parser.parseFromFile(
-					GoldStandardConfig.class,
-					new File(
-							"testCaseRepository/data/goldstandards/configs/goldStandardConfigTest2.gsconfig")
-							.getAbsoluteFile());
+			PrintWriter bw = new PrintWriter(new FileWriter(f));
+			bw.println("goldstandardName = Test");
+			bw.flush();
+			bw.close();
+
+			Parser.parseFromFile(GoldStandardConfig.class, f);
 		} catch (GoldStandardConfigurationException e) {
 			// Assert.assertEquals(
 			// "'goldstandardFile' doesn't map to an existing object",
 			// e.getMessage());
 			throw e;
+		} finally {
+			f.delete();
 		}
 	}
 

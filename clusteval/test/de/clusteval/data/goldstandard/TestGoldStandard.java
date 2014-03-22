@@ -110,9 +110,13 @@ public class TestGoldStandard extends AbstractClustEvalTest {
 		runResultRepository.setSQLCommunicator(new StubSQLCommunicator(
 				runResultRepository));
 		runResultRepository.initialize();
-		GoldStandard
-				.parseFromFile(new File(
-						"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1/goldstandards/DS1/testCaseGoldstandardNotPresentInParentRepository.txt"));
+		try {
+			GoldStandard
+					.parseFromFile(new File(
+							"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1/goldstandards/DS1/testCaseGoldstandardNotPresentInParentRepository.txt"));
+		} finally {
+			runResultRepository.terminateSupervisorThread();
+		}
 	}
 
 	/*

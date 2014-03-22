@@ -133,26 +133,33 @@ public class TestClusteringRun extends AbstractClustEvalTest {
 		de.clusteval.framework.repository.Repository
 				.unregister(getRepository());
 
-		new Repository(
-				"/home/chris/git/clusteval/clusteval/testCaseRepository", null)
-				.initialize();
+		Repository newRepo = new Repository(
+				new File("testCaseRepository").getAbsolutePath(), null);
+		newRepo.initialize();
+		try {
 
-		ClusteringRun run2 = Parser.parseFromFile(ClusteringRun.class,
-				new File("testCaseRepository/runs/all_vs_DS1_clustering.run")
-						.getAbsoluteFile());
+			ClusteringRun run2 = Parser
+					.parseFromFile(
+							ClusteringRun.class,
+							new File(
+									"testCaseRepository/runs/all_vs_DS1_clustering.run")
+									.getAbsoluteFile());
 
-		Assert.assertEquals(run2.logFilePath, run.logFilePath);
-		Assert.assertEquals(run2.runIdentString, run.runIdentString);
-		Assert.assertEquals(run2.startTime, run.startTime);
-		Assert.assertEquals(run2.progress, run.progress);
-		Assert.assertEquals(run2.context, run.context);
-		Assert.assertEquals(run2.results, run.results);
-		Assert.assertEquals(run2.runnables, run.runnables);
-		Assert.assertEquals(run2.dataConfigs, run.dataConfigs);
-		Assert.assertEquals(run2.parameterValues, run.parameterValues);
-		Assert.assertEquals(run2.programConfigs, run.programConfigs);
-		Assert.assertEquals(run2.qualityMeasures, run.qualityMeasures);
-		Assert.assertEquals(run2.runPairs, run.runPairs);
-		Assert.assertEquals(run2.status, run.status);
+			Assert.assertEquals(run2.logFilePath, run.logFilePath);
+			Assert.assertEquals(run2.runIdentString, run.runIdentString);
+			Assert.assertEquals(run2.startTime, run.startTime);
+			Assert.assertEquals(run2.progress, run.progress);
+			Assert.assertEquals(run2.context, run.context);
+			Assert.assertEquals(run2.results, run.results);
+			Assert.assertEquals(run2.runnables, run.runnables);
+			Assert.assertEquals(run2.dataConfigs, run.dataConfigs);
+			Assert.assertEquals(run2.parameterValues, run.parameterValues);
+			Assert.assertEquals(run2.programConfigs, run.programConfigs);
+			Assert.assertEquals(run2.qualityMeasures, run.qualityMeasures);
+			Assert.assertEquals(run2.runPairs, run.runPairs);
+			Assert.assertEquals(run2.status, run.status);
+		} finally {
+			newRepo.terminateSupervisorThread();
+		}
 	}
 }

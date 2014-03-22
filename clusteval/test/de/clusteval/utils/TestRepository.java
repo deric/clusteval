@@ -19,7 +19,9 @@ import java.security.NoSuchAlgorithmException;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
@@ -29,7 +31,6 @@ import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 
-
 /**
  * @author Christian Wiwie
  * 
@@ -37,6 +38,9 @@ import de.clusteval.framework.repository.config.RepositoryConfigurationException
 public class TestRepository {
 
 	protected Repository parent;
+
+	@Rule
+	public TestName name = new TestName();
 
 	/**
 	 * @throws FileNotFoundException
@@ -53,7 +57,10 @@ public class TestRepository {
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
 			NoSuchAlgorithmException {
-		parent = new Repository(new File("testCaseRepository").getAbsolutePath(), null);
+		System.out.println("################## Testcase: "
+				+ this.getClass().getSimpleName() + "." + name.getMethodName());
+		parent = new Repository(
+				new File("testCaseRepository").getAbsolutePath(), null);
 	}
 
 	/**
@@ -122,7 +129,8 @@ public class TestRepository {
 	public void testGetRepositoryForPathString() throws FileNotFoundException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, NoRepositoryFoundException, NoSuchAlgorithmException {
+			RepositoryConfigurationException, NoRepositoryFoundException,
+			NoSuchAlgorithmException {
 		File f = new File("repository2");
 		f.deleteOnExit();
 		Repository child = new Repository(f.getAbsolutePath(), null);

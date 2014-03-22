@@ -15,6 +15,9 @@ package de.clusteval.data.dataset;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import junit.framework.Assert;
@@ -23,7 +26,6 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Test;
 
 import utils.SimilarityMatrix.NUMBER_PRECISION;
-
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
 import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
@@ -372,7 +374,6 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws RunException
 	 * @throws UnknownClusteringQualityMeasureException
 	 * @throws UnknownParameterType
-	 * @throws FileNotFoundException
 	 * @throws UnknownContextException
 	 * @throws ConfigurationException
 	 * @throws DataConfigNotFoundException
@@ -380,6 +381,7 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws GoldStandardConfigNotFoundException
 	 * @throws GoldStandardConfigurationException
 	 * @throws GoldStandardNotFoundException
+	 * @throws IOException
 	 */
 	@Test(expected = DataSetConfigurationException.class)
 	public void testParseFromFileDataSetNameMissing()
@@ -392,10 +394,9 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			GoldStandardNotFoundException, GoldStandardConfigurationException,
 			GoldStandardConfigNotFoundException, DataConfigurationException,
 			DataConfigNotFoundException, ConfigurationException,
-			UnknownContextException, FileNotFoundException,
-			UnknownParameterType, UnknownClusteringQualityMeasureException,
-			RunException, IncompatibleContextException,
-			UnknownRunResultFormatException,
+			UnknownContextException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
 			InvalidOptimizationParameterException,
 			UnknownProgramParameterException, UnknownProgramTypeException,
 			UnknownRProgramException,
@@ -403,18 +404,21 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException, IOException {
+		// create empty file
+		File f = new File(
+				"testCaseRepository/data/datasets/configs/testDataSetConfig.dsconfig")
+				.getAbsoluteFile();
+		f.createNewFile();
 		try {
-			Parser.parseFromFile(
-					DataSetConfig.class,
-					new File(
-							"testCaseRepository/data/datasets/configs/testDataSetConfig.dsconfig")
-							.getAbsoluteFile());
+			Parser.parseFromFile(DataSetConfig.class, f);
 		} catch (DataSetConfigurationException e) {
 			// Assert.assertEquals(
-			// "'datasetName' doesn't map to an existing object",
+			// "'goldstandardName' doesn't map to an existing object",
 			// e.getMessage());
 			throw e;
+		} finally {
+			f.delete();
 		}
 	}
 
@@ -538,7 +542,6 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws RunException
 	 * @throws UnknownClusteringQualityMeasureException
 	 * @throws UnknownParameterType
-	 * @throws FileNotFoundException
 	 * @throws UnknownContextException
 	 * @throws ConfigurationException
 	 * @throws DataConfigNotFoundException
@@ -546,6 +549,7 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws GoldStandardConfigNotFoundException
 	 * @throws GoldStandardConfigurationException
 	 * @throws GoldStandardNotFoundException
+	 * @throws IOException
 	 */
 	@Test(expected = DataSetConfigurationException.class)
 	public void testParseFromFileDataSetFileMissing()
@@ -558,10 +562,9 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			GoldStandardNotFoundException, GoldStandardConfigurationException,
 			GoldStandardConfigNotFoundException, DataConfigurationException,
 			DataConfigNotFoundException, ConfigurationException,
-			UnknownContextException, FileNotFoundException,
-			UnknownParameterType, UnknownClusteringQualityMeasureException,
-			RunException, IncompatibleContextException,
-			UnknownRunResultFormatException,
+			UnknownContextException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
 			InvalidOptimizationParameterException,
 			UnknownProgramParameterException, UnknownProgramTypeException,
 			UnknownRProgramException,
@@ -569,18 +572,27 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException, IOException {
+
+		File f = new File(
+				"testCaseRepository/data/datasets/configs/testDataSetConfig2.dsconfig")
+				.getAbsoluteFile();
+		f.createNewFile();
+
 		try {
-			Parser.parseFromFile(
-					DataSetConfig.class,
-					new File(
-							"testCaseRepository/data/datasets/configs/testDataSetConfig2.dsconfig")
-							.getAbsoluteFile());
+			PrintWriter bw = new PrintWriter(new FileWriter(f));
+			bw.println("datasetName = Test");
+			bw.flush();
+			bw.close();
+
+			Parser.parseFromFile(DataSetConfig.class, f);
 		} catch (DataSetConfigurationException e) {
 			// Assert.assertEquals(
-			// "'datasetFile' doesn't map to an existing object",
+			// "'goldstandardFile' doesn't map to an existing object",
 			// e.getMessage());
 			throw e;
+		} finally {
+			f.delete();
 		}
 	}
 

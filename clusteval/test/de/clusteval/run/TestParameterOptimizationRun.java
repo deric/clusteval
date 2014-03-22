@@ -160,42 +160,45 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, UnknownDataStatisticException,
 			UnknownRunStatisticException, UnknownRunDataStatisticException {
-		ParameterOptimizationRun run = Parser
-				.parseFromFile(
-						ParameterOptimizationRun.class,
-						new File(
-								"/home/chris/git/clusteval/clusteval/testCaseRepository/runs/baechler2003.run"));
+		ParameterOptimizationRun run = Parser.parseFromFile(
+				ParameterOptimizationRun.class, new File(
+						"testCaseRepository/runs/baechler2003.run")
+						.getAbsoluteFile());
 
 		getRepository().terminateSupervisorThread();
 
 		de.clusteval.framework.repository.Repository
 				.unregister(getRepository());
 
-		new Repository(
-				"/home/chris/git/clusteval/clusteval/testCaseRepository", null)
-				.initialize();
+		Repository newRepo = new Repository(
+				new File("testCaseRepository").getAbsolutePath(), null);
+		newRepo.initialize();
+		try {
 
-		ParameterOptimizationRun run2 = Parser
-				.parseFromFile(
-						ParameterOptimizationRun.class,
-						new File(
-								"/home/chris/git/clusteval/clusteval/testCaseRepository/runs/baechler2003.run"));
+			ParameterOptimizationRun run2 = Parser.parseFromFile(
+					ParameterOptimizationRun.class, new File(
+							"testCaseRepository/runs/baechler2003.run")
+							.getAbsoluteFile());
 
-		Assert.assertEquals(run2.logFilePath, run.logFilePath);
-		Assert.assertEquals(run2.runIdentString, run.runIdentString);
-		Assert.assertEquals(run2.startTime, run.startTime);
-		Assert.assertEquals(run2.progress, run.progress);
-		Assert.assertEquals(run2.context, run.context);
-		Assert.assertEquals(run2.results, run.results);
-		Assert.assertEquals(run2.runnables, run.runnables);
-		Assert.assertEquals(run2.dataConfigs, run.dataConfigs);
-		Assert.assertEquals(run2.optimizationMethods, run.optimizationMethods);
-		Assert.assertEquals(run2.optimizationParameters,
-				run.optimizationParameters);
-		Assert.assertEquals(run2.parameterValues, run.parameterValues);
-		Assert.assertEquals(run2.programConfigs, run.programConfigs);
-		Assert.assertEquals(run2.qualityMeasures, run.qualityMeasures);
-		Assert.assertEquals(run2.runPairs, run.runPairs);
-		Assert.assertEquals(run2.status, run.status);
+			Assert.assertEquals(run2.logFilePath, run.logFilePath);
+			Assert.assertEquals(run2.runIdentString, run.runIdentString);
+			Assert.assertEquals(run2.startTime, run.startTime);
+			Assert.assertEquals(run2.progress, run.progress);
+			Assert.assertEquals(run2.context, run.context);
+			Assert.assertEquals(run2.results, run.results);
+			Assert.assertEquals(run2.runnables, run.runnables);
+			Assert.assertEquals(run2.dataConfigs, run.dataConfigs);
+			Assert.assertEquals(run2.optimizationMethods,
+					run.optimizationMethods);
+			Assert.assertEquals(run2.optimizationParameters,
+					run.optimizationParameters);
+			Assert.assertEquals(run2.parameterValues, run.parameterValues);
+			Assert.assertEquals(run2.programConfigs, run.programConfigs);
+			Assert.assertEquals(run2.qualityMeasures, run.qualityMeasures);
+			Assert.assertEquals(run2.runPairs, run.runPairs);
+			Assert.assertEquals(run2.status, run.status);
+		} finally {
+			newRepo.terminateSupervisorThread();
+		}
 	}
 }

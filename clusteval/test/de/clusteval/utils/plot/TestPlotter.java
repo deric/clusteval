@@ -79,6 +79,7 @@ import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
+import de.clusteval.utils.AbstractClustEvalTest;
 import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.RNotAvailableException;
 
@@ -86,49 +87,7 @@ import de.clusteval.utils.RNotAvailableException;
  * @author Christian Wiwie
  * 
  */
-public class TestPlotter {
-
-	Repository parent;
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		ClustevalBackendServer.logLevel(Level.INFO);
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		parent = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		parent.initialize();
-
-		if (ClustevalBackendServer.getBackendServerConfiguration()
-				.getCheckForRunResults()) {
-			while (!parent.isInitialized(RunResult.class)) {
-				Thread.sleep(100);
-			}
-		}
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-		parent.terminateSupervisorThread();
-	}
+public class TestPlotter extends AbstractClustEvalTest {
 
 	@Test
 	public void testIsoMDS() throws RepositoryAlreadyExistsException,
@@ -157,7 +116,8 @@ public class TestPlotter {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException {
-		Context context = Context.parseFromString(parent, "ClusteringContext");
+		Context context = Context.parseFromString(getRepository(),
+				"ClusteringContext");
 
 		DataSet ds = Parser
 				.parseFromFile(
@@ -172,28 +132,31 @@ public class TestPlotter {
 
 		ds = ds.preprocessAndConvertTo(
 				context,
-				DataSetFormat.parseFromString(parent, "SimMatrixDataSetFormat"),
+				DataSetFormat.parseFromString(getRepository(),
+						"SimMatrixDataSetFormat"),
 				new ConversionInputToStandardConfiguration(DistanceMeasure
-						.parseFromString(parent, "EuclidianDistanceMeasure"),
+						.parseFromString(getRepository(),
+								"EuclidianDistanceMeasure"),
 						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
 
 		DataSetConfig dsc = new DataSetConfig(
-				parent,
+				getRepository(),
 				System.currentTimeMillis(),
 				new File(
 						"testCaseRepository/results/04_07_2013-14_41_00_paper_run_synthetic/configs/synthetic_cassini250.dsconfig"),
 				ds, new ConversionInputToStandardConfiguration(DistanceMeasure
-						.parseFromString(parent, "EuclidianDistanceMeasure"),
+						.parseFromString(getRepository(),
+								"EuclidianDistanceMeasure"),
 						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
 
 		DataConfig dc = new DataConfig(
-				parent,
+				getRepository(),
 				System.currentTimeMillis(),
 				new File(
 						"testCaseRepository/results/04_07_2013-14_41_00_paper_run_synthetic/configs/synthetic_cassini250.dataconfig"),
@@ -230,7 +193,8 @@ public class TestPlotter {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException {
-		Context context = Context.parseFromString(parent, "ClusteringContext");
+		Context context = Context.parseFromString(getRepository(),
+				"ClusteringContext");
 
 		DataSet ds = Parser
 				.parseFromFile(
@@ -245,28 +209,31 @@ public class TestPlotter {
 
 		ds = ds.preprocessAndConvertTo(
 				context,
-				DataSetFormat.parseFromString(parent, "SimMatrixDataSetFormat"),
+				DataSetFormat.parseFromString(getRepository(),
+						"SimMatrixDataSetFormat"),
 				new ConversionInputToStandardConfiguration(DistanceMeasure
-						.parseFromString(parent, "EuclidianDistanceMeasure"),
+						.parseFromString(getRepository(),
+								"EuclidianDistanceMeasure"),
 						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
 
 		DataSetConfig dsc = new DataSetConfig(
-				parent,
+				getRepository(),
 				System.currentTimeMillis(),
 				new File(
 						"testCaseRepository/results/04_07_2013-14_41_00_paper_run_synthetic/configs/synthetic_cassini250.dsconfig"),
 				ds, new ConversionInputToStandardConfiguration(DistanceMeasure
-						.parseFromString(parent, "EuclidianDistanceMeasure"),
+						.parseFromString(getRepository(),
+								"EuclidianDistanceMeasure"),
 						NUMBER_PRECISION.DOUBLE,
 						new ArrayList<DataPreprocessor>(),
 						new ArrayList<DataPreprocessor>()),
 				new ConversionStandardToInputConfiguration());
 
 		DataConfig dc = new DataConfig(
-				parent,
+				getRepository(),
 				System.currentTimeMillis(),
 				new File(
 						"testCaseRepository/results/04_07_2013-14_41_00_paper_run_synthetic/configs/synthetic_cassini250.dataconfig"),

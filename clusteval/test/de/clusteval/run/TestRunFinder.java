@@ -25,7 +25,9 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 
 import ch.qos.logback.classic.Level;
 import de.clusteval.framework.ClustevalBackendServer;
@@ -48,12 +50,24 @@ import file.FileUtils;
  */
 public class TestRunFinder {
 
+	@Rule
+	public TestName name = new TestName();
+
+	/**
+	 * 
+	 */
+	@Before
+	public void setUp() {
+		System.out.println("################## Testcase: "
+				+ this.getClass().getSimpleName() + "." + name.getMethodName());
+	}
+
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		ClustevalBackendServer.logLevel(Level.INFO);
+		ClustevalBackendServer.logLevel(Level.WARN);
 	}
 
 	/**
@@ -61,13 +75,6 @@ public class TestRunFinder {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
 	}
 
 	/**
@@ -114,35 +121,39 @@ public class TestRunFinder {
 		bw.close();
 
 		new ClustevalBackendServer(repo, false);
+		try {
 
-		Run run = repo.getStaticObjectWithName(Run.class, "testCase");
-		Assert.assertEquals(100, ((ParameterOptimizationRun) run)
-				.getOptimizationMethods().get(0).getTotalIterationCount());
+			Run run = repo.getStaticObjectWithName(Run.class, "testCase");
+			Assert.assertEquals(100, ((ParameterOptimizationRun) run)
+					.getOptimizationMethods().get(0).getTotalIterationCount());
 
-		f.delete();
-		f.createNewFile();
-		bw = new PrintWriter(new FileWriter(f));
-		bw.println("programConfig = TransClust_2");
-		bw.println("dataConfig = DS1");
-		bw.println("qualityMeasures = SilhouetteValueRClusteringQualityMeasure,TransClustF2ClusteringQualityMeasure");
-		bw.println("mode = parameter_optimization");
-		bw.println("optimizationMethod = LayeredDivisiveParameterOptimizationMethod");
-		bw.println("optimizationCriterion = TransClustF2ClusteringQualityMeasure");
-		bw.println("optimizationIterations = 1000");
-		bw.println("");
-		bw.println("[TransClust_2]");
-		bw.println("optimizationParameters = T");
-		bw.flush();
-		bw.close();
+			f.delete();
+			f.createNewFile();
+			bw = new PrintWriter(new FileWriter(f));
+			bw.println("programConfig = TransClust_2");
+			bw.println("dataConfig = DS1");
+			bw.println("qualityMeasures = SilhouetteValueRClusteringQualityMeasure,TransClustF2ClusteringQualityMeasure");
+			bw.println("mode = parameter_optimization");
+			bw.println("optimizationMethod = LayeredDivisiveParameterOptimizationMethod");
+			bw.println("optimizationCriterion = TransClustF2ClusteringQualityMeasure");
+			bw.println("optimizationIterations = 1000");
+			bw.println("");
+			bw.println("[TransClust_2]");
+			bw.println("optimizationParameters = T");
+			bw.flush();
+			bw.close();
 
-		while (repo.registeredTestCaseRun < 2)
-			Thread.sleep(100);
+			while (repo.registeredTestCaseRun < 2)
+				Thread.sleep(100);
 
-		run = repo.getStaticObjectWithName(Run.class, "testCase");
-		Assert.assertEquals(1000, ((ParameterOptimizationRun) run)
-				.getOptimizationMethods().get(0).getTotalIterationCount());
+			run = repo.getStaticObjectWithName(Run.class, "testCase");
+			Assert.assertEquals(1000, ((ParameterOptimizationRun) run)
+					.getOptimizationMethods().get(0).getTotalIterationCount());
 
-		f.deleteOnExit();
+			f.deleteOnExit();
+		} finally {
+			repo.terminateSupervisorThread();
+		}
 	}
 }
 

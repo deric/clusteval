@@ -22,7 +22,9 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 
 import ch.qos.logback.classic.Level;
 import de.clusteval.data.dataset.format.DataSetFormat;
@@ -43,6 +45,9 @@ public class TestRProgramConfig {
 
 	Repository repo;
 
+	@Rule
+	public TestName name = new TestName();
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -62,6 +67,8 @@ public class TestRProgramConfig {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		System.out.println("################## Testcase: "
+				+ this.getClass().getSimpleName() + "." + name.getMethodName());
 		ClustevalBackendServer.logLevel(Level.INFO);
 		repo = new Repository(new File("testCaseRepository").getAbsolutePath(),
 				null);

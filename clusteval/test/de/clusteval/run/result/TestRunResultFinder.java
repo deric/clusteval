@@ -86,12 +86,17 @@ public class TestRunResultFinder {
 				"testCaseRepository").getAbsolutePath(), null);
 		ClustevalBackendServer framework = new ClustevalBackendServer(
 				repository, false);
-		framework.performRun("1", "tc_vs_DS1");
-		Run run = repository.getStaticObjectWithName(Run.class, "tc_vs_DS1");
-		while (!run.getStatus().equals(RUN_STATUS.FINISHED)) {
-			Thread.sleep(100);
+		try {
+			framework.performRun("1", "tc_vs_DS1");
+			Run run = repository
+					.getStaticObjectWithName(Run.class, "tc_vs_DS1");
+			while (!run.getStatus().equals(RUN_STATUS.FINISHED)) {
+				Thread.sleep(100);
+			}
+			Assert.assertFalse(repository.assertionFailed);
+		} finally {
+			repository.terminateSupervisorThread();
 		}
-		Assert.assertFalse(repository.assertionFailed);
 	}
 
 	// @Test
@@ -106,12 +111,16 @@ public class TestRunResultFinder {
 		repository.setSQLCommunicator(new StubSQLCommunicator(repository));
 		ClustevalBackendServer framework = new ClustevalBackendServer(
 				repository, false);
-		while (!repository.isInitialized()) {
-			Thread.sleep(100);
+		try {
+			while (!repository.isInitialized()) {
+				Thread.sleep(100);
+			}
+			// We do not perform a new run, so we should not have the failed
+			// assertion
+			Assert.assertFalse(repository.assertionFailed);
+		} finally {
+			repository.terminateSupervisorThread();
 		}
-		// We do not perform a new run, so we should not have the failed
-		// assertion
-		Assert.assertFalse(repository.assertionFailed);
 	}
 
 }
@@ -163,7 +172,8 @@ class TestRepository extends Repository {
 
 	public boolean register(RunResult object) throws RegisterException {
 		String runIdent = object.runIdentString;
-		Run run = this.getStaticObjectWithName(Run.class, object.run.toString());
+		Run run = this
+				.getStaticObjectWithName(Run.class, object.run.toString());
 		if (!assertionFailed)
 			assertionFailed = !(run.getStatus().equals(RUN_STATUS.FINISHED) || run
 					.getStatus().equals(RUN_STATUS.INACTIVE))

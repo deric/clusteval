@@ -25,7 +25,9 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 
 import de.clusteval.data.dataset.DataSetAttributeFilterer;
 
@@ -42,6 +44,18 @@ public class TestSimFileMatrixParser {
 
 	protected SimFileMatrixParser parser;
 
+	@Rule
+	public TestName name = new TestName();
+
+	/**
+	 * 
+	 */
+	@Before
+	public void setUp() {
+		System.out.println("################## Testcase: "
+				+ this.getClass().getSimpleName() + "." + name.getMethodName());
+	}
+
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -54,13 +68,6 @@ public class TestSimFileMatrixParser {
 	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
 	}
 
 	/**

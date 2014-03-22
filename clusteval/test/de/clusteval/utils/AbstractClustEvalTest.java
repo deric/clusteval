@@ -19,6 +19,8 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 
 import ch.qos.logback.classic.Level;
 import de.clusteval.context.Context;
@@ -34,6 +36,8 @@ import de.clusteval.run.result.RunResult;
  */
 public abstract class AbstractClustEvalTest {
 
+	@Rule
+	public TestName name = new TestName();
 	private Repository repository;
 	protected RepositoryObject repositoryObject;
 	protected Context context;
@@ -43,7 +47,7 @@ public abstract class AbstractClustEvalTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		ClustevalBackendServer.logLevel(Level.INFO);
+		ClustevalBackendServer.logLevel(Level.WARN);
 	}
 
 	/**
@@ -58,6 +62,8 @@ public abstract class AbstractClustEvalTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		System.out.println("################## Testcase: "
+				+ this.getClass().getSimpleName() + "." + name.getMethodName());
 		this.repository = new Repository(
 				new File("testCaseRepository").getAbsolutePath(), null);
 		getRepository().setSQLCommunicator(

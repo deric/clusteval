@@ -21,7 +21,9 @@ import junitx.framework.ArrayAssert;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 
 import utils.Pair;
 import utils.SimilarityMatrix;
@@ -32,6 +34,9 @@ import utils.SimilarityMatrix;
  */
 public class TestSimilarityMatrix {
 
+	@Rule
+	public TestName name = new TestName();
+
 	protected SimilarityMatrix matrix;
 
 	/**
@@ -39,6 +44,8 @@ public class TestSimilarityMatrix {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		System.out.println("################## Testcase: "
+				+ this.getClass().getSimpleName() + "." + name.getMethodName());
 		matrix = new SimilarityMatrix(new String[]{"0", "1", "2"},
 				new double[][]{{1.0, 0.2, 0.3}, {0.2, 1.0, 0.7},
 						{0.3, 0.7, 1.0}});
@@ -54,20 +61,20 @@ public class TestSimilarityMatrix {
 	@Test
 	public void test() {
 		Map<Double, Integer> distribution = matrix.toDistribution(10);
-		Assert.assertArrayEquals(new Integer[]{0, 0, 0, 0, 0, 2, 3, 2, 0, 2},
+		Assert.assertArrayEquals(new Integer[]{2, 3, 2, 0, 0, 0, 0, 0, 0, 2},
 				distribution.values().toArray(new Integer[0]));
 
 		Map<Double, Integer> expectedMap = new HashMap<Double, Integer>();
-		expectedMap.put(0.8222222222222223, 0);
-		expectedMap.put(0.5555555555555556, 0);
-		expectedMap.put(0.7333333333333334, 0);
-		expectedMap.put(0.3777777777777778, 0);
-		expectedMap.put(0.9111111111111112, 0);
-		expectedMap.put(0.6444444444444444, 2);
-		expectedMap.put(1.0, 3);
-		expectedMap.put(0.2888888888888889, 2);
-		expectedMap.put(0.4666666666666667, 0);
 		expectedMap.put(0.2, 2);
+		expectedMap.put(0.27999999999999997, 2);
+		expectedMap.put(0.36, 0);
+		expectedMap.put(0.44000000000000006, 0);
+		expectedMap.put(0.52, 0);
+		expectedMap.put(0.6, 0);
+		expectedMap.put(0.68, 2);
+		expectedMap.put(0.76, 0);
+		expectedMap.put(0.8400000000000001, 0);
+		expectedMap.put(0.9199999999999999, 3);
 
 		Assert.assertEquals(expectedMap, distribution);
 	}

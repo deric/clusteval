@@ -617,8 +617,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * 
 	 */
 	private void terminate(final long forceTimeout) throws InterruptedException {
-		this.repository.getSupervisorThread().interrupt();
-		this.repository.getSupervisorThread().join(forceTimeout);
+		this.repository.terminateSupervisorThread();
 
 		try {
 			Registry registry = LocateRegistry.getRegistry(port);
