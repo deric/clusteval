@@ -486,8 +486,13 @@ public abstract class DataSet extends RepositoryObject {
 				}
 				this.setAbsolutePath(strippedFilePath);
 
-				result = preprocessed.convertToStandardDirectly(context,
-						configInputToStandard);
+				try {
+					result = preprocessed.convertToStandardDirectly(context,
+							configInputToStandard);
+				} catch (Exception e) {
+					e.printStackTrace();
+//					throw e;
+				}
 
 				// 13.04.2013: apply all data preprocessors after distance
 				// conversion
