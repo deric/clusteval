@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -3055,29 +3056,39 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 						// , "" + clustering_id
 						});
 
+				String[] columns = new String[]{
+						"repository_id",
+						"run_results_parameter_optimization_id",
+						"run_results_parameter_optimizations_parameter_set_parameter_id",
+						"run_results_parameter_optimizations_parameter_set_iteration_id",
+						"value"};
+				List<String[]> values = new ArrayList<String[]>();
+
 				paramNo = 0;
 				for (ProgramParameter<?> optParam : object.getMethod()
 						.getOptimizationParameter()) {
 					int run_results_parameter_optimizations_parameter_sets_parameter_id = parameterIds[paramNo];
-					insert(this.getTableParameterSetParameterValues(),
-							new String[]{
-									"repository_id",
-									"run_results_parameter_optimization_id",
-									"run_results_parameter_optimizations_parameter_set_parameter_id",
-									"run_results_parameter_optimizations_parameter_set_iteration_id",
-									"value"},
-							new String[]{
-									"" + repository_id,
-									"" + runResultParamOptId,
-									""
-											+ run_results_parameter_optimizations_parameter_sets_parameter_id,
-									"" + iteration_id,
-									""
-											+ pair.getFirst().get(
-													optParam.getName())});
+					values.add(new String[]{
+							"" + repository_id,
+							"" + runResultParamOptId,
+							""
+									+ run_results_parameter_optimizations_parameter_sets_parameter_id,
+							"" + iteration_id,
+							"" + pair.getFirst().get(optParam.getName())});
 					paramNo++;
 				}
 
+				insert(this.getTableParameterSetParameterValues(), columns,
+						values);
+
+				columns = new String[]{
+						"repository_id",
+						"run_results_parameter_optimization_id",
+						"run_results_parameter_optimizations_parameter_set_iteration_id",
+						"clustering_quality_measure_id", "quality"};
+				values = new ArrayList<String[]>();
+
+				int pos = 0;
 				for (ClusteringQualityMeasure measure : pair.getSecond()
 						.keySet()) {
 					int clustering_quality_measure_id = getObjectId(measure);
@@ -3087,28 +3098,25 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 										.getValue())
 								&& !isInfinity(pair.getSecond().get(measure)
 										.getValue()))
-							insert(this
-									.getTableParameterOptimizationQualities(),
-									new String[]{
-											"repository_id",
-											"run_results_parameter_optimization_id",
-											"run_results_parameter_optimizations_parameter_set_iteration_id",
-											"clustering_quality_measure_id",
-											"quality"}, new String[]{
-											"" + repository_id,
-											"" + runResultParamOptId,
-											"" + iteration_id,
-											"" + clustering_quality_measure_id,
-											replaceInfinity(pair.getSecond()
-													.get(measure).getValue())});
+							values.add(new String[]{
+									"" + repository_id,
+									"" + runResultParamOptId,
+									"" + iteration_id,
+									"" + clustering_quality_measure_id,
+									replaceInfinity(pair.getSecond()
+											.get(measure).getValue())});
+						pos++;
 					} catch (NullPointerException e) {
 						System.out.println(iterationNumbers.get(i));
 					}
 				}
 
+				if (!values.isEmpty())
+					insert(this.getTableParameterOptimizationQualities(),
+							columns, values);
 			}
 
-			conn.commit();
+			// conn.commit();
 			return runResultParamOptId;
 		} catch (Exception e) {
 			e.printStackTrace();

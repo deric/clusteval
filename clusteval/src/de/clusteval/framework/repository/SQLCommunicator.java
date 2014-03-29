@@ -126,6 +126,53 @@ public abstract class SQLCommunicator {
 	}
 
 	protected int insert(final String tableName, final String[] columnNames,
+			final List<String[]> values) throws SQLException {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("INSERT INTO `");
+		sb.append(this.getDatabase());
+		sb.append("`.`");
+		sb.append(tableName);
+		sb.append("` (");
+		for (String s : columnNames) {
+			sb.append("`");
+			sb.append(s);
+			sb.append("`,");
+		}
+		// remove last comma
+		sb.deleteCharAt(sb.length() - 1);
+		sb.append(") VALUES");
+		for (String[] vals : values) {
+			sb.append(" (");
+			for (String s : vals) {
+				if (s == null)
+					sb.append("null,");
+				else {
+					sb.append("'");
+					sb.append(s);
+					sb.append("',");
+				}
+			}
+			sb.deleteCharAt(sb.length() - 1);
+			sb.append("),");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		sb.append(";");
+
+		PreparedStatement prepStmt = conn.prepareStatement(sb.toString(),
+				Statement.RETURN_GENERATED_KEYS);
+		try {
+			prepStmt.executeUpdate();
+			ResultSet rs = prepStmt.getGeneratedKeys();
+			rs.next();
+			return rs.getInt(1);
+		} finally {
+			prepStmt.close();
+		}
+	}
+
+	protected int insert(final String tableName, final String[] columnNames,
 			final String[] values) throws SQLException {
 
 		StringBuilder sb = new StringBuilder();
