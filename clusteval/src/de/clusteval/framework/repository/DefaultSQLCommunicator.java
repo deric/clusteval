@@ -3022,9 +3022,10 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			 */
 			List<ParameterSet> paramSets = object.getParameterSets();
 			List<Long> iterationNumbers = object.getIterationNumbers();
+
+			int[] iterationIds = new int[paramSets.size()];
+
 			for (int i = 0; i < paramSets.size(); i++) {
-				Pair<ParameterSet, ClusteringQualitySet> pair = Pair.getPair(
-						paramSets.get(i), object.get(paramSets.get(i)));
 				StringBuilder paramSetAsString = new StringBuilder();
 				for (Map.Entry<String, String> paramValue : paramSets.get(i)
 						.entrySet()) {
@@ -3041,7 +3042,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				/*
 				 * insert iteration
 				 */
-				int iteration_id = insert(
+				iterationIds[i] = insert(
 						this.getTableParameterSetIterations(),
 						new String[]{
 								"repository_id",
@@ -3055,14 +3056,20 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								paramSetAsString.toString()
 						// , "" + clustering_id
 						});
+			}
 
-				String[] columns = new String[]{
-						"repository_id",
-						"run_results_parameter_optimization_id",
-						"run_results_parameter_optimizations_parameter_set_parameter_id",
-						"run_results_parameter_optimizations_parameter_set_iteration_id",
-						"value"};
-				List<String[]> values = new ArrayList<String[]>();
+			String[] columns = new String[]{
+					"repository_id",
+					"run_results_parameter_optimization_id",
+					"run_results_parameter_optimizations_parameter_set_parameter_id",
+					"run_results_parameter_optimizations_parameter_set_iteration_id",
+					"value"};
+			List<String[]> values = new ArrayList<String[]>();
+
+			for (int i = 0; i < iterationIds.length; i++) {
+				int iteration_id = iterationIds[i];
+				Pair<ParameterSet, ClusteringQualitySet> pair = Pair.getPair(
+						paramSets.get(i), object.get(paramSets.get(i)));
 
 				paramNo = 0;
 				for (ProgramParameter<?> optParam : object.getMethod()
@@ -3077,18 +3084,23 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 							"" + pair.getFirst().get(optParam.getName())});
 					paramNo++;
 				}
-
+			}
+			if (!values.isEmpty())
 				insert(this.getTableParameterSetParameterValues(), columns,
 						values);
 
-				columns = new String[]{
-						"repository_id",
-						"run_results_parameter_optimization_id",
-						"run_results_parameter_optimizations_parameter_set_iteration_id",
-						"clustering_quality_measure_id", "quality"};
-				values = new ArrayList<String[]>();
+			columns = new String[]{
+					"repository_id",
+					"run_results_parameter_optimization_id",
+					"run_results_parameter_optimizations_parameter_set_iteration_id",
+					"clustering_quality_measure_id", "quality"};
+			values = new ArrayList<String[]>();
 
-				int pos = 0;
+			for (int i = 0; i < iterationIds.length; i++) {
+				int iteration_id = iterationIds[i];
+				Pair<ParameterSet, ClusteringQualitySet> pair = Pair.getPair(
+						paramSets.get(i), object.get(paramSets.get(i)));
+
 				for (ClusteringQualityMeasure measure : pair.getSecond()
 						.keySet()) {
 					int clustering_quality_measure_id = getObjectId(measure);
@@ -3105,16 +3117,15 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 									"" + clustering_quality_measure_id,
 									replaceInfinity(pair.getSecond()
 											.get(measure).getValue())});
-						pos++;
 					} catch (NullPointerException e) {
 						System.out.println(iterationNumbers.get(i));
 					}
 				}
-
-				if (!values.isEmpty())
-					insert(this.getTableParameterOptimizationQualities(),
-							columns, values);
 			}
+
+			if (!values.isEmpty())
+				insert(this.getTableParameterOptimizationQualities(), columns,
+						values);
 
 			// conn.commit();
 			return runResultParamOptId;
