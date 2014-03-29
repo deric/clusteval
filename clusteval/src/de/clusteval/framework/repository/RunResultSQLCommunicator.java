@@ -18,14 +18,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import de.clusteval.data.DataConfig;
-import de.clusteval.data.dataset.DataSet;
-import de.clusteval.data.dataset.DataSetConfig;
-import de.clusteval.data.goldstandard.GoldStandard;
-import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.framework.repository.config.MysqlConfig;
 import de.clusteval.program.ProgramConfig;
-import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.Run;
 
 /**
@@ -41,20 +35,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	public RunResultSQLCommunicator(Repository repository,
 			final MysqlConfig mysqlConfig) {
 		super(repository, mysqlConfig);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * utils.DefaultSQLCommunicator#getClusteringQualityMeasureId(java.lang.
-	 * String)
-	 */
-	@Override
-	protected int getClusteringQualityMeasureId(String name)
-			throws SQLException {
-		return repository.getParent().getSqlCommunicator()
-				.getClusteringQualityMeasureId(name);
+		this.objectIds = repository.getParent().sqlCommunicator.objectIds;
 	}
 
 	/*
@@ -81,101 +62,6 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 			throws SQLException {
 		return this.repository.getParent().getSqlCommunicator()
 				.getDataSetFormatId(dataSetFormatClassSimpleName);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.DefaultSQLCommunicator#getDataConfigId(java.lang.String)
-	 */
-	@Override
-	protected int getDataConfigId(DataConfig dataConfig) throws SQLException {
-		try {
-			return super.getDataConfigId(dataConfig);
-		} catch (SQLException e) {
-			return this.repository.getParent().getSqlCommunicator()
-					.getDataConfigId(dataConfig);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.DefaultSQLCommunicator#getDataSetConfigId(java.lang.String)
-	 */
-	@Override
-	protected int getDataSetConfigId(final DataSetConfig dataSetConfig)
-			throws SQLException {
-		try {
-			return super.getDataSetConfigId(dataSetConfig);
-		} catch (SQLException e) {
-			return this.repository.getParent().getSqlCommunicator()
-					.getDataSetConfigId(dataSetConfig);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.DefaultSQLCommunicator#getDataSetId(java.lang.String)
-	 */
-	@Override
-	protected int getDataSetId(final DataSet dataSet) throws SQLException {
-		try {
-			return super.getDataSetId(dataSet);
-		} catch (SQLException e) {
-			return this.repository.getParent().getSqlCommunicator()
-					.getDataSetId(dataSet);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * utils.DefaultSQLCommunicator#getGoldStandardConfigId(java.lang.String)
-	 */
-	@Override
-	protected int getGoldStandardConfigId(
-			final GoldStandardConfig goldStandardConfig) throws SQLException {
-		try {
-			return super.getGoldStandardConfigId(goldStandardConfig);
-		} catch (SQLException e) {
-			return this.repository.getParent().getSqlCommunicator()
-					.getGoldStandardConfigId(goldStandardConfig);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.DefaultSQLCommunicator#getGoldStandardId(java.lang.String)
-	 */
-	@Override
-	protected int getGoldStandardId(final GoldStandard goldStandard)
-			throws SQLException {
-		try {
-			return super.getGoldStandardId(goldStandard);
-		} catch (SQLException e) {
-			return this.repository.getParent().getSqlCommunicator()
-					.getGoldStandardId(goldStandard);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.DefaultSQLCommunicator#getProgramConfigId(java.lang.String)
-	 */
-	@Override
-	protected int getProgramConfigId(final ProgramConfig programConfig)
-			throws SQLException {
-		try {
-			return super.getProgramConfigId(programConfig);
-		} catch (SQLException e) {
-			return this.repository.getParent().getSqlCommunicator()
-					.getProgramConfigId(programConfig);
-		}
 	}
 
 	/*
@@ -248,51 +134,8 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	 * @see utils.DefaultSQLCommunicator#register(program.ProgramConfig)
 	 */
 	@Override
-	protected boolean register(ProgramConfig object, final boolean updateOnly) {
+	protected int register(ProgramConfig object, final boolean updateOnly) {
 		return super.register(object, updateOnly);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.DefaultSQLCommunicator#getProgramId(java.lang.String)
-	 */
-	@Override
-	protected int getProgramId(String name) throws SQLException {
-		return this.repository.getParent().getSqlCommunicator()
-				.getProgramId(name);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.DefaultSQLCommunicator#getProgramParameterId(int,
-	 * java.lang.String)
-	 */
-	@Override
-	protected int getProgramParameterId(
-			final ProgramParameter<?> programParameter) throws SQLException {
-		try {
-			return super.getProgramParameterId(programParameter);
-		} catch (SQLException e) {
-			return this.repository.getParent().getSqlCommunicator()
-					.getProgramParameterId(programParameter);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.DefaultSQLCommunicator#getRunAnalysisDataId(int)
-	 */
-	@Override
-	protected int getRunAnalysisDataId(int runAnalysisId) throws SQLException {
-		try {
-			return super.getRunAnalysisDataId(runAnalysisId);
-		} catch (SQLException e) {
-			return this.repository.getParent().getSqlCommunicator()
-					.getRunAnalysisDataId(runAnalysisId);
-		}
 	}
 
 	/*
@@ -307,21 +150,6 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 		} catch (SQLException e) {
 			return this.repository.getParent().getSqlCommunicator()
 					.getRunAnalysisId(runId);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.DefaultSQLCommunicator#getRunAnalysisRunId(int)
-	 */
-	@Override
-	protected int getRunAnalysisRunId(int runAnalysisId) throws SQLException {
-		try {
-			return super.getRunAnalysisRunId(runAnalysisId);
-		} catch (SQLException e) {
-			return this.repository.getParent().getSqlCommunicator()
-					.getRunAnalysisRunId(runAnalysisId);
 		}
 	}
 
@@ -352,22 +180,6 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 		} catch (SQLException e) {
 			return this.repository.getParent().getSqlCommunicator()
 					.getRunId(run);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.DefaultSQLCommunicator#getRunParameterOptimizationId(int)
-	 */
-	@Override
-	protected int getRunParameterOptimizationId(int runExecutionId)
-			throws SQLException {
-		try {
-			return super.getRunParameterOptimizationId(runExecutionId);
-		} catch (SQLException e) {
-			return this.repository.getParent().getSqlCommunicator()
-					.getRunParameterOptimizationId(runExecutionId);
 		}
 	}
 

@@ -21,7 +21,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,12 +100,15 @@ public abstract class SQLCommunicator {
 	 */
 	private int repositoryId;
 
+	protected Map<RepositoryObject, Integer> objectIds;
+
 	/**
 	 * @param repository
 	 */
 	public SQLCommunicator(final Repository repository) {
 		super();
 		this.repository = repository;
+		this.objectIds = new HashMap<RepositoryObject, Integer>();
 	}
 
 	protected abstract String getServer();
@@ -113,6 +118,12 @@ public abstract class SQLCommunicator {
 	protected abstract String getDBUsername();
 
 	protected abstract String getDBPassword();
+
+	protected int getObjectId(final RepositoryObject object) {
+		if (this.objectIds.containsKey(object))
+			return this.objectIds.get(object);
+		return -1;
+	}
 
 	protected int insert(final String tableName, final String[] columnNames,
 			final String[] values) throws SQLException {
@@ -441,125 +452,138 @@ public abstract class SQLCommunicator {
 	protected abstract boolean register(final AnalysisRun<Statistic> run,
 			final boolean updateOnly);
 
-	protected abstract boolean register(final DataAnalysisRun run,
+	protected abstract int register(final DataAnalysisRun run,
 			final boolean updateOnly);
 
-	protected abstract boolean register(final RunAnalysisRun run,
+	protected abstract int register(final RunAnalysisRun run,
 			final boolean updateOnly);
 
-	protected abstract boolean register(final RunDataAnalysisRun run,
+	protected abstract int register(final RunDataAnalysisRun run,
 			final boolean updateOnly);
 
 	protected abstract boolean register(final ExecutionRun run,
 			final boolean updateOnly);
 
-	protected abstract boolean register(final ClusteringRun run,
+	protected abstract int register(final ClusteringRun run,
 			final boolean updateOnly);
 
-	protected abstract boolean register(final ParameterOptimizationRun run,
+	protected abstract int register(final ParameterOptimizationRun run,
 			final boolean updateOnly);
 
-	protected abstract boolean register(
-			final InternalParameterOptimizationRun run, final boolean updateOnly);
-
-	protected abstract boolean register(final ProgramConfig object,
+	protected abstract int register(final InternalParameterOptimizationRun run,
 			final boolean updateOnly);
 
-	protected abstract boolean register(final Program object,
+	protected abstract int register(final ProgramConfig object,
+			final boolean updateOnly);
+
+	protected abstract int register(final Program object,
 			final boolean updateOnly);
 
 	// TODO
 	protected boolean register(final RepositoryObject object,
 			final boolean updateOnly) {
+		int result;
 		if (object instanceof DataSet)
-			return this.register((DataSet) object, updateOnly);
+			result = this.register((DataSet) object, updateOnly);
 		else if (object instanceof ClusteringRun)
-			return this.register((ClusteringRun) object, updateOnly);
+			result = this.register((ClusteringRun) object, updateOnly);
 		else if (object instanceof ClusteringRunResult) {
-			return this.register((RunResult) object);
+			result = this.register((RunResult) object);
 		} else if (object instanceof DataAnalysisRun)
-			return this.register((DataAnalysisRun) object, updateOnly);
+			result = this.register((DataAnalysisRun) object, updateOnly);
 		else if (object instanceof DataAnalysisRunResult) {
-			return this.register((RunResult) object);
+			result = this.register((RunResult) object);
 		} else if (object instanceof DataConfig)
-			return this.register((DataConfig) object, updateOnly);
+			result = this.register((DataConfig) object, updateOnly);
 		else if (object instanceof DataSetConfig)
-			return this.register((DataSetConfig) object, updateOnly);
+			result = this.register((DataSetConfig) object, updateOnly);
 		else if (object instanceof DoubleProgramParameter)
-			return this.register((DoubleProgramParameter) object);
+			result = this.register((DoubleProgramParameter) object);
 		else if (object instanceof GoldStandard)
-			return this.register((GoldStandard) object, updateOnly);
+			result = this.register((GoldStandard) object, updateOnly);
 		else if (object instanceof GoldStandardConfig)
-			return this.register((GoldStandardConfig) object, updateOnly);
+			result = this.register((GoldStandardConfig) object, updateOnly);
 		else if (object instanceof IntegerProgramParameter)
-			return this.register((IntegerProgramParameter) object);
+			result = this.register((IntegerProgramParameter) object);
 		else if (object instanceof InternalParameterOptimizationRun)
-			return this.register((InternalParameterOptimizationRun) object,
+			result = this.register((InternalParameterOptimizationRun) object,
 					updateOnly);
 		else if (object instanceof ParameterOptimizationResult) {
-			return this.register((RunResult) object);
+			result = this.register((RunResult) object);
 		} else if (object instanceof ParameterOptimizationRun)
-			return this.register((ParameterOptimizationRun) object, updateOnly);
+			result = this.register((ParameterOptimizationRun) object,
+					updateOnly);
 		else if (object instanceof Program)
-			return this.register((Program) object, updateOnly);
+			result = this.register((Program) object, updateOnly);
 		else if (object instanceof ProgramConfig)
-			return this.register((ProgramConfig) object, updateOnly);
+			result = this.register((ProgramConfig) object, updateOnly);
 		else if (object instanceof RunAnalysisRun)
-			return this.register((RunAnalysisRun) object, updateOnly);
+			result = this.register((RunAnalysisRun) object, updateOnly);
 		else if (object instanceof RunAnalysisRunResult) {
-			return this.register((RunResult) object);
+			result = this.register((RunResult) object);
 		} else if (object instanceof RunDataAnalysisRun) {
-			return this.register((RunDataAnalysisRun) object, updateOnly);
+			result = this.register((RunDataAnalysisRun) object, updateOnly);
 		} else if (object instanceof RunDataAnalysisRunResult) {
-			return this.register((RunResult) object);
+			result = this.register((RunResult) object);
 		} else if (object instanceof StringProgramParameter)
-			return this.register((StringProgramParameter) object);
-		return false;
+			result = this.register((StringProgramParameter) object);
+		else
+			return false;
+		if (result != -1)
+			this.objectIds.put(object, result);
+		return result != -1;
 	}
 
 	// TODO
 	protected boolean unregister(final RepositoryObject object) {
+		int result;
 		if (object instanceof DataSet)
-			return this.unregister((DataSet) object);
+			result = this.unregister((DataSet) object);
 		else if (object instanceof ClusteringRun)
-			return this.unregister((ClusteringRun) object);
+			result = this.unregister((ClusteringRun) object);
 		else if (object instanceof ClusteringRunResult)
-			return this.unregister((ClusteringRunResult) object);
+			result = this.unregister((ClusteringRunResult) object);
 		else if (object instanceof DataAnalysisRun)
-			return this.unregister((DataAnalysisRun) object);
+			result = this.unregister((DataAnalysisRun) object);
 		else if (object instanceof DataAnalysisRunResult)
-			return this.unregister((DataAnalysisRunResult) object);
+			result = this.unregister((DataAnalysisRunResult) object);
 		else if (object instanceof DataConfig)
-			return this.unregister((DataConfig) object);
+			result = this.unregister((DataConfig) object);
 		else if (object instanceof DataSetConfig)
-			return this.unregister((DataSetConfig) object);
+			result = this.unregister((DataSetConfig) object);
 		else if (object instanceof DoubleProgramParameter)
-			return this.unregister((DoubleProgramParameter) object);
+			result = this.unregister((DoubleProgramParameter) object);
 		else if (object instanceof GoldStandard)
-			return this.unregister((GoldStandard) object);
+			result = this.unregister((GoldStandard) object);
 		else if (object instanceof GoldStandardConfig)
-			return this.unregister((GoldStandardConfig) object);
+			result = this.unregister((GoldStandardConfig) object);
 		else if (object instanceof IntegerProgramParameter)
-			return this.unregister((IntegerProgramParameter) object);
+			result = this.unregister((IntegerProgramParameter) object);
 		else if (object instanceof InternalParameterOptimizationRun)
-			return this.unregister((InternalParameterOptimizationRun) object);
+			result = this.unregister((InternalParameterOptimizationRun) object);
 		else if (object instanceof ParameterOptimizationResult)
-			return this.unregister((ParameterOptimizationResult) object);
+			result = this.unregister((ParameterOptimizationResult) object);
 		else if (object instanceof Program)
-			return this.unregister((Program) object);
+			result = this.unregister((Program) object);
 		else if (object instanceof ProgramConfig)
-			return this.unregister((ProgramConfig) object);
+			result = this.unregister((ProgramConfig) object);
 		else if (object instanceof RunAnalysisRun)
-			return this.unregister((RunAnalysisRun) object);
+			result = this.unregister((RunAnalysisRun) object);
 		else if (object instanceof RunAnalysisRunResult)
-			return this.unregister((RunAnalysisRunResult) object);
+			result = this.unregister((RunAnalysisRunResult) object);
 		else if (object instanceof RunDataAnalysisRun)
-			return this.unregister((RunDataAnalysisRun) object);
+			result = this.unregister((RunDataAnalysisRun) object);
 		else if (object instanceof RunDataAnalysisRunResult)
-			return this.unregister((RunDataAnalysisRunResult) object);
+			result = this.unregister((RunDataAnalysisRunResult) object);
 		else if (object instanceof StringProgramParameter)
-			return this.unregister((StringProgramParameter) object);
-		return false;
+			result = this.unregister((StringProgramParameter) object);
+		else
+			return false;
+
+		if (result != -1)
+			this.objectIds.remove(object);
+
+		return result != -1;
 	}
 
 	// TODO
@@ -624,40 +648,39 @@ public abstract class SQLCommunicator {
 		return false;
 	}
 
-	protected abstract boolean register(final GoldStandardConfig object,
+	protected abstract int register(final GoldStandardConfig object,
 			final boolean updateOnly);
 
-	protected abstract boolean register(final GoldStandard object,
+	protected abstract int register(final GoldStandard object,
 			final boolean updateOnly);
 
-	protected abstract boolean register(final DoubleProgramParameter object);
+	protected abstract int register(final DoubleProgramParameter object);
 
-	protected abstract boolean register(final IntegerProgramParameter object);
+	protected abstract int register(final IntegerProgramParameter object);
 
-	protected abstract boolean register(final StringProgramParameter object);
+	protected abstract int register(final StringProgramParameter object);
 
-	protected abstract boolean register(final DataSet object,
+	protected abstract int register(final DataSet object,
 			final boolean updateOnly);
 
-	protected abstract boolean register(final DataConfig object,
+	protected abstract int register(final DataConfig object,
 			final boolean updateOnly);
 
-	protected abstract boolean register(final DataSetConfig object,
+	protected abstract int register(final DataSetConfig object,
 			final boolean updateOnly);
 
 	protected abstract boolean unregisterRunResultFormat(
 			final Class<? extends RunResultFormat> object);
 
-	protected abstract boolean unregister(final ProgramConfig object);
+	protected abstract int unregister(final ProgramConfig object);
 
-	protected abstract boolean unregister(
-			final ProgramParameter<?> programParameter);
+	protected abstract int unregister(final ProgramParameter<?> programParameter);
 
-	protected abstract boolean unregister(final Program object);
+	protected abstract int unregister(final Program object);
 
-	protected abstract boolean unregister(final GoldStandardConfig object);
+	protected abstract int unregister(final GoldStandardConfig object);
 
-	protected abstract boolean unregister(final GoldStandard object);
+	protected abstract int unregister(final GoldStandard object);
 
 	protected abstract boolean unregisterDataSetFormatClass(
 			final Class<? extends DataSetFormat> object);
@@ -680,18 +703,17 @@ public abstract class SQLCommunicator {
 	protected abstract boolean unregisterDataSetTypeClass(
 			final Class<? extends DataSetType> object);
 
-	protected abstract boolean unregister(final DataSet object);
+	protected abstract int unregister(final DataSet object);
 
-	protected abstract boolean unregister(final Run object);
+	protected abstract int unregister(final Run object);
 
-	protected abstract boolean unregister(final RunResult object);
+	protected abstract int unregister(final RunResult object);
 
-	protected abstract boolean unregister(
-			final ParameterOptimizationResult object);
+	protected abstract int unregister(final ParameterOptimizationResult object);
 
-	protected abstract boolean unregister(final DataConfig object);
+	protected abstract int unregister(final DataConfig object);
 
-	protected abstract boolean unregister(final DataSetConfig object);
+	protected abstract int unregister(final DataSetConfig object);
 
 	protected abstract int getRunId(final Run run) throws SQLException;
 
@@ -704,26 +726,8 @@ public abstract class SQLCommunicator {
 	protected abstract int getClusterObjectId(final int clusterId,
 			final String name) throws SQLException;
 
-	protected abstract int getClusteringQualityMeasureId(final String name)
-			throws SQLException;
-
-	protected abstract int getDataConfigId(final DataConfig dataConfig)
-			throws SQLException;
-
-	protected abstract int getDataSetConfigId(final DataSetConfig dataSetConfig)
-			throws SQLException;
-
 	protected abstract int getDataSetFormatId(
 			final String dataSetFormatClassSimpleName) throws SQLException;
-
-	protected abstract int getDataSetId(final DataSet dataSet)
-			throws SQLException;
-
-	protected abstract int getGoldStandardConfigId(
-			final GoldStandardConfig goldStandardConfig) throws SQLException;
-
-	protected abstract int getGoldStandardId(final GoldStandard goldStandard)
-			throws SQLException;
 
 	protected abstract int getParameterOptimizationMethodId(final String name)
 			throws SQLException;
@@ -738,40 +742,17 @@ public abstract class SQLCommunicator {
 			final int parameterSetId, final int parameterId, final int iteration)
 			throws SQLException;
 
-	protected abstract int getProgramConfigId(final ProgramConfig programConfig)
-			throws SQLException;
-
-	protected abstract int getProgramId(final String name) throws SQLException;
-
-	protected abstract int getProgramParameterId(
-			final ProgramParameter<?> programParameterName) throws SQLException;
-
 	protected abstract int getProgramParameterTypeId(final String typeName)
-			throws SQLException;
-
-	protected abstract int getRunAnalysisDataId(final int runAnalysisId)
 			throws SQLException;
 
 	protected abstract int getRunAnalysisId(final int runId)
 			throws SQLException;
 
-	protected abstract int getRunAnalysisRunId(final int runAnalysisId)
-			throws SQLException;
-
-	protected abstract int getRunAnalysisRunDataId(final int runAnalysisRunId)
-			throws SQLException;
-
 	protected abstract int getRunExecutionId(final int runId)
 			throws SQLException;
 
-	protected abstract int getRunParameterOptimizationId(
-			final int runExecutionId) throws SQLException;
-
 	protected abstract int getRunResultExecutionId(final int runResultId)
 			throws SQLException;
-
-	protected abstract int getRunResultParameterOptimizationId(
-			final String absPath) throws SQLException;
 
 	protected abstract int getRunResultAnalysisId(final int runResultId)
 			throws SQLException;
@@ -928,7 +909,7 @@ public abstract class SQLCommunicator {
 	 * @param string
 	 * @throws SQLException
 	 */
-	private void deleteFromTable(String tableName, String columnName,
+	protected void deleteFromTable(String tableName, String columnName,
 			String[] value) throws SQLException {
 		// long start = System.currentTimeMillis();
 		if (value.length == 0)
@@ -995,7 +976,7 @@ public abstract class SQLCommunicator {
 	 * @param object
 	 * @return True, if the runresult was registered successfully.
 	 */
-	public boolean register(RunResult object) {
+	public int register(RunResult object) {
 		if (object instanceof ExecutionRunResult) {
 			if (object instanceof ClusteringRunResult) {
 				return register((ClusteringRunResult) object);
@@ -1011,7 +992,7 @@ public abstract class SQLCommunicator {
 				return register((DataAnalysisRunResult) object);
 			}
 		}
-		return false;
+		return -1;
 	}
 
 	/**
@@ -1024,13 +1005,13 @@ public abstract class SQLCommunicator {
 	 * @param object
 	 * @return True, if the object was registered successfully.
 	 */
-	public abstract boolean register(ClusteringRunResult object);
+	public abstract int register(ClusteringRunResult object);
 
 	/**
 	 * @param object
 	 * @return True, if the object was registered successfully.
 	 */
-	public abstract boolean register(ParameterOptimizationResult object);
+	public abstract int register(ParameterOptimizationResult object);
 
 	/**
 	 * @param object
@@ -1042,19 +1023,19 @@ public abstract class SQLCommunicator {
 	 * @param object
 	 * @return True, if the object was registered successfully.
 	 */
-	public abstract boolean register(RunAnalysisRunResult object);
+	public abstract int register(RunAnalysisRunResult object);
 
 	/**
 	 * @param object
 	 * @return True, if the object was registered successfully.
 	 */
-	public abstract boolean register(RunDataAnalysisRunResult object);
+	public abstract int register(RunDataAnalysisRunResult object);
 
 	/**
 	 * @param object
 	 * @return True, if the object was registered successfully.
 	 */
-	public abstract boolean register(DataAnalysisRunResult object);
+	public abstract int register(DataAnalysisRunResult object);
 
 	protected abstract boolean registerDataSetFormatClass(
 			Class<? extends DataSetFormat> object);

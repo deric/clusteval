@@ -553,8 +553,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(program.ProgramConfig)
 	 */
 	@Override
-	protected boolean register(ProgramConfig object, final boolean updateOnly) {
-		return false;
+	protected int register(ProgramConfig object, final boolean updateOnly) {
+		return -1;
 	}
 
 	/*
@@ -563,8 +563,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(program.Program)
 	 */
 	@Override
-	protected boolean register(Program object, final boolean updateOnly) {
-		return false;
+	protected int register(Program object, final boolean updateOnly) {
+		return -1;
 	}
 
 	/*
@@ -573,9 +573,9 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(data.goldstandard.GoldStandardConfig)
 	 */
 	@Override
-	protected boolean register(GoldStandardConfig object,
+	protected int register(GoldStandardConfig object,
 			final boolean updateOnly) {
-		return false;
+		return -1;
 	}
 
 	/*
@@ -584,8 +584,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(data.goldstandard.GoldStandard)
 	 */
 	@Override
-	protected boolean register(GoldStandard object, final boolean updateOnly) {
-		return false;
+	protected int register(GoldStandard object, final boolean updateOnly) {
+		return -1;
 	}
 
 	/*
@@ -594,8 +594,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(program.DoubleProgramParameter)
 	 */
 	@Override
-	protected boolean register(DoubleProgramParameter object) {
-		return false;
+	protected int register(DoubleProgramParameter object) {
+		return -1;
 	}
 
 	/*
@@ -604,8 +604,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(program.IntegerProgramParameter)
 	 */
 	@Override
-	protected boolean register(IntegerProgramParameter object) {
-		return false;
+	protected int register(IntegerProgramParameter object) {
+		return -1;
 	}
 
 	/*
@@ -614,8 +614,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(program.StringProgramParameter)
 	 */
 	@Override
-	protected boolean register(StringProgramParameter object) {
-		return false;
+	protected int register(StringProgramParameter object) {
+		return -1;
 	}
 
 	/*
@@ -624,8 +624,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(data.dataset.DataSet)
 	 */
 	@Override
-	protected boolean register(DataSet object, final boolean updateOnly) {
-		return false;
+	protected int register(DataSet object, final boolean updateOnly) {
+		return -1;
 	}
 
 	/*
@@ -634,8 +634,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(data.DataConfig)
 	 */
 	@Override
-	protected boolean register(DataConfig object, final boolean updateOnly) {
-		return false;
+	protected int register(DataConfig object, final boolean updateOnly) {
+		return -1;
 	}
 
 	/*
@@ -644,8 +644,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(data.dataset.DataSetConfig)
 	 */
 	@Override
-	protected boolean register(DataSetConfig object, final boolean updateOnly) {
-		return false;
+	protected int register(DataSetConfig object, final boolean updateOnly) {
+		return -1;
 	}
 
 	/*
@@ -665,8 +665,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#unregister(program.ProgramConfig)
 	 */
 	@Override
-	protected boolean unregister(ProgramConfig object) {
-		return false;
+	protected int unregister(ProgramConfig object) {
+		return -1;
 	}
 
 	/*
@@ -675,8 +675,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#unregister(program.Program)
 	 */
 	@Override
-	protected boolean unregister(Program object) {
-		return false;
+	protected int unregister(Program object) {
+		return -1;
 	}
 
 	/*
@@ -686,8 +686,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * utils.SQLCommunicator#unregister(data.goldstandard.GoldStandardConfig)
 	 */
 	@Override
-	protected boolean unregister(GoldStandardConfig object) {
-		return false;
+	protected int unregister(GoldStandardConfig object) {
+		return -1;
 	}
 
 	/*
@@ -696,8 +696,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#unregister(data.goldstandard.GoldStandard)
 	 */
 	@Override
-	protected boolean unregister(GoldStandard object) {
-		return false;
+	protected int unregister(GoldStandard object) {
+		return -1;
 	}
 
 	/*
@@ -717,8 +717,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#unregister(data.dataset.DataSet)
 	 */
 	@Override
-	protected boolean unregister(DataSet object) {
-		return false;
+	protected int unregister(DataSet object) {
+		return -1;
 	}
 
 	/*
@@ -727,8 +727,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#unregister(data.DataConfig)
 	 */
 	@Override
-	protected boolean unregister(DataConfig object) {
-		return false;
+	protected int unregister(DataConfig object) {
+		return -1;
 	}
 
 	/*
@@ -737,41 +737,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#unregister(data.dataset.DataSetConfig)
 	 */
 	@Override
-	protected boolean unregister(DataSetConfig object) {
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * utils.SQLCommunicator#getClusteringQualityMeasureId(java.lang.String)
-	 */
-	@Override
-	protected int getClusteringQualityMeasureId(String name)
-			throws SQLException {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.SQLCommunicator#getDataConfigId(java.lang.String)
-	 */
-	@Override
-	protected int getDataConfigId(DataConfig dataConfig) throws SQLException {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.SQLCommunicator#getDataSetConfigId(java.lang.String)
-	 */
-	@Override
-	protected int getDataSetConfigId(final DataSetConfig dataSetConfig)
-			throws SQLException {
-		return 0;
+	protected int unregister(DataSetConfig object) {
+		return -1;
 	}
 
 	/*
@@ -781,38 +748,6 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 */
 	@Override
 	protected int getDataSetFormatId(String dataSetFormatClassSimpleName)
-			throws SQLException {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.SQLCommunicator#getDataSetId(java.lang.String)
-	 */
-	@Override
-	protected int getDataSetId(final DataSet dataSet) throws SQLException {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.SQLCommunicator#getGoldStandardConfigId(java.lang.String)
-	 */
-	@Override
-	protected int getGoldStandardConfigId(
-			final GoldStandardConfig goldStandardConfig) throws SQLException {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.SQLCommunicator#getGoldStandardId(java.lang.String)
-	 */
-	@Override
-	protected int getGoldStandardId(final GoldStandard goldStandard)
 			throws SQLException {
 		return 0;
 	}
@@ -832,37 +767,6 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getProgramConfigId(java.lang.String)
-	 */
-	@Override
-	protected int getProgramConfigId(final ProgramConfig programConfig)
-			throws SQLException {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.SQLCommunicator#getProgramId(java.lang.String)
-	 */
-	@Override
-	protected int getProgramId(String name) throws SQLException {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.SQLCommunicator#getRunAnalysisDataId(int)
-	 */
-	@Override
-	protected int getRunAnalysisDataId(int runAnalysisId) throws SQLException {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see utils.SQLCommunicator#getRunAnalysisId(int)
 	 */
 	@Override
@@ -873,31 +777,10 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getRunAnalysisRunId(int)
-	 */
-	@Override
-	protected int getRunAnalysisRunId(int runAnalysisId) throws SQLException {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see utils.SQLCommunicator#getRunExecutionId(int)
 	 */
 	@Override
 	protected int getRunExecutionId(int runId) throws SQLException {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see utils.SQLCommunicator#getRunParameterOptimizationId(int)
-	 */
-	@Override
-	protected int getRunParameterOptimizationId(int runExecutionId)
-			throws SQLException {
 		return 0;
 	}
 
@@ -978,8 +861,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(run.result.RunResult)
 	 */
 	@Override
-	public boolean register(RunResult object) {
-		return false;
+	public int register(RunResult object) {
+		return -1;
 	}
 
 	/*
@@ -999,8 +882,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * ParameterOptimizationResult)
 	 */
 	@Override
-	public boolean register(ParameterOptimizationResult object) {
-		return false;
+	public int register(ParameterOptimizationResult object) {
+		return -1;
 	}
 
 	/*
@@ -1010,8 +893,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * DataAnalysisRunResult)
 	 */
 	@Override
-	public boolean register(DataAnalysisRunResult object) {
-		return false;
+	public int register(DataAnalysisRunResult object) {
+		return -1;
 	}
 
 	/*
@@ -1044,8 +927,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * )
 	 */
 	@Override
-	public boolean register(ClusteringRunResult object) {
-		return false;
+	public int register(ClusteringRunResult object) {
+		return -1;
 	}
 
 	/*
@@ -1110,8 +993,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * )
 	 */
 	@Override
-	public boolean register(RunAnalysisRunResult object) {
-		return false;
+	public int register(RunAnalysisRunResult object) {
+		return -1;
 	}
 
 	/*
@@ -1121,8 +1004,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * RunDataAnalysisRunResult)
 	 */
 	@Override
-	public boolean register(RunDataAnalysisRunResult object) {
-		return false;
+	public int register(RunDataAnalysisRunResult object) {
+		return -1;
 	}
 
 	/*
@@ -1139,23 +1022,12 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see framework.repository.SQLCommunicator#getRunAnalysisRunDataId(int)
-	 */
-	@Override
-	protected int getRunAnalysisRunDataId(int runAnalysisRunId)
-			throws SQLException {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see framework.repository.SQLCommunicator#register(run.config.
 	 * DataAnalysisRun)
 	 */
 	@Override
-	protected boolean register(DataAnalysisRun run, final boolean updateOnly) {
-		return false;
+	protected int register(DataAnalysisRun run, final boolean updateOnly) {
+		return -1;
 	}
 
 	/*
@@ -1165,8 +1037,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * framework.repository.SQLCommunicator#register(run.config.RunAnalysisRun )
 	 */
 	@Override
-	protected boolean register(RunAnalysisRun run, final boolean updateOnly) {
-		return false;
+	protected int register(RunAnalysisRun run, final boolean updateOnly) {
+		return -1;
 	}
 
 	/*
@@ -1176,8 +1048,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * RunDataAnalysisRun)
 	 */
 	@Override
-	protected boolean register(RunDataAnalysisRun run, final boolean updateOnly) {
-		return false;
+	protected int register(RunDataAnalysisRun run, final boolean updateOnly) {
+		return -1;
 	}
 
 	/*
@@ -1198,8 +1070,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * framework.repository.SQLCommunicator#register(run.config.ClusteringRun )
 	 */
 	@Override
-	protected boolean register(ClusteringRun run, final boolean updateOnly) {
-		return false;
+	protected int register(ClusteringRun run, final boolean updateOnly) {
+		return -1;
 	}
 
 	/*
@@ -1209,9 +1081,9 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * ParameterOptimizationRun)
 	 */
 	@Override
-	protected boolean register(ParameterOptimizationRun run,
+	protected int register(ParameterOptimizationRun run,
 			final boolean updateOnly) {
-		return false;
+		return -1;
 	}
 
 	/*
@@ -1221,9 +1093,9 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * InternalParameterOptimizationRun)
 	 */
 	@Override
-	protected boolean register(InternalParameterOptimizationRun run,
+	protected int register(InternalParameterOptimizationRun run,
 			final boolean updateOnly) {
-		return false;
+		return -1;
 	}
 
 	/*
@@ -1322,19 +1194,6 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * framework.repository.SQLCommunicator#getRunResultParameterOptimizationId
-	 * (java.lang.String)
-	 */
-	@Override
-	protected int getRunResultParameterOptimizationId(String absPath)
-			throws SQLException {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
 	 * framework.repository.SQLCommunicator#getTableParameterSetParameters()
 	 */
 	@Override
@@ -1350,18 +1209,6 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 */
 	@Override
 	protected int getParameterSetParameterId(int parameterSetId, int parameterId)
-			throws SQLException {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see framework.repository.SQLCommunicator#getProgramParameterId(program.
-	 * ProgramParameter)
-	 */
-	@Override
-	protected int getProgramParameterId(ProgramParameter<?> programParameterName)
 			throws SQLException {
 		return 0;
 	}
@@ -1405,8 +1252,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * DoubleProgramParameter)
 	 */
 	@Override
-	protected boolean unregister(ProgramParameter<?> programParameter) {
-		return false;
+	protected int unregister(ProgramParameter<?> programParameter) {
+		return -1;
 	}
 
 	/*
@@ -1512,8 +1359,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see framework.repository.SQLCommunicator#unregister(run.Run)
 	 */
 	@Override
-	protected boolean unregister(Run object) {
-		return false;
+	protected int unregister(Run object) {
+		return -1;
 	}
 
 	/*
@@ -1523,8 +1370,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * framework.repository.SQLCommunicator#unregister(run.result.RunResult)
 	 */
 	@Override
-	protected boolean unregister(RunResult object) {
-		return false;
+	protected int unregister(RunResult object) {
+		return -1;
 	}
 
 	/*
@@ -1759,8 +1606,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * .run.result.ParameterOptimizationResult)
 	 */
 	@Override
-	protected boolean unregister(ParameterOptimizationResult object) {
-		return false;
+	protected int unregister(ParameterOptimizationResult object) {
+		return -1;
 	}
 
 	/*

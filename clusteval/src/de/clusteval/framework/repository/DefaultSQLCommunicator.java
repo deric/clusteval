@@ -15,7 +15,6 @@ package de.clusteval.framework.repository;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -832,7 +831,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * DataAnalysisRun)
 	 */
 	@Override
-	protected boolean register(DataAnalysisRun object, final boolean updateOnly) {
+	protected int register(DataAnalysisRun object, final boolean updateOnly) {
 		try {
 			this.register((AnalysisRun) object, updateOnly);
 			int run_id = getRunId(object);
@@ -851,13 +850,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								"data_config_id"},
 						new String[]{"" + this.updateRepositoryId(),
 								"" + run_data_analysis_id,
-								"" + this.getDataConfigId(dataConfig)});
+								"" + this.getObjectId(dataConfig)});
 			}
-			return true;
+			return run_data_analysis_id;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -867,7 +866,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * framework.repository.SQLCommunicator#register(run.config.RunAnalysisRun )
 	 */
 	@Override
-	protected boolean register(RunAnalysisRun object, final boolean updateOnly) {
+	protected int register(RunAnalysisRun object, final boolean updateOnly) {
 		try {
 			this.register((AnalysisRun) object, updateOnly);
 
@@ -890,11 +889,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								"" + run_run_analysis_id,
 								"" + uniqueRunIdentifier});
 			}
-			return true;
+			return run_run_analysis_id;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -904,8 +903,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * RunDataAnalysisRun)
 	 */
 	@Override
-	protected boolean register(RunDataAnalysisRun object,
-			final boolean updateOnly) {
+	protected int register(RunDataAnalysisRun object, final boolean updateOnly) {
 		try {
 			this.register((AnalysisRun) object, updateOnly);
 			int run_id = getRunId(object);
@@ -939,11 +937,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								"" + run_run_data_analysis_id,
 								"" + uniqueRunIdentifier});
 			}
-			return true;
+			return run_run_data_analysis_id;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -971,7 +969,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 
 			// insert dataConfigs into DB
 			for (DataConfig dataConfig : execRun.getDataConfigs()) {
-				int data_config_id = this.getDataConfigId(dataConfig);
+				int data_config_id = this.getObjectId(dataConfig);
 
 				try {
 					insert(this.getTableRunsExecutionDataConfigs(),
@@ -985,10 +983,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			}
 
 			for (int i = 0; i < execRun.getQualityMeasures().size(); i++) {
-				int clustering_quality_measure_id = this
-						.getClusteringQualityMeasureId(execRun
-								.getQualityMeasures().get(i).getClass()
-								.getSimpleName());
+				int clustering_quality_measure_id = this.getObjectId(execRun
+						.getQualityMeasures().get(i));
 
 				try {
 					insert(this.getTableRunsExecutionQualityMeasures(),
@@ -1007,7 +1003,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				ProgramConfig programConfig = execRun.getProgramConfigs()
 						.get(i);
 
-				int program_config_id = this.getProgramConfigId(programConfig);
+				int program_config_id = this.getObjectId(programConfig);
 				try {
 					insert(this.getTableRunsExecutionProgramConfigs(),
 							new String[]{"repository_id", "run_execution_id",
@@ -1024,7 +1020,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 
 				for (ProgramParameter<?> param : paramValues.keySet()) {
 
-					int paramId = this.getProgramParameterId(param);
+					int paramId = this.getObjectId(param);
 
 					try {
 						insert(this.getTableRunsExecutionParameterValues(),
@@ -1055,20 +1051,20 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * framework.repository.SQLCommunicator#register(run.config.ClusteringRun )
 	 */
 	@Override
-	protected boolean register(ClusteringRun run, final boolean updateOnly) {
+	protected int register(ClusteringRun run, final boolean updateOnly) {
 		try {
 			this.register((ExecutionRun) run, updateOnly);
 			int run_id = getRunId(run);
 			int run_execution_id = getRunExecutionId(run_id);
-			insert(this.getTableRunsClustering(), new String[]{"repository_id",
-					"run_execution_id"},
+			int run_clustering_id = insert(this.getTableRunsClustering(),
+					new String[]{"repository_id", "run_execution_id"},
 					new String[]{"" + this.updateRepositoryId(),
 							"" + run_execution_id});
-			return true;
+			return run_clustering_id;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -1078,21 +1074,22 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * InternalParameterOptimizationRun)
 	 */
 	@Override
-	protected boolean register(InternalParameterOptimizationRun run,
+	protected int register(InternalParameterOptimizationRun run,
 			final boolean updateOnly) {
 		try {
 			this.register((ExecutionRun) run, updateOnly);
 			int run_id = getRunId(run);
 			int run_execution_id = getRunExecutionId(run_id);
-			insert(this.getTableRunsInternalParameterOptimization(),
+			int run_internal_id = insert(
+					this.getTableRunsInternalParameterOptimization(),
 					new String[]{"repository_id", "run_execution_id"},
 					new String[]{"" + this.updateRepositoryId(),
 							"" + run_execution_id});
-			return true;
+			return run_internal_id;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -1102,7 +1099,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * ParameterOptimizationRun)
 	 */
 	@Override
-	protected boolean register(ParameterOptimizationRun object,
+	protected int register(ParameterOptimizationRun object,
 			final boolean updateOnly) {
 		try {
 			this.register((ExecutionRun) object, updateOnly);
@@ -1118,7 +1115,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			ParameterOptimizationRun paramOpt = object;
 
 			for (int i = 0; i < paramOpt.getProgramConfigs().size(); i++) {
-				int program_config_id = this.getProgramConfigId(paramOpt
+				int program_config_id = this.getObjectId(paramOpt
 						.getProgramConfigs().get(i));
 
 				ParameterOptimizationMethod method = paramOpt
@@ -1127,10 +1124,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				int methodId = this.getParameterOptimizationMethodId(method
 						.getClass().getSimpleName());
 
-				int clustering_quality_measure_id = this
-						.getClusteringQualityMeasureId(method
-								.getOptimizationCriterion().getClass()
-								.getSimpleName());
+				int clustering_quality_measure_id = this.getObjectId(method
+						.getOptimizationCriterion());
 
 				insert(this.getTableRunsParameterOptimizationMethods(),
 						new String[]{"repository_id",
@@ -1146,7 +1141,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				for (ProgramParameter<?> param : paramOpt
 						.getOptimizationParameters().get(i)) {
 
-					int paramId = this.getProgramParameterId(param);
+					int paramId = this.getObjectId(param);
 
 					insert(this.getTableRunsParameterOptimizationParameters(),
 							new String[]{"repository_id",
@@ -1161,8 +1156,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			// insert clustering quality measures into DB
 			for (ClusteringQualityMeasure measure : object.getQualityMeasures()) {
 
-				int measureId = getClusteringQualityMeasureId(measure
-						.toString());
+				int measureId = getObjectId(measure);
 
 				insert(this.getTableRunsParameterOptimizationQualityMeasures(),
 						new String[]{"repository_id",
@@ -1172,11 +1166,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								"" + runParamOptId, "" + measureId});
 			}
 
-			return true;
+			return runParamOptId;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	// /*
@@ -1261,10 +1255,10 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(program.ProgramConfig)
 	 */
 	@Override
-	protected boolean register(ProgramConfig object, final boolean updateOnly) {
+	protected int register(ProgramConfig object, final boolean updateOnly) {
 		// TODO
 		try {
-			int program_id = getProgramId(object.getProgram().getAbsolutePath());
+			int program_id = getObjectId(object.getProgram());
 
 			int run_result_format_id = getRunResultFormatId(object
 					.getOutputFormat().getClass().getSimpleName());
@@ -1301,7 +1295,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 										""),
 						"" + (object.expectsNormalizedDataSet() ? 1 : 0),
 						""
-								+ getProgramConfigId(object
+								+ getObjectId(object
 										.getRepository()
 										.getParent()
 										.getStaticObjectWithName(
@@ -1340,7 +1334,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 
 			int rowId;
 			if (updateOnly) {
-				rowId = getProgramConfigId(object);
+				rowId = getObjectId(object);
 
 				delete(this.getTableOptimizableProgramParameters(), rowId,
 						"program_config_id");
@@ -1364,8 +1358,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			}
 
 			for (ProgramParameter<?> param : object.getOptimizableParams()) {
-				int program_config_id = getProgramConfigId(object);
-				int program_parameter_id = getProgramParameterId(param);
+				int program_config_id = getObjectId(object);
+				int program_parameter_id = getObjectId(param);
 
 				insert(this.getTableOptimizableProgramParameters(),
 						new String[]{"repository_id", "program_config_id",
@@ -1374,12 +1368,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								"" + program_config_id,
 								"" + program_parameter_id});
 			}
-			return true;
+			return rowId;
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -1471,66 +1465,6 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	}
 
 	@Override
-	protected int getClusteringQualityMeasureId(final String name)
-			throws SQLException {
-		Statement stmt = conn.createStatement();
-		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
-					+ this.getTableClusteringQualityMeasures()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `name`='" + name + "';");
-			rs.first();
-			return rs.getInt("id");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			stmt.close();
-		}
-	}
-
-	@Override
-	protected int getDataConfigId(final DataConfig dataConfig)
-			throws SQLException {
-		Statement stmt = conn.createStatement();
-		try {
-			ResultSet rs = stmt
-					.executeQuery("SELECT `id` FROM `"
-							+ this.getDatabase()
-							+ "`.`"
-							+ this.getTableDataConfigs()
-							+ "` WHERE `repository_id`='"
-							+ getRepositoryId(dataConfig.getRepository()
-									.getBasePath()) + "' AND `absPath`='"
-							+ dataConfig.getAbsolutePath() + "';");
-			rs.first();
-			return rs.getInt("id");
-		} catch (SQLException e) {
-			System.out.println("bla");
-			throw e;
-		} finally {
-			stmt.close();
-		}
-	}
-
-	@Override
-	protected int getDataSetConfigId(final DataSetConfig dataSetConfig)
-			throws SQLException {
-		Statement stmt = conn.createStatement();
-		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
-					+ this.getTableDataSetConfigs() + "` WHERE `absPath`='"
-					+ dataSetConfig.getAbsolutePath() + "';");
-			rs.first();
-			return rs.getInt("id");
-		} finally {
-			stmt.close();
-		}
-	}
-
-	@Override
 	protected int getDataSetTypeId(final String dataSetTypeClassSimpleName)
 			throws SQLException {
 		Statement stmt = conn.createStatement();
@@ -1548,19 +1482,19 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 		}
 	}
 
-	@Override
-	protected int getDataSetId(final DataSet dataSet) throws SQLException {
-		Statement stmt = conn.createStatement();
-		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableDatasets()
-					+ "` WHERE `absPath`='" + dataSet.getAbsolutePath() + "';");
-			rs.first();
-			return rs.getInt("id");
-		} finally {
-			stmt.close();
-		}
-	}
+	// @Override
+	// protected int getDataSetId(final DataSet dataSet) throws SQLException {
+	// Statement stmt = conn.createStatement();
+	// try {
+	// ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
+	// + this.getDatabase() + "`.`" + this.getTableDatasets()
+	// + "` WHERE `absPath`='" + dataSet.getAbsolutePath() + "';");
+	// rs.first();
+	// return rs.getInt("id");
+	// } finally {
+	// stmt.close();
+	// }
+	// }
 
 	@Override
 	protected int getRepositoryTypeId(final String repositoryType)
@@ -1571,39 +1505,6 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					+ this.getDatabase() + "`.`"
 					+ this.getTableRepositoryTypes() + "` WHERE `name`='"
 					+ repositoryType + "';");
-			rs.first();
-			return rs.getInt("id");
-		} finally {
-			stmt.close();
-		}
-	}
-
-	@Override
-	protected int getGoldStandardConfigId(
-			final GoldStandardConfig goldStandardConfig) throws SQLException {
-		Statement stmt = conn.createStatement();
-		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
-					+ this.getTableGoldStandardConfigs()
-					+ "` WHERE `absPath`='"
-					+ goldStandardConfig.getAbsolutePath() + "';");
-			rs.first();
-			return rs.getInt("id");
-		} finally {
-			stmt.close();
-		}
-	}
-
-	@Override
-	protected int getGoldStandardId(final GoldStandard goldStandard)
-			throws SQLException {
-		Statement stmt = conn.createStatement();
-		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableGoldStandards()
-					+ "` WHERE `absPath`='" + goldStandard.getAbsolutePath()
-					+ "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1711,40 +1612,6 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 		}
 	}
 
-	@Override
-	protected int getProgramConfigId(final ProgramConfig programConfig)
-			throws SQLException {
-		Statement stmt = conn.createStatement();
-		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase()
-					+ "`.`"
-					+ this.getTableProgramConfigs()
-					+ "` WHERE `repository_id`='"
-					+ getRepositoryId(programConfig.getRepository()
-							.getBasePath()) + "' AND  `absPath`='"
-					+ programConfig.getAbsolutePath() + "';");
-			rs.first();
-			return rs.getInt("id");
-		} finally {
-			stmt.close();
-		}
-	}
-
-	@Override
-	protected int getProgramId(final String absPath) throws SQLException {
-		Statement stmt = conn.createStatement();
-		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTablePrograms()
-					+ "` WHERE `absPath`='" + absPath + "';");
-			rs.first();
-			return rs.getInt("id");
-		} finally {
-			stmt.close();
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -1784,91 +1651,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	}
 
 	@Override
-	protected int getProgramParameterId(
-			final ProgramParameter<?> programParameter) throws SQLException {
-		Statement stmt = conn.createStatement();
-		try {
-
-			int program_config_id = getProgramConfigId(programParameter
-					.getProgramConfig());
-
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase()
-					+ "`.`"
-					+ this.getTableProgramParameter()
-					+ "` WHERE `program_config_id`='"
-					+ program_config_id
-					+ "' AND `name`='"
-					+ programParameter.getName()
-					+ "' AND `repository_id`='"
-					+ getRepositoryId(programParameter.getRepository()
-							.getBasePath()) + "';");
-			rs.first();
-			return rs.getInt("id");
-		} catch (SQLException e) {
-			throw e;
-		} finally {
-			stmt.close();
-		}
-	}
-
-	@Override
-	protected int getRunAnalysisDataId(final int run_analysis_id)
-			throws SQLException {
-		Statement stmt = conn.createStatement();
-		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
-					+ this.getTableRunsAnalysisData()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `run_analysis_id`='" + run_analysis_id + "';");
-			rs.first();
-			return rs.getInt("id");
-		} finally {
-			stmt.close();
-		}
-	}
-
-	@Override
 	protected int getRunAnalysisId(final int run_id) throws SQLException {
 		Statement stmt = conn.createStatement();
 		try {
 			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
 					+ this.getDatabase() + "`.`" + this.getTableRunsAnalysis()
 					+ "` WHERE `run_id`='" + run_id + "';");
-			rs.first();
-			return rs.getInt("id");
-		} finally {
-			stmt.close();
-		}
-	}
-
-	@Override
-	protected int getRunAnalysisRunId(final int run_analysis_id)
-			throws SQLException {
-		Statement stmt = conn.createStatement();
-		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
-					+ this.getTableRunsAnalysisRun()
-					+ "` WHERE `run_analysis_id`='" + run_analysis_id + "';");
-			rs.first();
-			return rs.getInt("id");
-		} finally {
-			stmt.close();
-		}
-	}
-
-	@Override
-	protected int getRunAnalysisRunDataId(final int run_run_analysis_id)
-			throws SQLException {
-		Statement stmt = conn.createStatement();
-		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
-					+ this.getTableRunsAnalysisRunData()
-					+ "` WHERE `run_run_analysis_id`='" + run_run_analysis_id
-					+ "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1892,23 +1680,6 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	}
 
 	@Override
-	protected int getRunParameterOptimizationId(final int run_execution_id)
-			throws SQLException {
-		Statement stmt = conn.createStatement();
-		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
-					+ this.getTableRunsParameterOptimization()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `run_execution_id`='" + run_execution_id + "';");
-			rs.first();
-			return rs.getInt("id");
-		} finally {
-			stmt.close();
-		}
-	}
-
-	@Override
 	protected int getRunResultExecutionId(final int run_results_id)
 			throws SQLException {
 		Statement stmt = conn.createStatement();
@@ -1918,22 +1689,6 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					+ this.getTableRunResultsExecution()
 					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
 					+ "' AND `run_result_id`='" + run_results_id + "';");
-			rs.first();
-			return rs.getInt("id");
-		} finally {
-			stmt.close();
-		}
-	}
-
-	@Override
-	protected int getRunResultParameterOptimizationId(final String absPath)
-			throws SQLException {
-		Statement stmt = conn.createStatement();
-		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
-					+ this.getTableRunResultsParameterOptimization()
-					+ "` WHERE `absPath`='" + absPath + "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1998,22 +1753,23 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(program.Program)
 	 */
 	@Override
-	protected boolean register(Program object, final boolean updateOnly) {
+	protected int register(Program object, final boolean updateOnly) {
 		try {
 			// in case of a update, we do nothing
 			if (updateOnly)
-				return true;
-			insert(this.getTablePrograms(),
+				return this.getObjectId(object);
+			int id = insert(
+					this.getTablePrograms(),
 					new String[]{"repository_id", "absPath", "alias"},
 					new String[]{"" + this.updateRepositoryId(),
 							"" + object.getAbsolutePath(), object.getAlias()});
 
-			return true;
+			return id;
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2022,10 +1778,9 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(data.goldstandard.GoldStandardConfig)
 	 */
 	@Override
-	protected boolean register(GoldStandardConfig object,
-			final boolean updateOnly) {
+	protected int register(GoldStandardConfig object, final boolean updateOnly) {
 		try {
-			int goldstandard_id = getGoldStandardId(object.getGoldstandard());
+			int goldstandard_id = getObjectId(object.getGoldstandard());
 
 			String[] columns;
 			String[] values;
@@ -2039,7 +1794,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								".gsconfig", ""),
 						"" + goldstandard_id,
 						""
-								+ getGoldStandardConfigId(object
+								+ getObjectId(object
 										.getRepository()
 										.getParent()
 										.getStaticObjectWithName(
@@ -2054,18 +1809,20 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 						new File(object.getAbsolutePath()).getName().replace(
 								".gsconfig", ""), "" + goldstandard_id};
 			}
+			int rowId;
 			if (updateOnly) {
-				int rowId = getGoldStandardConfigId(object);
+				rowId = getObjectId(object);
 				update(this.getTableGoldStandardConfigs(), columns, values,
 						rowId);
 			} else
-				insert(this.getTableGoldStandardConfigs(), columns, values);
-			return true;
+				rowId = insert(this.getTableGoldStandardConfigs(), columns,
+						values);
+			return rowId;
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2074,7 +1831,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(data.goldstandard.GoldStandard)
 	 */
 	@Override
-	protected boolean register(GoldStandard object, final boolean updateOnly) {
+	protected int register(GoldStandard object, final boolean updateOnly) {
 		try {
 			String[] columns;
 			String[] values;
@@ -2085,7 +1842,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 						"" + this.updateRepositoryId(),
 						"" + object.getAbsolutePath(),
 						""
-								+ getGoldStandardId(object
+								+ getObjectId(object
 										.getRepository()
 										.getParent()
 										.getStaticObjectWithName(
@@ -2096,17 +1853,18 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				values = new String[]{"" + this.updateRepositoryId(),
 						"" + object.getAbsolutePath()};
 			}
+			int rowId;
 			if (updateOnly) {
-				int rowId = getGoldStandardId(object);
+				rowId = getObjectId(object);
 				update(this.getTableGoldStandards(), columns, values, rowId);
 			} else
-				insert(this.getTableGoldStandards(), columns, values);
-			return true;
+				rowId = insert(this.getTableGoldStandards(), columns, values);
+			return rowId;
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2205,7 +1963,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					Repository.class, boolean.class, long.class, File.class)
 					.newInstance(repository, false, System.currentTimeMillis(),
 							new File(object.getSimpleName()));
-			insert(this.getTableClusteringQualityMeasures(),
+			int id = insert(
+					this.getTableClusteringQualityMeasures(),
 					new String[]{"repository_id", "name", "minValue",
 							"maxValue", "requiresGoldStandard", "alias"},
 					new String[]{"" + this.updateRepositoryId(),
@@ -2214,6 +1973,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 							replaceInfinity(measure.getMaximum()),
 							"" + (measure.requiresGoldstandard() ? 1 : 0),
 							measure.getAlias()});
+			this.objectIds.put(measure, id);
 			return true;
 		} catch (SQLException e) {
 
@@ -2410,18 +2170,19 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(program.DoubleProgramParameter)
 	 */
 	@Override
-	protected boolean register(DoubleProgramParameter object) {
+	protected int register(DoubleProgramParameter object) {
 
 		ProgramConfig programConfig = object.getProgramConfig();
 		int program_config_id = -1;
 		try {
 
-			program_config_id = getProgramConfigId(programConfig);
+			program_config_id = getObjectId(programConfig);
 
 			int parameterTypeId = getProgramParameterTypeId(object.getClass()
 					.getSimpleName());
 
-			insert(this.getTableProgramParameter(),
+			int paramIdd = insert(
+					this.getTableProgramParameter(),
 					new String[]{"repository_id", "program_config_id", "name",
 							"description", "minValue", "maxValue", "def",
 							"program_parameter_type_id"},
@@ -2433,12 +2194,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 							"" + replaceNull(object.getMaxValue(), ""),
 							"" + replaceNull(object.getDefault(), ""),
 							"" + parameterTypeId});
-			return true;
+			return paramIdd;
 		} catch (SQLException e) {
 			System.out.println(program_config_id);
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2447,17 +2208,18 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(program.IntegerProgramParameter)
 	 */
 	@Override
-	protected boolean register(IntegerProgramParameter object) {
+	protected int register(IntegerProgramParameter object) {
 
 		ProgramConfig programConfig = object.getProgramConfig();
 
 		try {
-			int program_config_id = getProgramConfigId(programConfig);
+			int program_config_id = getObjectId(programConfig);
 
 			int parameterTypeId = getProgramParameterTypeId(object.getClass()
 					.getSimpleName());
 
-			insert(this.getTableProgramParameter(),
+			int paramId = insert(
+					this.getTableProgramParameter(),
 					new String[]{"repository_id", "program_config_id", "name",
 							"description", "minValue", "maxValue", "def",
 							"program_parameter_type_id"},
@@ -2469,12 +2231,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 							"" + replaceNull(object.getMaxValue(), ""),
 							"" + replaceNull(object.getDefault(), ""),
 							"" + parameterTypeId});
-			return true;
+			return paramId;
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2483,17 +2245,18 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(program.StringProgramParameter)
 	 */
 	@Override
-	protected boolean register(StringProgramParameter object) {
+	protected int register(StringProgramParameter object) {
 
 		ProgramConfig programConfig = object.getProgramConfig();
 
 		try {
-			int program_config_id = getProgramConfigId(programConfig);
+			int program_config_id = getObjectId(programConfig);
 
 			int parameterTypeId = getProgramParameterTypeId(object.getClass()
 					.getSimpleName());
 
-			insert(this.getTableProgramParameter(),
+			int paramId = insert(
+					this.getTableProgramParameter(),
 					new String[]{"repository_id", "program_config_id", "name",
 							"description", "minValue", "maxValue", "def",
 							"program_parameter_type_id"},
@@ -2505,12 +2268,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 							"" + replaceNull(object.getMaxValue(), ""),
 							"" + replaceNull(object.getDefault(), ""),
 							"" + parameterTypeId});
-			return true;
+			return paramId;
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2519,7 +2282,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(data.dataset.DataSet)
 	 */
 	@Override
-	protected boolean register(DataSet object, final boolean updateOnly) {
+	protected int register(DataSet object, final boolean updateOnly) {
 
 		try {
 			int dataset_format_id = getDataSetFormatId(object
@@ -2536,7 +2299,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 						"" + object.getAbsolutePath(),
 						"" + dataset_format_id,
 						""
-								+ getDataSetId(object
+								+ getObjectId(object
 										.getRepository()
 										.getParent()
 										.getStaticObjectWithName(DataSet.class,
@@ -2558,16 +2321,17 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								.getSimpleName())
 								+ "", object.getAlias()};
 			}
+			int rowId;
 			if (updateOnly) {
-				int rowId = getDataSetId(object);
+				rowId = getObjectId(object);
 				update(this.getTableDatasets(), columns, values, rowId);
 			} else
-				insert(this.getTableDatasets(), columns, values);
-			return true;
+				rowId = insert(this.getTableDatasets(), columns, values);
+			return rowId;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2576,17 +2340,16 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(data.DataConfig)
 	 */
 	@Override
-	protected boolean register(DataConfig object, final boolean updateOnly) {
+	protected int register(DataConfig object, final boolean updateOnly) {
 
 		try {
-			int dataset_config_id = getDataSetConfigId(object
-					.getDatasetConfig());
+			int dataset_config_id = getObjectId(object.getDatasetConfig());
 
 			String[] columns;
 			String[] values;
 			if (object.getRepository() instanceof RunResultRepository) {
 				if (object.hasGoldStandardConfig()) {
-					int goldstandard_config_id = getGoldStandardConfigId(object
+					int goldstandard_config_id = getObjectId(object
 							.getGoldstandardConfig());
 
 					columns = new String[]{"repository_id", "absPath", "name",
@@ -2600,7 +2363,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 							"" + dataset_config_id,
 							"" + goldstandard_config_id,
 							""
-									+ getDataConfigId(object
+									+ getObjectId(object
 											.getRepository()
 											.getParent()
 											.getStaticObjectWithName(
@@ -2617,7 +2380,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 									.replace(".dataconfig", ""),
 							"" + dataset_config_id,
 							""
-									+ getDataConfigId(object
+									+ getObjectId(object
 											.getRepository()
 											.getParent()
 											.getStaticObjectWithName(
@@ -2626,7 +2389,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				}
 			} else {
 				if (object.hasGoldStandardConfig()) {
-					int goldstandard_config_id = getGoldStandardConfigId(object
+					int goldstandard_config_id = getObjectId(object
 							.getGoldstandardConfig());
 
 					columns = new String[]{"repository_id", "absPath", "name",
@@ -2649,18 +2412,18 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 							"" + dataset_config_id};
 				}
 			}
-
+			int rowId;
 			if (updateOnly) {
-				int rowId = getDataConfigId(object);
+				rowId = getObjectId(object);
 				update(this.getTableDataConfigs(), columns, values, rowId);
 			} else
-				insert(this.getTableDataConfigs(), columns, values);
-			return true;
+				rowId = insert(this.getTableDataConfigs(), columns, values);
+			return rowId;
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2669,10 +2432,10 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(data.dataset.DataSetConfig)
 	 */
 	@Override
-	protected boolean register(DataSetConfig object, final boolean updateOnly) {
+	protected int register(DataSetConfig object, final boolean updateOnly) {
 
 		try {
-			int dataset_id = getDataSetId(object.getDataSet());
+			int dataset_id = getObjectId(object.getDataSet());
 
 			String[] columns;
 			String[] values;
@@ -2686,7 +2449,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								".dsconfig", ""),
 						"" + dataset_id,
 						""
-								+ getDataSetConfigId(object
+								+ getObjectId(object
 										.getRepository()
 										.getParent()
 										.getStaticObjectWithName(
@@ -2701,18 +2464,19 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 						new File(object.getAbsolutePath()).getName().replace(
 								".dsconfig", ""), "" + dataset_id};
 			}
+			int rowId;
 			if (updateOnly) {
-				int rowId = getDataSetConfigId(object);
+				rowId = getObjectId(object);
 				update(this.getTableDataSetConfigs(), columns, values, rowId);
 			} else
-				insert(this.getTableDataSetConfigs(), columns, values);
-			return true;
+				rowId = insert(this.getTableDataSetConfigs(), columns, values);
+			return rowId;
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
 
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2750,16 +2514,16 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#unregister(program.ProgramConfig)
 	 */
 	@Override
-	protected boolean unregister(ProgramConfig object) {
+	protected int unregister(ProgramConfig object) {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
 
-			int program_id = getProgramId(object.getProgram().getAbsolutePath());
+			int program_id = getObjectId(object.getProgram());
 
 			for (ProgramParameter<?> param : object.getOptimizableParams()) {
-				int program_config_id = getProgramConfigId(object);
-				int program_parameter_id = getProgramParameterId(param);
+				int program_config_id = getObjectId(object);
+				int program_parameter_id = getObjectId(param);
 
 				stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
 						+ this.getTableOptimizableProgramParameters()
@@ -2772,7 +2536,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					+ this.getTableProgramConfigs() + "` WHERE `program_id`='"
 					+ program_id + "' AND `name`='" + object.getName() + "';");
 			stmt.close();
-			return true;
+			return this.getObjectId(object);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -2782,7 +2546,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2791,7 +2555,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#unregister(program.Program)
 	 */
 	@Override
-	protected boolean unregister(Program object) {
+	protected int unregister(Program object) {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
@@ -2800,7 +2564,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					+ this.getTablePrograms() + "` WHERE `absPath`='"
 					+ object.getAbsolutePath() + "';");
 			stmt.close();
-			return true;
+			return this.getObjectId(object);
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -2811,7 +2575,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2821,7 +2585,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * utils.SQLCommunicator#unregister(data.goldstandard.GoldStandardConfig)
 	 */
 	@Override
-	protected boolean unregister(GoldStandardConfig object) {
+	protected int unregister(GoldStandardConfig object) {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
@@ -2830,7 +2594,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					+ this.getTableGoldStandardConfigs()
 					+ "` WHERE `absPath`='" + object.getAbsolutePath() + "';");
 			stmt.close();
-			return true;
+			return this.getObjectId(object);
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -2841,7 +2605,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2850,7 +2614,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#unregister(data.goldstandard.GoldStandard)
 	 */
 	@Override
-	protected boolean unregister(GoldStandard object) {
+	protected int unregister(GoldStandard object) {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
@@ -2859,7 +2623,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					+ this.getTableGoldStandards() + "` WHERE `absPath`='"
 					+ object.getAbsolutePath() + "';");
 			stmt.close();
-			return true;
+			return this.getObjectId(object);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -2869,7 +2633,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2907,7 +2671,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#unregister(data.dataset.DataSet)
 	 */
 	@Override
-	protected boolean unregister(DataSet object) {
+	protected int unregister(DataSet object) {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
@@ -2916,7 +2680,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					+ this.getTableDatasets() + "` WHERE `absPath`='"
 					+ object.getAbsolutePath() + "';");
 			stmt.close();
-			return true;
+			return this.getObjectId(object);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -2926,7 +2690,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2935,7 +2699,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#unregister(data.DataConfig)
 	 */
 	@Override
-	protected boolean unregister(DataConfig object) {
+	protected int unregister(DataConfig object) {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
@@ -2944,7 +2708,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					+ this.getTableDataConfigs() + "` WHERE `absPath`='"
 					+ object.getAbsolutePath() + "';");
 			stmt.close();
-			return true;
+			return this.getObjectId(object);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -2954,7 +2718,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -2963,7 +2727,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#unregister(data.dataset.DataSetConfig)
 	 */
 	@Override
-	protected boolean unregister(DataSetConfig object) {
+	protected int unregister(DataSetConfig object) {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
@@ -2972,7 +2736,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					+ this.getTableDataSetConfigs() + "` WHERE `absPath`='"
 					+ object.getAbsolutePath() + "';");
 			stmt.close();
-			return true;
+			return this.getObjectId(object);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -2982,7 +2746,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -3027,7 +2791,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(run.result.RunResult)
 	 */
 	@Override
-	public boolean register(RunResult object) {
+	public int register(RunResult object) {
 		String type = null;
 		String resultsPath = null;
 		if (object instanceof ClusteringRunResult) {
@@ -3112,7 +2876,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(run.result.ClusteringRunResult)
 	 */
 	@Override
-	public boolean register(ClusteringRunResult object) {
+	public int register(ClusteringRunResult object) {
 		this.register((ExecutionRunResult) object);
 
 		try {
@@ -3139,8 +2903,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								"" + object.getAbsolutePath()});
 			}
 
-			int dataConfigId = getDataConfigId(object.getDataConfig());
-			int programConfigId = getProgramConfigId(object.getProgramConfig());
+			int dataConfigId = getObjectId(object.getDataConfig());
+			int programConfigId = getObjectId(object.getProgramConfig());
 
 			final Pair<ParameterSet, Clustering> pair = object.getClustering();
 
@@ -3163,24 +2927,20 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								"program_config_id",
 								"clustering_quality_measure_id", "paramString",
 								"quality"},
-						new String[]{
-								"" + this.updateRepositoryId(),
-								"" + clusteringId,
-								"" + dataConfigId,
+						new String[]{"" + this.updateRepositoryId(),
+								"" + clusteringId, "" + dataConfigId,
 								"" + programConfigId,
-								""
-										+ getClusteringQualityMeasureId(measure
-												.toString()),
+								"" + getObjectId(measure),
 								paramString.toString(),
 								"" + qualities.get(measure).getValue()});
 			}
 
-			return true;
+			return clusteringId;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return false;
+		return -1;
 	}
 
 	/*
@@ -3190,7 +2950,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * utils.SQLCommunicator#register(run.result.ParameterOptimizationResult)
 	 */
 	@Override
-	public boolean register(ParameterOptimizationResult object) {
+	public int register(ParameterOptimizationResult object) {
 		this.register((ExecutionRunResult) object);
 
 		try {
@@ -3212,17 +2972,14 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 						new String[]{"repository_id",
 								"run_results_execution_id", "absPath",
 								"data_config_id", "program_config_id"},
-						new String[]{
-								"" + repository_id,
+						new String[]{"" + repository_id,
 								"" + run_results_execution_id,
 								"" + object.getAbsolutePath(),
-								getDataConfigId(object.getDataConfig()) + "",
-								getProgramConfigId(object.getProgramConfig())
-										+ ""});
+								getObjectId(object.getDataConfig()) + "",
+								getObjectId(object.getProgramConfig()) + ""});
 			} catch (SQLException e) {
 				// e.printStackTrace();
-				runResultParamOptId = getRunResultParameterOptimizationId(object
-						.getAbsolutePath());
+				runResultParamOptId = getObjectId(object);
 			}
 
 			/*
@@ -3233,13 +2990,18 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					this.getTableParameterSets(), new String[]{"repository_id",
 							"run_results_parameter_optimization_id"},
 					new String[]{repository_id + "", "" + runResultParamOptId});
+
+			int[] parameterIds = new int[object.getMethod()
+					.getOptimizationParameter().size()];
 			/*
 			 * Insert parameters
 			 */
+			int paramNo = 0;
 			for (ProgramParameter<?> optParam : object.getMethod()
 					.getOptimizationParameter()) {
-				int program_parameter_id = getProgramParameterId(optParam);
-				insert(this.getTableParameterSetParameters(),
+				int program_parameter_id = getObjectId(optParam);
+				parameterIds[paramNo] = insert(
+						this.getTableParameterSetParameters(),
 						new String[]{
 								"repository_id",
 								"run_results_parameter_optimization_id",
@@ -3251,6 +3013,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								""
 										+ run_results_parameter_optimizations_parameter_set_id,
 								"" + program_parameter_id});
+				paramNo++;
 			}
 
 			/*
@@ -3292,12 +3055,10 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 						// , "" + clustering_id
 						});
 
+				paramNo = 0;
 				for (ProgramParameter<?> optParam : object.getMethod()
 						.getOptimizationParameter()) {
-					int program_parameter_id = getProgramParameterId(optParam);
-					int run_results_parameter_optimizations_parameter_sets_parameter_id = getParameterSetParameterId(
-							run_results_parameter_optimizations_parameter_set_id,
-							program_parameter_id);
+					int run_results_parameter_optimizations_parameter_sets_parameter_id = parameterIds[paramNo];
 					insert(this.getTableParameterSetParameterValues(),
 							new String[]{
 									"repository_id",
@@ -3314,12 +3075,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 									""
 											+ pair.getFirst().get(
 													optParam.getName())});
+					paramNo++;
 				}
 
 				for (ClusteringQualityMeasure measure : pair.getSecond()
 						.keySet()) {
-					int clustering_quality_measure_id = getClusteringQualityMeasureId(measure
-							.toString());
+					int clustering_quality_measure_id = getObjectId(measure);
 					try {
 						if (pair.getSecond().get(measure).isTerminated()
 								&& !Double.isNaN(pair.getSecond().get(measure)
@@ -3348,12 +3109,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			}
 
 			conn.commit();
-			return true;
+			return runResultParamOptId;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return false;
+		return -1;
 	}
 
 	/*
@@ -3391,24 +3152,25 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * utils.SQLCommunicator#register(run.result.ParameterOptimizationResult)
 	 */
 	@Override
-	public boolean register(DataAnalysisRunResult object) {
+	public int register(DataAnalysisRunResult object) {
 		this.register((AnalysisRunResult) object);
 
 		try {
 			int run_results_id = getRunResultId(object.getIdentifier());
 			int run_results_analysis_id = getRunResultAnalysisId(run_results_id);
 
-			insert(this.getTableRunResultsDataAnalysis(), new String[]{
-					"repository_id", "run_results_analysis_id"}, new String[]{
-					"" + this.updateRepositoryId(),
-					"" + run_results_analysis_id});
+			int run_results_analysis_data = insert(
+					this.getTableRunResultsDataAnalysis(), new String[]{
+							"repository_id", "run_results_analysis_id"},
+					new String[]{"" + this.updateRepositoryId(),
+							"" + run_results_analysis_id});
 
-			return true;
+			return run_results_analysis_data;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return false;
+		return -1;
 	}
 
 	/*
@@ -3484,23 +3246,24 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * )
 	 */
 	@Override
-	public boolean register(RunAnalysisRunResult object) {
+	public int register(RunAnalysisRunResult object) {
 		this.register((AnalysisRunResult) object);
 
 		try {
 			int run_results_id = getRunResultId(object.getIdentifier());
 			int run_results_analysis_id = getRunResultAnalysisId(run_results_id);
-			insert(this.getTableRunResultsRunAnalysis(), new String[]{
-					"repository_id", "run_results_analysis_id"}, new String[]{
-					"" + this.updateRepositoryId(),
-					"" + run_results_analysis_id});
+			int run_results_analysis_run_id = insert(
+					this.getTableRunResultsRunAnalysis(), new String[]{
+							"repository_id", "run_results_analysis_id"},
+					new String[]{"" + this.updateRepositoryId(),
+							"" + run_results_analysis_id});
 
-			return true;
+			return run_results_analysis_run_id;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return false;
+		return -1;
 	}
 
 	/*
@@ -3510,7 +3273,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * RunDataAnalysisRunResult)
 	 */
 	@Override
-	public boolean register(RunDataAnalysisRunResult object) {
+	public int register(RunDataAnalysisRunResult object) {
 		this.register((AnalysisRunResult) object);
 
 		try {
@@ -3518,18 +3281,19 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			int run_results_analysis_id = getRunResultAnalysisId(run_results_id);
 			int runResultRunAnalysisId = getRunResultRunAnalysisId(run_results_analysis_id);
 
-			insert(this.getTableRunResultsRunDataAnalysis(), new String[]{
-					"repository_id", "run_results_analysis_id"},
+			int run_results_anlysis_run_data_id = insert(
+					this.getTableRunResultsRunDataAnalysis(), new String[]{
+							"repository_id", "run_results_analysis_id"},
 					new String[]{"" + this.updateRepositoryId(),
 							"" + runResultRunAnalysisId});
 
 			conn.commit();
-			return true;
+			return run_results_anlysis_run_data_id;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return false;
+		return -1;
 	}
 
 	/*
@@ -3594,14 +3358,14 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * ProgramParameter)
 	 */
 	@Override
-	protected boolean unregister(ProgramParameter<?> programParameter) {
+	protected int unregister(ProgramParameter<?> programParameter) {
 		try {
 			this.delete(this.getTableProgramParameter(),
-					this.getProgramParameterId(programParameter));
-			return true;
+					this.getObjectId(programParameter));
+			return this.getObjectId(programParameter);
 		} catch (SQLException e) {
 		}
-		return false;
+		return -1;
 	}
 
 	@Override
@@ -3637,7 +3401,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * @see framework.repository.SQLCommunicator#unregister(run.Run)
 	 */
 	@Override
-	protected boolean unregister(Run object) {
+	protected int unregister(Run object) {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
@@ -3646,7 +3410,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					+ this.getTableRuns() + "` WHERE `absPath`='"
 					+ object.getAbsolutePath() + "';");
 			stmt.close();
-			return true;
+			return this.getObjectId(object);
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -3657,7 +3421,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -3668,7 +3432,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * .run.result.ParameterOptimizationResult)
 	 */
 	@Override
-	protected boolean unregister(ParameterOptimizationResult object) {
+	protected int unregister(ParameterOptimizationResult object) {
 		Statement stmt = null;
 		try {
 			stmt = conn.createStatement();
@@ -3694,7 +3458,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			stmt.close();
 
 			this.unregister((RunResult) object);
-			return true;
+			return this.getObjectId(object);
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -3705,7 +3469,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
@@ -3715,7 +3479,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 * framework.repository.SQLCommunicator#unregister(run.result.RunResult)
 	 */
 	@Override
-	protected boolean unregister(RunResult object) {
+	protected int unregister(RunResult object) {
 
 		Statement stmt = null;
 		try {
@@ -3727,7 +3491,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					+ "' AND  `uniqueRunIdentifier`='" + object.getIdentifier()
 					+ "';");
 			stmt.close();
-			return true;
+			return this.getObjectId(object);
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -3738,7 +3502,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	/*
