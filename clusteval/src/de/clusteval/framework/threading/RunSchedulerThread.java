@@ -160,6 +160,26 @@ public class RunSchedulerThread extends ClustevalThread {
 			for (Run run : toRemove)
 				this.clientToRuns.get(clientId).remove(run);
 
+			toRemove = new HashSet<Run>();
+			
+			// add the running run resumes
+			if (this.clientToRunResumes.containsKey(clientId)) {
+				for (Run run : this.clientToRunResumes.get(clientId)) {
+					result.put(
+							run.getName(),
+							Pair.getPair(
+									Pair.getPair(run.getStatus(),
+											run.getPercentFinished()),
+									run.getOptimizationStatus()));
+					if (result.get(run.getName()).getFirst()
+							.equals(RUN_STATUS.FINISHED))
+						toRemove.add(run);
+				}
+			}
+
+			for (Run run : toRemove)
+				this.clientToRunResumes.get(clientId).remove(run);
+
 			return result;
 		}
 	}
