@@ -20,7 +20,10 @@ import java.util.Map;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
+import utils.Pair;
 import utils.ProgressPrinter;
+import de.clusteval.cluster.quality.ClusteringQualityMeasure;
+import de.clusteval.cluster.quality.ClusteringQualitySet;
 import de.clusteval.context.Context;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
@@ -29,6 +32,7 @@ import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.RepositoryRemoveEvent;
 import de.clusteval.framework.repository.RepositoryReplaceEvent;
 import de.clusteval.framework.threading.RunSchedulerThread;
+import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.result.ClusteringRunResult;
 import de.clusteval.run.result.NoRunResultFormatParserException;
@@ -785,47 +789,9 @@ public abstract class Run extends RepositoryObject {
 	/**
 	 * @return A map with the optimization status of this run.
 	 */
-	// TODO
-	// public Map<Pair<String, String>, Map<String, Pair<Map<String, Double>,
-	// Double>>> getOptimizationStatus() {
-	// Map<Pair<String, String>, Map<String, Pair<Map<String, Double>, Double>>>
-	// result = new HashMap<Pair<String, String>, Map<String, Pair<Map<String,
-	// Double>, Double>>>();
-	// try {
-	// for (RunRunnable thread : this.runnables) {
-	// Pair<String, String> configs = Pair.getPair(
-	// thread.programConfig.toString(),
-	// thread.dataConfig.toString());
-	// ClusteringQualitySet qualTmp = thread.optimizationMethod
-	// .getResult().getOptimalCriterionValue();
-	// Map<ClusteringQualityMeasure, ParameterSet> params =
-	// thread.optimizationMethod
-	// .getResult().getOptimalParameterSets();
-	// Map<ClusteringQualityMeasure, Map<String, Double>> paramTmp = new
-	// HashMap<ClusteringQualityMeasure, Map<String, Double>>();
-	// for (ClusteringQualityMeasure measure : params.keySet()) {
-	// ParameterSet pSet = params.get(measure);
-	// Map<String, Double> tmp = new HashMap<String, Double>();
-	// for (ProgramParameter p : pSet.keySet())
-	// tmp.put(p.toString(), pSet.get(p));
-	//
-	// paramTmp.put(measure, tmp);
-	// }
-	//
-	// Map<String, Pair<Map<String, Double>, Double>> qualities = new
-	// HashMap<String, Pair<Map<String, Double>, Double>>();
-	// for (ClusteringQualityMeasure measure : qualTmp.keySet())
-	// qualities.put(
-	// measure.getClass().getSimpleName(),
-	// Pair.getPair(paramTmp.get(measure),
-	// qualTmp.get(measure)));
-	//
-	// result.put(configs, qualities);
-	// }
-	// } catch (Exception e) {
-	// }
-	// return result;
-	// }
+	public Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>> getOptimizationStatus() {
+		return null;
+	}
 
 	/**
 	 * This method is invoked by {@link #perform(RunSchedulerThread)}, after

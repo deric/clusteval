@@ -226,6 +226,8 @@ public abstract class RunResult extends RepositoryObject {
 
 	protected Run run;
 
+	protected boolean changedSinceLastRegister;
+
 	/**
 	 * @param repository
 	 * @param changeDate
@@ -298,4 +300,20 @@ public abstract class RunResult extends RepositoryObject {
 	 */
 	public abstract void unloadFromMemory();
 
+	public boolean hasChangedSinceLastRegister() {
+		return this.changedSinceLastRegister;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.framework.repository.RepositoryObject#register()
+	 */
+	@Override
+	public boolean register() throws RegisterException {
+		boolean result = super.register();
+		if (result)
+			this.changedSinceLastRegister = false;
+		return result;
+	}
 }

@@ -122,53 +122,47 @@ public class RunSchedulerThread extends ClustevalThread {
 	 * @return
 	 */
 	// TODO
-	// public Map<String, Triple<Triple<RUN_STATUS, Float>, Map<Triple<String,
-	// String>, Map<String, Triple<Map<String, Double>, Double>>>>>
-	// getOptimizationRunStatusForClientId(
-	// String clientId) {
-	//
-	// synchronized (this.runQueue) {
-	// Map<String, Triple<Triple<RUN_STATUS, Float>, Map<Triple<String, String>,
-	// Map<String, Triple<Map<String, Double>, Double>>>>> result = new
-	// HashMap<String, Triple<Triple<RUN_STATUS, Float>, Map<Triple<String,
-	// String>,
-	// Map<String, Triple<Map<String, Double>, Double>>>>>();
-	//
-	// if (this.runQueue.containsKey(clientId)) {
-	// for (String runId : this.runQueue.get(clientId)) {
-	// result.put(
-	// runId,
-	// Triple.getTriple(
-	// Triple.getTriple(RUN_STATUS.SCHEDULED, 100f),
-	// (Map<Triple<String, String>, Map<String, Triple<Map<String, Double>,
-	// Double>>>) new HashMap<Triple<String, String>, Map<String,
-	// Triple<Map<String,
-	// Double>, Double>>>()));
-	// }
-	// }
-	//
-	// Collection<Run> toRemove = new HashSet<Run>();
-	//
-	// if (this.clientToRuns.containsKey(clientId)) {
-	// for (Run run : this.clientToRuns.get(clientId)) {
-	// result.put(
-	// run.getName(),
-	// Triple.getTriple(
-	// Triple.getTriple(run.getStatus(),
-	// run.getPercentFinished()),
-	// run.getOptimizationStatus()));
-	// if (result.get(run.getName()).getFirst()
-	// .equals(RUN_STATUS.FINISHED))
-	// toRemove.add(run);
-	// }
-	// }
-	//
-	// for (Run run : toRemove)
-	// this.clientToRuns.get(clientId).remove(run);
-	//
-	// return result;
-	// }
-	// }
+	public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>>> getOptimizationRunStatusForClientId(
+			String clientId) {
+
+		synchronized (this.runQueue) {
+			Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>>> result = new HashMap<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>>>();
+
+			// add the scheduled runs
+			for (Triple<String, String, Boolean> runTriple : this.runQueue) {
+				// check for correct client id
+				if (runTriple.getFirst().equals(clientId)) {
+					result.put(
+							runTriple.getSecond(),
+							Pair.getPair(
+									Pair.getPair(RUN_STATUS.SCHEDULED, 100f),
+									(Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>) new HashMap<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>()));
+				}
+			}
+
+			Collection<Run> toRemove = new HashSet<Run>();
+
+			// add the running runs
+			if (this.clientToRuns.containsKey(clientId)) {
+				for (Run run : this.clientToRuns.get(clientId)) {
+					result.put(
+							run.getName(),
+							Pair.getPair(
+									Pair.getPair(run.getStatus(),
+											run.getPercentFinished()),
+									run.getOptimizationStatus()));
+					if (result.get(run.getName()).getFirst()
+							.equals(RUN_STATUS.FINISHED))
+						toRemove.add(run);
+				}
+			}
+
+			for (Run run : toRemove)
+				this.clientToRuns.get(clientId).remove(run);
+
+			return result;
+		}
+	}
 
 	/**
 	 * This method is invoked by
@@ -189,7 +183,7 @@ public class RunSchedulerThread extends ClustevalThread {
 		/*
 		 * Check if this run exists
 		 */
-		if (this.repository.getStaticObjectWithName(Run.class,runId) == null) {
+		if (this.repository.getStaticObjectWithName(Run.class, runId) == null) {
 			this.log.warn("A job with id " + runId + " does not exist");
 			return false;
 		}
@@ -217,7 +211,8 @@ public class RunSchedulerThread extends ClustevalThread {
 			}
 		}
 
-		this.repository.getStaticObjectWithName(Run.class,runId).setStatus(RUN_STATUS.SCHEDULED);
+		this.repository.getStaticObjectWithName(Run.class, runId).setStatus(
+				RUN_STATUS.SCHEDULED);
 
 		this.log.info("Run scheduled..." + runId);
 		return this.runQueue.add(newTriple);
@@ -443,7 +438,8 @@ public class RunSchedulerThread extends ClustevalThread {
 
 				if (!isResume) {
 					// take a cloned copy of the run
-					run = this.repository.getStaticObjectWithName(Run.class,runId).clone();
+					run = this.repository.getStaticObjectWithName(Run.class,
+							runId).clone();
 
 					if (!this.clientToRuns.containsKey(clientId))
 						this.clientToRuns.put(clientId, new HashSet<Run>());
@@ -477,8 +473,9 @@ public class RunSchedulerThread extends ClustevalThread {
 								.parseFromRunResultFolder(
 										repository,
 										new File(FileUtils.buildPath(repository
-												.getBasePath(RunResult.class), runId)),
-										results, false, false, false).clone();
+												.getBasePath(RunResult.class),
+												runId)), results, false, false,
+										false).clone();
 						run.setStatus(RUN_STATUS.SCHEDULED);
 
 						if (!this.clientToRunResumes.containsKey(clientId))

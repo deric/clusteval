@@ -181,6 +181,7 @@ public class BackendClientCompleter implements Completer {
 		strings.add("resumeRun");
 		strings.add("terminateRun");
 		strings.add("getRunStatus");
+		strings.add("getOptRunStatus");
 		strings.add("shutdown");
 		strings.add("getRuns");
 		strings.add("getQueue");
@@ -213,7 +214,8 @@ public class BackendClientCompleter implements Completer {
 					candidates.addAll(runResumes);
 					return buffer.length();
 				} else if (buffer.equals("terminateRun ")
-						|| buffer.equals("getRunStatus ")) {
+						|| buffer.equals("getRunStatus ")
+						|| buffer.equals("getOptRunStatus ")) {
 					this.updateRunningRuns();
 					candidates.addAll(runningRuns);
 					return buffer.length();

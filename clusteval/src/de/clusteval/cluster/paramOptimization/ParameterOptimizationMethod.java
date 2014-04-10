@@ -614,6 +614,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 				// changed 16.09.2012 -> getParentFile
 				absResultPath, absResultPath.getParentFile().getParentFile()
 						.getName(), run, this);
+		this.result.register();
 		initParameterValues();
 		if (isResume) {
 			/*

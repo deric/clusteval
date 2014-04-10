@@ -17,6 +17,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -129,6 +130,13 @@ public class BackendClient extends Thread {
 		OptionBuilder.hasArg();
 		OptionBuilder.withDescription("Queries the status of a certain run");
 		option = OptionBuilder.create("getRunStatus");
+		clientCLIOptions.addOption(option);
+
+		OptionBuilder.withArgName("runName");
+		OptionBuilder.hasArg();
+		OptionBuilder
+				.withDescription("Queries the optimization status of a certain run");
+		option = OptionBuilder.create("getOptRunStatus");
 		clientCLIOptions.addOption(option);
 
 		OptionBuilder
@@ -510,37 +518,91 @@ public class BackendClient extends Thread {
 				}
 			}
 
-//			if (checkForOptRunStatus) {
-//				try {
-//
-//					String runName = params.getOptionValue("getOptRunStatus");
-//
-//					Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, Double>, Double>>>>> optStatus = null;
-//					if ((optStatus = this.getMyOptimizationRunStatus()) != null
-//							&& optStatus.size() > 0) {
-//						RUN_STATUS newStatus;
-//						Float percent;
-//
-//						if (!optStatus.containsKey(runName)) {
-//							log.info("No run with name " + runName
-//									+ " running.");
-//							return;
-//						}
-//						newStatus = optStatus.get(runName).getFirst()
-//								.getFirst();
-//						percent = optStatus.get(runName).getFirst().getSecond();
-//
-//						System.out.println();
-//						System.out.print("\r" + newStatus + " " + percent
-//								+ "%\t" + optStatus.get(runName).getSecond());
-//					}
-//					System.out.println();
-//				} catch (ConnectException e2) {
-//					this.log.warn("The server terminated the connection...");
-//				} catch (RemoteException e2) {
-//					e2.printStackTrace();
-//				}
-//			}
+			if (checkForOptRunStatus) {
+				try {
+
+					String runName = params.getOptionValue("getOptRunStatus");
+
+					// runId ->
+					// ((Status,%),(ProgramConfig,DataConfig)->(QualityMeasure->(ParameterSet->Quality)))
+					Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>>> optStatus = null;
+					if ((optStatus = this.getMyOptimizationRunStatus()) != null
+							&& optStatus.size() > 0) {
+						RUN_STATUS newStatus;
+						Float percent;
+
+						if (!optStatus.containsKey(runName)) {
+							log.info("No run with name " + runName
+									+ " running.");
+							return;
+						}
+						newStatus = optStatus.get(runName).getFirst()
+								.getFirst();
+						percent = optStatus.get(runName).getFirst().getSecond();
+						System.out.println();
+						System.out.println("\r Status:\t" + newStatus + " "
+								+ percent + "%");
+						Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>> qualities = optStatus
+								.get(runName).getSecond();
+
+						// print the quality measures; just take them from the
+						// first pair of programConfig and dataConfig (runnable)
+						String[] qualityMeasures = qualities.values()
+								.iterator().next().keySet()
+								.toArray(new String[0]);
+						Arrays.sort(qualityMeasures);
+						int pos = 0;
+						while (true) {
+							boolean foundMeasure = false;
+							for (String measure : qualityMeasures) {
+								if (pos < measure.length()) {
+									System.out.printf("\t%s",
+											measure.charAt(pos));
+									foundMeasure = true;
+								} else
+									System.out.print("\t");
+							}
+							System.out.println();
+							if (!foundMeasure)
+								break;
+							pos++;
+						}
+
+						for (Pair<String, String> pcDcPair : qualities.keySet()) {
+							System.out.printf("%s:\n", pcDcPair);
+							Map<String, Pair<Map<String, String>, String>> qualitiesPcDc = qualities
+									.get(pcDcPair);
+							for (String measure : qualityMeasures) {
+								if (!qualitiesPcDc.containsKey(measure)) {
+									System.out.print("\t");
+									continue;
+								}
+								String quality = qualitiesPcDc.get(measure)
+										.getSecond();
+								if (quality.equals("NT"))
+									System.out.print("\tNT");
+								else {
+									double qualityDouble = Double
+											.valueOf(quality);
+									if (Double.isInfinite(qualityDouble))
+										System.out.printf("\t%s%s",
+												qualityDouble < 0 ? "-" : "",
+												"Inf");
+									else
+										System.out.printf("\t%.4f",
+												qualityDouble);
+								}
+							}
+							System.out.println();
+						}
+					}
+					System.out.println();
+				} catch (ConnectException e2) {
+					this.log.warn("The server terminated the connection...");
+				} catch (RemoteException e2) {
+					e2.printStackTrace();
+				}
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -614,10 +676,10 @@ public class BackendClient extends Thread {
 		return server.getRunResumes();
 	}
 
-//	public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, Double>, Double>>>>> getMyOptimizationRunStatus()
-//			throws RemoteException {
-//		return server.getOptimizationRunStatusForClientId(this.clientId);
-//	}
+	public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>>> getMyOptimizationRunStatus()
+			throws RemoteException {
+		return server.getOptimizationRunStatusForClientId(this.clientId);
+	}
 
 	/**
 	 * @return The id of this client.

@@ -516,6 +516,9 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 */
 	public ClusteringQualitySet put(long iterationNumber, ParameterSet last,
 			ClusteringQualitySet qualities, Clustering clustering) {
+		// we want that this result is parsed again
+		changedSinceLastRegister = true;
+
 		ClusteringQualitySet result = this.parameterSetToQualities.put(last,
 				qualities);
 

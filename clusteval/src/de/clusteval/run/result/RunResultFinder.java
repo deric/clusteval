@@ -77,8 +77,12 @@ public class RunResultFinder extends FileFinder<RunResult> {
 	// Fixed 17.03.2014: changed !isRunning(file.getName()) to
 	// !isRunning(file.getParentFile().getParentFile().getName())
 	protected boolean checkFile(File file) {
-		return (repository.getRegisteredRunResult(file.getName()) == null)
-				&& !isRunning(file.getParentFile().getParentFile().getName());
+		String uniqueRunId;
+		File f = file;
+		while (!f.getParentFile().getName().equals("results"))
+			f = f.getParentFile();
+		uniqueRunId = f.getName();
+		return ((repository.getRegisteredRunResult(uniqueRunId) == null) && !isRunning(uniqueRunId));
 	}
 
 	protected boolean isRunning(final String uniqueRunIdentifier) {

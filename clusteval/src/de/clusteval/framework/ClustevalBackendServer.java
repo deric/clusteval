@@ -407,7 +407,7 @@ public class ClustevalBackendServer implements IBackendServer {
 			if (cmd.hasOption("checkForRunResults"))
 				config.setCheckForRunResults(Boolean.parseBoolean(cmd
 						.getOptionValue("checkForRunResults")));
-			
+
 			if (cmd.hasOption("noDatabase"))
 				config.setNoDatabase(true);
 
@@ -665,14 +665,12 @@ public class ClustevalBackendServer implements IBackendServer {
 	}
 
 	// TODO
-	// @Override
-	// public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String,
-	// String>, Map<String, Pair<Map<String, Double>, Double>>>>>
-	// getOptimizationRunStatusForClientId(
-	// String clientId) throws RemoteException {
-	// return this.repository.getSupervisorThread().getRunScheduler()
-	// .getOptimizationRunStatusForClientId(clientId);
-	// }
+	@Override
+	public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>>> getOptimizationRunStatusForClientId(
+			String clientId) throws RemoteException {
+		return this.repository.getSupervisorThread().getRunScheduler()
+				.getOptimizationRunStatusForClientId(clientId);
+	}
 
 	/*
 	 * (non-Javadoc)
