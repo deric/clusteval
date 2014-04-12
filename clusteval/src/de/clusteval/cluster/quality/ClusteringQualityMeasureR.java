@@ -99,8 +99,13 @@ public abstract class ClusteringQualityMeasureR
 			} catch (REngineException e) {
 				this.log.warn("R-framework (" + this.getClass().getSimpleName()
 						+ "): " + rEngine.getLastError());
-				return ClusteringQualityMeasureValue.getForDouble(this
-						.getMinimum());
+				ClusteringQualityMeasureValue min = ClusteringQualityMeasureValue
+						.getForDouble(this.getMinimum());
+				ClusteringQualityMeasureValue max = ClusteringQualityMeasureValue
+						.getForDouble(this.getMaximum());
+				if (this.isBetterThan(max, min))
+					return min;
+				return max;
 			} finally {
 				rEngine.clear();
 			}

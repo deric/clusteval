@@ -19,7 +19,6 @@ import utils.Pair;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
-import de.clusteval.cluster.quality.ClusteringQualityMeasureValue;
 import de.clusteval.cluster.quality.ClusteringQualitySet;
 import de.clusteval.context.Context;
 import de.clusteval.data.DataConfig;
@@ -33,6 +32,7 @@ import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
+import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.runnable.ExecutionRunRunnable;
 import de.clusteval.run.runnable.ParameterOptimizationRunRunnable;
 import de.clusteval.run.runnable.RunRunnable;
@@ -313,11 +313,6 @@ public class ParameterOptimizationRun extends ExecutionRun {
 		return this.optimizationMethods;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.clusteval.run.Run#getOptimizationStatus()
-	 */
 	@Override
 	public Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>> getOptimizationStatus() {
 		Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>> result = new HashMap<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>();
@@ -334,7 +329,7 @@ public class ParameterOptimizationRun extends ExecutionRun {
 				Map<ClusteringQualityMeasure, ParameterSet> bestParams = thread
 						.getOptimizationMethod().getResult()
 						.getOptimalParameterSets();
-
+	
 				// measure -> best parameters
 				Map<ClusteringQualityMeasure, Map<String, String>> bestParamsMap = new HashMap<ClusteringQualityMeasure, Map<String, String>>();
 				for (ClusteringQualityMeasure measure : bestParams.keySet()) {
@@ -342,17 +337,17 @@ public class ParameterOptimizationRun extends ExecutionRun {
 					Map<String, String> tmp = new HashMap<String, String>();
 					for (String p : pSet.keySet())
 						tmp.put(p.toString(), pSet.get(p));
-
+	
 					bestParamsMap.put(measure, tmp);
 				}
-
+	
 				// measure -> best qualities
 				Map<String, Pair<Map<String, String>, String>> qualities = new HashMap<String, Pair<Map<String, String>, String>>();
 				for (ClusteringQualityMeasure measure : bestQuals.keySet())
 					qualities.put(measure.getAlias(), Pair.getPair(
 							bestParamsMap.get(measure), bestQuals.get(measure)
 									.toString()));
-
+	
 				result.put(configs, qualities);
 			}
 		} catch (Exception e) {
