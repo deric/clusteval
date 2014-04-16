@@ -1791,7 +1791,8 @@ public class Repository {
 	 * @return The MyRengine object corresponding to the current thread.
 	 * @throws RserveException
 	 */
-	public MyRengine getRengineForCurrentThread() throws RserveException {
+	public synchronized MyRengine getRengineForCurrentThread()
+			throws RserveException {
 		if (!this.rEngines.containsKey(Thread.currentThread()))
 			this.rEngines.put(Thread.currentThread(), new MyRengine(""));
 		return this.rEngines.get(Thread.currentThread());
