@@ -59,6 +59,7 @@ import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.RProcess;
 import de.clusteval.framework.repository.RegisterException;
+import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
@@ -752,9 +753,6 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		if (checkForInterrupted())
 			return;
 
-		final RunSchedulerThread runScheduler = this.getRun().getRepository()
-				.getSupervisorThread().getRunScheduler();
-
 		// only create new iteration runnables, if none of the old iteration
 		// runnables threw exceptions
 		for (IterationRunnable prevItRunnable : this.iterationRunnables)
@@ -817,7 +815,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 						 */
 						if (checkForInterrupted())
 							return;
-						
+
 						iterationWrapper
 								.setConvertedClusteringRunResult(convertResult(
 										iterationWrapper
@@ -903,6 +901,14 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		};
 
 		this.iterationRunnables.add(iterationRunnable);
+
+		final RunSchedulerThread runScheduler;
+		if (this.getRun().getRepository() instanceof RunResultRepository)
+			runScheduler = this.getRun().getRepository().getParent()
+					.getSupervisorThread().getRunScheduler();
+		else
+			runScheduler = this.getRun().getRepository().getSupervisorThread()
+					.getRunScheduler();
 		runScheduler.registerIterationRunnable(iterationRunnable);
 	}
 
