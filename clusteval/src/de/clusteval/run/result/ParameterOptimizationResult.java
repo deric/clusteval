@@ -623,6 +623,11 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 		return this.iterationNumbers;
 	}
 
+	public long getIterationNumberForParameterSet(
+			final ParameterSet parameterSet) {
+		return this.parameterSetToIterationNumber.get(parameterSet);
+	}
+
 	/**
 	 * @return A list of pairs containing all parameter sets evaluated during
 	 *         the optimization process together with the optimal resulting

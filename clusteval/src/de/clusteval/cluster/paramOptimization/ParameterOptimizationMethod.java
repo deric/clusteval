@@ -311,15 +311,19 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 *            The clustering qualities for the clustering of the last
 	 *            iteration.
 	 */
-	public void giveQualityFeedback(final ClusteringQualitySet qualities) {
-		ParameterSet last = result.getParameterSets().get(
-				result.getParameterSets().size() - 1);
-		this.result.put(this.getCurrentCount() + 1, last, qualities);
+	public synchronized void giveQualityFeedback(
+			final ParameterSet parameterSet,
+			final ClusteringQualitySet qualities) {
+		// ParameterSet last = result.getParameterSets().get(
+		// result.getParameterSets().size() - 1);
+		this.result.put(
+				this.result.getIterationNumberForParameterSet(parameterSet),
+				parameterSet, qualities);
 	}
 
 	protected ParameterSet getNextParameterSet()
 			throws InternalAttributeException, RegisterException,
-			NoParameterSetFoundException {
+			NoParameterSetFoundException, InterruptedException {
 		return this.getNextParameterSet(null);
 	}
 
@@ -338,6 +342,16 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 * This is a helper-method for {@link #next()} and
 	 * {@link #next(ParameterSet)}.
 	 * 
+	 * <p>
+	 * It might happen that this method puts the calling thread to sleep, in
+	 * case the next parameter set requires older parameter sets to finish
+	 * first.
+	 * 
+	 * <p>
+	 * It might happen that this method puts the calling thread to sleep, in
+	 * case the next parameter set requires older parameter sets to finish
+	 * first.
+	 * 
 	 * @param forcedParameterSet
 	 *            If this parameter is set != null, this parameter set is forced
 	 *            to be evaluated in the next iteration.
@@ -347,10 +361,12 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 * @throws NoParameterSetFoundException
 	 *             This exception is thrown, if no parameter set was found that
 	 *             was not already evaluated before.
+	 * @throws InterruptedException
 	 */
 	protected abstract ParameterSet getNextParameterSet(
 			ParameterSet forcedParameterSet) throws InternalAttributeException,
-			RegisterException, NoParameterSetFoundException;
+			RegisterException, NoParameterSetFoundException,
+			InterruptedException;
 
 	/**
 	 * @return True, if there are more iterations together with parameter sets
@@ -367,15 +383,22 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 * This is a convenience method of {@link #next(ParameterSet, long)},
 	 * without enforcement of a passed parameter set.
 	 * 
+	 * <p>
+	 * It might happen that this method puts the calling thread to sleep, in
+	 * case the next parameter set requires older parameter sets to finish
+	 * first.
+	 * 
 	 * @return The parameter set that is being evaluated in the next iteration.
 	 * @throws InternalAttributeException
 	 * @throws RegisterException
 	 * @throws NoParameterSetFoundException
 	 *             This exception is thrown, if no parameter set was found that
 	 *             was not already evaluated before.
+	 * @throws InterruptedException
 	 */
 	public final ParameterSet next() throws InternalAttributeException,
-			RegisterException, NoParameterSetFoundException {
+			RegisterException, NoParameterSetFoundException,
+			InterruptedException {
 		return this.next(null, -1);
 	}
 
@@ -396,6 +419,11 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 * {@link #giveQualityFeedback(ClusteringQualitySet)} being invoked in
 	 * between, a {@link IllegalStateException} is thrown.
 	 * 
+	 * <p>
+	 * It might happen that this method puts the calling thread to sleep, in
+	 * case the next parameter set requires older parameter sets to finish
+	 * first.
+	 * 
 	 * @param forcedParameterSet
 	 *            If this parameter is set != null, this parameter set is forced
 	 *            to be evaluated in the next iteration.
@@ -408,19 +436,23 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 * @throws NoParameterSetFoundException
 	 *             This exception is thrown, if no parameter set was found that
 	 *             was not already evaluated before.
+	 * @throws InterruptedException
 	 */
 	public final ParameterSet next(final ParameterSet forcedParameterSet,
 			final long iterationNumber) throws InternalAttributeException,
-			RegisterException, NoParameterSetFoundException {
+			RegisterException, NoParameterSetFoundException,
+			InterruptedException {
 		if (this.result == null)
 			throw new IllegalStateException("reset(File) has not been called");
-		if (this.result.getParameterSets().size() > 0) {
-			ParameterSet last = result.getParameterSets().get(
-					result.getParameterSets().size() - 1);
-			if (result.get(last) == null)
-				throw new IllegalStateException(
-						"Quality for last parameter set was not set");
-		}
+		// if (this.result.getParameterSets().size() > 0) {
+		// ParameterSet last = result.getParameterSets().get(
+		// result.getParameterSets().size() - 1);
+		// // TODO: removed 16.04.2014, because we now allow to start several
+		// iterations in parallel
+		// // if (result.get(last) == null)
+		// // throw new IllegalStateException(
+		// // "Quality for last parameter set was not set");
+		// }
 
 		ParameterSet result = null;
 
@@ -436,8 +468,8 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 						.get(0);
 				ClusteringQualitySet qualitySet = this.getResult()
 						.get(paramSet);
-				this.next(paramSet, this.currentCount + 1);
-				this.giveQualityFeedback(qualitySet);
+				ParameterSet ps = this.next(paramSet, this.currentCount + 1);
+				this.giveQualityFeedback(ps, qualitySet);
 			}
 
 			result = getNextParameterSet(forcedParameterSet);
@@ -452,7 +484,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 				// that was already assessed. then we give the same quality
 				// feedback as last time and look for the next parameter set
 				if (result != null) {
-					this.giveQualityFeedback(this.result.get(result));
+					this.giveQualityFeedback(result, this.result.get(result));
 					this.log.info(run.toString() + " (" + programConfig + ","
 							+ dataConfig + ") "
 							+ "Skipping calculation of parameter set " + result
@@ -605,10 +637,11 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 * @throws InternalAttributeException
 	 * @throws RegisterException
 	 * @throws RunResultParseException
+	 * @throws InterruptedException
 	 */
 	public void reset(final File absResultPath)
 			throws ParameterOptimizationException, InternalAttributeException,
-			RegisterException, RunResultParseException {
+			RegisterException, RunResultParseException, InterruptedException {
 		this.result = new ParameterOptimizationResult(
 				this.dataConfig.getRepository(), System.currentTimeMillis(),
 				// changed 16.09.2012 -> getParentFile
@@ -637,7 +670,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 				} catch (NoParameterSetFoundException e) {
 					// doesn't occur
 				}
-				this.giveQualityFeedback(oldResults.get(paramSet));
+				this.giveQualityFeedback(paramSet, oldResults.get(paramSet));
 			}
 			oldResults.unloadFromMemory();
 			isResume = false;

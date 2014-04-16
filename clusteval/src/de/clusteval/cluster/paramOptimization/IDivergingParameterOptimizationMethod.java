@@ -14,15 +14,17 @@
 package de.clusteval.cluster.paramOptimization;
 
 import de.clusteval.cluster.quality.ClusteringQualitySet;
-
+import de.clusteval.program.ParameterSet;
 
 /**
  * @author Christian Wiwie
- *
+ * 
  */
 public interface IDivergingParameterOptimizationMethod {
+
 	/**
 	 * @param minimalQualities
 	 */
-	public void giveFeedbackNotTerminated(ClusteringQualitySet minimalQualities);
+	public void giveFeedbackNotTerminated(final ParameterSet parameterSet,
+			ClusteringQualitySet minimalQualities);
 }

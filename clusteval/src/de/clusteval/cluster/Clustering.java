@@ -516,9 +516,9 @@ public class Clustering implements Iterable<Cluster> {
 
 				quality = qualityMeasure.getQualityOfClustering(cl,
 						goldStandard, dataConfig);
-				if (dataConfig.hasGoldStandardConfig())
-					dataConfig.getGoldstandardConfig().getGoldstandard()
-							.unloadFromMemory();
+//				if (dataConfig.hasGoldStandardConfig())
+//					dataConfig.getGoldstandardConfig().getGoldstandard()
+//							.unloadFromMemory();
 				// we rethrow some exceptions, since they mean, that we
 				// cannot calculate ANY quality measures for this data
 			} catch (UnknownGoldStandardFormatException e) {

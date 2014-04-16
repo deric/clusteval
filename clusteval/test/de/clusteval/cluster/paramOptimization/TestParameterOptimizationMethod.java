@@ -198,7 +198,7 @@ public class TestParameterOptimizationMethod extends AbstractClustEvalTest {
 			ParameterSet paramSet = method.next();
 			System.out.println(paramSet);
 			Assert.assertEquals(itParams.next(), paramSet);
-			method.giveQualityFeedback(it.next());
+			method.giveQualityFeedback(paramSet, it.next());
 		}
 	}
 
@@ -318,7 +318,7 @@ public class TestParameterOptimizationMethod extends AbstractClustEvalTest {
 			ParameterSet paramSet = method.next();
 			System.out.println(paramSet);
 			Assert.assertEquals(itParams.next(), paramSet);
-			method.giveQualityFeedback(it.next());
+			method.giveQualityFeedback(paramSet, it.next());
 			Assert.assertEquals(itItNum.next().intValue(), method.currentCount);
 		}
 	}
@@ -532,7 +532,7 @@ public class TestParameterOptimizationMethod extends AbstractClustEvalTest {
 			ParameterSet paramSet = method.next();
 			System.out.println(paramSet);
 			Assert.assertEquals(itParams.next(), paramSet);
-			method.giveQualityFeedback(it.next());
+			method.giveQualityFeedback(paramSet, it.next());
 			Assert.assertEquals(itItNum.next().intValue(), method.currentCount);
 		}
 	}

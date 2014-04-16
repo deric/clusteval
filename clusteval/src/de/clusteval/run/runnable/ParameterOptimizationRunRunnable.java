@@ -16,6 +16,7 @@ package de.clusteval.run.runnable;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import utils.ProgressPrinter;
 import utils.Triple;
@@ -108,7 +109,8 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	 * This method replaces the optimization parameters with the values given in
 	 * the run configuration.
 	 */
-	protected String[] parseOptimizationParameters(String[] invocation) {
+	protected String[] parseOptimizationParameters(String[] invocation,
+			final Map<String, String> effectiveParams) {
 		final String[] parsed = invocation.clone();
 		try {
 			// 15.04.2013: changed invocation of next() to beginning of
@@ -140,11 +142,13 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	 * .Map, java.lang.String, java.util.Map)
 	 */
 	@Override
-	protected String[] replaceRunParameters(String[] invocation)
+	protected String[] replaceRunParameters(String[] invocation,
+			final Map<String, String> effectiveParams)
 			throws InternalAttributeException, RegisterException,
 			NoParameterSetFoundException {
-		invocation = this.parseOptimizationParameters(invocation);
-		return super.replaceRunParameters(invocation);
+		invocation = this.parseOptimizationParameters(invocation,
+				effectiveParams);
+		return super.replaceRunParameters(invocation, effectiveParams);
 	}
 
 	/**
@@ -166,7 +170,8 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			UnknownDataSetFormatException, IOException,
 			InvalidDataSetFormatVersionException, RegisterException,
 			InternalAttributeException, IncompatibleDataSetFormatException,
-			UnknownGoldStandardFormatException, IncompleteGoldStandardException {
+			UnknownGoldStandardFormatException,
+			IncompleteGoldStandardException, InterruptedException {
 		super.beforeRun();
 		if (!new File(completeQualityOutput).exists() || !isResume)
 			writeHeaderIntoCompleteFile(completeQualityOutput);
@@ -233,12 +238,14 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	@Override
 	protected void doRun() throws InternalAttributeException,
 			RegisterException, IOException, NoRunResultFormatParserException,
-			RNotAvailableException, RLibraryNotLoadedException {
+			RNotAvailableException, RLibraryNotLoadedException,
+			InterruptedException {
 		try {
 			while (this.optimizationMethod.hasNext()) {
 				if (checkForInterrupted())
 					return;
-				this.doRunIteration();
+				final IterationWrapper iterationWrapper = new IterationWrapper();
+				this.doRunIteration(iterationWrapper);
 			}
 		} catch (NoParameterSetFoundException e) {
 			// this exception just indicates, that no parameter set has been
@@ -253,14 +260,16 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	 * @see run.runnable.ExecutionRunRunnable#doRunIteration()
 	 */
 	@Override
-	protected void doRunIteration() throws InternalAttributeException,
-			RegisterException, IOException, NoRunResultFormatParserException,
-			NoParameterSetFoundException, RNotAvailableException,
-			RLibraryNotLoadedException {
+	protected void doRunIteration(final IterationWrapper iterationWrapper)
+			throws InternalAttributeException, RegisterException, IOException,
+			NoRunResultFormatParserException, NoParameterSetFoundException,
+			RNotAvailableException, RLibraryNotLoadedException,
+			InterruptedException {
 		try {
 			optimizationMethod.next();
-			this.optId = this.optimizationMethod.getCurrentCount();
-			super.doRunIteration();
+			iterationWrapper
+					.setOptId(this.optimizationMethod.getCurrentCount());
+			super.doRunIteration(iterationWrapper);
 		} finally {
 			// changed 25.01.2013
 			int iterationPercent = (int) (this.optimizationMethod
@@ -277,7 +286,14 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	 * @see run.runnable.ExecutionRunRunnable#handleMissingRunResult()
 	 */
 	@Override
-	protected void handleMissingRunResult() {
+	protected void handleMissingRunResult(
+			final IterationWrapper iterationWrapper) {
+
+		final Map<String, String> effectiveParams = iterationWrapper
+				.getEffectiveParams();
+		final Map<String, String> internalParams = iterationWrapper
+				.getInternalParams();
+		final int optId = iterationWrapper.getOptId();
 		if (this.optimizationMethod instanceof IDivergingParameterOptimizationMethod) {
 			this.log.info(this.getRun()
 					+ " ("
@@ -301,7 +317,7 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 		 * Write the minimal quality values into the complete results file
 		 */
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.optId);
+		sb.append(optId);
 		sb.append("\t");
 		for (int p = 0; p < programConfig.getOptimizableParams().size(); p++) {
 			ProgramParameter<?> param = programConfig.getOptimizableParams()
@@ -325,11 +341,17 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 				.getQualityMeasures())
 			minimalQualities.put(measure,
 					ClusteringQualityMeasureValue.getForNotTerminated());
+
+		ParameterSet ps = new ParameterSet();
+		for (String param : effectiveParams.keySet())
+			if (!internalParams.containsKey(param))
+				ps.put(param, effectiveParams.get(param));
+
 		if (this.optimizationMethod instanceof IDivergingParameterOptimizationMethod) {
 			((IDivergingParameterOptimizationMethod) this.optimizationMethod)
-					.giveFeedbackNotTerminated(minimalQualities);
+					.giveFeedbackNotTerminated(ps, minimalQualities);
 		} else {
-			this.optimizationMethod.giveQualityFeedback(minimalQualities);
+			this.optimizationMethod.giveQualityFeedback(ps, minimalQualities);
 		}
 	}
 
@@ -344,8 +366,8 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	protected void writeQualitiesToFile(
 			List<Triple<ParameterSet, ClusteringQualitySet, Long>> qualities) {
 		// in this case, the list contains only one element
-		this.optimizationMethod.giveQualityFeedback(qualities.get(0)
-				.getSecond());
+		this.optimizationMethod.giveQualityFeedback(
+				qualities.get(0).getFirst(), qualities.get(0).getSecond());
 		super.writeQualitiesToFile(qualities);
 	}
 }

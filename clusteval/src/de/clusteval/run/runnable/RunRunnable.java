@@ -202,6 +202,7 @@ public abstract class RunRunnable implements Runnable {
 	 * @throws IncompatibleDataSetFormatException
 	 * @throws UnknownGoldStandardFormatException
 	 * @throws IncompleteGoldStandardException
+	 * @throws InterruptedException
 	 */
 
 	@SuppressWarnings("unused")
@@ -209,7 +210,7 @@ public abstract class RunRunnable implements Runnable {
 			InvalidDataSetFormatVersionException, IllegalArgumentException,
 			IOException, RegisterException, InternalAttributeException,
 			IncompatibleDataSetFormatException,
-			UnknownGoldStandardFormatException, IncompleteGoldStandardException {
+			UnknownGoldStandardFormatException, IncompleteGoldStandardException, InterruptedException {
 
 	}
 
@@ -227,11 +228,12 @@ public abstract class RunRunnable implements Runnable {
 	 * @throws REngineException
 	 * @throws RLibraryNotLoadedException
 	 * @throws RNotAvailableException
+	 * @throws InterruptedException
 	 */
 	protected abstract void doRun() throws InternalAttributeException,
 			RegisterException, IOException, NoRunResultFormatParserException,
 			NoParameterSetFoundException, RNotAvailableException,
-			RLibraryNotLoadedException, REngineException, REXPMismatchException;
+			RLibraryNotLoadedException, REngineException, REXPMismatchException, InterruptedException;
 
 	/**
 	 * This method is invoked by {@link #run()} after {@link #doRun()} has

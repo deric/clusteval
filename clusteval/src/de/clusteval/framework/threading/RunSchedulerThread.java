@@ -40,6 +40,7 @@ import de.clusteval.run.Run;
 import de.clusteval.run.result.NoRunResultFormatParserException;
 import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.result.RunResult;
+import de.clusteval.run.runnable.IterationRunnable;
 import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.runnable.RunRunnableInitializationException;
 import file.FileUtils;
@@ -93,6 +94,13 @@ public class RunSchedulerThread extends ClustevalThread {
 	protected ScheduledThreadPoolExecutor threadPool;
 
 	/**
+	 * A thread pool containing all threads that were started to execute
+	 * iteration runnables. Iteration runnables are started by certain types of
+	 * run runnables (e.g. ParameterOptimizationRunRunnables)
+	 */
+	protected ScheduledThreadPoolExecutor iterationThreadPool;
+
+	/**
 	 * Constructor of run scheduler threads.
 	 * 
 	 * @param supervisorThread
@@ -114,6 +122,17 @@ public class RunSchedulerThread extends ClustevalThread {
 		this.log = LoggerFactory.getLogger(this.getClass());
 		this.threadPool = new ScheduledThreadPoolExecutor(numberThreads);
 		this.threadPool.setMaximumPoolSize(this.threadPool.getCorePoolSize());
+		// threads stored in the threadPool variable correspond to started
+		// runrunnables. Some types of those threads start a thread for each
+		// iteration they perform, which are then stored in the
+		// iterationThreadPool variable. As soon as those threads are started,
+		// the "mainthread" only waits until those threads are finished.
+		// Therefore we can assume that at each time point we have roughly
+		// numberThreads active threads.
+		this.iterationThreadPool = new ScheduledThreadPoolExecutor(
+				numberThreads);
+		this.iterationThreadPool.setMaximumPoolSize(this.iterationThreadPool
+				.getCorePoolSize());
 		this.start();
 	}
 
@@ -161,7 +180,7 @@ public class RunSchedulerThread extends ClustevalThread {
 				this.clientToRuns.get(clientId).remove(run);
 
 			toRemove = new HashSet<Run>();
-			
+
 			// add the running run resumes
 			if (this.clientToRunResumes.containsKey(clientId)) {
 				for (Run run : this.clientToRunResumes.get(clientId)) {
@@ -553,6 +572,7 @@ public class RunSchedulerThread extends ClustevalThread {
 			for (Run run : runs)
 				run.terminate();
 		this.threadPool.shutdown();
+		this.iterationThreadPool.shutdown();
 		super.interrupt();
 	}
 
@@ -568,5 +588,10 @@ public class RunSchedulerThread extends ClustevalThread {
 	 */
 	public Future<?> registerRunRunnable(RunRunnable runRunnable) {
 		return this.threadPool.submit(runRunnable);
+	}
+
+	public Future<?> registerIterationRunnable(
+			IterationRunnable iterationRunnable) {
+		return this.iterationThreadPool.submit(iterationRunnable);
 	}
 }

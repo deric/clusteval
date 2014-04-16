@@ -24,11 +24,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import org.rosuda.REngine.REXPMismatchException;
 import org.rosuda.REngine.REngineException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import utils.Pair;
+import utils.StringExt;
 import utils.Triple;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
@@ -54,6 +59,7 @@ import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.RProcess;
 import de.clusteval.framework.repository.RegisterException;
+import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
@@ -104,61 +110,51 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	protected Map<ProgramParameter<?>, String> runParams;
 
 	/**
-	 * A map containing the parameters of {@link #runParams} and additionally
-	 * internal parameters like file paths that are used throughout execution of
-	 * this runnable.
-	 */
-	protected Map<String, String> effectiveParams;
-
-	/**
-	 * The internal parameters are parameters, that cannot be directly
-	 * influenced by the user, e.g. the absolute input or output path.
-	 */
-	protected Map<String, String> internalParams = new HashMap<String, String>();
-
-	/**
 	 * A temporary variable holding the absolute path to the current complete
 	 * quality output file during execution of the runnable.
 	 */
 	protected String completeQualityOutput;
 
 	/**
-	 * A temporary variable holding a file object pointing to the absolute path
-	 * of the current log output file during execution of the runnable
+	 * This list holds wrapper objects for each iteration runnable started.
 	 */
-	protected File logFile;
+	protected List<Future<?>> futures;
+	protected List<IterationRunnable> iterationRunnables;
 
-	/**
-	 * A temporary variable holding a file object pointing to the absolute path
-	 * of the current clustering output file during execution of the runnable
-	 */
-	protected File clusteringResultFile;
+	//
+	// /**
+	// * A temporary variable holding a file object pointing to the absolute
+	// path
+	// * of the current log output file during execution of the runnable
+	// */
+	// protected File logFile;
 
-	/**
-	 * A temporary variable holding a file object pointing to the absolute path
-	 * of the current clustering quality output file during execution of the
-	 * runnable
-	 */
-	protected File resultQualityFile;
+	// /**
+	// * A temporary variable holding a file object pointing to the absolute
+	// path
+	// * of the current clustering output file during execution of the runnable
+	// */
+	// protected File clusteringResultFile;
+	//
+	// /**
+	// * A temporary variable holding a file object pointing to the absolute
+	// path
+	// * of the current clustering quality output file during execution of the
+	// * runnable
+	// */
+	// protected File resultQualityFile;
 
-	/**
-	 * An object that wraps up all results calculated during the execution of
-	 * this runnable. The runnable is responsible for adding new results to this
-	 * object during the execution.
-	 */
-	protected ClusteringRunResult result;
-
-	/**
-	 * This number indicates the current iteration performed by the runnable
-	 * object.
-	 * 
-	 * <p>
-	 * This is only larger than 1, if we are in PARAMETER_OPTIMIZATION mode.
-	 * Then the optimization method will determine, how often we iterate in
-	 * total and this attribute will be increased by the runnable after every
-	 * iteration.
-	 */
-	protected int optId;
+	// /**
+	// * This number indicates the current iteration performed by the runnable
+	// * object.
+	// *
+	// * <p>
+	// * This is only larger than 1, if we are in PARAMETER_OPTIMIZATION mode.
+	// * Then the optimization method will determine, how often we iterate in
+	// * total and this attribute will be increased by the runnable after every
+	// * iteration.
+	// */
+	// protected int optId;
 
 	/**
 	 * @param run
@@ -181,6 +177,8 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 		this.programConfig = programConfig;
 		this.dataConfig = dataConfig;
+		this.futures = new ArrayList<Future<?>>();
+		this.iterationRunnables = new ArrayList<IterationRunnable>();
 	}
 
 	/*
@@ -525,9 +523,15 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 *             was not already evaluated before.
 	 * 
 	 */
-	public String[] parseInvocationLineAndEffectiveParameters()
+	protected String[] parseInvocationLineAndEffectiveParameters(
+			final IterationWrapper iterationWrapper)
 			throws InternalAttributeException, RegisterException,
 			NoParameterSetFoundException {
+
+		final Map<String, String> internalParams = iterationWrapper
+				.getInternalParams();
+		final Map<String, String> effectiveParams = iterationWrapper
+				.getEffectiveParams();
 
 		/*
 		 * We take the invocation line from the ProgramConfig and replace the
@@ -555,17 +559,14 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		/*
 		 * output %o%
 		 */
-		invocation = parseOutput(clusteringResultFile.getAbsolutePath(),
-				resultQualityFile.getAbsolutePath(), invocation, internalParams);
+		invocation = parseOutput(iterationWrapper.getClusteringResultFile()
+				.getAbsolutePath(), iterationWrapper.getResultQualityFile()
+				.getAbsolutePath(), invocation, internalParams);
 
-		invocation = replaceRunParameters(invocation);
-
-		this.log.info(this.getRun() + " (" + this.programConfig + ","
-				+ this.dataConfig + ", Iteration " + optId
-				+ ") Parameter Set: " + effectiveParams);
+		invocation = replaceRunParameters(invocation, effectiveParams);
 
 		try {
-			invocation = replaceDefaultParameters(invocation);
+			invocation = replaceDefaultParameters(invocation, effectiveParams);
 		} catch (MissingParameterValueException e) {
 			this.exceptions.add(e);
 			return null;
@@ -588,7 +589,8 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 * @throws MissingParameterValueException
 	 * @throws InternalAttributeException
 	 */
-	protected String[] replaceDefaultParameters(String[] invocation)
+	protected String[] replaceDefaultParameters(String[] invocation,
+			final Map<String, String> effectiveParams)
 			throws MissingParameterValueException, InternalAttributeException {
 		String[] parsed = invocation.clone();
 		for (int i = 0; i < parsed.length; i++) {
@@ -636,7 +638,8 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 *             was not already evaluated before.
 	 */
 	@SuppressWarnings("unused")
-	protected String[] replaceRunParameters(String[] invocation)
+	protected String[] replaceRunParameters(String[] invocation,
+			final Map<String, String> effectiveParams)
 			throws InternalAttributeException, RegisterException,
 			NoParameterSetFoundException {
 		/*
@@ -701,11 +704,13 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 * @throws REngineException
 	 * @throws RLibraryNotLoadedException
 	 * @throws RNotAvailableException
+	 * @throws InterruptedException
 	 */
-	protected void doRunIteration() throws InternalAttributeException,
-			RegisterException, IOException, NoRunResultFormatParserException,
-			NoParameterSetFoundException, RNotAvailableException,
-			RLibraryNotLoadedException {
+	protected void doRunIteration(final IterationWrapper iterationWrapper)
+			throws InternalAttributeException, RegisterException, IOException,
+			NoRunResultFormatParserException, NoParameterSetFoundException,
+			RNotAvailableException, RLibraryNotLoadedException,
+			InterruptedException {
 		if (this.isPaused()) {
 			log.info("Pausing...");
 			this.runningTime += System.currentTimeMillis() - this.lastStartTime;
@@ -726,27 +731,20 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		if (checkForInterrupted())
 			return;
 
-		this.initAndEnsureIterationFilesAndFolders();
+		this.initAndEnsureIterationFilesAndFolders(iterationWrapper);
+
+		final String[] invocation = this
+				.parseInvocationLineAndEffectiveParameters(iterationWrapper);
 
 		/*
-		 * We keep an array, which holds the parameter values that are
-		 * effectively set for this run.
+		 * An object that wraps up all results calculated during the execution
+		 * of this runnable. The runnable is responsible for adding new results
+		 * to this object during the execution.
 		 */
-		this.effectiveParams = new HashMap<String, String>();
-
-		this.internalParams = new HashMap<String, String>();
-
-		String[] invocation = this.parseInvocationLineAndEffectiveParameters();
-
-		this.log.debug(this.getRun() + " (" + this.programConfig + ","
-				+ this.dataConfig + ") Invoking command line: " + invocation);
-		this.log.debug(this.getRun() + " (" + this.programConfig + ","
-				+ this.dataConfig + ") Log-File is located at: \""
-				+ logFile.getAbsolutePath() + "\"");
-
-		this.result = new ClusteringRunResult(this.getRun().getRepository(),
-				System.currentTimeMillis(), clusteringResultFile, dataConfig,
-				programConfig, format, runThreadIdentString, run);
+		iterationWrapper.setClusteringRunResult(new ClusteringRunResult(this
+				.getRun().getRepository(), System.currentTimeMillis(),
+				iterationWrapper.getClusteringResultFile(), dataConfig,
+				programConfig, format, runThreadIdentString, run));
 		/*
 		 * We check from time to time, whether this run got the order to
 		 * terminate.
@@ -754,81 +752,158 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		if (checkForInterrupted())
 			return;
 
-		Process proc = null;
-		try {
-			proc = programConfig.getProgram().exec(dataConfig, programConfig,
-					invocation, effectiveParams, internalParams);
+		final RunSchedulerThread runScheduler = this.getRun().getRepository()
+				.getSupervisorThread().getRunScheduler();
 
-			BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
+		// only create new iteration runnables, if none of the old iteration
+		// runnables threw exceptions
+		for (IterationRunnable prevItRunnable : this.iterationRunnables)
+			if (prevItRunnable.getIoException() != null)
+				throw prevItRunnable.getIoException();
+			else if (prevItRunnable.getNoRunResultException() != null)
+				throw prevItRunnable.getNoRunResultException();
+			else if (prevItRunnable.getrLibraryException() != null)
+				throw prevItRunnable.getrLibraryException();
+			else if (prevItRunnable.getrNotAvailableException() != null)
+				throw prevItRunnable.getrNotAvailableException();
 
-			if (proc != null && !(proc instanceof RProcess)) {
-				new StreamGobbler(proc.getInputStream(), bw).start();
-				new StreamGobbler(proc.getErrorStream(), bw).start();
+		IterationRunnable iterationRunnable = new IterationRunnable(
+				iterationWrapper) {
 
+			@Override
+			public void run() {
 				try {
-					proc.waitFor();
-				} catch (InterruptedException e) {
 
+					this.log.info(getRun() + " (" + programConfig + ","
+							+ dataConfig + ", Iteration "
+							+ iterationWrapper.getOptId() + ") Parameter Set: "
+							+ iterationWrapper.getEffectiveParams());
+
+					this.log.debug(getRun() + " (" + programConfig + ","
+							+ dataConfig + ") Invoking command line: "
+							+ StringExt.paste(" ", invocation));
+					this.log.debug(getRun() + " (" + programConfig + ","
+							+ dataConfig + ") Log-File is located at: \""
+							+ iterationWrapper.getLogfile().getAbsolutePath()
+							+ "\"");
+
+					final BufferedWriter bw = new BufferedWriter(
+							new FileWriter(iterationWrapper.getLogfile()));
+
+					this.log = LoggerFactory.getLogger(this.getClass());
+					Process proc = null;
+					try {
+						proc = programConfig.getProgram().exec(dataConfig,
+								programConfig, invocation,
+								iterationWrapper.getEffectiveParams(),
+								iterationWrapper.getInternalParams());
+
+						if (proc != null && !(proc instanceof RProcess)) {
+							new StreamGobbler(proc.getInputStream(), bw)
+									.start();
+							new StreamGobbler(proc.getErrorStream(), bw)
+									.start();
+
+							try {
+								proc.waitFor();
+							} catch (InterruptedException e) {
+
+							}
+						}
+
+						/*
+						 * We check from time to time, whether this run got the
+						 * order to terminate.
+						 */
+						if (checkForInterrupted())
+							return;
+						
+						iterationWrapper
+								.setConvertedClusteringRunResult(convertResult(
+										iterationWrapper
+												.getClusteringRunResult(),
+										iterationWrapper.getEffectiveParams(),
+										iterationWrapper.getInternalParams()));
+
+						if (iterationWrapper.getConvertedClusteringRunResult() != null) {
+							this.log.debug(getRun() + " (" + programConfig
+									+ "," + dataConfig
+									+ ") Finished converting result files");
+
+							/*
+							 * We check from time to time, whether this run got
+							 * the order to terminate.
+							 */
+							if (checkForInterrupted())
+								return;
+
+							List<Pair<ParameterSet, ClusteringQualitySet>> qualities = assessQualities(
+									iterationWrapper
+											.getConvertedClusteringRunResult(),
+									iterationWrapper.getInternalParams());
+							// 04.04.2013: adding iteration number to qualities
+							List<Triple<ParameterSet, ClusteringQualitySet, Long>> qualitiesWithIterations = new ArrayList<Triple<ParameterSet, ClusteringQualitySet, Long>>();
+							for (Pair<ParameterSet, ClusteringQualitySet> pair : qualities)
+								qualitiesWithIterations.add(Triple.getTriple(
+										pair.getFirst(), pair.getSecond(),
+										new Long(iterationWrapper.getOptId())));
+							synchronized (completeQualityOutput) {
+								writeQualitiesToFile(qualitiesWithIterations);
+							}
+							// synchronized!
+							// afterClustering(
+							// iterationWrapper
+							// .getConvertedClusteringRunResult(),
+							// qualities);
+						}
+
+						/*
+						 * Add this RunResult to the list. The RunResult only
+						 * encapsulates the path to the result-file and does not
+						 * hold any actual values, so we do not need to wait
+						 * until the thread is finished.
+						 */
+						synchronized (getRun().getResults()) {
+							// changed 16.04.2014: before we added the old not
+							// converted
+							// result
+							getRun().getResults().add(
+									iterationWrapper.getClusteringRunResult());
+						}
+					} catch (RunResultNotFoundException e) {
+						handleMissingRunResult(iterationWrapper);
+					} catch (RunResultConversionException e) {
+						handleMissingRunResult(iterationWrapper);
+					} catch (REngineException e1) {
+						handleMissingRunResult(iterationWrapper);
+					} catch (REXPMismatchException e1) {
+						handleMissingRunResult(iterationWrapper);
+					} finally {
+						if (programConfig.getProgram() instanceof RProgram) {
+							synchronized (bw) {
+								// BufferedWriter bw = new BufferedWriter(new
+								// FileWriter(logFile));
+								bw.append(((RProgram) (programConfig
+										.getProgram())).getRengine()
+										.getLastError());
+								bw.close();
+							}
+						}
+					}
+				} catch (NoRunResultFormatParserException e) {
+					noRunResultException = e;
+				} catch (IOException e) {
+					ioException = e;
+				} catch (RLibraryNotLoadedException e) {
+					rLibraryException = e;
+				} catch (RNotAvailableException e) {
+					rNotAvailableException = e;
 				}
 			}
+		};
 
-			/*
-			 * We check from time to time, whether this run got the order to
-			 * terminate.
-			 */
-			if (checkForInterrupted())
-				return;
-
-			ClusteringRunResult convertedResult = this.convertResult();
-
-			if (convertedResult != null) {
-				this.log.debug(this.getRun() + " (" + this.programConfig + ","
-						+ this.dataConfig
-						+ ") Finished converting result files");
-
-				/*
-				 * We check from time to time, whether this run got the order to
-				 * terminate.
-				 */
-				if (checkForInterrupted())
-					return;
-
-				List<Pair<ParameterSet, ClusteringQualitySet>> qualities = this
-						.assessQualities(convertedResult);
-				// 04.04.2013: adding iteration number to qualities
-				List<Triple<ParameterSet, ClusteringQualitySet, Long>> qualitiesWithIterations = new ArrayList<Triple<ParameterSet, ClusteringQualitySet, Long>>();
-				for (Pair<ParameterSet, ClusteringQualitySet> pair : qualities)
-					qualitiesWithIterations
-							.add(Triple.getTriple(pair.getFirst(),
-									pair.getSecond(), new Long(optId)));
-				this.writeQualitiesToFile(qualitiesWithIterations);
-				this.afterClustering(convertedResult, qualities);
-			}
-
-			/*
-			 * Add this RunResult to the list. The RunResult only encapsulates
-			 * the path to the result-file and does not hold any actual values,
-			 * so we do not need to wait until the thread is finished.
-			 */
-			synchronized (this.getRun().getResults()) {
-				this.getRun().getResults().add(result);
-			}
-		} catch (RunResultNotFoundException e) {
-			this.handleMissingRunResult();
-		} catch (RunResultConversionException e) {
-			this.handleMissingRunResult();
-		} catch (REngineException e1) {
-			this.handleMissingRunResult();
-		} catch (REXPMismatchException e1) {
-			this.handleMissingRunResult();
-		} finally {
-			if (programConfig.getProgram() instanceof RProgram) {
-				BufferedWriter bw = new BufferedWriter(new FileWriter(logFile));
-				bw.append(((RProgram) (programConfig.getProgram()))
-						.getRengine().getLastError());
-				bw.close();
-			}
-		}
+		this.iterationRunnables.add(iterationRunnable);
+		runScheduler.registerIterationRunnable(iterationRunnable);
 	}
 
 	/**
@@ -842,14 +917,15 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 * @throws InvalidDataSetFormatVersionException
 	 * @throws RunResultNotFoundException
 	 */
-	protected List<Pair<ParameterSet, ClusteringQualitySet>> assessQualities(
-			ClusteringRunResult convertedResult)
+	private List<Pair<ParameterSet, ClusteringQualitySet>> assessQualities(
+			final ClusteringRunResult convertedResult,
+			final Map<String, String> internalParams)
 			throws RunResultNotFoundException {
 		this.log.debug(this.getRun() + " (" + this.programConfig + ","
 				+ this.dataConfig + ") Assessing quality of results...");
 		List<Pair<ParameterSet, ClusteringQualitySet>> qualities = new ArrayList<Pair<ParameterSet, ClusteringQualitySet>>();
 		try {
-			final String qualityFile = this.internalParams.get("q");
+			final String qualityFile = internalParams.get("q");
 			convertedResult.loadIntoMemory();
 			final Pair<ParameterSet, Clustering> pair = convertedResult
 					.getClustering();
@@ -925,7 +1001,10 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 * @throws SecurityException
 	 * @throws RunResultConversionException
 	 */
-	protected ClusteringRunResult convertResult()
+	protected ClusteringRunResult convertResult(
+			final ClusteringRunResult result,
+			final Map<String, String> effectiveParams,
+			final Map<String, String> internalParams)
 			throws NoRunResultFormatParserException,
 			RunResultNotFoundException, RunResultConversionException {
 		/*
@@ -962,7 +1041,10 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 * used throughout the process: {@link #logFile},
 	 * {@link #clusteringResultFile} and {@link #resultQualityFile}.
 	 */
-	protected void initAndEnsureIterationFilesAndFolders() {
+	protected void initAndEnsureIterationFilesAndFolders(
+			final IterationWrapper iterationWrapper) {
+
+		int optId = iterationWrapper.getOptId();
 		/*
 		 * Insert the unique identifier created earlier into the result paths by
 		 * replacing the string "%RUNIDENTSTRING". And replace the %OPTID
@@ -1030,12 +1112,12 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		/*
 		 * Ensure that the directories to the result and log files exist.
 		 */
-		logFile = new File(logOutput);
-		logFile.getParentFile().mkdirs();
-		clusteringResultFile = new File(clusteringOutput);
-		clusteringResultFile.getParentFile().mkdirs();
-		resultQualityFile = new File(qualityOutput);
-		resultQualityFile.getParentFile().mkdirs();
+		iterationWrapper.setLogfile(new File(logOutput));
+		iterationWrapper.getLogfile().getParentFile().mkdirs();
+		iterationWrapper.setClusteringResultFile(new File(clusteringOutput));
+		iterationWrapper.getClusteringResultFile().getParentFile().mkdirs();
+		iterationWrapper.setResultQualityFile(new File(qualityOutput));
+		iterationWrapper.getResultQualityFile().getParentFile().mkdirs();
 	}
 
 	/**
@@ -1046,27 +1128,27 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 * This can comprise actions ensuring that further iterations can be
 	 * executed smoothly.
 	 */
-	protected abstract void handleMissingRunResult();
+	protected abstract void handleMissingRunResult(
+			final IterationWrapper iterationWrapper);
 
-	/**
-	 * After a clustering has been calculated by the program, converted to the
-	 * standard format by the framework, and quality-assessed, this method
-	 * performs all final actions that need to be done at the end of every
-	 * iteration after successful clustering, e.g. create plots of the results
-	 * of this iteration.
-	 * 
-	 * @param clusteringRunResult
-	 *            The clustering run result of the last iteration in standard
-	 *            format.
-	 * @param qualities
-	 *            The assessed qualities of the clustering of the last
-	 *            iteration.
-	 */
-	@SuppressWarnings("unused")
-	protected void afterClustering(
-			final ClusteringRunResult clusteringRunResult,
-			final List<Pair<ParameterSet, ClusteringQualitySet>> qualities) {
-	}
+	// /**
+	// * After a clustering has been calculated by the program, converted to the
+	// * standard format by the framework, and quality-assessed, this method
+	// * performs all final actions that need to be done at the end of every
+	// * iteration after successful clustering, e.g. create plots of the results
+	// * of this iteration.
+	// *
+	// * @param clusteringRunResult
+	// * The clustering run result of the last iteration in standard
+	// * format.
+	// * @param qualities
+	// * The assessed qualities of the clustering of the last
+	// * iteration.
+	// */
+	// @SuppressWarnings("unused")
+	// protected void afterClustering(final ClusteringRunResult result,
+	// final List<Pair<ParameterSet, ClusteringQualitySet>> qualities) {
+	// }
 
 	/**
 	 * Set the internal attributes of the framework, e.g. the meanSimilarity
@@ -1146,7 +1228,8 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			InvalidDataSetFormatVersionException, IllegalArgumentException,
 			IOException, RegisterException, InternalAttributeException,
 			IncompatibleDataSetFormatException,
-			UnknownGoldStandardFormatException, IncompleteGoldStandardException {
+			UnknownGoldStandardFormatException,
+			IncompleteGoldStandardException, InterruptedException {
 		this.log.info("Run " + this.getRun() + " (" + this.programConfig + ","
 				+ this.dataConfig + ") " + (!isResume ? "started" : "RESUMED")
 				+ " (asynchronously)");
@@ -1230,6 +1313,10 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 				checkCompatibilityDataSetGoldStandard(
 						this.dataConfig.getDatasetConfig(),
 						this.dataConfig.getGoldstandardConfig());
+
+			assert !this.dataConfig.hasGoldStandardConfig()
+					|| this.dataConfig.getGoldstandardConfig()
+							.getGoldstandard().isInMemory();
 		} catch (IncompleteGoldStandardException e1) {
 			// this.exceptions.add(e1);
 			// 15.11.2012: missing entries in the goldstandard is no longer
@@ -1307,6 +1394,16 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 */
 	@Override
 	protected void afterRun() {
+		// wait for all iteration runnables to finish
+		for (Future<?> f : this.futures)
+			try {
+				f.get();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+
 		super.afterRun();
 
 		// unload the dataset from memory
@@ -1320,6 +1417,10 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 				.getOriginalDataSet();
 		if (dataSet != null && dataSet instanceof AbsoluteDataSet)
 			dataSet.unloadFromMemory();
+
+		if (dataConfig.hasGoldStandardConfig())
+			dataConfig.getGoldstandardConfig().getGoldstandard()
+					.unloadFromMemory();
 
 		FileUtils.appendStringToFile(
 				this.getRun().getLogFilePath(),
@@ -1338,5 +1439,118 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 		this.log.info("Run " + this.getRun() + " (" + this.programConfig + ","
 				+ this.dataConfig + ") finished");
+	}
+}
+
+class IterationWrapper {
+
+	/**
+	 * A temporary variable holding a file object pointing to the absolute path
+	 * of the current clustering output file during execution of the runnable
+	 */
+	private File clusteringResultFile;
+
+	/**
+	 * A temporary variable holding a file object pointing to the absolute path
+	 * of the current log output file during execution of the runnable
+	 */
+	private File logfile;
+
+	/**
+	 * A temporary variable holding a file object pointing to the absolute path
+	 * of the current clustering quality output file during execution of the
+	 * runnable
+	 */
+	private File resultQualityFile;
+
+	/**
+	 * This number indicates the current iteration performed by the runnable
+	 * object.
+	 * 
+	 * <p>
+	 * This is only larger than 1, if we are in PARAMETER_OPTIMIZATION mode.
+	 * Then the optimization method will determine, how often we iterate in
+	 * total and this attribute will be increased by the runnable after every
+	 * iteration.
+	 */
+	private int optId;
+
+	/**
+	 * A map containing the parameters of {@link #runParams} and additionally
+	 * internal parameters like file paths that are used throughout execution of
+	 * this runnable.
+	 */
+	final private Map<String, String> effectiveParams;
+
+	/**
+	 * The internal parameters are parameters, that cannot be directly
+	 * influenced by the user, e.g. the absolute input or output path.
+	 */
+	final private Map<String, String> internalParams;
+	private ClusteringRunResult clusteringRunResult;
+	private ClusteringRunResult convertedClusteringRunResult;
+
+	public IterationWrapper() {
+		super();
+		this.internalParams = new HashMap<String, String>();
+		this.effectiveParams = new HashMap<String, String>();
+	}
+
+	protected File getClusteringResultFile() {
+		return clusteringResultFile;
+	}
+
+	protected void setClusteringResultFile(File clusteringResultFile) {
+		this.clusteringResultFile = clusteringResultFile;
+	}
+
+	protected File getLogfile() {
+		return logfile;
+	}
+
+	protected void setLogfile(File logfile) {
+		this.logfile = logfile;
+	}
+
+	protected File getResultQualityFile() {
+		return resultQualityFile;
+	}
+
+	protected void setResultQualityFile(File resultQualityFile) {
+		this.resultQualityFile = resultQualityFile;
+	}
+
+	protected int getOptId() {
+		return optId;
+	}
+
+	protected void setOptId(int optId) {
+		this.optId = optId;
+	}
+
+	protected Map<String, String> getEffectiveParams() {
+		return effectiveParams;
+	}
+
+	protected Map<String, String> getInternalParams() {
+		return internalParams;
+	}
+
+	protected ClusteringRunResult getClusteringRunResult() {
+		return clusteringRunResult;
+	}
+
+	protected ClusteringRunResult getConvertedClusteringRunResult() {
+		return convertedClusteringRunResult;
+	}
+
+	protected void setClusteringRunResult(
+			ClusteringRunResult clusteringRunResult) {
+		this.clusteringRunResult = clusteringRunResult;
+	}
+
+	protected void setConvertedClusteringRunResult(
+			ClusteringRunResult clusteringRunResult) {
+		this.convertedClusteringRunResult = clusteringRunResult;
 	}
 }

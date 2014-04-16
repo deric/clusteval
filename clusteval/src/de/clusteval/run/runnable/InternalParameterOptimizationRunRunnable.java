@@ -15,6 +15,7 @@ package de.clusteval.run.runnable;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 import de.clusteval.cluster.paramOptimization.NoParameterSetFoundException;
 import de.clusteval.data.DataConfig;
@@ -78,20 +79,21 @@ public class InternalParameterOptimizationRunRunnable
 			UnknownDataSetFormatException, IOException,
 			InvalidDataSetFormatVersionException, RegisterException,
 			InternalAttributeException, IncompatibleDataSetFormatException,
-			UnknownGoldStandardFormatException, IncompleteGoldStandardException {
+			UnknownGoldStandardFormatException,
+			IncompleteGoldStandardException, InterruptedException {
 		super.beforeRun();
 		if (!new File(completeQualityOutput).exists() || !isResume)
 			writeHeaderIntoCompleteFile(completeQualityOutput);
-
-		this.optId = 1;
 	}
 
 	@Override
 	protected void doRun() throws InternalAttributeException,
 			RegisterException, IOException, NoRunResultFormatParserException,
 			NoParameterSetFoundException, RNotAvailableException,
-			RLibraryNotLoadedException {
-		this.doRunIteration();
+			RLibraryNotLoadedException, InterruptedException {
+		final IterationWrapper iterationWrapper = new IterationWrapper();
+		iterationWrapper.setOptId(1);
+		this.doRunIteration(iterationWrapper);
 	}
 
 	/*
@@ -100,7 +102,8 @@ public class InternalParameterOptimizationRunRunnable
 	 * @see run.runnable.ExecutionRunRunnable#handleMissingRunResult()
 	 */
 	@Override
-	protected void handleMissingRunResult() {
+	protected void handleMissingRunResult(
+			final IterationWrapper iterationWrapper) {
 		this.log.info(this.getRun()
 				+ " ("
 				+ this.programConfig
