@@ -54,8 +54,8 @@ public class MyRengine {
 		super();
 
 		this.connection = new RConnection(string);
-		// set buffer size to 20MB
-		this.connection.setSendBufferSize(1024l * 1024 * 1024 * 20);
+		// set buffer size to 100MB
+		this.connection.setSendBufferSize(1024l * 1024 * 1024 * 100);
 		this.log = LoggerFactory.getLogger(this.getClass());
 		this.loadedLibraries = new HashSet<String>();
 	}
