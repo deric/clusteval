@@ -839,6 +839,12 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 									iterationWrapper
 											.getConvertedClusteringRunResult(),
 									iterationWrapper.getInternalParams());
+							for (Pair<ParameterSet, ClusteringQualitySet> clustSet : qualities)
+								this.log.info(String.format(
+										"%s (%s,%s, Iteration %d) %s",
+										getRun(), programConfig, dataConfig,
+										iterationWrapper.getOptId(), clustSet
+												.getSecond().toString()));
 							// 04.04.2013: adding iteration number to qualities
 							List<Triple<ParameterSet, ClusteringQualitySet, Long>> qualitiesWithIterations = new ArrayList<Triple<ParameterSet, ClusteringQualitySet, Long>>();
 							for (Pair<ParameterSet, ClusteringQualitySet> pair : qualities)
@@ -896,6 +902,8 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 					rLibraryException = e;
 				} catch (RNotAvailableException e) {
 					rNotAvailableException = e;
+				} catch (Throwable t) {
+					t.printStackTrace();
 				}
 			}
 		};
@@ -909,7 +917,8 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		else
 			runScheduler = this.getRun().getRepository().getSupervisorThread()
 					.getRunScheduler();
-		runScheduler.registerIterationRunnable(iterationRunnable);
+		this.futures.add(runScheduler
+				.registerIterationRunnable(iterationRunnable));
 	}
 
 	/**
@@ -990,9 +999,6 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			sb.append("\n");
 
 			FileUtils.appendStringToFile(completeQualityOutput, sb.toString());
-
-			this.log.info(this.getRun() + " (" + this.programConfig + ","
-					+ this.dataConfig + ") " + clustSet.getSecond().toString());
 		}
 	}
 
@@ -1406,6 +1412,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 				f.get();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+
 			} catch (ExecutionException e) {
 				e.printStackTrace();
 			}
