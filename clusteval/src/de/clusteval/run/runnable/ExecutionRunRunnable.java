@@ -1503,6 +1503,8 @@ class IterationWrapper {
 	private ClusteringRunResult clusteringRunResult;
 	private ClusteringRunResult convertedClusteringRunResult;
 
+	private ParameterSet parameterSet;
+
 	public IterationWrapper() {
 		super();
 		this.internalParams = new HashMap<String, String>();
@@ -1565,5 +1567,15 @@ class IterationWrapper {
 	protected void setConvertedClusteringRunResult(
 			ClusteringRunResult clusteringRunResult) {
 		this.convertedClusteringRunResult = clusteringRunResult;
+	}
+
+	
+	protected ParameterSet getParameterSet() {
+		return parameterSet;
+	}
+
+	
+	protected void setParameterSet(ParameterSet parameterSet) {
+		this.parameterSet = parameterSet;
 	}
 }

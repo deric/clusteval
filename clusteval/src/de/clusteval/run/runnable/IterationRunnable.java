@@ -18,13 +18,13 @@ import de.clusteval.utils.RNotAvailableException;
  */
 public abstract class IterationRunnable implements Runnable {
 
-
 	protected Logger log;
 	protected IterationWrapper iterationWrapper;
 	protected NoRunResultFormatParserException noRunResultException;
 	protected IOException ioException;
 	protected RLibraryNotLoadedException rLibraryException;
 	protected RNotAvailableException rNotAvailableException;
+	protected InterruptedException interruptedException;
 
 	public IterationRunnable(final IterationWrapper iterationWrapper) {
 		super();
@@ -58,5 +58,9 @@ public abstract class IterationRunnable implements Runnable {
 	 */
 	public RLibraryNotLoadedException getrLibraryException() {
 		return rLibraryException;
+	}
+
+	public InterruptedException getInterruptedException() {
+		return interruptedException;
 	}
 }

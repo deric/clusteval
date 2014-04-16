@@ -266,9 +266,9 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			RNotAvailableException, RLibraryNotLoadedException,
 			InterruptedException {
 		try {
-			optimizationMethod.next();
 			iterationWrapper
 					.setOptId(this.optimizationMethod.getCurrentCount());
+			iterationWrapper.setParameterSet(optimizationMethod.next());
 			super.doRunIteration(iterationWrapper);
 		} finally {
 			// changed 25.01.2013
@@ -342,16 +342,14 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			minimalQualities.put(measure,
 					ClusteringQualityMeasureValue.getForNotTerminated());
 
-		ParameterSet ps = new ParameterSet();
-		for (String param : effectiveParams.keySet())
-			if (!internalParams.containsKey(param))
-				ps.put(param, effectiveParams.get(param));
-
 		if (this.optimizationMethod instanceof IDivergingParameterOptimizationMethod) {
 			((IDivergingParameterOptimizationMethod) this.optimizationMethod)
-					.giveFeedbackNotTerminated(ps, minimalQualities);
+					.giveFeedbackNotTerminated(
+							iterationWrapper.getParameterSet(),
+							minimalQualities);
 		} else {
-			this.optimizationMethod.giveQualityFeedback(ps, minimalQualities);
+			this.optimizationMethod.giveQualityFeedback(
+					iterationWrapper.getParameterSet(), minimalQualities);
 		}
 	}
 
