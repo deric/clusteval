@@ -1791,11 +1791,13 @@ public class Repository {
 	 * @return The MyRengine object corresponding to the current thread.
 	 * @throws RserveException
 	 */
-	public synchronized MyRengine getRengineForCurrentThread()
-			throws RserveException {
-		if (!this.rEngines.containsKey(Thread.currentThread()))
-			this.rEngines.put(Thread.currentThread(), new MyRengine(""));
-		return this.rEngines.get(Thread.currentThread());
+	public MyRengine getRengineForCurrentThread() throws RserveException {
+		Thread currentThread = Thread.currentThread();
+		synchronized (this.rEngines) {
+			if (!this.rEngines.containsKey(currentThread))
+				this.rEngines.put(currentThread, new MyRengine(""));
+			return this.rEngines.get(currentThread);
+		}
 	}
 
 	/**
