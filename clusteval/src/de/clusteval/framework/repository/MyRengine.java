@@ -54,6 +54,8 @@ public class MyRengine {
 		super();
 
 		this.connection = new RConnection(string);
+		// set buffer size to 20MB
+		this.connection.setSendBufferSize(1024l * 1024 * 1024 * 20);
 		this.log = LoggerFactory.getLogger(this.getClass());
 		this.loadedLibraries = new HashSet<String>();
 	}
@@ -120,12 +122,13 @@ public class MyRengine {
 		}
 		this.eval(arg0 + " <- c()");
 		this.connection.assign(arg0, oneDim);
-		this.eval(arg0 + " <- matrix(" + arg0 + ",nrow=" + x + ",ncol=" + y + ",byrow=T)");
-//		for (int i = 0; i < arg1.length; i++) {
-//			this.connection.assign(arg0 + "_" + i, arg1[i]);
-//			this.eval(arg0 + " <- rbind(" + arg0 + "," + arg0 + "_" + i + ")");
-//			this.eval("remove(" + arg0 + "_" + i + ")");
-//		}
+		this.eval(arg0 + " <- matrix(" + arg0 + ",nrow=" + x + ",ncol=" + y
+				+ ",byrow=T)");
+		// for (int i = 0; i < arg1.length; i++) {
+		// this.connection.assign(arg0 + "_" + i, arg1[i]);
+		// this.eval(arg0 + " <- rbind(" + arg0 + "," + arg0 + "_" + i + ")");
+		// this.eval("remove(" + arg0 + "_" + i + ")");
+		// }
 	}
 
 	/*
