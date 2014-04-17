@@ -55,7 +55,7 @@ public class MyRengine {
 
 		this.connection = new RConnection(string);
 		// set buffer size to 100MB
-		this.connection.setSendBufferSize(1024l * 1024 * 1024 * 100);
+		// this.connection.setSendBufferSize(1024l * 1024 * 1024 * 100);
 		this.log = LoggerFactory.getLogger(this.getClass());
 		this.loadedLibraries = new HashSet<String>();
 	}
@@ -155,6 +155,9 @@ public class MyRengine {
 			return r;
 		} catch (REngineException e) {
 			throw new RserveException(this.connection, e.getMessage());
+		} catch (NullPointerException e) {
+			System.out.format("%s - %s%n", Thread.currentThread(), this);
+			throw e;
 		}
 	}
 

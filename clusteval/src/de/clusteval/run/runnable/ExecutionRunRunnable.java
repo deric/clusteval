@@ -29,7 +29,6 @@ import java.util.concurrent.Future;
 
 import org.rosuda.REngine.REXPMismatchException;
 import org.rosuda.REngine.REngineException;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import utils.Pair;
@@ -58,6 +57,7 @@ import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.RProcess;
+import de.clusteval.framework.repository.MyRengine;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.threading.RunSchedulerThread;
@@ -732,6 +732,9 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		if (checkForInterrupted())
 			return;
 
+		iterationWrapper.setDataConfig(dataConfig);
+		iterationWrapper.setProgramConfig(programConfig.clone());
+
 		this.initAndEnsureIterationFilesAndFolders(iterationWrapper);
 
 		final String[] invocation = this
@@ -744,8 +747,9 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		 */
 		iterationWrapper.setClusteringRunResult(new ClusteringRunResult(this
 				.getRun().getRepository(), System.currentTimeMillis(),
-				iterationWrapper.getClusteringResultFile(), dataConfig,
-				programConfig, format, runThreadIdentString, run));
+				iterationWrapper.getClusteringResultFile(), iterationWrapper
+						.getDataConfig(), iterationWrapper.getProgramConfig(),
+				format, runThreadIdentString, run));
 		/*
 		 * We check from time to time, whether this run got the order to
 		 * terminate.
@@ -772,10 +776,14 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			public void run() {
 				try {
 
-					this.log.info(getRun() + " (" + programConfig + ","
-							+ dataConfig + ", Iteration "
-							+ iterationWrapper.getOptId() + ") Parameter Set: "
-							+ iterationWrapper.getEffectiveParams());
+					ProgramConfig programConfig = iterationWrapper
+							.getProgramConfig();
+					DataConfig dataConfig = iterationWrapper.getDataConfig();
+
+					this.log.info(String.format("%s (%s,%s, Iteration %d) %s",
+							getRun(), programConfig, dataConfig,
+							iterationWrapper.getOptId(),
+							iterationWrapper.getEffectiveParams()));
 
 					this.log.debug(getRun() + " (" + programConfig + ","
 							+ dataConfig + ") Invoking command line: "
@@ -1504,6 +1512,8 @@ class IterationWrapper {
 	private ClusteringRunResult convertedClusteringRunResult;
 
 	private ParameterSet parameterSet;
+	protected ProgramConfig programConfig;
+	protected DataConfig dataConfig;
 
 	public IterationWrapper() {
 		super();
@@ -1564,17 +1574,31 @@ class IterationWrapper {
 		this.clusteringRunResult = clusteringRunResult;
 	}
 
+	protected ProgramConfig getProgramConfig() {
+		return programConfig;
+	}
+
+	protected void setProgramConfig(ProgramConfig programConfig) {
+		this.programConfig = programConfig;
+	}
+
+	protected DataConfig getDataConfig() {
+		return dataConfig;
+	}
+
+	protected void setDataConfig(DataConfig dataConfig) {
+		this.dataConfig = dataConfig;
+	}
+
 	protected void setConvertedClusteringRunResult(
 			ClusteringRunResult clusteringRunResult) {
 		this.convertedClusteringRunResult = clusteringRunResult;
 	}
 
-	
 	protected ParameterSet getParameterSet() {
 		return parameterSet;
 	}
 
-	
 	protected void setParameterSet(ParameterSet parameterSet) {
 		this.parameterSet = parameterSet;
 	}

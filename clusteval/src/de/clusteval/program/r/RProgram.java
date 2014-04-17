@@ -243,7 +243,7 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 			RLibraryNotLoadedException, RNotAvailableException {
 
 		rEngine = repository.getRengineForCurrentThread();
-
+		
 		// load the required R libraries
 		String[] requiredLibraries;
 		if (this.getClass().isAnnotationPresent(RLibraryRequirement.class))

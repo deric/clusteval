@@ -1800,6 +1800,14 @@ public class Repository {
 		}
 	}
 
+	public void clearRengineForCurrentThread() {
+		Thread currentThread = Thread.currentThread();
+		synchronized (this.rEngines) {
+			if (this.rEngines.containsKey(currentThread))
+				this.rEngines.remove(currentThread);
+		}
+	}
+
 	/**
 	 * This method registers a dataset format parser.
 	 * 

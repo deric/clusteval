@@ -266,9 +266,9 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			RNotAvailableException, RLibraryNotLoadedException,
 			InterruptedException {
 		try {
+			iterationWrapper.setParameterSet(optimizationMethod.next());
 			iterationWrapper
 					.setOptId(this.optimizationMethod.getCurrentCount());
-			iterationWrapper.setParameterSet(optimizationMethod.next());
 			super.doRunIteration(iterationWrapper);
 		} finally {
 			// changed 25.01.2013
@@ -364,8 +364,19 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	protected void writeQualitiesToFile(
 			List<Triple<ParameterSet, ClusteringQualitySet, Long>> qualities) {
 		// in this case, the list contains only one element
-		this.optimizationMethod.giveQualityFeedback(
-				qualities.get(0).getFirst(), qualities.get(0).getSecond());
+
+		// the parameter set contains all optimizable parameters of the program,
+		// not only those which actually have been optimized and are stored in
+		// the optimization method. We therefore have to adapt the parameter set
+		// accordingly.
+		ParameterSet paramSet = new ParameterSet();
+		for (ProgramParameter<?> param : optimizationMethod
+				.getOptimizationParameter())
+			// if (qualities.get(0).getFirst().containsKey(param.getName()))
+			paramSet.put(param.getName(),
+					qualities.get(0).getFirst().get(param.getName()));
+		this.optimizationMethod.giveQualityFeedback(paramSet, qualities.get(0)
+				.getSecond());
 		super.writeQualitiesToFile(qualities);
 	}
 }
