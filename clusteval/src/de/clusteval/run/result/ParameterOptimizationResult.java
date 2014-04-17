@@ -626,7 +626,9 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	public long getIterationNumberForParameterSet(
 			final ParameterSet parameterSet) {
 		try {
-		return this.parameterSetToIterationNumber.get(parameterSet);
+			if (this.parameterSetToIterationNumber.containsKey(parameterSet))
+				return this.parameterSetToIterationNumber.get(parameterSet);
+			return -1l;
 		} catch (NullPointerException e) {
 			System.out.println("bla");
 			throw e;

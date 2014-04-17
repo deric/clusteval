@@ -77,7 +77,7 @@ public class TestParameterOptimizationMethod extends AbstractClustEvalTest {
 			ParameterOptimizationException, FormatConversionException,
 			UnknownDistanceMeasureException, NoParameterSetFoundException,
 			UnknownContextException, RNotAvailableException,
-			InterruptedException {
+			InterruptedException, ParameterSetAlreadyEvaluatedException {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
 
@@ -215,7 +215,7 @@ public class TestParameterOptimizationMethod extends AbstractClustEvalTest {
 			ParameterOptimizationException, FormatConversionException,
 			UnknownDistanceMeasureException, NoParameterSetFoundException,
 			UnknownContextException, RNotAvailableException,
-			InterruptedException {
+			InterruptedException, ParameterSetAlreadyEvaluatedException {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
 
@@ -430,7 +430,7 @@ public class TestParameterOptimizationMethod extends AbstractClustEvalTest {
 			ParameterOptimizationException, FormatConversionException,
 			UnknownDistanceMeasureException, NoParameterSetFoundException,
 			UnknownContextException, RNotAvailableException,
-			InterruptedException {
+			InterruptedException, ParameterSetAlreadyEvaluatedException {
 
 		ClustevalBackendServer.logLevel(Level.INFO);
 

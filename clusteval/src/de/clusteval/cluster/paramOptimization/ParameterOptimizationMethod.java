@@ -18,6 +18,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.slf4j.LoggerFactory;
 
@@ -323,7 +326,8 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 
 	protected ParameterSet getNextParameterSet()
 			throws InternalAttributeException, RegisterException,
-			NoParameterSetFoundException, InterruptedException {
+			NoParameterSetFoundException, InterruptedException,
+			ParameterSetAlreadyEvaluatedException {
 		return this.getNextParameterSet(null);
 	}
 
@@ -362,11 +366,12 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 *             This exception is thrown, if no parameter set was found that
 	 *             was not already evaluated before.
 	 * @throws InterruptedException
+	 * @throws ParameterSetAlreadyEvaluatedException
 	 */
 	protected abstract ParameterSet getNextParameterSet(
 			ParameterSet forcedParameterSet) throws InternalAttributeException,
 			RegisterException, NoParameterSetFoundException,
-			InterruptedException;
+			InterruptedException, ParameterSetAlreadyEvaluatedException;
 
 	/**
 	 * @return True, if there are more iterations together with parameter sets
@@ -395,10 +400,11 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 *             This exception is thrown, if no parameter set was found that
 	 *             was not already evaluated before.
 	 * @throws InterruptedException
+	 * @throws ParameterSetAlreadyEvaluatedException
 	 */
 	public final ParameterSet next() throws InternalAttributeException,
 			RegisterException, NoParameterSetFoundException,
-			InterruptedException {
+			InterruptedException, ParameterSetAlreadyEvaluatedException {
 		return this.next(null, -1);
 	}
 
@@ -437,11 +443,12 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 *             This exception is thrown, if no parameter set was found that
 	 *             was not already evaluated before.
 	 * @throws InterruptedException
+	 * @throws ParameterSetAlreadyEvaluatedException
 	 */
 	public final ParameterSet next(final ParameterSet forcedParameterSet,
 			final long iterationNumber) throws InternalAttributeException,
 			RegisterException, NoParameterSetFoundException,
-			InterruptedException {
+			InterruptedException, ParameterSetAlreadyEvaluatedException {
 		if (this.result == null)
 			throw new IllegalStateException("reset(File) has not been called");
 		// if (this.result.getParameterSets().size() > 0) {
@@ -479,26 +486,24 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 			// iterations
 			this.currentCount = (int) iterationNumber;
 		} else {
-			do {
-				// if result is not equal to null, we found a parameter set,
-				// that was already assessed. then we give the same quality
-				// feedback as last time and look for the next parameter set
-				if (result != null) {
-					this.giveQualityFeedback(result, this.result.get(result));
-					this.log.info(run.toString() + " (" + programConfig + ","
-							+ dataConfig + ") "
-							+ "Skipping calculation of parameter set " + result
-							+ " (has already been assessed)");
-					result = null;
-					if (!hasNext())
-						break;
-				}
-				result = getNextParameterSet();
-				this.currentCount++;
-				if (!this.result.getParameterSets().contains(result))
-					this.result.put(this.currentCount, result, null);
-				this.result.getParameterSets().add(result);
-			} while (this.result.get(result) != null);
+			// do {
+			result = getNextParameterSet();
+			this.currentCount++;
+
+			long iter = this.result.getIterationNumberForParameterSet(result);
+
+			if (!this.result.getParameterSets().contains(result))
+				this.result.put(this.currentCount, result, null);
+			this.result.getParameterSets().add(result);
+
+			if (iter > -1) {
+				this.giveQualityFeedback(result, this.result.get(result));
+				if (hasNext())
+					throw new ParameterSetAlreadyEvaluatedException(
+							this.currentCount, iter, result);
+				result = null;
+			}
+			// } while (this.result.get(result) != null);
 		}
 		if (result == null)
 			throw new NoParameterSetFoundException(
@@ -662,13 +667,22 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 			oldResults.loadIntoMemory();
 			List<ParameterSet> parameterSets = oldResults.getParameterSets();
 			List<Long> iterationNumbers = oldResults.getIterationNumbers();
-			for (int i = 0; i < parameterSets.size(); i++) {
-				final ParameterSet paramSet = parameterSets.get(i);
-				final long iterationNumber = iterationNumbers.get(i);
+			SortedMap<Long, ParameterSet> paramSetsWithOrdering = new TreeMap<Long, ParameterSet>();
+			for (int i = 0; i < parameterSets.size(); i++)
+				paramSetsWithOrdering.put(iterationNumbers.get(i),
+						parameterSets.get(i));
+
+			for (Entry<Long, ParameterSet> entry : paramSetsWithOrdering
+					.entrySet()) {
+				final ParameterSet paramSet = entry.getValue();
+				final long iterationNumber = entry.getKey();
 				try {
 					this.next(paramSet, iterationNumber);
 				} catch (NoParameterSetFoundException e) {
 					// doesn't occur
+				} catch (ParameterSetAlreadyEvaluatedException e) {
+					// we can ignore this exception here and give the same
+					// feedback as before.
 				}
 				this.giveQualityFeedback(paramSet, oldResults.get(paramSet));
 			}

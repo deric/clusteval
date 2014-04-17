@@ -15,6 +15,7 @@ package de.clusteval.run.runnable;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ import de.clusteval.cluster.paramOptimization.IDivergingParameterOptimizationMet
 import de.clusteval.cluster.paramOptimization.NoParameterSetFoundException;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationException;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
+import de.clusteval.cluster.paramOptimization.ParameterSetAlreadyEvaluatedException;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.cluster.quality.ClusteringQualityMeasureValue;
 import de.clusteval.cluster.quality.ClusteringQualitySet;
@@ -116,6 +118,7 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			// 15.04.2013: changed invocation of next() to beginning of
 			// doRunIteration() in order to get the right iteration numbner
 			// now here: get the parameter set created there
+			// TODO: change this to iterationWrapper
 			List<ParameterSet> paramSets = optimizationMethod.getResult()
 					.getParameterSets();
 			ParameterSet optimizationParamValues = paramSets.get(paramSets
@@ -266,10 +269,29 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			RNotAvailableException, RLibraryNotLoadedException,
 			InterruptedException {
 		try {
-			iterationWrapper.setParameterSet(optimizationMethod.next());
-			iterationWrapper
-					.setOptId(this.optimizationMethod.getCurrentCount());
-			super.doRunIteration(iterationWrapper);
+			try {
+				iterationWrapper.setParameterSet(optimizationMethod.next());
+				iterationWrapper.setOptId(this.optimizationMethod
+						.getCurrentCount());
+				super.doRunIteration(iterationWrapper);
+			} catch (ParameterSetAlreadyEvaluatedException e) {
+
+				this.log.info(run.toString() + " (" + programConfig + ","
+						+ dataConfig + ") "
+						+ "Skipping calculation of iteration "
+						+ e.getParameterSet() + " (has already been assessed)");
+
+				// if this parameter set has already been evaluated, write into
+				// the complete file
+				StringBuilder sb = new StringBuilder();
+				sb.append(e.getIterationNumber());
+				sb.append("*\t");
+				sb.append(e.getPreviousIterationNumber());
+				sb.append(System.getProperty("line.separator"));
+
+				FileUtils.appendStringToFile(completeQualityOutput,
+						sb.toString());
+			}
 		} finally {
 			// changed 25.01.2013
 			int iterationPercent = (int) (this.optimizationMethod
@@ -372,7 +394,6 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 		ParameterSet paramSet = new ParameterSet();
 		for (ProgramParameter<?> param : optimizationMethod
 				.getOptimizationParameter())
-			// if (qualities.get(0).getFirst().containsKey(param.getName()))
 			paramSet.put(param.getName(),
 					qualities.get(0).getFirst().get(param.getName()));
 		this.optimizationMethod.giveQualityFeedback(paramSet, qualities.get(0)
