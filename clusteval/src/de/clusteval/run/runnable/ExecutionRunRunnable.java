@@ -775,6 +775,8 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			@Override
 			public void run() {
 				try {
+					if (isInterrupted())
+						return;
 
 					ProgramConfig programConfig = iterationWrapper
 							.getProgramConfig();
@@ -853,14 +855,18 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 										getRun(), programConfig, dataConfig,
 										iterationWrapper.getOptId(), clustSet
 												.getSecond().toString()));
-							synchronized (completeQualityOutput) {								
-								// 04.04.2013: adding iteration number to qualities
+							synchronized (completeQualityOutput) {
+								// 04.04.2013: adding iteration number to
+								// qualities
 								List<Triple<ParameterSet, ClusteringQualitySet, Long>> qualitiesWithIterations = new ArrayList<Triple<ParameterSet, ClusteringQualitySet, Long>>();
 								for (Pair<ParameterSet, ClusteringQualitySet> pair : qualities)
-									qualitiesWithIterations.add(Triple.getTriple(
-											pair.getFirst(), pair.getSecond(),
-											new Long(iterationWrapper.getOptId())));
-								
+									qualitiesWithIterations.add(Triple
+											.getTriple(
+													pair.getFirst(),
+													pair.getSecond(),
+													new Long(iterationWrapper
+															.getOptId())));
+
 								writeQualitiesToFile(qualitiesWithIterations);
 							}
 							// synchronized!
