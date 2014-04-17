@@ -571,8 +571,8 @@ public class RunSchedulerThread extends ClustevalThread {
 		for (Collection<Run> runs : this.clientToRuns.values())
 			for (Run run : runs)
 				run.terminate();
-		this.threadPool.shutdown();
-		this.iterationThreadPool.shutdown();
+		this.threadPool.shutdownNow();
+		this.iterationThreadPool.shutdownNow();
 		super.interrupt();
 	}
 
