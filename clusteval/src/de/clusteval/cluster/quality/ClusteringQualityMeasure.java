@@ -255,7 +255,7 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 			return true;
 		// 06.05.2014: if this quality is NaN, the new one is always considered
 		// better
-		if (quality1.getValue() == Double.NaN)
+		if (quality2.getValue() == Double.NaN)
 			return true;
 		return isBetterThanHelper(quality1, quality2);
 	}
