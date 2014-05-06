@@ -162,7 +162,7 @@ public class ClustQualityEval {
 			measures.add(ClusteringQualityMeasure.parseFromString(this.repo,
 					measureSimpleName));
 		}
-		
+
 		Set<Thread> threads = new HashSet<Thread>();
 
 		for (final ProgramConfig pc : run.getProgramConfigs()) {
@@ -227,8 +227,13 @@ public class ClustQualityEval {
 								// been evaluated
 								List<ClusteringQualityMeasure> toEvaluate = new ArrayList<ClusteringQualityMeasure>(
 										measures);
+								try {
 								toEvaluate
 										.removeAll(cl.getQualities().keySet());
+								} catch (NullPointerException e) {
+									System.out.println(clusteringFile);
+									throw e;
+								}
 								ClusteringQualitySet quals = new ClusteringQualitySet();
 								// evaluate the new quality measures
 								if (!toEvaluate.isEmpty()) {
@@ -367,6 +372,9 @@ public class ClustQualityEval {
 
 										measures.addAll(requiredMeasures);
 									}
+								} else if (value[0].contains("*")) {
+									return String.format("%s%n",
+											combineColumns(value));
 								} else {
 									long iterationNumber = Long
 											.parseLong(value[0]);

@@ -751,7 +751,8 @@ public class Repository {
 		// close Rengine pool
 		// this.rEngineForLibraryInstalledChecks.close();
 		for (MyRengine rEngine : this.rEngines.values())
-			rEngine.close();
+			// rEngine.close();
+			rEngine.shutdown();
 
 		// terminate supervisor thread
 		if (this.supervisorThread == null)

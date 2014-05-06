@@ -209,7 +209,7 @@ public abstract class ExecutionRun extends Run {
 			if (this.runnables.isEmpty())
 				return true;
 			for (RunRunnable thread : this.runnables) {
-				thread.getFuture().cancel(true);
+				thread.terminate();
 			}
 			this.setStatus(RUN_STATUS.TERMINATED);
 			return true;

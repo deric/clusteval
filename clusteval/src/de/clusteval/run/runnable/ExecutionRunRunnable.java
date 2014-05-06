@@ -192,6 +192,19 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		return (ExecutionRun) super.getRun();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.run.runnable.RunRunnable#terminate()
+	 */
+	@Override
+	public void terminate() {
+		// TODO: cancel all the iteration threads
+		// for (Future<?> f: )
+
+		super.terminate();
+	}
+
 	/**
 	 * A helper method to write a header into the complete quality output in the
 	 * beginning.
@@ -1426,8 +1439,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			try {
 				f.get();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
-
+				// we don't care about those interrupted exceptions
 			} catch (ExecutionException e) {
 				e.printStackTrace();
 			}

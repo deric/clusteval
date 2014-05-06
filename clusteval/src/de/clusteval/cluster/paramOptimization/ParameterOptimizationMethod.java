@@ -454,7 +454,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 		// if (this.result.getParameterSets().size() > 0) {
 		// ParameterSet last = result.getParameterSets().get(
 		// result.getParameterSets().size() - 1);
-		// // TODO: removed 16.04.2014, because we now allow to start several
+		// removed 16.04.2014, because we now allow to start several
 		// iterations in parallel
 		// // if (result.get(last) == null)
 		// // throw new IllegalStateException(
@@ -638,7 +638,6 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 * 
 	 * @param absResultPath
 	 *            The absolute path pointing to the result file.
-	 * @throws ParameterOptimizationException
 	 * @throws InternalAttributeException
 	 * @throws RegisterException
 	 * @throws RunResultParseException
@@ -695,7 +694,6 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	 * This method initializes the parameter values of each optimization
 	 * parameter that should be assessed during the process.
 	 * 
-	 * @throws ParameterOptimizationException
 	 * @throws InternalAttributeException
 	 */
 	@SuppressWarnings("unused")

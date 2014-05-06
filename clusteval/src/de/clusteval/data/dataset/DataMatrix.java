@@ -13,7 +13,6 @@
  */
 package de.clusteval.data.dataset;
 
-import utils.MySparseDoubleMatrix2D;
 
 /**
  * This is a wrapper class for absolute data that needs to be stored in memory.
@@ -26,7 +25,8 @@ import utils.MySparseDoubleMatrix2D;
 public class DataMatrix {
 
 	protected String[] ids;
-	protected MySparseDoubleMatrix2D sparseMatrix;
+	// protected MySparseDoubleMatrix2D sparseMatrix;
+	protected double[][] data;
 
 	/**
 	 * @param ids
@@ -35,7 +35,8 @@ public class DataMatrix {
 	public DataMatrix(final String[] ids, final double[][] data) {
 		super();
 		this.ids = ids;
-		this.sparseMatrix = new MySparseDoubleMatrix2D(data);
+		// this.sparseMatrix = new MySparseDoubleMatrix2D(data);
+		this.data = data;
 	}
 
 	/**
@@ -49,6 +50,7 @@ public class DataMatrix {
 	 * @return The absolute coordinates of the objects contained in this matrix.
 	 */
 	public double[][] getData() {
-		return this.sparseMatrix.toArray();
+//		return this.sparseMatrix.toArray();
+		return this.data;
 	}
 }

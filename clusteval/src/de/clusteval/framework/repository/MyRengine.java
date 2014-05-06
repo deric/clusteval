@@ -181,8 +181,20 @@ public class MyRengine {
 		return this.connection.getLastError();
 	}
 
+	/*
+	 * TODO: Put javadoc of {@link RConnection#close()}
+	 */
 	protected boolean close() {
 		return this.connection.close();
+	}
+
+	protected boolean shutdown() {
+		try {
+			this.connection.shutdown();
+			return true;
+		} catch (RserveException e) {
+			return false;
+		}
 	}
 
 	public void assign(String arg0, String[] arg1) throws REngineException {

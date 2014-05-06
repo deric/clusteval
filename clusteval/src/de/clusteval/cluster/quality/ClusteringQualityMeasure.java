@@ -184,7 +184,7 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		// TODO: changed 05.12.2013
+		// changed 05.12.2013
 		return this.getClass().getSimpleName()
 				.equals(obj.getClass().getSimpleName());
 	}
@@ -252,6 +252,10 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 		if (!quality1.isTerminated)
 			return false;
 		if (!quality2.isTerminated)
+			return true;
+		// 06.05.2014: if this quality is NaN, the new one is always considered
+		// better
+		if (quality1.getValue() == Double.NaN)
 			return true;
 		return isBetterThanHelper(quality1, quality2);
 	}

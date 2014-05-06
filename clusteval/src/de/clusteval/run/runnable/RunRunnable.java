@@ -187,6 +187,10 @@ public abstract class RunRunnable implements Runnable {
 			afterRun();
 		}
 	}
+	
+	public void terminate() {
+		this.getFuture().cancel(true);
+	}
 
 	/**
 	 * This method is invoked by {@link #run()} before anything else is done. It
