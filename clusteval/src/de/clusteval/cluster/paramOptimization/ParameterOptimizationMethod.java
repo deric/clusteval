@@ -498,10 +498,10 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 
 			if (iter > -1) {
 				this.giveQualityFeedback(result, this.result.get(result));
-				if (hasNext())
+//				if (hasNext())
 					throw new ParameterSetAlreadyEvaluatedException(
 							this.currentCount, iter, result);
-				result = null;
+//				result = null;
 			}
 			// } while (this.result.get(result) != null);
 		}

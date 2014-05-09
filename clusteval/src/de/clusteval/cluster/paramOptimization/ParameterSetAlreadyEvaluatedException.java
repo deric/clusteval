@@ -3,7 +3,6 @@
  */
 package de.clusteval.cluster.paramOptimization;
 
-import de.clusteval.cluster.quality.ClusteringQualitySet;
 import de.clusteval.program.ParameterSet;
 
 /**
