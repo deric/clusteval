@@ -24,7 +24,6 @@ import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 import ch.qos.logback.classic.Level;
 import de.clusteval.framework.repository.InvalidRepositoryException;

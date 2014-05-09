@@ -148,6 +148,16 @@ public class ClusteringRunResult extends ExecutionRunResult {
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.getAbsolutePath();
+	}
+
 	/**
 	 * Convert to.
 	 * 
@@ -287,7 +297,8 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	 */
 	public static Run parseFromRunResultFolder(final ClusteringRun run,
 			final Repository repository, final File runResultFolder,
-			final List<RunResult> result) throws RegisterException {
+			final List<RunResult> result, final boolean register)
+			throws RegisterException {
 
 		File clusterFolder = new File(FileUtils.buildPath(
 				runResultFolder.getAbsolutePath(), "clusters"));
@@ -300,7 +311,7 @@ public class ClusteringRunResult extends ExecutionRunResult {
 								+ ".1.results.conv"));
 				final ClusteringRunResult tmpResult = parseFromRunResultCompleteFile(
 						repository, run, dataConfig, programConfig,
-						completeFile);
+						completeFile, register);
 				if (tmpResult != null)
 					result.add(tmpResult);
 			}
@@ -322,7 +333,8 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	public static ClusteringRunResult parseFromRunResultCompleteFile(
 			Repository repository, ClusteringRun run,
 			final DataConfig dataConfig, final ProgramConfig programConfig,
-			final File completeFile) throws RegisterException {
+			final File completeFile, final boolean register)
+			throws RegisterException {
 		ClusteringRunResult result = null;
 		if (completeFile.exists()) {
 			result = new ClusteringRunResult(repository,
@@ -330,13 +342,14 @@ public class ClusteringRunResult extends ExecutionRunResult {
 					programConfig, programConfig.getOutputFormat(),
 					completeFile.getParentFile().getParentFile().getName(), run);
 
-			/*
-			 * Register after parsing
-			 */
-			result.loadIntoMemory();
-			result.register();
-			result.unloadFromMemory();
-
+			if (register) {
+				/*
+				 * Register after parsing
+				 */
+				result.loadIntoMemory();
+				result.register();
+				result.unloadFromMemory();
+			}
 		}
 		return result;
 	}
@@ -393,8 +406,9 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	 */
 	public static Run parseFromRunResultFolder(
 			final Repository parentRepository, final File runResultFolder,
-			final List<ExecutionRunResult> result) throws IOException,
-			UnknownRunResultFormatException, UnknownDataSetFormatException,
+			final List<ExecutionRunResult> result, final boolean register)
+			throws IOException, UnknownRunResultFormatException,
+			UnknownDataSetFormatException,
 			UnknownClusteringQualityMeasureException, InvalidRunModeException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
@@ -453,7 +467,7 @@ public class ClusteringRunResult extends ExecutionRunResult {
 									+ ".results.qual.complete"));
 					final ClusteringRunResult tmpResult = parseFromRunResultCompleteFile(
 							parentRepository, paramRun, dataConfig,
-							programConfig, completeFile);
+							programConfig, completeFile, register);
 					if (tmpResult != null)
 						result.add(tmpResult);
 				}

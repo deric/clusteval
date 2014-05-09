@@ -359,8 +359,9 @@ public class RunAnalysisRunResult
 	 */
 	public static RunAnalysisRunResult parseFromRunResultFolder(
 			final RunAnalysisRun run, final Repository repository,
-			final File runResultFolder, final List<RunResult> result)
-			throws RunResultParseException, RegisterException {
+			final File runResultFolder, final List<RunResult> result,
+			final boolean register) throws RunResultParseException,
+			RegisterException {
 
 		RunAnalysisRunResult analysisResult = null;
 
@@ -396,7 +397,8 @@ public class RunAnalysisRunResult
 
 		result.add(analysisResult);
 
-		analysisResult.register();
+		if (register)
+			analysisResult.register();
 		return analysisResult;
 	}
 

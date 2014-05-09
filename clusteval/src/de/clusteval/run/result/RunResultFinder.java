@@ -54,6 +54,9 @@ public class RunResultFinder extends FileFinder<RunResult> {
 	 */
 	@Override
 	protected RunResult parseObjectFromFile(File file) throws Exception {
+		iter.getRunResult().loadIntoMemory();
+		iter.getRunResult().register();
+		iter.getRunResult().unloadFromMemory();
 		return iter.getRunResult();
 	}
 
@@ -82,7 +85,7 @@ public class RunResultFinder extends FileFinder<RunResult> {
 		while (!f.getParentFile().getName().equals("results"))
 			f = f.getParentFile();
 		uniqueRunId = f.getName();
-		return ((repository.getRegisteredRunResult(uniqueRunId) == null) && !isRunning(uniqueRunId));
+		return !isRunning(uniqueRunId);
 	}
 
 	protected boolean isRunning(final String uniqueRunIdentifier) {
@@ -136,7 +139,7 @@ class RunResultIterator implements Iterator<File> {
 			try {
 				List<RunResult> newResults = new ArrayList<RunResult>();
 				RunResult.parseFromRunResultFolder(repo, basePath.next(),
-						newResults, false, false);
+						newResults, false, false, false);
 				this.parsedResults.addAll(newResults);
 				exception = false;
 			} catch (InterruptedException e) {

@@ -141,8 +141,9 @@ public abstract class RunResult extends RepositoryObject {
 	public static Run parseFromRunResultFolder(
 			final Repository parentRepository, final File runResultFolder,
 			final List<RunResult> result, final boolean parseClusterings,
-			final boolean storeClusterings) throws IOException,
-			UnknownRunResultFormatException, UnknownDataSetFormatException,
+			final boolean storeClusterings, final boolean register)
+			throws IOException, UnknownRunResultFormatException,
+			UnknownDataSetFormatException,
 			UnknownClusteringQualityMeasureException, InvalidRunModeException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
@@ -197,25 +198,25 @@ public abstract class RunResult extends RepositoryObject {
 		if (run instanceof ClusteringRun) {
 			return ClusteringRunResult.parseFromRunResultFolder(
 					(ClusteringRun) run, childRepository, runResultFolder,
-					result);
+					result, register);
 		} else if (run instanceof ParameterOptimizationRun) {
 			return ParameterOptimizationResult.parseFromRunResultFolder(
 					(ParameterOptimizationRun) run, childRepository,
 					runResultFolder, result, parseClusterings,
-					storeClusterings, true);
+					storeClusterings, register);
 		} else if (run instanceof DataAnalysisRun) {
 			DataAnalysisRunResult.parseFromRunResultFolder(
 					(DataAnalysisRun) run, childRepository, runResultFolder,
-					result);
+					result, register);
 			return run;
 		} else if (run instanceof RunDataAnalysisRun) {
 			RunDataAnalysisRunResult.parseFromRunResultFolder(
 					(RunDataAnalysisRun) run, childRepository, runResultFolder,
-					result);
+					result, register);
 			return run;
 		} else if (run instanceof RunAnalysisRun) {
 			RunAnalysisRunResult.parseFromRunResultFolder((RunAnalysisRun) run,
-					childRepository, runResultFolder, result);
+					childRepository, runResultFolder, result, register);
 			return run;
 		}
 		return run;

@@ -316,8 +316,9 @@ public class DataAnalysisRunResult
 	 */
 	public static DataAnalysisRunResult parseFromRunResultFolder(
 			final DataAnalysisRun run, final Repository parentRepository,
-			final File runResultFolder, final List<RunResult> result)
-			throws RegisterException, RunResultParseException {
+			final File runResultFolder, final List<RunResult> result,
+			final boolean register) throws RegisterException,
+			RunResultParseException {
 
 		DataAnalysisRunResult analysisResult = null;
 
@@ -328,10 +329,11 @@ public class DataAnalysisRunResult
 				analysesFolder.lastModified(), analysesFolder, analysesFolder
 						.getParentFile().getName(), run);
 
-		analysisResult.loadIntoMemory();
-		analysisResult.register();
-		analysisResult.unloadFromMemory();
-
+		if (register) {
+			analysisResult.loadIntoMemory();
+			analysisResult.register();
+			analysisResult.unloadFromMemory();
+		}
 		result.add(analysisResult);
 		return analysisResult;
 	}
