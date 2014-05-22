@@ -243,7 +243,7 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 			RLibraryNotLoadedException, RNotAvailableException {
 
 		rEngine = repository.getRengineForCurrentThread();
-		
+
 		// load the required R libraries
 		String[] requiredLibraries;
 		if (this.getClass().isAnnotationPresent(RLibraryRequirement.class))
@@ -283,18 +283,25 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 	protected void afterExec(DataConfig dataConfig,
 			ProgramConfig programConfig, String[] invocationLine,
 			Map<String, String> effectiveParams,
-			Map<String, String> internalParams) throws RserveException,
-			REXPMismatchException, IOException {
+			Map<String, String> internalParams) throws REXPMismatchException,
+			IOException, REngineException {
 		// try {
-		final String resultAsString = execResultToString(dataConfig,
-				programConfig, invocationLine, effectiveParams, internalParams);
+		try {
+			final String resultAsString = execResultToString(dataConfig,
+					programConfig, invocationLine, effectiveParams,
+					internalParams);
 
-		File output = new File(internalParams.get("o"));
+			File output = new File(internalParams.get("o"));
 
-		BufferedWriter bw = new BufferedWriter(new FileWriter(output));
-		bw.append(resultAsString);
-		bw.close();
-
+			BufferedWriter bw = new BufferedWriter(new FileWriter(output));
+			bw.append(resultAsString);
+			bw.close();
+		} catch (StringIndexOutOfBoundsException e) {
+			REngineException e2 = new REngineException(null,
+					"The R program returned an empty clustering");
+			e2.initCause(e);
+			throw e2;
+		}
 		// } finally {
 		// rEngine.close();
 		// }
