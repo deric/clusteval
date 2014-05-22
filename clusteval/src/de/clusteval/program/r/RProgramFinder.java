@@ -23,7 +23,7 @@ import de.clusteval.utils.JARFinder;
 
 /**
  * Objects of this class look for new RPrograms in the program-directory defined
- * in the corresponding repository (see {@link Repository#programBasePath}).
+ * in the corresponding repository.
  * 
  * @author Christian Wiwie
  * 
@@ -125,7 +125,8 @@ class RProgramURLClassLoader extends URLClassLoader {
 		if (name.startsWith("de.clusteval.program.r")
 				&& !name.equals("de.clusteval.program.r.RProgram")
 				&& !name.equals("de.clusteval.program.r.RelativeDataRProgram")
-				&& !name.equals("de.clusteval.program.r.AbsoluteDataRProgram")) {
+				&& !name.equals("de.clusteval.program.r.AbsoluteDataRProgram")
+				&& !name.equals("de.clusteval.program.r.AbsoluteAndRelativeDataRProgram")) {
 			if (name.endsWith("RProgram")) {
 				@SuppressWarnings("unchecked")
 				Class<? extends RProgram> rProgram = (Class<? extends RProgram>) result;

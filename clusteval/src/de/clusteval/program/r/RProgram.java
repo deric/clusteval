@@ -231,6 +231,9 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 		}
 	}
 
+	/**
+	 * @return The r engine corresponding to this rprogram.
+	 */
 	public MyRengine getRengine() {
 		return this.rEngine;
 	}
@@ -273,9 +276,8 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 	protected abstract Object extractDataSetContent(DataConfig dataConfig);
 
 	@SuppressWarnings("unused")
-	protected final void doExec(DataConfig dataConfig,
-			ProgramConfig programConfig, String[] invocationLine,
-			Map<String, String> effectiveParams,
+	protected void doExec(DataConfig dataConfig, ProgramConfig programConfig,
+			String[] invocationLine, Map<String, String> effectiveParams,
 			Map<String, String> internalParams) throws RserveException {
 		rEngine.eval("result <- " + StringExt.paste(" ", invocationLine));
 	}
