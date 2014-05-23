@@ -497,20 +497,24 @@ public abstract class ProgramParameter<T> extends RepositoryObject {
 		String description = paramValues.get("desc");
 		String def = paramValues.get("def");
 
-		// TODO: options for float and integer not supported yet! add it!
+		// 23.05.2014: added support for options for float and integer
+		// parameters. if options are given, we set minValue and maxValue to the
+		// empty string.
 		ProgramParameter<?> param = null;
+		String[] options = config.getStringArray("options");
+		String minValue = paramValues.get("minValue");
+		String maxValue = paramValues.get("maxValue");
+		if (config.containsKey("options")) {
+			minValue = "";
+			maxValue = "";
+		}
 		if (type.equals(ParameterType.FLOAT)) {
-			String minValue = paramValues.get("minValue");
-			String maxValue = paramValues.get("maxValue");
 			param = DoubleProgramParameter.parseFromStrings(programConfig, na,
-					description, minValue, maxValue, def);
+					description, minValue, maxValue, options, def);
 		} else if (type.equals(ParameterType.INTEGER)) {
-			String minValue = paramValues.get("minValue");
-			String maxValue = paramValues.get("maxValue");
 			param = IntegerProgramParameter.parseFromStrings(programConfig, na,
-					description, minValue, maxValue, def);
+					description, minValue, maxValue, options, def);
 		} else if (type.equals(ParameterType.STRING)) {
-			String[] options = config.getStringArray("options");
 			param = StringProgramParameter.parseFromStrings(programConfig, na,
 					description, options, def);
 		}

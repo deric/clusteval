@@ -41,6 +41,7 @@ public class IntegerProgramParameter extends ProgramParameter<Integer> {
 	 *            The minimal value of the parameter.
 	 * @param maxValue
 	 *            The maximal value of the parameter.
+	 * @param options
 	 * @param def
 	 *            The default value of the parameter.
 	 * @return The parsed integer program parameter.
@@ -49,11 +50,12 @@ public class IntegerProgramParameter extends ProgramParameter<Integer> {
 	public static IntegerProgramParameter parseFromStrings(
 			final ProgramConfig programConfig, final String name,
 			final String desc, final String minValue, final String maxValue,
-			final String def) throws RegisterException {
+			final String[] options, final String def) throws RegisterException {
 		final Repository repo = programConfig.getRepository();
 
 		IntegerProgramParameter result = new IntegerProgramParameter(repo,
-				true, programConfig, name, desc, minValue, maxValue, def);
+				true, programConfig, name, desc, minValue, maxValue, options,
+				def);
 
 		result = programConfig.getRepository().getRegisteredObject(result);
 
@@ -78,6 +80,7 @@ public class IntegerProgramParameter extends ProgramParameter<Integer> {
 	 *            The minimal value of the parameter.
 	 * @param maxValue
 	 *            The maximal value of the parameter.
+	 * @param options
 	 * @param def
 	 *            The default value of the parameter.
 	 * @throws RegisterException
@@ -85,9 +88,10 @@ public class IntegerProgramParameter extends ProgramParameter<Integer> {
 	public IntegerProgramParameter(final Repository repository,
 			final boolean register, final ProgramConfig programConfig,
 			final String name, final String desc, String minValue,
-			String maxValue, String def) throws RegisterException {
+			String maxValue, final String[] options, String def)
+			throws RegisterException {
 		super(repository, register, programConfig, name, desc, minValue,
-				maxValue, new String[0], def);
+				maxValue, options, def);
 	}
 
 	/**

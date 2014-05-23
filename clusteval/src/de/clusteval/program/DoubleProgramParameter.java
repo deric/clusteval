@@ -47,11 +47,11 @@ public class DoubleProgramParameter extends ProgramParameter<Double> {
 	public static DoubleProgramParameter parseFromStrings(
 			final ProgramConfig programConfig, final String name,
 			final String desc, final String minValue, final String maxValue,
-			final String def) throws RegisterException {
+			final String[] options, final String def) throws RegisterException {
 		final Repository repo = programConfig.getRepository();
 
 		DoubleProgramParameter result = new DoubleProgramParameter(repo, true,
-				programConfig, name, desc, minValue, maxValue, def);
+				programConfig, name, desc, minValue, maxValue, options, def);
 
 		result = programConfig.getRepository().getRegisteredObject(result);
 
@@ -83,9 +83,10 @@ public class DoubleProgramParameter extends ProgramParameter<Double> {
 	protected DoubleProgramParameter(final Repository repository,
 			final boolean register, final ProgramConfig programConfig,
 			final String name, final String desc, String minValue,
-			String maxValue, String def) throws RegisterException {
+			String maxValue, final String[] options, String def)
+			throws RegisterException {
 		super(repository, register, programConfig, name, desc, minValue,
-				maxValue, new String[0], def);
+				maxValue, options, def);
 	}
 
 	/**
