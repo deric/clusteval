@@ -11,6 +11,7 @@
 package de.clusteval.serverclient;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -24,6 +25,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import jline.console.ConsoleReader;
@@ -60,12 +62,27 @@ import file.FileUtils;
  */
 public class BackendClient extends Thread {
 
+	protected static String VERSION;
+
 	/**
 	 * This variable holds the command line options of the backend server.
 	 */
 	public static Options clientCLIOptions = new Options();
 
 	static {
+		// read properties file with version number
+		Properties prop = new Properties();
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		InputStream stream = loader.getResourceAsStream("client.date");
+		try {
+			prop.load(stream);
+			VERSION = "Jar built: " + prop.getProperty("buildtime")
+					+ "\nGit:\n\tCommit: " + prop.getProperty("gitrev")
+					+ "\n\tBranch: " + prop.getProperty("gitbranch")
+					+ "\n\tRepository: " + prop.getProperty("gitrepo");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		OptionBuilder.withArgName("level");
 		OptionBuilder.hasArg();
@@ -78,6 +95,10 @@ public class BackendClient extends Thread {
 		OptionBuilder.withDescription("Print this help and usage information");
 		Option optionHelp = OptionBuilder.create("help");
 		clientCLIOptions.addOption(optionHelp);
+
+		OptionBuilder.withDescription("Print the version of this client");
+		Option optionVersion = OptionBuilder.create("version");
+		clientCLIOptions.addOption(optionVersion);
 
 		// init valid command line options
 		OptionBuilder.withArgName("ip");
@@ -804,9 +825,18 @@ public class BackendClient extends Thread {
 				System.exit(0);
 			}
 
+			if (params.hasOption("version")) {
+				System.out.println(VERSION);
+				System.exit(0);
+			}
+
 			initLogging(params);
 
 			Logger log = LoggerFactory.getLogger(BackendClient.class);
+
+			System.out.println("Starting clusteval client");
+			System.out.println(VERSION);
+			System.out.println("=========================");
 
 			// if command line arguments (except connection parameters) are
 			// passed, we do not start a console

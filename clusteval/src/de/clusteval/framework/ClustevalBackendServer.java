@@ -16,6 +16,7 @@ package de.clusteval.framework;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NoSuchObjectException;
@@ -32,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -146,8 +148,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	protected static BackendServerConfig config = new BackendServerConfig();
 
-	protected static String VERSION = "1.0 build1/"
-			+ Formatter.currentTimeAsString(true, "MM.dd.yyyy", Locale.UK);
+	protected static String VERSION;
 
 	/**
 	 * @return The configuration of this backend server.
@@ -157,6 +158,19 @@ public class ClustevalBackendServer implements IBackendServer {
 	}
 
 	static {
+		// read properties file with version number
+		Properties prop = new Properties();
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		InputStream stream = loader.getResourceAsStream("server.date");
+		try {
+			prop.load(stream);
+			VERSION = "Jar built: " + prop.getProperty("buildtime")
+					+ "\nGit:\n\tCommit: " + prop.getProperty("gitrev")
+					+ "\n\tBranch: " + prop.getProperty("gitbranch")
+					+ "\n\tRepository: " + prop.getProperty("gitrepo");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		// init valid command line options
 		OptionBuilder.withArgName("absRepositoryPath");
@@ -168,6 +182,10 @@ public class ClustevalBackendServer implements IBackendServer {
 		OptionBuilder.withDescription("Print this help and usage information");
 		Option optionHelp = OptionBuilder.create("help");
 		serverCLIOptions.addOption(optionHelp);
+
+		OptionBuilder.withDescription("Print the version of this client");
+		Option optionVersion = OptionBuilder.create("version");
+		serverCLIOptions.addOption(optionVersion);
 
 		OptionBuilder.withArgName("port");
 		OptionBuilder.hasArg();
@@ -389,6 +407,11 @@ public class ClustevalBackendServer implements IBackendServer {
 				System.exit(0);
 			}
 
+			if (cmd.hasOption("version")) {
+				System.out.println(VERSION);
+				System.exit(0);
+			}
+
 			if (cmd.getArgList().size() > 0)
 				throw new ParseException("Unknown parameters: "
 						+ Arrays.toString(cmd.getArgs()));
@@ -412,6 +435,10 @@ public class ClustevalBackendServer implements IBackendServer {
 				config.setNoDatabase(true);
 
 			Logger log = LoggerFactory.getLogger(ClustevalBackendServer.class);
+
+			System.out.println("Starting clusteval server");
+			System.out.println(VERSION);
+			System.out.println("=========================");
 
 			try {
 				// try to establish a connection to R
