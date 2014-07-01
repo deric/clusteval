@@ -1369,12 +1369,33 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		}
 		if (checkForInterrupted())
 			return;
-		try {
-			this.log.info("Assessing isoMDS coordinates of dataset samples ...");
-			Plotter.assessAndWriteIsoMDSCoordinates(this.dataConfig);
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
+
+		// 30.06.2014: performing isoMDS calculations in parallel
+		final DataConfig dcMDS = this.dataConfig;
+		IterationRunnable iterationRunnable = new IterationRunnable(null) {
+
+			@Override
+			public void run() {
+				try {
+					this.log.info("Assessing isoMDS coordinates of dataset samples ...");
+					Plotter.assessAndWriteIsoMDSCoordinates(dcMDS);
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			}
+		};
+
+		this.iterationRunnables.add(iterationRunnable);
+
+		final RunSchedulerThread runScheduler;
+		if (this.getRun().getRepository() instanceof RunResultRepository)
+			runScheduler = this.getRun().getRepository().getParent()
+					.getSupervisorThread().getRunScheduler();
+		else
+			runScheduler = this.getRun().getRepository().getSupervisorThread()
+					.getRunScheduler();
+		this.futures.add(runScheduler
+				.registerIterationRunnable(iterationRunnable));
 
 		if (checkForInterrupted())
 			return;
