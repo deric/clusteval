@@ -1400,12 +1400,25 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		if (checkForInterrupted())
 			return;
 
-		try {
-			this.log.info("Assessing PCA coordinates of dataset samples ...");
-			Plotter.assessAndWritePCACoordinates(this.dataConfig);
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
+		// 30.06.2014: performing isoMDS calculations in parallel
+		final DataConfig dcPCA = this.dataConfig;
+		iterationRunnable = new IterationRunnable(null) {
+
+			@Override
+			public void run() {
+				try {
+					this.log.info("Assessing PCA coordinates of dataset samples ...");
+					Plotter.assessAndWritePCACoordinates(dcPCA);
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			}
+		};
+
+		this.iterationRunnables.add(iterationRunnable);
+
+		this.futures.add(runScheduler
+				.registerIterationRunnable(iterationRunnable));
 
 		setInternalAttributes();
 
