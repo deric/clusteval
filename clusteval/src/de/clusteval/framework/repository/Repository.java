@@ -699,6 +699,12 @@ public class Repository {
 			throws ScriptException {
 		ScriptEngineManager mgr = new ScriptEngineManager();
 		ScriptEngine engine = mgr.getEngineByName("JavaScript");
+		// define min function
+		engine.eval("function min(n1,n2) {" + "if(n1 <= n2) return n1; "
+				+ "  else return n2; " + "};");
+		// define max function
+		engine.eval("function max(n1,n2) {" + "if(n1 >= n2) return n1; "
+				+ "  else return n2; " + "};");
 		return engine.eval(script) + "";
 	}
 

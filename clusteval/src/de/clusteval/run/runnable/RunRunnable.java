@@ -181,13 +181,15 @@ public abstract class RunRunnable implements Runnable {
 		try {
 			beforeRun();
 			doRun();
+		} catch (InterruptedException e) {
+			// 02.06.2014: do nothing
 		} catch (Throwable e) {
 			this.exceptions.add(e);
 		} finally {
 			afterRun();
 		}
 	}
-	
+
 	public void terminate() {
 		this.getFuture().cancel(true);
 	}
@@ -214,7 +216,8 @@ public abstract class RunRunnable implements Runnable {
 			InvalidDataSetFormatVersionException, IllegalArgumentException,
 			IOException, RegisterException, InternalAttributeException,
 			IncompatibleDataSetFormatException,
-			UnknownGoldStandardFormatException, IncompleteGoldStandardException, InterruptedException {
+			UnknownGoldStandardFormatException,
+			IncompleteGoldStandardException, InterruptedException {
 
 	}
 
@@ -237,7 +240,8 @@ public abstract class RunRunnable implements Runnable {
 	protected abstract void doRun() throws InternalAttributeException,
 			RegisterException, IOException, NoRunResultFormatParserException,
 			NoParameterSetFoundException, RNotAvailableException,
-			RLibraryNotLoadedException, REngineException, REXPMismatchException, InterruptedException;
+			RLibraryNotLoadedException, REngineException,
+			REXPMismatchException, InterruptedException;
 
 	/**
 	 * This method is invoked by {@link #run()} after {@link #doRun()} has
