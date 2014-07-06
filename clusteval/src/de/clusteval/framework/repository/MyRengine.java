@@ -13,6 +13,7 @@
  */
 package de.clusteval.framework.repository;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ import org.rosuda.REngine.Rserve.RserveException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.RLibraryNotLoadedException;
 
 /**
@@ -41,6 +43,10 @@ public class MyRengine {
 
 	protected RConnection connection;
 
+	protected int pid;
+	
+	protected boolean interrupted;
+
 	protected Logger log;
 
 	protected Set<String> loadedLibraries;
@@ -54,6 +60,12 @@ public class MyRengine {
 		super();
 
 		this.connection = new RConnection(string);
+		try {
+			this.pid = this.connection.eval("Sys.getpid()").asInteger();
+		} catch (REXPMismatchException e) {
+			e.printStackTrace();
+			// should not happen
+		}
 		// set buffer size to 100MB
 		// this.connection.setSendBufferSize(1024l * 1024 * 1024 * 100);
 		this.log = LoggerFactory.getLogger(this.getClass());
@@ -186,6 +198,16 @@ public class MyRengine {
 	 */
 	protected boolean close() {
 		return this.connection.close();
+	}
+
+	public boolean interrupt() {
+		try {
+			interrupted = true;
+			Runtime.getRuntime().exec("kill -9 " + this.pid);
+		} catch (IOException e) {
+			return false;
+		}
+		return true;
 	}
 
 	protected boolean shutdown() {

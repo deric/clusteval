@@ -199,7 +199,8 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	@Override
 	public void terminate() {
 		// TODO: cancel all the iteration threads
-		// for (Future<?> f: )
+		for (Future<?> f : this.futures)
+			f.cancel(true);
 
 		super.terminate();
 	}
@@ -827,7 +828,6 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 							try {
 								proc.waitFor();
 							} catch (InterruptedException e) {
-
 							}
 						}
 
@@ -921,6 +921,8 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 							}
 						}
 					}
+				} catch (InterruptedException e) {
+					// don't do anything
 				} catch (NoRunResultFormatParserException e) {
 					noRunResultException = e;
 				} catch (IOException e) {
@@ -1378,7 +1380,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			public void run() {
 				try {
 					this.log.info("Assessing isoMDS coordinates of dataset samples ...");
-					Plotter.assessAndWriteIsoMDSCoordinates(dcMDS);
+					// Plotter.assessAndWriteIsoMDSCoordinates(dcMDS);
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}
@@ -1408,7 +1410,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			public void run() {
 				try {
 					this.log.info("Assessing PCA coordinates of dataset samples ...");
-					Plotter.assessAndWritePCACoordinates(dcPCA);
+					// Plotter.assessAndWritePCACoordinates(dcPCA);
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}
