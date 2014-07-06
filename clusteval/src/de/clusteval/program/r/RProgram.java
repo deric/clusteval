@@ -218,7 +218,7 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 			Map<String, String> effectiveParams,
 			Map<String, String> internalParams) throws REngineException,
 			REXPMismatchException, IOException, RLibraryNotLoadedException,
-			RNotAvailableException {
+			RNotAvailableException, InterruptedException {
 		try {
 			beforeExec(dataConfig, programConfig, invocationLine,
 					effectiveParams, internalParams);
@@ -277,9 +277,45 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 
 	@SuppressWarnings("unused")
 	protected void doExec(DataConfig dataConfig, ProgramConfig programConfig,
-			String[] invocationLine, Map<String, String> effectiveParams,
-			Map<String, String> internalParams) throws RserveException {
-		rEngine.eval("result <- " + StringExt.paste(" ", invocationLine));
+			final String[] invocationLine, Map<String, String> effectiveParams,
+			Map<String, String> internalParams) throws RserveException,
+			InterruptedException {
+		// 06.07.2014: execute r command in a thread.
+		// then this thread can check for interrupt signal and forward it to the
+		// rengine.
+
+		class RProgramThread extends Thread {
+
+			RserveException ex;
+
+			@Override
+			public void run() {
+				try {
+					rEngine.eval("result <- "
+							+ StringExt.paste(" ", invocationLine));
+				} catch (RserveException e) {
+					ex = e;
+				}
+			}
+
+			public RserveException getException() {
+				return this.ex;
+			}
+		}
+		RProgramThread t = new RProgramThread();
+		t.start();
+
+		try {
+			t.join();
+			// rethrow exception from the r process, if any
+			if (t.getException() != null)
+				throw t.getException();
+		} catch (InterruptedException e) {
+			// forward the interruption to the r process
+			rEngine.interrupt();
+			repository.clearRengineForCurrentThread();
+			throw e;
+		}
 	}
 
 	protected void afterExec(DataConfig dataConfig,

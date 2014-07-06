@@ -194,13 +194,14 @@ public abstract class Program extends RepositoryObject {
 	 * @throws RLibraryNotLoadedException
 	 * @throws REngineException
 	 * @throws REXPMismatchException
+	 * @throws InterruptedException
 	 */
 	public abstract Process exec(final DataConfig dataConfig,
 			final ProgramConfig programConfig, final String[] invocationLine,
 			final Map<String, String> effectiveParams,
 			final Map<String, String> internalParams) throws IOException,
 			RNotAvailableException, RLibraryNotLoadedException,
-			REngineException, REXPMismatchException;
+			REngineException, REXPMismatchException, InterruptedException;
 
 	/**
 	 * @return The context of this program. A run can only perform this program,
