@@ -589,32 +589,47 @@ public class BackendClient extends Thread {
 							pos++;
 						}
 
+						// 06.06.2014: added sets to keep order when printing the results
+						Set<String> programConfigs = new HashSet<String>();
+						Set<String> dataConfigs = new HashSet<String>();
+
 						for (Pair<String, String> pcDcPair : qualities.keySet()) {
-							System.out.printf("%s:\n", pcDcPair);
-							Map<String, Pair<Map<String, String>, String>> qualitiesPcDc = qualities
-									.get(pcDcPair);
-							for (String measure : qualityMeasures) {
-								if (!qualitiesPcDc.containsKey(measure)) {
-									System.out.print("\t");
-									continue;
+							programConfigs.add(pcDcPair.getFirst());
+							dataConfigs.add(pcDcPair.getSecond());
+						}
+
+						for (String programConfig : programConfigs) {
+							System.out.printf("%s:\n",programConfig);
+							for (String dataConfig : dataConfigs) {
+								System.out.printf("-- %s:\n", dataConfig);
+								Pair<String, String> pcDcPair = Pair.getPair(
+										programConfig, dataConfig);
+								Map<String, Pair<Map<String, String>, String>> qualitiesPcDc = qualities
+										.get(pcDcPair);
+								for (String measure : qualityMeasures) {
+									if (!qualitiesPcDc.containsKey(measure)) {
+										System.out.print("\t");
+										continue;
+									}
+									String quality = qualitiesPcDc.get(measure)
+											.getSecond();
+									if (quality.equals("NT"))
+										System.out.print("\tNT");
+									else {
+										double qualityDouble = Double
+												.valueOf(quality);
+										if (Double.isInfinite(qualityDouble))
+											System.out.printf("\t%s%s",
+													qualityDouble < 0
+															? "-"
+															: "", "Inf");
+										else
+											System.out.printf("\t%.4f",
+													qualityDouble);
+									}
 								}
-								String quality = qualitiesPcDc.get(measure)
-										.getSecond();
-								if (quality.equals("NT"))
-									System.out.print("\tNT");
-								else {
-									double qualityDouble = Double
-											.valueOf(quality);
-									if (Double.isInfinite(qualityDouble))
-										System.out.printf("\t%s%s",
-												qualityDouble < 0 ? "-" : "",
-												"Inf");
-									else
-										System.out.printf("\t%.4f",
-												qualityDouble);
-								}
+								System.out.println();
 							}
-							System.out.println();
 						}
 					}
 					System.out.println();
