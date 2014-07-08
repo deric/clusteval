@@ -20,6 +20,7 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -465,16 +466,21 @@ public class BackendClient extends Thread {
 					System.out.println("No active threads");
 				else {
 					System.out.println("Active threads:");
-					System.out
-							.println("\tThread\t\tRun\tProgramConfig\tDataConfig\tIteration");
-					for (Map.Entry<String, Pair<String, Integer>> e : activeThreads
-							.entrySet()) {
-						String[] split1 = e.getValue().getFirst().split(": ");
+					System.out.format("\t%10s%30s%50s%30s%30s%30s\n",
+							"Thread #", "Thread", "Run", "ProgramConfig",
+							"DataConfig", "Iteration");
+					List<String> threadNames = new ArrayList<String>(
+							activeThreads.keySet());
+					Collections.sort(threadNames);
+					int i = 1;
+					for (String t : threadNames) {
+						Pair<String, Integer> value = activeThreads.get(t);
+						String[] split1 = value.getFirst().split(": ");
 						String[] split2 = split1[1].split(",");
 
-						System.out.printf("\t%s\t%s\t%s\t%s\t%d\n", e.getKey(),
-								split1[0], split2[0], split2[1], e.getValue()
-										.getSecond());
+						System.out.format("\t%10d%30s%50s%30s%30s%30d\n", i++,
+								t, split1[0], split2[0], split2[1],
+								value.getSecond());
 					}
 				}
 			}

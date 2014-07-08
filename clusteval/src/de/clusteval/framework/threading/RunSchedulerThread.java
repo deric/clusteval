@@ -598,18 +598,19 @@ public class RunSchedulerThread extends ClustevalThread {
 		return this.iterationThreadPool.submit(iterationRunnable);
 	}
 
-	public void informOnStartedIterationRunnable(final Thread t,
+	public synchronized void informOnStartedIterationRunnable(final Thread t,
 			final IterationRunnable runnable) {
 		this.activeIterationRunnables.put(t, runnable);
 	}
 
-	public void informOnFinishedIterationRunnable(final Thread t,
+	public synchronized void informOnFinishedIterationRunnable(final Thread t,
 			final IterationRunnable runnable) {
-		if (this.activeIterationRunnables.get(t).equals(runnable))
+		if (this.activeIterationRunnables.containsKey(t)
+				&& this.activeIterationRunnables.get(t).equals(runnable))
 			this.activeIterationRunnables.remove(t);
 	}
 
-	public Map<Thread, IterationRunnable> getActiveIterationRunnables() {
+	public synchronized Map<Thread, IterationRunnable> getActiveIterationRunnables() {
 		return this.activeIterationRunnables;
 	}
 }

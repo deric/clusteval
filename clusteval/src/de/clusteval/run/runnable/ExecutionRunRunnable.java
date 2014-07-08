@@ -58,6 +58,7 @@ import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.RProcess;
 import de.clusteval.framework.repository.RegisterException;
+import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ParameterSet;
@@ -788,72 +789,63 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 			@Override
 			public void run() {
-				RunSchedulerThread scheduler = getRun().getRepository()
-						.getSupervisorThread().getRunScheduler();
-				scheduler.informOnStartedIterationRunnable(
-						Thread.currentThread(), this);
 				try {
-					if (isInterrupted())
-						return;
-
-					ProgramConfig programConfig = iterationWrapper
-							.getProgramConfig();
-					DataConfig dataConfig = iterationWrapper.getDataConfig();
-
-					this.log.info(String.format("%s (%s,%s, Iteration %d) %s",
-							getRun(), programConfig, dataConfig,
-							iterationWrapper.getOptId(),
-							iterationWrapper.getEffectiveParams()));
-
-					this.log.debug(getRun() + " (" + programConfig + ","
-							+ dataConfig + ") Invoking command line: "
-							+ StringExt.paste(" ", invocation));
-					this.log.debug(getRun() + " (" + programConfig + ","
-							+ dataConfig + ") Log-File is located at: \""
-							+ iterationWrapper.getLogfile().getAbsolutePath()
-							+ "\"");
-
-					final BufferedWriter bw = new BufferedWriter(
-							new FileWriter(iterationWrapper.getLogfile()));
-
-					this.log = LoggerFactory.getLogger(this.getClass());
-					Process proc = null;
+					RunSchedulerThread scheduler = null;
+					Repository repo = getRun().getRepository();
+					if (repo instanceof RunResultRepository)
+						repo = repo.getParent();
+					scheduler = repo.getSupervisorThread().getRunScheduler();
+					scheduler.informOnStartedIterationRunnable(
+							Thread.currentThread(), this);
 					try {
-						proc = programConfig.getProgram().exec(dataConfig,
-								programConfig, invocation,
-								iterationWrapper.getEffectiveParams(),
-								iterationWrapper.getInternalParams());
-
-						if (proc != null && !(proc instanceof RProcess)) {
-							new StreamGobbler(proc.getInputStream(), bw)
-									.start();
-							new StreamGobbler(proc.getErrorStream(), bw)
-									.start();
-
-							try {
-								proc.waitFor();
-							} catch (InterruptedException e) {
-							}
-						}
-
-						/*
-						 * We check from time to time, whether this run got the
-						 * order to terminate.
-						 */
-						if (checkForInterrupted())
+						if (isInterrupted())
 							return;
 
-						iterationWrapper
-								.setConvertedClusteringRunResult(convertResult(
-										iterationWrapper
-												.getClusteringRunResult(),
-										iterationWrapper.getEffectiveParams(),
-										iterationWrapper.getInternalParams()));
+						ProgramConfig programConfig = iterationWrapper
+								.getProgramConfig();
+						DataConfig dataConfig = iterationWrapper
+								.getDataConfig();
 
-						if (iterationWrapper.getConvertedClusteringRunResult() != null) {
-							this.log.debug(getRun() + " (" + programConfig
-									+ "," + dataConfig
-									+ ") Finished converting result files");
+						this.log.info(String.format(
+								"%s (%s,%s, Iteration %d) %s", getRun(),
+								programConfig, dataConfig,
+								iterationWrapper.getOptId(),
+								iterationWrapper.getEffectiveParams()));
+
+						this.log.debug(getRun() + " (" + programConfig + ","
+								+ dataConfig + ") Invoking command line: "
+								+ StringExt.paste(" ", invocation));
+						this.log.debug(getRun()
+								+ " ("
+								+ programConfig
+								+ ","
+								+ dataConfig
+								+ ") Log-File is located at: \""
+								+ iterationWrapper.getLogfile()
+										.getAbsolutePath() + "\"");
+
+						final BufferedWriter bw = new BufferedWriter(
+								new FileWriter(iterationWrapper.getLogfile()));
+
+						this.log = LoggerFactory.getLogger(this.getClass());
+						Process proc = null;
+						try {
+							proc = programConfig.getProgram().exec(dataConfig,
+									programConfig, invocation,
+									iterationWrapper.getEffectiveParams(),
+									iterationWrapper.getInternalParams());
+
+							if (proc != null && !(proc instanceof RProcess)) {
+								new StreamGobbler(proc.getInputStream(), bw)
+										.start();
+								new StreamGobbler(proc.getErrorStream(), bw)
+										.start();
+
+								try {
+									proc.waitFor();
+								} catch (InterruptedException e) {
+								}
+							}
 
 							/*
 							 * We check from time to time, whether this run got
@@ -862,85 +854,117 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 							if (checkForInterrupted())
 								return;
 
-							List<Pair<ParameterSet, ClusteringQualitySet>> qualities = assessQualities(
-									iterationWrapper
-											.getConvertedClusteringRunResult(),
-									iterationWrapper.getInternalParams());
-							for (Pair<ParameterSet, ClusteringQualitySet> clustSet : qualities)
-								this.log.info(String.format(
-										"%s (%s,%s, Iteration %d) %s",
-										getRun(), programConfig, dataConfig,
-										iterationWrapper.getOptId(), clustSet
-												.getSecond().toString()));
-							synchronized (completeQualityOutput) {
-								// 04.04.2013: adding iteration number to
-								// qualities
-								List<Triple<ParameterSet, ClusteringQualitySet, Long>> qualitiesWithIterations = new ArrayList<Triple<ParameterSet, ClusteringQualitySet, Long>>();
-								for (Pair<ParameterSet, ClusteringQualitySet> pair : qualities)
-									qualitiesWithIterations.add(Triple
-											.getTriple(
-													pair.getFirst(),
-													pair.getSecond(),
-													new Long(iterationWrapper
-															.getOptId())));
+							iterationWrapper
+									.setConvertedClusteringRunResult(convertResult(
+											iterationWrapper
+													.getClusteringRunResult(),
+											iterationWrapper
+													.getEffectiveParams(),
+											iterationWrapper
+													.getInternalParams()));
 
-								writeQualitiesToFile(qualitiesWithIterations);
+							if (iterationWrapper
+									.getConvertedClusteringRunResult() != null) {
+								this.log.debug(getRun() + " (" + programConfig
+										+ "," + dataConfig
+										+ ") Finished converting result files");
+
+								/*
+								 * We check from time to time, whether this run
+								 * got the order to terminate.
+								 */
+								if (checkForInterrupted())
+									return;
+
+								List<Pair<ParameterSet, ClusteringQualitySet>> qualities = assessQualities(
+										iterationWrapper
+												.getConvertedClusteringRunResult(),
+										iterationWrapper.getInternalParams());
+								for (Pair<ParameterSet, ClusteringQualitySet> clustSet : qualities)
+									this.log.info(String.format(
+											"%s (%s,%s, Iteration %d) %s",
+											getRun(), programConfig,
+											dataConfig,
+											iterationWrapper.getOptId(),
+											clustSet.getSecond().toString()));
+								synchronized (completeQualityOutput) {
+									// 04.04.2013: adding iteration number to
+									// qualities
+									List<Triple<ParameterSet, ClusteringQualitySet, Long>> qualitiesWithIterations = new ArrayList<Triple<ParameterSet, ClusteringQualitySet, Long>>();
+									for (Pair<ParameterSet, ClusteringQualitySet> pair : qualities)
+										qualitiesWithIterations
+												.add(Triple.getTriple(
+														pair.getFirst(),
+														pair.getSecond(),
+														new Long(
+																iterationWrapper
+																		.getOptId())));
+
+									writeQualitiesToFile(qualitiesWithIterations);
+								}
+								// synchronized!
+								// afterClustering(
+								// iterationWrapper
+								// .getConvertedClusteringRunResult(),
+								// qualities);
 							}
-							// synchronized!
-							// afterClustering(
-							// iterationWrapper
-							// .getConvertedClusteringRunResult(),
-							// qualities);
-						}
 
-						/*
-						 * Add this RunResult to the list. The RunResult only
-						 * encapsulates the path to the result-file and does not
-						 * hold any actual values, so we do not need to wait
-						 * until the thread is finished.
-						 */
-						synchronized (getRun().getResults()) {
-							// changed 16.04.2014: before we added the old not
-							// converted
-							// result
-							getRun().getResults().add(
-									iterationWrapper.getClusteringRunResult());
+							/*
+							 * Add this RunResult to the list. The RunResult
+							 * only encapsulates the path to the result-file and
+							 * does not hold any actual values, so we do not
+							 * need to wait until the thread is finished.
+							 */
+							synchronized (getRun().getResults()) {
+								// changed 16.04.2014: before we added the old
+								// not
+								// converted
+								// result
+								getRun().getResults().add(
+										iterationWrapper
+												.getClusteringRunResult());
+							}
+						} catch (RunResultNotFoundException e) {
+							handleMissingRunResult(iterationWrapper);
+						} catch (RunResultConversionException e) {
+							handleMissingRunResult(iterationWrapper);
+						} catch (REngineException e1) {
+							handleMissingRunResult(iterationWrapper);
+						} catch (REXPMismatchException e1) {
+							handleMissingRunResult(iterationWrapper);
+						} finally {
+							if (programConfig.getProgram() instanceof RProgram) {
+								synchronized (bw) {
+									// BufferedWriter bw = new
+									// BufferedWriter(new
+									// FileWriter(logFile));
+									bw.append(((RProgram) (programConfig
+											.getProgram())).getRengine()
+											.getLastError());
+									bw.close();
+								}
+							}
 						}
-					} catch (RunResultNotFoundException e) {
-						handleMissingRunResult(iterationWrapper);
-					} catch (RunResultConversionException e) {
-						handleMissingRunResult(iterationWrapper);
-					} catch (REngineException e1) {
-						handleMissingRunResult(iterationWrapper);
-					} catch (REXPMismatchException e1) {
-						handleMissingRunResult(iterationWrapper);
+					} catch (InterruptedException e) {
+						// don't do anything
+					} catch (NoRunResultFormatParserException e) {
+						noRunResultException = e;
+					} catch (IOException e) {
+						ioException = e;
+					} catch (RLibraryNotLoadedException e) {
+						rLibraryException = e;
+					} catch (RNotAvailableException e) {
+						rNotAvailableException = e;
+					} catch (Throwable t) {
+						t.printStackTrace();
 					} finally {
-						if (programConfig.getProgram() instanceof RProgram) {
-							synchronized (bw) {
-								// BufferedWriter bw = new BufferedWriter(new
-								// FileWriter(logFile));
-								bw.append(((RProgram) (programConfig
-										.getProgram())).getRengine()
-										.getLastError());
-								bw.close();
-							}
-						}
+						scheduler.informOnFinishedIterationRunnable(
+								Thread.currentThread(), this);
 					}
-				} catch (InterruptedException e) {
-					// don't do anything
-				} catch (NoRunResultFormatParserException e) {
-					noRunResultException = e;
-				} catch (IOException e) {
-					ioException = e;
-				} catch (RLibraryNotLoadedException e) {
-					rLibraryException = e;
-				} catch (RNotAvailableException e) {
-					rNotAvailableException = e;
 				} catch (Throwable t) {
+					// print and catch all throwables, otherwise we will see odd
+					// behaviour in the thread pool
 					t.printStackTrace();
-				} finally {
-					scheduler.informOnFinishedIterationRunnable(
-							Thread.currentThread(), this);
 				}
 			}
 		};
