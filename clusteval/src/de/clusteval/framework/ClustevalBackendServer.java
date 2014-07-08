@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
@@ -92,6 +91,7 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.framework.threading.SupervisorThread;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.Program;
@@ -107,6 +107,8 @@ import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.RunResultParseException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.runnable.ExecutionRunRunnable;
+import de.clusteval.run.runnable.IterationRunnable;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.serverclient.BackendClient;
@@ -114,7 +116,6 @@ import de.clusteval.serverclient.IBackendServer;
 import de.clusteval.utils.InvalidConfigurationFileException;
 import de.clusteval.utils.MyHighlightingCompositeConverter;
 import file.FileUtils;
-import format.Formatter;
 
 /**
  * This class represents the server of the backend of the framework. The server
@@ -1010,6 +1011,30 @@ public class ClustevalBackendServer implements IBackendServer {
 	public Collection<String> getQueue() throws RemoteException {
 		final Collection<String> result = this.repository.getSupervisorThread()
 				.getRunScheduler().getQueue();
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.serverclient.IBackendServer#getActiveThreads()
+	 */
+	@Override
+	public Map<String, Pair<String, Integer>> getActiveThreads()
+			throws RemoteException {
+		Map<String, Pair<String, Integer>> result = new HashMap<String, Pair<String, Integer>>();
+
+		RunSchedulerThread scheduler = this.getRepository()
+				.getSupervisorThread().getRunScheduler();
+		Map<Thread, IterationRunnable> map = scheduler
+				.getActiveIterationRunnables();
+		for (Map.Entry<Thread, IterationRunnable> e : map.entrySet()) {
+			ExecutionRunRunnable r = (ExecutionRunRunnable) (e.getValue()
+					.getParentRunnable());
+			result.put(e.getKey().getName(), Pair.getPair(r.getRun().getName()
+					+ ": " + r.getProgramConfig() + "," + r.getDataConfig(), e
+					.getValue().getIterationNumber()));
+		}
 		return result;
 	}
 }

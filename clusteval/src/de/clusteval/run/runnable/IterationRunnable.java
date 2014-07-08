@@ -63,4 +63,12 @@ public abstract class IterationRunnable implements Runnable {
 	public InterruptedException getInterruptedException() {
 		return interruptedException;
 	}
+
+	public RunRunnable getParentRunnable() {
+		return this.iterationWrapper.getRunnable();
+	}
+
+	public int getIterationNumber() {
+		return this.iterationWrapper.getOptId();
+	}
 }

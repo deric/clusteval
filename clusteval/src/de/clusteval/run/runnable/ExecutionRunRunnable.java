@@ -745,6 +745,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		if (checkForInterrupted())
 			return;
 
+		iterationWrapper.setRunnable(this);
 		iterationWrapper.setDataConfig(dataConfig);
 		iterationWrapper.setProgramConfig(programConfig.clone());
 
@@ -787,6 +788,10 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 			@Override
 			public void run() {
+				RunSchedulerThread scheduler = getRun().getRepository()
+						.getSupervisorThread().getRunScheduler();
+				scheduler.informOnStartedIterationRunnable(
+						Thread.currentThread(), this);
 				try {
 					if (isInterrupted())
 						return;
@@ -933,6 +938,9 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 					rNotAvailableException = e;
 				} catch (Throwable t) {
 					t.printStackTrace();
+				} finally {
+					scheduler.informOnFinishedIterationRunnable(
+							Thread.currentThread(), this);
 				}
 			}
 		};
@@ -1566,6 +1574,7 @@ class IterationWrapper {
 	private ClusteringRunResult convertedClusteringRunResult;
 
 	private ParameterSet parameterSet;
+	protected RunRunnable runnable;
 	protected ProgramConfig programConfig;
 	protected DataConfig dataConfig;
 
@@ -1647,6 +1656,14 @@ class IterationWrapper {
 	protected void setConvertedClusteringRunResult(
 			ClusteringRunResult clusteringRunResult) {
 		this.convertedClusteringRunResult = clusteringRunResult;
+	}
+
+	protected RunRunnable getRunnable() {
+		return runnable;
+	}
+
+	protected void setRunnable(RunRunnable runnable) {
+		this.runnable = runnable;
 	}
 
 	protected ParameterSet getParameterSet() {

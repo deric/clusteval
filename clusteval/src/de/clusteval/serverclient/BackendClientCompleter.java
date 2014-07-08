@@ -190,6 +190,7 @@ public class BackendClientCompleter implements Completer {
 		strings.add("getPrograms");
 		strings.add("getRunResults");
 		strings.add("generateDataSet");
+		strings.add("getActiveThreads");
 
 		boolean exception = true;
 		while (exception) {

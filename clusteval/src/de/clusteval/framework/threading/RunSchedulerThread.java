@@ -100,6 +100,8 @@ public class RunSchedulerThread extends ClustevalThread {
 	 */
 	protected ScheduledThreadPoolExecutor iterationThreadPool;
 
+	protected Map<Thread, IterationRunnable> activeIterationRunnables;
+
 	/**
 	 * Constructor of run scheduler threads.
 	 * 
@@ -133,6 +135,7 @@ public class RunSchedulerThread extends ClustevalThread {
 				numberThreads);
 		this.iterationThreadPool.setMaximumPoolSize(this.iterationThreadPool
 				.getCorePoolSize());
+		this.activeIterationRunnables = new HashMap<Thread, IterationRunnable>();
 		this.start();
 	}
 
@@ -593,5 +596,20 @@ public class RunSchedulerThread extends ClustevalThread {
 	public Future<?> registerIterationRunnable(
 			IterationRunnable iterationRunnable) {
 		return this.iterationThreadPool.submit(iterationRunnable);
+	}
+
+	public void informOnStartedIterationRunnable(final Thread t,
+			final IterationRunnable runnable) {
+		this.activeIterationRunnables.put(t, runnable);
+	}
+
+	public void informOnFinishedIterationRunnable(final Thread t,
+			final IterationRunnable runnable) {
+		if (this.activeIterationRunnables.get(t).equals(runnable))
+			this.activeIterationRunnables.remove(t);
+	}
+
+	public Map<Thread, IterationRunnable> getActiveIterationRunnables() {
+		return this.activeIterationRunnables;
 	}
 }

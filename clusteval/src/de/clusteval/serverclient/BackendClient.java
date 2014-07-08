@@ -165,6 +165,11 @@ public class BackendClient extends Thread {
 		option = OptionBuilder.create("getQueue");
 		clientCLIOptions.addOption(option);
 
+		OptionBuilder
+				.withDescription("Gets the currently active threads and the corresponding iterations which they perform");
+		option = OptionBuilder.create("getActiveThreads");
+		clientCLIOptions.addOption(option);
+
 		OptionBuilder.withArgName("runName");
 		OptionBuilder.hasArg();
 		OptionBuilder
@@ -453,6 +458,26 @@ public class BackendClient extends Thread {
 			if (params.hasOption("getQueue")) {
 				System.out.println("Queue: " + this.getQueue());
 			}
+			if (params.hasOption("getActiveThreads")) {
+				Map<String, Pair<String, Integer>> activeThreads = this.server
+						.getActiveThreads();
+				if (activeThreads.isEmpty())
+					System.out.println("No active threads");
+				else {
+					System.out.println("Active threads:");
+					System.out
+							.println("\tThread\t\tRun\tProgramConfig\tDataConfig\tIteration");
+					for (Map.Entry<String, Pair<String, Integer>> e : activeThreads
+							.entrySet()) {
+						String[] split1 = e.getValue().getFirst().split(": ");
+						String[] split2 = split1[1].split(",");
+
+						System.out.printf("\t%s\t%s\t%s\t%s\t%d\n", e.getKey(),
+								split1[0], split2[0], split2[1], e.getValue()
+										.getSecond());
+					}
+				}
+			}
 			if (params.hasOption("getRunResults")) {
 				Map<Pair<String, String>, Map<String, Double>> result = this
 						.getRunResults(params.getOptionValue("getRunResults"));
@@ -589,7 +614,8 @@ public class BackendClient extends Thread {
 							pos++;
 						}
 
-						// 06.06.2014: added sets to keep order when printing the results
+						// 06.06.2014: added sets to keep order when printing
+						// the results
 						Set<String> programConfigs = new HashSet<String>();
 						Set<String> dataConfigs = new HashSet<String>();
 
@@ -599,7 +625,7 @@ public class BackendClient extends Thread {
 						}
 
 						for (String programConfig : programConfigs) {
-							System.out.printf("%s:\n",programConfig);
+							System.out.printf("%s:\n", programConfig);
 							for (String dataConfig : dataConfigs) {
 								System.out.printf("-- %s:\n", dataConfig);
 								Pair<String, String> pcDcPair = Pair.getPair(
