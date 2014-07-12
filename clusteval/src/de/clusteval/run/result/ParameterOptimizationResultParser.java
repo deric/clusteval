@@ -93,28 +93,30 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 			try {
 				// duplicated parameter set -> skipped iteration
 				if (value[0].contains("*")) {
-					long iterationNumber = Long.valueOf(value[0].replace("*",
-							""));
-					long previousIteration = Long.valueOf(value[1]);
-					int indexOfIteration = tmpResult.iterationNumbers
-							.indexOf(previousIteration);
-
-					ParameterSet paramSet = tmpResult.parameterSets
-							.get(indexOfIteration);
-					ClusteringQualitySet qualitySet = tmpResult.parameterSetToQualities
-							.get(paramSet);
-
-					tmpResult.parameterSets.add(paramSet);
-					tmpResult.iterationNumbers.add(iterationNumber);
-
-					if (parseClusterings) {
-						tmpResult.put(iterationNumber, paramSet, qualitySet,
-								tmpResult.parameterSetToClustering
-										.get(paramSet));
-						return;
-					}
-
-					tmpResult.put(iterationNumber, paramSet, qualitySet);
+					// 13.07.2014: we don't parse duplicated iterations anymore
+					return;
+//					long iterationNumber = Long.valueOf(value[0].replace("*",
+//							""));
+//					long previousIteration = Long.valueOf(value[1]);
+//					int indexOfIteration = tmpResult.iterationNumbers
+//							.indexOf(previousIteration);
+//
+//					ParameterSet paramSet = tmpResult.parameterSets
+//							.get(indexOfIteration);
+//					ClusteringQualitySet qualitySet = tmpResult.parameterSetToQualities
+//							.get(paramSet);
+//
+//					tmpResult.parameterSets.add(paramSet);
+//					tmpResult.iterationNumbers.add(iterationNumber);
+//
+//					if (parseClusterings) {
+//						tmpResult.put(iterationNumber, paramSet, qualitySet,
+//								tmpResult.parameterSetToClustering
+//										.get(paramSet));
+//						return;
+//					}
+//
+//					tmpResult.put(iterationNumber, paramSet, qualitySet);
 				}
 				long iterationNumber = Long.valueOf(value[0]);
 				ParameterSet paramSet = new ParameterSet();

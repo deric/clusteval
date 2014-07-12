@@ -236,6 +236,7 @@ public abstract class SupervisorThread extends Thread {
 	 * @see java.lang.Thread#interrupt()
 	 */
 	@Override
+	// TODO: fixme: not all threads (iteration/runrunnable threads?!) are terminated
 	public void interrupt() {
 		this.interrupted = true;
 		synchronized (this.threads) {

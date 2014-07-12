@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import utils.SimilarityMatrix.NUMBER_PRECISION;
-
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
@@ -831,10 +831,14 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException {
 
-		if (getProps().getStringArray("programConfig").length == 0)
+		String[] list = getProps().getStringArray("programConfig");
+		if (list.length == 0)
 			throw new RunException(
 					"At least one program config must be specified");
-		for (String programConfig : getProps().getStringArray("programConfig")) {
+		// 10.07.2014: remove duplicates.
+		list = new ArrayList<String>(new HashSet<String>(Arrays.asList(list)))
+				.toArray(new String[0]);
+		for (String programConfig : list) {
 			ProgramConfig newProgramConfig = Parser.parseFromFile(
 					ProgramConfig.class,
 					new File(FileUtils.buildPath(
@@ -952,9 +956,13 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException {
-		if (getProps().getStringArray("dataConfig").length == 0)
+		String[] list = getProps().getStringArray("dataConfig");
+		if (list.length == 0)
 			throw new RunException("At least one data config must be specified");
-		for (String dataConfig : getProps().getStringArray("dataConfig")) {
+		// 10.07.2014: remove duplicates.
+		list = new ArrayList<String>(new HashSet<String>(Arrays.asList(list)))
+				.toArray(new String[0]);
+		for (String dataConfig : list) {
 			dataConfigs.add(repo.getRegisteredObject(Parser.parseFromFile(
 					DataConfig.class,
 					new File(FileUtils.buildPath(
