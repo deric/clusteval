@@ -495,6 +495,20 @@ public class Clustering implements Iterable<Cluster> {
 			final List<ClusteringQualityMeasure> qualityMeasures)
 			throws UnknownGoldStandardFormatException, IOException,
 			UnknownDataSetFormatException, InvalidDataSetFormatVersionException {
+		// added: 30.07.2014: assume all ids of the dataset missing in the
+		// clustering to be singletons
+		for (String id : dataConfig.getDatasetConfig().getDataSet()
+				.getInStandardFormat().getIds()) {
+			// if the object with this id is not in the clustering, add a
+			// singleton cluster with this object
+			if (!this.itemIdToItem.containsKey(id)) {
+				Cluster cluster = new Cluster(this.clusterIdToCluster.size()
+						+ "");
+				cluster.add(new ClusterItem(id), 1.0f);
+				this.addCluster(cluster);
+			}
+		}
+
 		// TODO: 20.08.2012 ensure, that this runresult is in standard format
 		final ClusteringQualitySet resultSet = new ClusteringQualitySet();
 		for (ClusteringQualityMeasure qualityMeasure : qualityMeasures) {
@@ -516,9 +530,9 @@ public class Clustering implements Iterable<Cluster> {
 
 				quality = qualityMeasure.getQualityOfClustering(cl,
 						goldStandard, dataConfig);
-//				if (dataConfig.hasGoldStandardConfig())
-//					dataConfig.getGoldstandardConfig().getGoldstandard()
-//							.unloadFromMemory();
+				// if (dataConfig.hasGoldStandardConfig())
+				// dataConfig.getGoldstandardConfig().getGoldstandard()
+				// .unloadFromMemory();
 				// we rethrow some exceptions, since they mean, that we
 				// cannot calculate ANY quality measures for this data
 			} catch (UnknownGoldStandardFormatException e) {

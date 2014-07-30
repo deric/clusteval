@@ -234,7 +234,9 @@ public class ClusteringRunResult extends ExecutionRunResult {
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			if (e.getCause() instanceof FileNotFoundException) {
+			if (e.getCause() instanceof FileNotFoundException
+					| (e.getCause() instanceof IOException && e.getCause()
+							.getMessage().startsWith("Empty file given"))) {
 				/*
 				 * Ensure, that all the files of this result are deleted
 				 */
