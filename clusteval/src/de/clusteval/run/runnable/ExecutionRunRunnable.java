@@ -1399,7 +1399,10 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			// result qualities, we interrupt again when such an exception is
 			// thrown. The user has the possibility of removing samples from the
 			// data if this is the case.
-			throw e1;
+			// 12.08.2014: removed again, because of randomized data sets which
+			// have points in data set but not in gold standard. -> make it an
+			// option definitely
+			// throw e1;
 		}
 		if (checkForInterrupted())
 			return;

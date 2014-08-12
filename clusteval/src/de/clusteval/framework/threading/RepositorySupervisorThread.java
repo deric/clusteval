@@ -36,6 +36,7 @@ import de.clusteval.data.distance.DistanceMeasureFinderThread;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.data.goldstandard.GoldStandardConfigFinderThread;
 import de.clusteval.data.preprocessing.DataPreprocessorFinderThread;
+import de.clusteval.data.randomizer.DataRandomizerFinderThread;
 import de.clusteval.data.statistics.DataStatistic;
 import de.clusteval.data.statistics.DataStatisticFinderThread;
 import de.clusteval.framework.ClustevalBackendServer;
@@ -165,6 +166,7 @@ public class RepositorySupervisorThread extends SupervisorThread {
 						RProgramFinderThread.class,
 						ProgramConfigFinderThread.class, RunFinderThread.class,
 						DataSetGeneratorFinderThread.class,
+						DataRandomizerFinderThread.class,
 						RunResultFinderThread.class) : createList(
 						// normal elements
 						DataSetFormatFinderThread.class,
@@ -184,7 +186,8 @@ public class RepositorySupervisorThread extends SupervisorThread {
 						DataConfigFinderThread.class,
 						RProgramFinderThread.class,
 						ProgramConfigFinderThread.class, RunFinderThread.class,
-						DataSetGeneratorFinderThread.class), threadSleepTimes,
+						DataSetGeneratorFinderThread.class,
+						DataRandomizerFinderThread.class), threadSleepTimes,
 				checkOnce);
 
 		this.threads.put(RunSchedulerThread.class, new RunSchedulerThread(this,

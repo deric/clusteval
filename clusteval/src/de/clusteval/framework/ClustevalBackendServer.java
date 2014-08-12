@@ -82,6 +82,8 @@ import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.randomizer.DataRandomizer;
+import de.clusteval.data.randomizer.UnknownDataRandomizerException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.MyRengine;
@@ -954,6 +956,24 @@ public class ClustevalBackendServer implements IBackendServer {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see serverclient.IBackendServer#getDataSetRandomizers()
+	 */
+	@Override
+	public Collection<String> getDataRandomizers() {
+		Collection<String> result = new HashSet<String>();
+
+		Collection<Class<? extends DataRandomizer>> dataRandomizers = this.repository
+				.getClasses(DataRandomizer.class);
+
+		for (Class<? extends DataRandomizer> randomizerClass : dataRandomizers)
+			result.add(randomizerClass.getSimpleName());
+
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see
 	 * serverclient.IBackendServer#getOptionsForDataSetGenerator(java.lang.String
 	 * )
@@ -1036,5 +1056,51 @@ public class ClustevalBackendServer implements IBackendServer {
 					.getValue().getIterationNumber()));
 		}
 		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * serverclient.IBackendServer#getOptionsForDataRandomizer(java.lang.String
+	 * )
+	 */
+	@Override
+	public Options getOptionsForDataRandomizer(String randomizerName) {
+		try {
+
+			DataRandomizer randomizer = DataRandomizer.parseFromString(
+					repository, randomizerName);
+			return randomizer.getAllOptions();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (UnknownDataRandomizerException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see serverclient.IBackendServer#randomizeDataConfig(java.lang.String,
+	 * java.lang.String[])
+	 */
+	@SuppressWarnings("unused")
+	@Override
+	public boolean randomizeDataConfig(String randomizerName, String[] args)
+			throws RemoteException {
+		try {
+			DataRandomizer randomizer = DataRandomizer.parseFromString(
+					this.repository, randomizerName);
+			randomizer.randomize(args);
+		} catch (UnknownDataRandomizerException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

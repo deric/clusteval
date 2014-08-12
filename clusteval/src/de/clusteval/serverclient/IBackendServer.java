@@ -66,6 +66,14 @@ public interface IBackendServer extends Remote {
 
 	/**
 	 * 
+	 * @return A collection with the names of all data randomizers registered at
+	 *         the repository of this server.
+	 * @throws RemoteException
+	 */
+	public Collection<String> getDataRandomizers() throws RemoteException;
+
+	/**
+	 * 
 	 * @param generatorName
 	 *            The simple name of the class of the dataset generator.
 	 * @return A wrapper objects keeping all the options of the specified
@@ -86,6 +94,18 @@ public interface IBackendServer extends Remote {
 	 * @throws RemoteException
 	 */
 	public boolean generateDataSet(final String generatorName,
+			final String[] args) throws RemoteException;
+
+	/**
+	 * @param randomizerName
+	 *            The simple name of the class of the data randomizer to use to
+	 *            randomize the new dataset.
+	 * @param args
+	 *            The arguments to pass on to the data randomizer.
+	 * @return True, if the data config has been randomized successfully.
+	 * @throws RemoteException
+	 */
+	public boolean randomizeDataConfig(final String randomizerName,
 			final String[] args) throws RemoteException;
 
 	/**
@@ -246,4 +266,15 @@ public interface IBackendServer extends Remote {
 	 * @throws RemoteException
 	 */
 	public void setLogLevel(Level logLevel) throws RemoteException;
+
+	/**
+	 * 
+	 * @param randomizerName
+	 *            The simple name of the class of the data randomizer.
+	 * @return A wrapper objects keeping all the options of the specified data
+	 *         randomizer.
+	 * @throws RemoteException
+	 */
+	public Options getOptionsForDataRandomizer(final String randomizerName)
+			throws RemoteException;
 }

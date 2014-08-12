@@ -31,6 +31,7 @@ import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.data.goldstandard.format.GoldStandardFormat;
 import de.clusteval.data.preprocessing.DataPreprocessor;
+import de.clusteval.data.randomizer.DataRandomizer;
 import de.clusteval.data.statistics.DataStatistic;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
@@ -151,19 +152,17 @@ public class RunResultRepository extends Repository {
 		this.staticRepositoryEntities.put(Finder.class,
 				this.parent.staticRepositoryEntities.get(Finder.class));
 
-//		this.staticRepositoryEntities.put(DoubleProgramParameter.class,
-//				this.parent.staticRepositoryEntities
-//						.get(DoubleProgramParameter.class));
-//
-//		this.staticRepositoryEntities.put(IntegerProgramParameter.class,
-//				this.parent.staticRepositoryEntities
-//						.get(IntegerProgramParameter.class));
-//
-//		this.staticRepositoryEntities.put(StringProgramParameter.class,
-//				this.parent.staticRepositoryEntities
-//						.get(StringProgramParameter.class));
-		
-
+		// this.staticRepositoryEntities.put(DoubleProgramParameter.class,
+		// this.parent.staticRepositoryEntities
+		// .get(DoubleProgramParameter.class));
+		//
+		// this.staticRepositoryEntities.put(IntegerProgramParameter.class,
+		// this.parent.staticRepositoryEntities
+		// .get(IntegerProgramParameter.class));
+		//
+		// this.staticRepositoryEntities.put(StringProgramParameter.class,
+		// this.parent.staticRepositoryEntities
+		// .get(StringProgramParameter.class));
 
 		this.staticRepositoryEntities.put(
 				DoubleProgramParameter.class,
@@ -194,6 +193,11 @@ public class RunResultRepository extends Repository {
 		this.dynamicRepositoryEntities.put(DataSetGenerator.class,
 				this.parent.dynamicRepositoryEntities
 						.get(DataSetGenerator.class));
+
+		this.dynamicRepositoryEntities
+				.put(DataRandomizer.class,
+						this.parent.dynamicRepositoryEntities
+								.get(DataRandomizer.class));
 
 		this.dynamicRepositoryEntities.put(DataPreprocessor.class,
 				this.parent.dynamicRepositoryEntities

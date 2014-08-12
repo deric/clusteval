@@ -210,6 +210,16 @@ public class BackendClient extends Thread {
 						+ "this command has been executed.");
 		option = OptionBuilder.create("generateDataSet");
 		clientCLIOptions.addOption(option);
+
+		OptionBuilder.withArgName("randomizerName");
+		OptionBuilder.hasArg();
+		OptionBuilder
+				.withDescription("Randomizes a dataconfig using the randomizer "
+						+ "with the given name. Parameters for "
+						+ "this randomizer can be specified after "
+						+ "this command has been executed.");
+		option = OptionBuilder.create("randomizeDataConfig");
+		clientCLIOptions.addOption(option);
 	}
 
 	/**
@@ -541,6 +551,29 @@ public class BackendClient extends Thread {
 					}
 				}
 			}
+			if (params.hasOption("randomizeDataConfig")) {
+				String randomizerName = params
+						.getOptionValue("randomizeDataConfig");
+
+				CommandLineParser parser = new PosixParser();
+				Options options = getOptionsForDataRandomizer(randomizerName);
+
+				try {
+					parser.parse(options, this.args);
+					this.server.randomizeDataConfig(randomizerName, this.args);
+				} catch (ParseException e1) {
+					try {
+						reader.println();
+						HelpFormatter formatter = new HelpFormatter();
+						formatter.setOptionComparator(new MyOptionComparator());
+						formatter.printHelp("randomizeDataConfig "
+								+ randomizerName, options, true);
+						reader.println();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 
 			if (checkForRunStatus) {
 				try {
@@ -798,6 +831,19 @@ public class BackendClient extends Thread {
 	}
 
 	/**
+	 * 
+	 * @param randomizerName
+	 *            The simple name of the class of the data randomizer.
+	 * @return A wrapper objects keeping all the options of the specified data
+	 *         randomizer.
+	 * @throws RemoteException
+	 */
+	public Options getOptionsForDataRandomizer(final String randomizerName)
+			throws RemoteException {
+		return server.getOptionsForDataRandomizer(randomizerName);
+	}
+
+	/**
 	 * @return A collection with all datasets contained in the server's
 	 *         repository.
 	 * @throws RemoteException
@@ -851,6 +897,16 @@ public class BackendClient extends Thread {
 	 */
 	public boolean terminateRun(final String runId) throws RemoteException {
 		return server.terminateRun(this.clientId, runId);
+	}
+
+	/**
+	 * 
+	 * @return A collection with the names of all data randomizers registered at
+	 *         the repository of this server.
+	 * @throws RemoteException
+	 */
+	public Collection<String> getDataRandomizers() throws RemoteException {
+		return server.getDataRandomizers();
 	}
 
 	static ConsoleReader reader;

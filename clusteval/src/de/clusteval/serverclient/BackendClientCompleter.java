@@ -24,10 +24,9 @@ import jline.console.completer.Completer;
 
 import org.apache.commons.cli.ParseException;
 
-import de.clusteval.run.RUN_STATUS;
-
 import utils.ArraysExt;
 import utils.Pair;
+import de.clusteval.run.RUN_STATUS;
 
 /**
  * This class is used by the backend client as a tab completer for the command
@@ -71,6 +70,12 @@ public class BackendClientCompleter implements Completer {
 	 * retrieved from the server.
 	 */
 	protected TreeSet<String> dataSetGenerators;
+
+	/**
+	 * A temporary variable holding the data randomizers after they were
+	 * retrieved from the server.
+	 */
+	protected TreeSet<String> dataRandomizers;
 
 	/**
 	 * A temporary variable holding the run resumes after they were retrieved
@@ -190,6 +195,7 @@ public class BackendClientCompleter implements Completer {
 		strings.add("getPrograms");
 		strings.add("getRunResults");
 		strings.add("generateDataSet");
+		strings.add("randomizeDataConfig");
 		strings.add("getActiveThreads");
 
 		boolean exception = true;
@@ -285,6 +291,19 @@ public class BackendClientCompleter implements Completer {
 					}
 
 					return posSpace + 1;
+				} else if (buffer.startsWith("randomizeDataConfig ")) {
+					this.updateDataRandomizers();
+					int posSpace = buffer.indexOf(' ');
+					for (String match : dataRandomizers.tailSet(buffer
+							.substring(posSpace + 1))) {
+						if (!match.startsWith(buffer.substring(posSpace + 1))) {
+							break;
+						}
+
+						candidates.add(match);
+					}
+
+					return posSpace + 1;
 				} else if (buffer.startsWith("generateDataSet ")) {
 					this.updateDataSetGenerators();
 					candidates.addAll(dataSetGenerators);
@@ -337,5 +356,15 @@ public class BackendClientCompleter implements Completer {
 		}
 
 		return candidates.isEmpty() ? -1 : 0;
+	}
+
+	/**
+	 * This method updates the {@link #dataRandomizers} attribute by retrieving
+	 * the availble data randomizers from the server.
+	 * 
+	 * @throws RemoteException
+	 */
+	protected void updateDataRandomizers() throws RemoteException {
+		dataRandomizers = new TreeSet<String>(client.getDataRandomizers());
 	}
 }

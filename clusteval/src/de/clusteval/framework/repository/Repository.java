@@ -51,6 +51,7 @@ import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.data.goldstandard.format.GoldStandardFormat;
 import de.clusteval.data.preprocessing.DataPreprocessor;
+import de.clusteval.data.randomizer.DataRandomizer;
 import de.clusteval.data.statistics.DataStatistic;
 import de.clusteval.data.statistics.DataStatisticCalculator;
 import de.clusteval.framework.ClustevalBackendServer;
@@ -240,6 +241,12 @@ public class Repository {
 	 * generators are stored.
 	 */
 	protected String generatorBasePath;
+
+	/**
+	 * The absolute path to the directory within this repository, where all
+	 * randomizers are stored.
+	 */
+	protected String randomizerBasePath;
 
 	/**
 	 * The absolute path to the directory, where for a certain runresult
@@ -609,6 +616,7 @@ public class Repository {
 		this.ensureFolder(this.getBasePath(DistanceMeasure.class));
 		this.ensureFolder(this.generatorBasePath);
 		this.ensureFolder(this.getBasePath(DataSetGenerator.class));
+		this.ensureFolder(this.getBasePath(DataRandomizer.class));
 		this.ensureFolder(this.getBasePath(DataPreprocessor.class));
 
 		return true;
@@ -1530,6 +1538,8 @@ public class Repository {
 
 		this.createAndAddDynamicEntity(DataSetGenerator.class,
 				FileUtils.buildPath(this.generatorBasePath, "dataset"));
+		this.createAndAddDynamicEntity(DataRandomizer.class,
+				FileUtils.buildPath(this.randomizerBasePath, "data"));
 		this.createAndAddDynamicEntity(DataPreprocessor.class, FileUtils
 				.buildPath(this.supplementaryBasePath, "preprocessing"));
 
@@ -1662,6 +1672,8 @@ public class Repository {
 				"formats");
 		this.generatorBasePath = FileUtils.buildPath(
 				this.supplementaryBasePath, "generators");
+		this.randomizerBasePath = FileUtils.buildPath(
+				this.supplementaryBasePath, "randomizers");
 		this.typesBasePath = FileUtils.buildPath(this.supplementaryBasePath,
 				"types");
 	}
