@@ -164,7 +164,8 @@ public class ClustQualityEval {
 		}
 
 		Set<Thread> threads = new HashSet<Thread>();
-
+		System.out.println("Program configurations:");
+		System.out.println(run.getProgramConfigs());
 		for (final ProgramConfig pc : run.getProgramConfigs()) {
 			// get the dataset for this program config
 			DataSet dsIn = Parser.parseFromFile(
@@ -204,7 +205,8 @@ public class ClustQualityEval {
 							 */
 							@Override
 							public boolean accept(File dir, String name) {
-								return name.startsWith(pc.getName())
+								return name.startsWith(pc.getName() + "_"
+										+ dataConfig.getName())
 										&& name.endsWith(".results.conv");
 							}
 						});
@@ -228,8 +230,9 @@ public class ClustQualityEval {
 								List<ClusteringQualityMeasure> toEvaluate = new ArrayList<ClusteringQualityMeasure>(
 										measures);
 								try {
-								toEvaluate
-										.removeAll(cl.getQualities().keySet());
+									if (cl.getQualities() != null)
+										toEvaluate.removeAll(cl.getQualities()
+												.keySet());
 								} catch (NullPointerException e) {
 									System.out.println(clusteringFile);
 									throw e;
@@ -257,7 +260,8 @@ public class ClustQualityEval {
 																"%s\t%s",
 																m.toString(),
 																quals.get(m)
-																		.getValue()));
+																		.getValue())
+																+ "\n");
 								}
 
 								long iterationNumber = Long
@@ -274,7 +278,8 @@ public class ClustQualityEval {
 								// store all qualities of the clustering in one
 								// set
 								ClusteringQualitySet allQuals = new ClusteringQualitySet();
-								allQuals.putAll(cl.getQualities());
+								if (cl.getQualities() != null)
+									allQuals.putAll(cl.getQualities());
 								allQuals.putAll(quals);
 								qualsMap.put(iterationNumber, allQuals);
 

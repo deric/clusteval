@@ -16,6 +16,8 @@ package de.clusteval.cluster.quality;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 
 import ch.qos.logback.classic.Level;
@@ -140,6 +142,7 @@ public class TestFMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 						"TransClustFClusteringQualityMeasure");
 		double quality = measure.getQualityOfClustering(clustering,
 				goldStandard, null).getValue();
+		Assert.assertEquals(0.8444444444444444, quality);
 		System.out.println(measure.getAlias() + " " + quality);
 
 		measure = ClusteringQualityMeasure.parseFromString(getRepository(),
@@ -147,6 +150,124 @@ public class TestFMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 		quality = measure
 				.getQualityOfClustering(clustering, goldStandard, null)
 				.getValue();
+		Assert.assertEquals(0.9027777777777778, quality);
+		System.out.println(measure.getAlias() + " " + quality);
+	}
+
+	@Test
+	public void testAdditionalElementsInGs() throws InstantiationException,
+			IllegalAccessException, RepositoryAlreadyExistsException,
+			InvalidRepositoryException, RepositoryConfigNotFoundException,
+			RepositoryConfigurationException, NoRepositoryFoundException,
+			RegisterException, NoSuchAlgorithmException,
+			RNotAvailableException, RCalculationException,
+			UnknownClusteringQualityMeasureException,
+			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
+			InvalidDataSetFormatVersionException, IOException {
+		ClustevalBackendServer.logLevel(Level.WARN);
+		Clustering goldStandard = new Clustering();
+		Cluster gsCluster1 = new Cluster("1");
+		gsCluster1.add(new ClusterItem("square1"), 1.0f);
+		goldStandard.addCluster(gsCluster1);
+
+		Cluster gsCluster2 = new Cluster("2");
+		gsCluster2.add(new ClusterItem("star1"), 1.0f);
+		gsCluster2.add(new ClusterItem("star2"), 1.0f);
+		gsCluster2.add(new ClusterItem("star3"), 1.0f);
+		gsCluster2.add(new ClusterItem("star4"), 1.0f);
+		gsCluster2.add(new ClusterItem("star5"), 1.0f);
+		gsCluster2.add(new ClusterItem("star6"), 1.0f);
+		gsCluster2.add(new ClusterItem("star7"), 1.0f);
+		// additional element that is not contained in clustering should be
+		// removed and not affect result
+		gsCluster2.add(new ClusterItem("star8"), 1.0f);
+		goldStandard.addCluster(gsCluster2);
+
+		Clustering clustering = new Clustering();
+		Cluster cluster1 = new Cluster("1");
+		cluster1.add(new ClusterItem("square1"), 1.0f);
+		cluster1.add(new ClusterItem("star1"), 1.0f);
+		cluster1.add(new ClusterItem("star2"), 1.0f);
+		cluster1.add(new ClusterItem("star3"), 1.0f);
+		cluster1.add(new ClusterItem("star4"), 1.0f);
+		cluster1.add(new ClusterItem("star5"), 1.0f);
+		cluster1.add(new ClusterItem("star6"), 1.0f);
+		cluster1.add(new ClusterItem("star7"), 1.0f);
+		clustering.addCluster(cluster1);
+
+		ClusteringQualityMeasure measure = ClusteringQualityMeasure
+				.parseFromString(getRepository(),
+						"TransClustFClusteringQualityMeasure");
+		double quality = measure.getQualityOfClustering(clustering,
+				goldStandard, null).getValue();
+		Assert.assertEquals(0.8444444444444444, quality);
+		System.out.println(measure.getAlias() + " " + quality);
+
+		measure = ClusteringQualityMeasure.parseFromString(getRepository(),
+				"TransClustF2ClusteringQualityMeasure");
+		quality = measure
+				.getQualityOfClustering(clustering, goldStandard, null)
+				.getValue();
+		Assert.assertEquals(0.9027777777777778, quality);
+		System.out.println(measure.getAlias() + " " + quality);
+	}
+
+	@Test
+	public void testAdditionalElementsInClustering()
+			throws InstantiationException, IllegalAccessException,
+			RepositoryAlreadyExistsException, InvalidRepositoryException,
+			RepositoryConfigNotFoundException,
+			RepositoryConfigurationException, NoRepositoryFoundException,
+			RegisterException, NoSuchAlgorithmException,
+			RNotAvailableException, RCalculationException,
+			UnknownClusteringQualityMeasureException,
+			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
+			InvalidDataSetFormatVersionException, IOException {
+		ClustevalBackendServer.logLevel(Level.WARN);
+		Clustering goldStandard = new Clustering();
+		Cluster gsCluster1 = new Cluster("1");
+		gsCluster1.add(new ClusterItem("square1"), 1.0f);
+		goldStandard.addCluster(gsCluster1);
+
+		Cluster gsCluster2 = new Cluster("2");
+		gsCluster2.add(new ClusterItem("star1"), 1.0f);
+		gsCluster2.add(new ClusterItem("star2"), 1.0f);
+		gsCluster2.add(new ClusterItem("star3"), 1.0f);
+		gsCluster2.add(new ClusterItem("star4"), 1.0f);
+		gsCluster2.add(new ClusterItem("star5"), 1.0f);
+		gsCluster2.add(new ClusterItem("star6"), 1.0f);
+		gsCluster2.add(new ClusterItem("star7"), 1.0f);
+		goldStandard.addCluster(gsCluster2);
+
+		Clustering clustering = new Clustering();
+		Cluster cluster1 = new Cluster("1");
+		cluster1.add(new ClusterItem("square1"), 1.0f);
+		cluster1.add(new ClusterItem("star1"), 1.0f);
+		cluster1.add(new ClusterItem("star2"), 1.0f);
+		cluster1.add(new ClusterItem("star3"), 1.0f);
+		cluster1.add(new ClusterItem("star4"), 1.0f);
+		cluster1.add(new ClusterItem("star5"), 1.0f);
+		cluster1.add(new ClusterItem("star6"), 1.0f);
+		cluster1.add(new ClusterItem("star7"), 1.0f);
+		// additional element that is not contained in goldstandard should be
+		// removed and not affect result
+		cluster1.add(new ClusterItem("star8"), 1.0f);
+		clustering.addCluster(cluster1);
+
+		ClusteringQualityMeasure measure = ClusteringQualityMeasure
+				.parseFromString(getRepository(),
+						"TransClustFClusteringQualityMeasure");
+		double quality = measure.getQualityOfClustering(clustering,
+				goldStandard, null).getValue();
+		Assert.assertEquals(0.8444444444444444, quality);
+		System.out.println(measure.getAlias() + " " + quality);
+
+		measure = ClusteringQualityMeasure.parseFromString(getRepository(),
+				"TransClustF2ClusteringQualityMeasure");
+		quality = measure
+				.getQualityOfClustering(clustering, goldStandard, null)
+				.getValue();
+		Assert.assertEquals(0.9027777777777778, quality);
 		System.out.println(measure.getAlias() + " " + quality);
 	}
 }

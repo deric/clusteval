@@ -271,8 +271,10 @@ public class Clustering implements Iterable<Cluster> {
 	public boolean removeClusterItem(final ClusterItem item) {
 		Map<Cluster, Float> fuzzyClusters = this.itemToCluster.remove(item);
 		boolean result = false;
-		for (Cluster cl : fuzzyClusters.keySet())
+		for (Cluster cl : fuzzyClusters.keySet()) {
 			result = cl.remove(item);
+			this.fuzzySize -= fuzzyClusters.get(cl);
+		}
 		return result;
 	}
 
