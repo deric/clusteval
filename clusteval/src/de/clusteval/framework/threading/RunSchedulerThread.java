@@ -26,8 +26,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,8 +123,6 @@ public class RunSchedulerThread extends ClustevalThread {
 		this.repository = repository;
 		this.log = LoggerFactory.getLogger(this.getClass());
 		this.threadPool = new ScheduledThreadPoolExecutor(numberThreads);
-		this.threadPool.setThreadFactory(new ClustEvalThreadFactory(
-				supervisorThread));
 		this.threadPool.setMaximumPoolSize(this.threadPool.getCorePoolSize());
 		// threads stored in the threadPool variable correspond to started
 		// runrunnables. Some types of those threads start a thread for each
@@ -137,8 +133,6 @@ public class RunSchedulerThread extends ClustevalThread {
 		// numberThreads active threads.
 		this.iterationThreadPool = new ScheduledThreadPoolExecutor(
 				numberThreads);
-		this.iterationThreadPool.setThreadFactory(new ClustEvalThreadFactory(
-				supervisorThread));
 		this.iterationThreadPool.setMaximumPoolSize(this.iterationThreadPool
 				.getCorePoolSize());
 		this.activeIterationRunnables = new HashMap<Thread, IterationRunnable>();
@@ -618,39 +612,5 @@ public class RunSchedulerThread extends ClustevalThread {
 
 	public synchronized Map<Thread, IterationRunnable> getActiveIterationRunnables() {
 		return this.activeIterationRunnables;
-	}
-}
-
-/**
- * Take copy of DefaultThreadFactory
- * 
- * @author Christian Wiwie
- *
- */
-class ClustEvalThreadFactory implements ThreadFactory {
-
-	static final AtomicInteger poolNumber = new AtomicInteger(1);
-	final ThreadGroup group;
-	final AtomicInteger threadNumber = new AtomicInteger(1);
-	final String namePrefix;
-	final SupervisorThread supervisorThread;
-
-	public ClustEvalThreadFactory(final SupervisorThread supervisorThread) {
-		SecurityManager s = System.getSecurityManager();
-		group = (s != null) ? s.getThreadGroup() : Thread.currentThread()
-				.getThreadGroup();
-		namePrefix = "pool-" + poolNumber.getAndIncrement() + "-thread-";
-		this.supervisorThread = supervisorThread;
-	}
-
-	@Override
-	public Thread newThread(Runnable r) {
-		Thread t = new ClustevalThread(this.supervisorThread, group, r,
-				namePrefix + threadNumber.getAndIncrement(), 0);
-		if (t.isDaemon())
-			t.setDaemon(false);
-		if (t.getPriority() != Thread.NORM_PRIORITY)
-			t.setPriority(Thread.NORM_PRIORITY);
-		return t;
 	}
 }

@@ -175,7 +175,7 @@ public abstract class JARFinder<T extends RepositoryObject> extends Finder<T> {
 			if (waitingFiles.containsKey(f)) {
 				for (File waiting : waitingFiles.get(f))
 					loadJAR(waiting,
-							getURLClassLoader0(waiting,
+							getURLClassLoaderAndStore(waiting,
 									classLoaders.get(f.toURI().toURL())));
 				waitingFiles.remove(f);
 			}
