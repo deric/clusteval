@@ -45,6 +45,7 @@ import org.slf4j.LoggerFactory;
 
 import utils.ArraysExt;
 import utils.Pair;
+import utils.Triple;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.PatternLayout;
@@ -53,6 +54,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.FileAppender;
 import de.clusteval.run.RUN_STATUS;
 import file.FileUtils;
+import format.Formatter;
 
 /**
  * A backend client can give commands to the backend server (see
@@ -470,27 +472,36 @@ public class BackendClient extends Thread {
 				System.out.println("Queue: " + this.getQueue());
 			}
 			if (params.hasOption("getActiveThreads")) {
-				Map<String, Pair<String, Integer>> activeThreads = this.server
+				Map<String, Triple<String, Integer, Long>> activeThreads = this.server
 						.getActiveThreads();
 				if (activeThreads.isEmpty())
 					System.out.println("No active threads");
 				else {
 					System.out.println("Active threads:");
-					System.out.format("\t%10s%30s%50s%30s%30s%30s\n",
+					System.out.format("%10s%20s%50s%30s%30s%10s%20s\n",
 							"Thread #", "Thread", "Run", "ProgramConfig",
-							"DataConfig", "Iteration");
+							"DataConfig", "Iteration", "Running time");
 					List<String> threadNames = new ArrayList<String>(
 							activeThreads.keySet());
 					Collections.sort(threadNames);
 					int i = 1;
 					for (String t : threadNames) {
-						Pair<String, Integer> value = activeThreads.get(t);
+						Triple<String, Integer, Long> value = activeThreads
+								.get(t);
 						String[] split1 = value.getFirst().split(": ");
 						String[] split2 = split1[1].split(",");
 
-						System.out.format("\t%10d%30s%50s%30s%30s%30d\n", i++,
-								t, split1[0], split2[0], split2[1],
-								value.getSecond());
+						System.out.format(
+								"%10d%20s%50s%30s%30s%10d%20s\n",
+								i++,
+								t,
+								split1[0],
+								split2[0],
+								split2[1],
+								value.getSecond(),
+								Formatter.formatMsToDuration(
+										System.currentTimeMillis()
+												- value.getThird(), false));
 					}
 				}
 			}

@@ -789,6 +789,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 			@Override
 			public void run() {
+				super.run();
 				try {
 					RunSchedulerThread scheduler = null;
 					Repository repo = getRun().getRepository();
@@ -1413,6 +1414,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 			@Override
 			public void run() {
+				super.run();
 				try {
 					this.log.info("Assessing isoMDS coordinates of dataset samples ...");
 					// Plotter.assessAndWriteIsoMDSCoordinates(dcMDS);
@@ -1443,6 +1445,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 			@Override
 			public void run() {
+				super.run();
 				try {
 					this.log.info("Assessing PCA coordinates of dataset samples ...");
 					// Plotter.assessAndWritePCACoordinates(dcPCA);

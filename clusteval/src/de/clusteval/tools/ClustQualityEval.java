@@ -345,9 +345,14 @@ public class ClustQualityEval {
 							protected String getLineOutput(String[] key,
 									String[] value) {
 								StringBuffer sb = new StringBuffer();
-								sb.append(combineColumns(value));
+								// sb.append(combineColumns(value));
+								sb.append(combineColumns(Arrays
+										.copyOf(value, 2)));
 
 								if (currentLine == 0) {
+									sb.append(outSplit);
+									sb.append(combineColumns(Arrays
+											.copyOfRange(value, 2, value.length)));
 									measures = new ArrayList<ClusteringQualityMeasure>();
 									for (int i = 2; i < value.length; i++)
 										try {
@@ -378,8 +383,7 @@ public class ClustQualityEval {
 										measures.addAll(requiredMeasures);
 									}
 								} else if (value[0].contains("*")) {
-									return String.format("%s%n",
-											combineColumns(value));
+									// do nothing
 								} else {
 									long iterationNumber = Long
 											.parseLong(value[0]);
@@ -389,13 +393,24 @@ public class ClustQualityEval {
 									boolean notTerminated = value[3]
 											.equals("NT");
 
-									for (int i = value.length - 2; i < measures
-											.size(); i++) {
+									// for (int i = value.length - 2; i <
+									// measures
+									// .size(); i++) {
+									// sb.append(outSplit);
+									// if (notTerminated)
+									// sb.append("NT");
+									// else
+									// sb.append(quals.get(measures.get(i)));
+									// }
+									for (int i = 0; i < measures.size(); i++) {
 										sb.append(outSplit);
 										if (notTerminated)
 											sb.append("NT");
-										else
+										else if (quals.containsKey(measures
+												.get(i)))
 											sb.append(quals.get(measures.get(i)));
+										else
+											sb.append(value[i + 2]);
 									}
 								}
 

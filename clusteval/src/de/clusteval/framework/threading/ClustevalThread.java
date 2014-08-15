@@ -38,6 +38,20 @@ public class ClustevalThread extends Thread {
 		this.supervisorThread = supervisorThread;
 	}
 
+	/**
+	 * @param supervisorThread
+	 * @param group
+	 * @param target
+	 * @param name
+	 * @param stackSize
+	 */
+	public ClustevalThread(final SupervisorThread supervisorThread,
+			ThreadGroup group, Runnable target, String name, long stackSize) {
+		super(group, target, name, stackSize);
+		this.initialized = new AtomicBoolean(false);
+		this.supervisorThread = supervisorThread;
+	}
+
 	protected void setInitialized() {
 		synchronized (this.initialized) {
 			this.initialized.set(true);
@@ -67,4 +81,13 @@ public class ClustevalThread extends Thread {
 		return this.supervisorThread;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Thread#start()
+	 */
+	@Override
+	public synchronized void start() {
+		super.start();
+	}
 }

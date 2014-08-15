@@ -26,6 +26,8 @@ public abstract class IterationRunnable implements Runnable {
 	protected RNotAvailableException rNotAvailableException;
 	protected InterruptedException interruptedException;
 
+	protected long startTime;
+
 	public IterationRunnable(final IterationWrapper iterationWrapper) {
 		super();
 		this.iterationWrapper = iterationWrapper;
@@ -70,5 +72,19 @@ public abstract class IterationRunnable implements Runnable {
 
 	public int getIterationNumber() {
 		return this.iterationWrapper.getOptId();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		this.startTime = System.currentTimeMillis();
+	}
+
+	public long getStartTime() {
+		return this.startTime;
 	}
 }

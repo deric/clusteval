@@ -48,6 +48,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import utils.Pair;
+import utils.Triple;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.PatternLayout;
@@ -1040,20 +1041,22 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * @see de.clusteval.serverclient.IBackendServer#getActiveThreads()
 	 */
 	@Override
-	public Map<String, Pair<String, Integer>> getActiveThreads()
+	public Map<String, Triple<String, Integer, Long>> getActiveThreads()
 			throws RemoteException {
-		Map<String, Pair<String, Integer>> result = new HashMap<String, Pair<String, Integer>>();
+		Map<String, Triple<String, Integer, Long>> result = new HashMap<String, Triple<String, Integer, Long>>();
 
 		RunSchedulerThread scheduler = this.getRepository()
 				.getSupervisorThread().getRunScheduler();
 		Map<Thread, IterationRunnable> map = scheduler
 				.getActiveIterationRunnables();
 		for (Map.Entry<Thread, IterationRunnable> e : map.entrySet()) {
+			long startTime = e.getValue().getStartTime();
 			ExecutionRunRunnable r = (ExecutionRunRunnable) (e.getValue()
 					.getParentRunnable());
-			result.put(e.getKey().getName(), Pair.getPair(r.getRun().getName()
-					+ ": " + r.getProgramConfig() + "," + r.getDataConfig(), e
-					.getValue().getIterationNumber()));
+			result.put(e.getKey().getName(), Triple.getTriple(
+					r.getRun().getName() + ": " + r.getProgramConfig() + ","
+							+ r.getDataConfig(), e.getValue()
+							.getIterationNumber(), startTime));
 		}
 		return result;
 	}

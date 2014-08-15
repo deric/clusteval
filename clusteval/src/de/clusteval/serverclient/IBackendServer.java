@@ -21,6 +21,7 @@ import java.util.Map;
 import org.apache.commons.cli.Options;
 
 import utils.Pair;
+import utils.Triple;
 import ch.qos.logback.classic.Level;
 import de.clusteval.run.RUN_STATUS;
 
@@ -238,12 +239,12 @@ public interface IBackendServer extends Remote {
 
 	/**
 	 * Returns a map containing active threads and the corresponding
-	 * runs/iterations that they perform
+	 * runs/iterations/starttime that they perform
 	 * 
 	 * @return
 	 * @throws RemoteException
 	 */
-	public Map<String, Pair<String, Integer>> getActiveThreads()
+	public Map<String, Triple<String, Integer, Long>> getActiveThreads()
 			throws RemoteException;
 
 	/**
