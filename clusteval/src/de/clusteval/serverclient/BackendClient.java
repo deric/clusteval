@@ -478,7 +478,7 @@ public class BackendClient extends Thread {
 					System.out.println("No active threads");
 				else {
 					System.out.println("Active threads:");
-					System.out.format("%10s%20s%50s%30s%30s%10s%20s\n",
+					System.out.format("%10s%20s%50s%30s%40s%10s%20s\n",
 							"Thread #", "Thread", "Run", "ProgramConfig",
 							"DataConfig", "Iteration", "Running time");
 					List<String> threadNames = new ArrayList<String>(
@@ -492,7 +492,7 @@ public class BackendClient extends Thread {
 						String[] split2 = split1[1].split(",");
 
 						System.out.format(
-								"%10d%20s%50s%30s%30s%10d%20s\n",
+								"%10d%20s%50s%30s%40s%10d%20s\n",
 								i++,
 								t,
 								split1[0],
