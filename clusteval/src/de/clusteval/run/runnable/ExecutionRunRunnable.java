@@ -1422,11 +1422,23 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			@Override
 			public void run() {
 				super.run();
+
+				RunSchedulerThread scheduler = null;
+				Repository repo = getRun().getRepository();
+				if (repo instanceof RunResultRepository)
+					repo = repo.getParent();
+				scheduler = repo.getSupervisorThread().getRunScheduler();
+				scheduler.informOnStartedIterationRunnable(
+						Thread.currentThread(), this);
+
 				try {
 					this.log.info("Assessing isoMDS coordinates of dataset samples ...");
 					Plotter.assessAndWriteIsoMDSCoordinates(dcMDS);
 				} catch (Throwable e) {
 					e.printStackTrace();
+				} finally {
+					scheduler.informOnFinishedIterationRunnable(
+							Thread.currentThread(), this);
 				}
 			}
 		};
@@ -1460,11 +1472,23 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			@Override
 			public void run() {
 				super.run();
+
+				RunSchedulerThread scheduler = null;
+				Repository repo = getRun().getRepository();
+				if (repo instanceof RunResultRepository)
+					repo = repo.getParent();
+				scheduler = repo.getSupervisorThread().getRunScheduler();
+				scheduler.informOnStartedIterationRunnable(
+						Thread.currentThread(), this);
+
 				try {
 					this.log.info("Assessing PCA coordinates of dataset samples ...");
 					Plotter.assessAndWritePCACoordinates(dcPCA);
 				} catch (Throwable e) {
 					e.printStackTrace();
+				} finally {
+					scheduler.informOnFinishedIterationRunnable(
+							Thread.currentThread(), this);
 				}
 			}
 		};
