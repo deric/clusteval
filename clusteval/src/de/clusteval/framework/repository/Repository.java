@@ -765,8 +765,8 @@ public class Repository {
 		// close Rengine pool
 		// this.rEngineForLibraryInstalledChecks.close();
 		for (MyRengine rEngine : this.rEngines.values()) {
-			// rEngine.close();
-			rEngine.shutdown();
+			rEngine.close();
+			// rEngine.shutdown();
 		}
 		this.rEngines.clear();
 

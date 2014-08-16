@@ -1417,7 +1417,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 				super.run();
 				try {
 					this.log.info("Assessing isoMDS coordinates of dataset samples ...");
-					// Plotter.assessAndWriteIsoMDSCoordinates(dcMDS);
+					Plotter.assessAndWriteIsoMDSCoordinates(dcMDS);
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}
@@ -1448,7 +1448,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 				super.run();
 				try {
 					this.log.info("Assessing PCA coordinates of dataset samples ...");
-					// Plotter.assessAndWritePCACoordinates(dcPCA);
+					Plotter.assessAndWritePCACoordinates(dcPCA);
 				} catch (Throwable e) {
 					e.printStackTrace();
 				}
