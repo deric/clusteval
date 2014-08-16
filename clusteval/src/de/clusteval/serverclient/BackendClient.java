@@ -491,17 +491,35 @@ public class BackendClient extends Thread {
 						String[] split1 = value.getFirst().split(": ");
 						String[] split2 = split1[1].split(",");
 
-						System.out.format(
-								"%10d%20s%50s%30s%40s%10d%20s\n",
-								i++,
-								t,
-								split1[0],
-								split2[0],
-								split2[1],
-								value.getSecond(),
-								Formatter.formatMsToDuration(
-										System.currentTimeMillis()
-												- value.getThird(), false));
+						switch (value.getSecond()) {
+							case -1 :
+								System.out.format(
+										"%10d%20s%50s%30s%40s%10s%20s\n", i++,
+										t, split1[0], split2[0], split2[1],
+										"isoMDS", Formatter.formatMsToDuration(
+												System.currentTimeMillis()
+														- value.getThird(),
+												false));
+								break;
+							case -2 :
+								System.out.format(
+										"%10d%20s%50s%30s%40s%10s%20s\n", i++,
+										t, split1[0], split2[0], split2[1],
+										"PCA", Formatter.formatMsToDuration(
+												System.currentTimeMillis()
+														- value.getThird(),
+												false));
+								break;
+							default :
+								System.out.format(
+										"%10d%20s%50s%30s%40s%10d%20s\n", i++,
+										t, split1[0], split2[0], split2[1],
+										value.getSecond(),
+										Formatter.formatMsToDuration(
+												System.currentTimeMillis()
+														- value.getThird(),
+												false));
+						}
 					}
 				}
 			}

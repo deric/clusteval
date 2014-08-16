@@ -1410,7 +1410,14 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 		// 30.06.2014: performing isoMDS calculations in parallel
 		final DataConfig dcMDS = this.dataConfig;
-		IterationRunnable iterationRunnable = new IterationRunnable(null) {
+
+		IterationWrapper wrapper = new IterationWrapper();
+		wrapper.setDataConfig(dcMDS);
+		wrapper.setProgramConfig(programConfig);
+		wrapper.setRunnable(this);
+		wrapper.setOptId(-1);
+
+		IterationRunnable iterationRunnable = new IterationRunnable(wrapper) {
 
 			@Override
 			public void run() {
@@ -1441,7 +1448,14 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 		// 30.06.2014: performing isoMDS calculations in parallel
 		final DataConfig dcPCA = this.dataConfig;
-		iterationRunnable = new IterationRunnable(null) {
+
+		wrapper = new IterationWrapper();
+		wrapper.setDataConfig(dcPCA);
+		wrapper.setProgramConfig(programConfig);
+		wrapper.setRunnable(this);
+		wrapper.setOptId(-2);
+
+		iterationRunnable = new IterationRunnable(wrapper) {
 
 			@Override
 			public void run() {
