@@ -55,8 +55,11 @@ public class RunResultFinder extends FileFinder<RunResult> {
 	@Override
 	protected RunResult parseObjectFromFile(File file) throws Exception {
 		iter.getRunResult().loadIntoMemory();
-		iter.getRunResult().register();
-		iter.getRunResult().unloadFromMemory();
+		try {
+			iter.getRunResult().register();
+		} finally {
+			iter.getRunResult().unloadFromMemory();
+		}
 		return iter.getRunResult();
 	}
 

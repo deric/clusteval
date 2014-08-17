@@ -498,10 +498,10 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 
 			if (iter > -1) {
 				this.giveQualityFeedback(result, this.result.get(result));
-//				if (hasNext())
-					throw new ParameterSetAlreadyEvaluatedException(
-							this.currentCount, iter, result);
-//				result = null;
+				// if (hasNext())
+				throw new ParameterSetAlreadyEvaluatedException(
+						this.currentCount, iter, result);
+				// result = null;
 			}
 			// } while (this.result.get(result) != null);
 		}
@@ -666,29 +666,33 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 							this.dataConfig.getRepository(), this.run, this,
 							absResultPath, false, false, false);
 			oldResults.loadIntoMemory();
-			List<ParameterSet> parameterSets = oldResults.getParameterSets();
-			List<Long> iterationNumbers = oldResults.getIterationNumbers();
-			SortedMap<Long, ParameterSet> paramSetsWithOrdering = new TreeMap<Long, ParameterSet>();
-			for (int i = 0; i < parameterSets.size(); i++)
-				paramSetsWithOrdering.put(iterationNumbers.get(i),
-						parameterSets.get(i));
+			try {
+				List<ParameterSet> parameterSets = oldResults
+						.getParameterSets();
+				List<Long> iterationNumbers = oldResults.getIterationNumbers();
+				SortedMap<Long, ParameterSet> paramSetsWithOrdering = new TreeMap<Long, ParameterSet>();
+				for (int i = 0; i < parameterSets.size(); i++)
+					paramSetsWithOrdering.put(iterationNumbers.get(i),
+							parameterSets.get(i));
 
-			for (Entry<Long, ParameterSet> entry : paramSetsWithOrdering
-					.entrySet()) {
-				final ParameterSet paramSet = entry.getValue();
-				final long iterationNumber = entry.getKey();
-				try {
-					this.next(paramSet, iterationNumber);
-				} catch (NoParameterSetFoundException e) {
-					// doesn't occur
-				} catch (ParameterSetAlreadyEvaluatedException e) {
-					// we can ignore this exception here and give the same
-					// feedback as before.
+				for (Entry<Long, ParameterSet> entry : paramSetsWithOrdering
+						.entrySet()) {
+					final ParameterSet paramSet = entry.getValue();
+					final long iterationNumber = entry.getKey();
+					try {
+						this.next(paramSet, iterationNumber);
+					} catch (NoParameterSetFoundException e) {
+						// doesn't occur
+					} catch (ParameterSetAlreadyEvaluatedException e) {
+						// we can ignore this exception here and give the same
+						// feedback as before.
+					}
+					this.giveQualityFeedback(paramSet, oldResults.get(paramSet));
 				}
-				this.giveQualityFeedback(paramSet, oldResults.get(paramSet));
+				isResume = false;
+			} finally {
+				oldResults.unloadFromMemory();
 			}
-			oldResults.unloadFromMemory();
-			isResume = false;
 		}
 	}
 

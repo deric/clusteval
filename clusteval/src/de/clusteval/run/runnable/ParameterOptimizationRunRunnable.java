@@ -213,27 +213,30 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 
 		if (this.optimizationMethod != null
 				&& this.optimizationMethod.getResult() != null) {
-			if (this.optimizationMethod.getResult().getOptimalParameterSet() != null)
-				this.log.info("Optimal Parameter set for "
-						+ programConfig
-						+ " & "
-						+ dataConfig
-						+ ":\t"
-						+ this.optimizationMethod.getResult()
-								.getOptimalParameterSet()
-						+ ""
-						+ this.optimizationMethod.getResult()
-								.getOptimalCriterionValue());
-			/*
-			 * TODO: option, whether to plot
-			 */
-			Plotter.plotParameterOptimizationResult(this.optimizationMethod
-					.getResult());
-
-			// clear memory-hungry internal attributes of clustering results
-			ParameterOptimizationResult result = this.optimizationMethod
-					.getResult();
-			result.unloadFromMemory();
+			try {
+				if (this.optimizationMethod.getResult()
+						.getOptimalParameterSet() != null)
+					this.log.info("Optimal Parameter set for "
+							+ programConfig
+							+ " & "
+							+ dataConfig
+							+ ":\t"
+							+ this.optimizationMethod.getResult()
+									.getOptimalParameterSet()
+							+ ""
+							+ this.optimizationMethod.getResult()
+									.getOptimalCriterionValue());
+				/*
+				 * TODO: option, whether to plot
+				 */
+				Plotter.plotParameterOptimizationResult(this.optimizationMethod
+						.getResult());
+			} finally {
+				// clear memory-hungry internal attributes of clustering results
+				ParameterOptimizationResult result = this.optimizationMethod
+						.getResult();
+				result.unloadFromMemory();
+			}
 		}
 	}
 

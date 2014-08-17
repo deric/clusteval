@@ -349,8 +349,11 @@ public class ClusteringRunResult extends ExecutionRunResult {
 				 * Register after parsing
 				 */
 				result.loadIntoMemory();
-				result.register();
-				result.unloadFromMemory();
+				try {
+					result.register();
+				} finally {
+					result.unloadFromMemory();
+				}
 			}
 		}
 		return result;

@@ -529,11 +529,16 @@ public class TestParameterOptimizationMethod extends AbstractClustEvalTest {
 		Iterator<ClusteringQualitySet> it = qualitySets.iterator();
 		Iterator<ParameterSet> itParams = expectedParameterSets.iterator();
 		while (method.hasNext() && it.hasNext() && itParams.hasNext()) {
-			ParameterSet paramSet = method.next();
-			System.out.println(paramSet);
-			Assert.assertEquals(itParams.next(), paramSet);
-			method.giveQualityFeedback(paramSet, it.next());
-			Assert.assertEquals(itItNum.next().intValue(), method.currentCount);
+			try {
+				ParameterSet paramSet = method.next();
+				System.out.println(paramSet);
+				Assert.assertEquals(itParams.next(), paramSet);
+				method.giveQualityFeedback(paramSet, it.next());
+				Assert.assertEquals(itItNum.next().intValue(),
+						method.currentCount);
+			} catch (ParameterSetAlreadyEvaluatedException e) {
+				continue;
+			}
 		}
 	}
 

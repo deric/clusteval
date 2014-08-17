@@ -270,8 +270,11 @@ public class RunDataAnalysisRunResult
 					analysesFolder.getParentFile().getName(), runDataRun);
 
 			analysisResult.loadIntoMemory();
-			analysisResult.register();
-			analysisResult.unloadFromMemory();
+			try {
+				analysisResult.register();
+			} finally {
+				analysisResult.unloadFromMemory();
+			}
 		}
 		return analysisResult;
 	}

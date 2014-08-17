@@ -1004,16 +1004,19 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		try {
 			final String qualityFile = internalParams.get("q");
 			convertedResult.loadIntoMemory();
-			final Pair<ParameterSet, Clustering> pair = convertedResult
-					.getClustering();
-			convertedResult.unloadFromMemory();
-			ClusteringQualitySet quals = pair.getSecond().assessQuality(
-					dataConfig, this.getRun().getQualityMeasures());
-			qualities.add(Pair.getPair(pair.getFirst(), quals));
-			for (ClusteringQualityMeasure qualityMeasure : quals.keySet()) {
-				FileUtils.appendStringToFile(qualityFile,
-						qualityMeasure.getClass().getSimpleName() + "\t"
-								+ quals.get(qualityMeasure) + "\n");
+			try {
+				final Pair<ParameterSet, Clustering> pair = convertedResult
+						.getClustering();
+				ClusteringQualitySet quals = pair.getSecond().assessQuality(
+						dataConfig, this.getRun().getQualityMeasures());
+				qualities.add(Pair.getPair(pair.getFirst(), quals));
+				for (ClusteringQualityMeasure qualityMeasure : quals.keySet()) {
+					FileUtils.appendStringToFile(qualityFile,
+							qualityMeasure.getClass().getSimpleName() + "\t"
+									+ quals.get(qualityMeasure) + "\n");
+				}
+			} finally {
+				convertedResult.unloadFromMemory();
 			}
 
 			this.log.debug(this.getRun() + " (" + this.programConfig + ","
@@ -1545,33 +1548,36 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 */
 	@Override
 	protected void afterRun() {
-		// wait for all iteration runnables to finish
-		for (Future<?> f : this.futures)
-			try {
-				f.get();
-			} catch (InterruptedException e) {
-				// we don't care about those interrupted exceptions
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
+		try {
+			// wait for all iteration runnables to finish
+			for (Future<?> f : this.futures)
+				try {
+					f.get();
+				} catch (InterruptedException e) {
+					// we don't care about those interrupted exceptions
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
 
-		super.afterRun();
+			super.afterRun();
+		} finally {
+			// unload the dataset from memory
+			DataSet dataSet = this.dataConfig.getDatasetConfig().getDataSet()
+					.getInStandardFormat();
+			if (dataSet != null)
+				dataSet.unloadFromMemory();
+			// if the original dataset is an absolute dataset, unload it from
+			// memory
+			// as well
+			dataSet = this.dataConfig.getDatasetConfig().getDataSet()
+					.getOriginalDataSet();
+			if (dataSet != null && dataSet instanceof AbsoluteDataSet)
+				dataSet.unloadFromMemory();
 
-		// unload the dataset from memory
-		DataSet dataSet = this.dataConfig.getDatasetConfig().getDataSet()
-				.getInStandardFormat();
-		if (dataSet != null)
-			dataSet.unloadFromMemory();
-		// if the original dataset is an absolute dataset, unload it from memory
-		// as well
-		dataSet = this.dataConfig.getDatasetConfig().getDataSet()
-				.getOriginalDataSet();
-		if (dataSet != null && dataSet instanceof AbsoluteDataSet)
-			dataSet.unloadFromMemory();
-
-		if (dataConfig.hasGoldStandardConfig())
-			dataConfig.getGoldstandardConfig().getGoldstandard()
-					.unloadFromMemory();
+			if (dataConfig.hasGoldStandardConfig())
+				dataConfig.getGoldstandardConfig().getGoldstandard()
+						.unloadFromMemory();
+		}
 
 		FileUtils.appendStringToFile(
 				this.getRun().getLogFilePath(),

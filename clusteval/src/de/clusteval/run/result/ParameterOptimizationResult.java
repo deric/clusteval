@@ -533,6 +533,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 				if (optimalCriterionValue.get(measure) == null
 						|| measure.isBetterThan(qualities.get(measure),
 								this.optimalCriterionValue.get(measure))) {
+
 					this.optimalCriterionValue.put(measure,
 							qualities.get(measure));
 					this.optimalParameterSet.put(measure, last);

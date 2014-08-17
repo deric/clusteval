@@ -331,8 +331,11 @@ public class DataAnalysisRunResult
 
 		if (register) {
 			analysisResult.loadIntoMemory();
-			analysisResult.register();
-			analysisResult.unloadFromMemory();
+			try {
+				analysisResult.register();
+			} finally {
+				analysisResult.unloadFromMemory();
+			}
 		}
 		result.add(analysisResult);
 		return analysisResult;

@@ -115,17 +115,22 @@ public abstract class Plotter {
 				boolean wasLoaded = absStandard.isInMemory();
 				if (!wasLoaded)
 					absStandard.loadIntoMemory();
-				SimilarityMatrix simMatrix = (SimilarityMatrix) dataConfig
-						.getDatasetConfig().getDataSet().getInStandardFormat()
-						.getDataSetContent();
-				double[][] sims = simMatrix.toArray();
-				String[] ids = new String[simMatrix.getIds().size()];
-				for (Map.Entry<String, Integer> entry : simMatrix.getIds()
-						.entrySet())
-					ids[entry.getValue()] = entry.getKey();
-				if (!wasLoaded)
-					absStandard.unloadFromMemory();
-
+				SimilarityMatrix simMatrix;
+				double[][] sims;
+				String[] ids;
+				try {
+					simMatrix = (SimilarityMatrix) dataConfig
+							.getDatasetConfig().getDataSet()
+							.getInStandardFormat().getDataSetContent();
+					sims = simMatrix.toArray();
+					ids = new String[simMatrix.getIds().size()];
+					for (Map.Entry<String, Integer> entry : simMatrix.getIds()
+							.entrySet())
+						ids[entry.getValue()] = entry.getKey();
+				} finally {
+					if (!wasLoaded)
+						absStandard.unloadFromMemory();
+				}
 				rEngine.assign("x",
 						ArraysExt.subtract(ArraysExt.max(sims), sims, true));
 				rEngine.assign("labels", ids);
@@ -195,11 +200,18 @@ public abstract class Plotter {
 				boolean wasLoaded = absStandard.isInMemory();
 				if (!wasLoaded)
 					absStandard.loadIntoMemory();
-				DataMatrix dataMatrix = absStandard.getDataSetContent();
-				double[][] x = dataMatrix.getData();
-				String[] ids = dataMatrix.getIds();
-				if (!wasLoaded)
-					absStandard.unloadFromMemory();
+				DataMatrix dataMatrix;
+				double[][] x;
+				String[] ids;
+
+				try {
+					dataMatrix = absStandard.getDataSetContent();
+					x = dataMatrix.getData();
+					ids = dataMatrix.getIds();
+				} finally {
+					if (!wasLoaded)
+						absStandard.unloadFromMemory();
+				}
 
 				rEngine.assign("x", x);
 				rEngine.assign("labels", ids);
