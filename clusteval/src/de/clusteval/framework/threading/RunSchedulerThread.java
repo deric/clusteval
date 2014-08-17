@@ -122,8 +122,8 @@ public class RunSchedulerThread extends ClustevalThread {
 		this.clientToRunResumes = new HashMap<String, Collection<Run>>();
 		this.repository = repository;
 		this.log = LoggerFactory.getLogger(this.getClass());
-		this.threadPool = new ScheduledThreadPoolExecutor(numberThreads);
-		this.threadPool.setMaximumPoolSize(5);
+		this.threadPool = new ScheduledThreadPoolExecutor(5);
+		this.threadPool.setMaximumPoolSize(this.threadPool.getCorePoolSize());
 		// threads stored in the threadPool variable correspond to started
 		// runrunnables. Some types of those threads start a thread for each
 		// iteration they perform, which are then stored in the
