@@ -178,63 +178,67 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 		Repository childRepository = new RunResultRepository(
 				runResultFolder.getAbsolutePath(), parentRepository);
 		childRepository.initialize();
+		try {
 
-		File runFile = null;
-		File configFolder = new File(FileUtils.buildPath(
-				runResultFolder.getAbsolutePath(), "configs"));
-		if (!configFolder.exists())
-			return null;
-		for (File child : configFolder.listFiles())
-			if (child.getName().endsWith(".run")) {
-				runFile = child;
-				break;
+			File runFile = null;
+			File configFolder = new File(FileUtils.buildPath(
+					runResultFolder.getAbsolutePath(), "configs"));
+			if (!configFolder.exists())
+				return null;
+			for (File child : configFolder.listFiles())
+				if (child.getName().endsWith(".run")) {
+					runFile = child;
+					break;
+				}
+			if (runFile == null)
+				return null;
+			final Run run = Parser.parseRunFromFile(runFile);
+
+			if (run instanceof ParameterOptimizationRun) {
+				final ParameterOptimizationRun paramRun = (ParameterOptimizationRun) run;
+
+				// TODO
+				// List<ParameterOptimizationResult> result = new
+				// ArrayList<ParameterOptimizationResult>();
+
+				File clusterFolder = new File(FileUtils.buildPath(
+						runResultFolder.getAbsolutePath(), "clusters"));
+				for (final ParameterOptimizationMethod method : paramRun
+						.getOptimizationMethods()) {
+					final File completeFile = new File(FileUtils.buildPath(
+							clusterFolder.getAbsolutePath(), method
+									.getProgramConfig().toString()
+									+ "_"
+									+ method.getDataConfig().toString()
+									+ ".results.qual.complete"));
+					final ParameterOptimizationResult tmpResult = parseFromRunResultCompleteFile(
+							parentRepository, paramRun, method, completeFile,
+							parseClusterings, storeClusterings, register);
+					if (tmpResult != null)
+						result.add(tmpResult);
+
+				}
+				// try to change 17.07.2012 to fix for
+				// internal_parameter-Optimization
+				// for (Pair<ProgramConfig, DataConfig> pair :
+				// run.getRunPairs())
+				// {
+				// final File completeFile = new File(FileUtils.buildPath(
+				// clusterFolder.getAbsolutePath(), pair.getFirst().toString()
+				// + "_" + pair.getSecond().toString()
+				// + ".results.qual.complete"));
+				// final ParameterOptimizationResult tmpResult =
+				// parseFromRunResultCompleteFile(
+				// parentRepository, run, method, completeFile);
+				// if (tmpResult != null)
+				// result.add(tmpResult);
+				//
+				// }
 			}
-		if (runFile == null)
-			return null;
-		final Run run = Parser.parseRunFromFile(runFile);
-
-		if (run instanceof ParameterOptimizationRun) {
-			final ParameterOptimizationRun paramRun = (ParameterOptimizationRun) run;
-
-			// TODO
-			// List<ParameterOptimizationResult> result = new
-			// ArrayList<ParameterOptimizationResult>();
-
-			File clusterFolder = new File(FileUtils.buildPath(
-					runResultFolder.getAbsolutePath(), "clusters"));
-			for (final ParameterOptimizationMethod method : paramRun
-					.getOptimizationMethods()) {
-				final File completeFile = new File(FileUtils.buildPath(
-						clusterFolder.getAbsolutePath(), method
-								.getProgramConfig().toString()
-								+ "_"
-								+ method.getDataConfig().toString()
-								+ ".results.qual.complete"));
-				final ParameterOptimizationResult tmpResult = parseFromRunResultCompleteFile(
-						parentRepository, paramRun, method, completeFile,
-						parseClusterings, storeClusterings, register);
-				if (tmpResult != null)
-					result.add(tmpResult);
-
-			}
-			// try to change 17.07.2012 to fix for
-			// internal_parameter-Optimization
-			// for (Pair<ProgramConfig, DataConfig> pair :
-			// run.getRunPairs())
-			// {
-			// final File completeFile = new File(FileUtils.buildPath(
-			// clusterFolder.getAbsolutePath(), pair.getFirst().toString()
-			// + "_" + pair.getSecond().toString()
-			// + ".results.qual.complete"));
-			// final ParameterOptimizationResult tmpResult =
-			// parseFromRunResultCompleteFile(
-			// parentRepository, run, method, completeFile);
-			// if (tmpResult != null)
-			// result.add(tmpResult);
-			//
-			// }
+			return run;
+		} finally {
+			childRepository.terminateSupervisorThread();
 		}
-		return run;
 	}
 
 	/**
