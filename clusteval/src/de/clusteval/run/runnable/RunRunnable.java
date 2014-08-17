@@ -265,6 +265,7 @@ public abstract class RunRunnable implements Runnable {
 					this.log.warn("|--> " + split[i]);
 			}
 		}
+		this.progress.update(100);
 	}
 
 	/**
