@@ -32,9 +32,6 @@ import org.rosuda.REngine.Rserve.RserveException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.clusteval.cluster.Cluster;
-import de.clusteval.cluster.ClusterItem;
-import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.context.Context;
@@ -297,21 +294,6 @@ public class Repository {
 	 * A map containing all goldstandard formats registered in this repository.
 	 */
 	protected Map<GoldStandardFormat, GoldStandardFormat> goldStandardFormats;
-
-	/**
-	 * A map containing all clusterings registered in this repository.
-	 */
-	protected Map<Clustering, Clustering> clusterings;
-
-	/**
-	 * A map containing all clusters registered in this repository.
-	 */
-	protected Map<Cluster, Cluster> clusters;
-
-	/**
-	 * A map containing all clusteritems registered in this repository.
-	 */
-	protected Map<ClusterItem, ClusterItem> clusterItems;
 
 	/**
 	 * The pattern that is used to scan a string ofr internal attribute
@@ -1594,10 +1576,6 @@ public class Repository {
 		this.internalStringAttributes = new ConcurrentHashMap<String, NamedStringAttribute>();
 		this.internalIntegerAttributes = new ConcurrentHashMap<String, NamedIntegerAttribute>();
 
-		this.clusterings = new ConcurrentHashMap<Clustering, Clustering>();
-		this.clusters = new ConcurrentHashMap<Cluster, Cluster>();
-		this.clusterItems = new ConcurrentHashMap<ClusterItem, ClusterItem>();
-
 		// added 14.04.2013
 		this.knownFinderExceptions = new ConcurrentHashMap<String, List<Throwable>>();
 		this.finderClassLoaders = new ConcurrentHashMap<URL, URLClassLoader>();
@@ -1999,18 +1977,3 @@ public class Repository {
 		return this.finderLoadedJarFileChangeDates;
 	}
 }
-// Repository class before: 7311 lines
-// Repository class after 1st part: 5463 lines
-// Repository class after RunResult part: 5261 lines
-// Repository class after DistanceMeasure: 5006 lines
-// Repository class after Statistic classes: 4209 lines
-// Repository class after DataSetGenerator: 3984 lines
-// Repository class after DataPreprocessor: 3761 lines
-// Repository class after RProgram: 3545 lines
-// Repository class after ClusteringQualityMeasure: 3285 lines
-// Repository class after Context: 3126 lines
-// Repository class after ParameterOptimizationMethod: 2889 lines
-// Repository class after DataSetType: 2692 lines
-// Repository class after Format classes: 2266 lines
-// Repository class after Finder classes: 2191 lines
-// Repository class after ProgramParameter classes: 1970 lines
