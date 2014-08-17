@@ -744,13 +744,20 @@ public class Repository {
 	 * @throws InterruptedException
 	 */
 	public void terminateSupervisorThread() throws InterruptedException {
-		// close Rengine pool
-		// this.rEngineForLibraryInstalledChecks.close();
-		for (MyRengine rEngine : this.rEngines.values()) {
-			rEngine.close();
-			// rEngine.shutdown();
+		this.terminateSupervisorThread(false);
+	}
+
+	public void terminateSupervisorThread(final boolean closeRengines)
+			throws InterruptedException {
+		if (closeRengines) {
+			// close Rengine pool
+			// this.rEngineForLibraryInstalledChecks.close();
+			for (MyRengine rEngine : this.rEngines.values()) {
+				rEngine.close();
+				// rEngine.shutdown();
+			}
+			this.rEngines.clear();
 		}
-		this.rEngines.clear();
 
 		// terminate supervisor thread
 		if (this.supervisorThread == null)
