@@ -22,6 +22,7 @@ import java.util.List;
 import utils.ArrayIterator;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
+import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.run.RUN_STATUS;
 import de.clusteval.run.Run;
@@ -88,7 +89,9 @@ public class RunResultFinder extends FileFinder<RunResult> {
 		while (!f.getParentFile().getName().equals("results"))
 			f = f.getParentFile();
 		uniqueRunId = f.getName();
-		return !isRunning(uniqueRunId);
+		RepositoryObject registered = repository.getRegisteredObject(file);
+		return !isRunning(uniqueRunId)
+				&& (registered == null || registered.getChangeDate() < file.lastModified());
 	}
 
 	protected boolean isRunning(final String uniqueRunIdentifier) {
