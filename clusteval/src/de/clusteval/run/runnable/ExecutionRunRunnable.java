@@ -1312,7 +1312,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 				+ " (asynchronously)");
 
 		if (checkForInterrupted())
-			return;
+			throw new InterruptedException();
 
 		lastStartTime = System.currentTimeMillis();
 
@@ -1436,7 +1436,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 				try {
 					this.log.info("Assessing isoMDS coordinates of dataset samples ...");
-					Plotter.assessAndWriteIsoMDSCoordinates(dcMDS);
+//					Plotter.assessAndWriteIsoMDSCoordinates(dcMDS);
 				} catch (Throwable e) {
 					e.printStackTrace();
 				} finally {

@@ -248,7 +248,6 @@ public abstract class RunRunnable implements Runnable {
 	 * finished. It is responsible for cleaning up all files, folders and for
 	 * doing all kinds of postcalculations.
 	 */
-	@SuppressWarnings("unused")
 	protected void afterRun() {
 		// print exceptions
 		if (this.exceptions.size() > 0) {

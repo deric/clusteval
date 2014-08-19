@@ -344,8 +344,8 @@ public abstract class AnalysisRunRunnable<T extends Statistic, R extends RunResu
 				e.printStackTrace();
 			} finally {
 				currentPos++;
-				int iterationPercent = (int) (currentPos
-						/ (double) this.statistics.size() * 100);
+				int iterationPercent = Math.min((int) (currentPos
+						/ (double) this.statistics.size() * 100), 100);
 				this.progress.update(iterationPercent);
 			}
 		}

@@ -175,6 +175,7 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			UnknownGoldStandardFormatException,
 			IncompleteGoldStandardException, InterruptedException {
 		super.beforeRun();
+
 		if (!new File(completeQualityOutput).exists() || !isResume)
 			writeHeaderIntoCompleteFile(completeQualityOutput);
 
@@ -187,10 +188,10 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			this.optimizationMethod.reset(new File(completeQualityOutput));
 			if (isResume) {
 				// in case of resume, we have to update the current percentage
-				int iterationPercent = (int) (this.optimizationMethod
-						.getCurrentCount()
-						/ (double) this.optimizationMethod
-								.getTotalIterationCount() * 100);
+				int iterationPercent = Math.min(
+						(int) (this.optimizationMethod.getCurrentCount()
+								/ (double) this.optimizationMethod
+										.getTotalIterationCount() * 100), 100);
 				this.progress.update(iterationPercent);
 			}
 		} catch (ParameterOptimizationException e) {
@@ -296,10 +297,10 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			}
 		} finally {
 			// changed 25.01.2013
-			int iterationPercent = (int) (this.optimizationMethod
-					.getCurrentCount()
-					/ (double) this.optimizationMethod.getTotalIterationCount() * 100);
-			// this.progress.update(this.progress.getCurrentPos() + 1);
+			int iterationPercent = Math.min(
+					(int) (this.optimizationMethod.getCurrentCount()
+							/ (double) this.optimizationMethod
+									.getTotalIterationCount() * 100), 100);
 			this.progress.update(iterationPercent);
 		}
 	}
@@ -312,7 +313,6 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	@Override
 	protected void handleMissingRunResult(
 			final IterationWrapper iterationWrapper) {
-
 		final Map<String, String> effectiveParams = iterationWrapper
 				.getEffectiveParams();
 		final Map<String, String> internalParams = iterationWrapper
@@ -324,6 +324,8 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 					+ this.programConfig
 					+ ","
 					+ this.dataConfig
+					+ ", Iteration "
+					+ iterationWrapper.getOptId()
 					+ ") The result of this run could not be found. Probably the program did not converge with this parameter set.");
 		} else {
 			this.log.info(this.getRun()
@@ -331,6 +333,8 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 					+ this.programConfig
 					+ ","
 					+ this.dataConfig
+					+ ", Iteration "
+					+ iterationWrapper.getOptId()
 					+ ") The result of this run could not be found. Please consult the log files of the program");
 		}
 
