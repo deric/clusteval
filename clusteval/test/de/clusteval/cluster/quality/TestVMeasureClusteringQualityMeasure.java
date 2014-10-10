@@ -363,4 +363,66 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			e.printStackTrace();
 		}
 	}
+
+	@Test
+	public void testSingletonCluster() throws InstantiationException,
+			IllegalAccessException, RepositoryAlreadyExistsException,
+			InvalidRepositoryException, RepositoryConfigNotFoundException,
+			RepositoryConfigurationException, NoRepositoryFoundException,
+			RegisterException, NoSuchAlgorithmException,
+			RNotAvailableException, RCalculationException {
+		try {
+			ClustevalBackendServer.logLevel(Level.WARN);
+			Clustering goldStandard = new Clustering();
+			Cluster gsCluster1 = new Cluster("1");
+			gsCluster1.add(new ClusterItem("square1"), 1.0f);
+			goldStandard.addCluster(gsCluster1);
+	
+			Cluster gsCluster2 = new Cluster("2");
+			gsCluster2.add(new ClusterItem("star1"), 1.0f);
+			gsCluster2.add(new ClusterItem("star2"), 1.0f);
+			gsCluster2.add(new ClusterItem("star3"), 1.0f);
+			gsCluster2.add(new ClusterItem("star4"), 1.0f);
+			gsCluster2.add(new ClusterItem("star5"), 1.0f);
+			gsCluster2.add(new ClusterItem("star6"), 1.0f);
+			gsCluster2.add(new ClusterItem("star7"), 1.0f);
+			goldStandard.addCluster(gsCluster2);
+	
+			Clustering clustering = new Clustering();
+			Cluster cluster1 = new Cluster("1");
+			cluster1.add(new ClusterItem("square1"), 1.0f);
+			clustering.addCluster(cluster1);
+	
+			Cluster cluster2 = new Cluster("2");
+			cluster2.add(new ClusterItem("star7"), 1.0f);
+			clustering.addCluster(cluster2);
+	
+			ClusteringQualityMeasure measure = ClusteringQualityMeasure
+					.parseFromString(getRepository(),
+							"VMeasureClusteringQualityMeasure");
+			double quality = measure.getQualityOfClustering(clustering,
+					goldStandard, null).getValue();
+			System.out.println(measure.getAlias() + " " + quality);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnknownGoldStandardFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnknownDataSetFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidDataSetFormatVersionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnknownClusteringQualityMeasureException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

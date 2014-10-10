@@ -317,8 +317,6 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	public synchronized void giveQualityFeedback(
 			final ParameterSet parameterSet,
 			final ClusteringQualitySet qualities) {
-		// ParameterSet last = result.getParameterSets().get(
-		// result.getParameterSets().size() - 1);
 		this.result.put(
 				this.result.getIterationNumberForParameterSet(parameterSet),
 				parameterSet, qualities);
