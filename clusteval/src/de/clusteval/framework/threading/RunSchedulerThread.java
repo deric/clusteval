@@ -168,12 +168,12 @@ public class RunSchedulerThread extends ClustevalThread {
 			if (this.clientToRuns.containsKey(clientId)) {
 				for (Run run : this.clientToRuns.get(clientId)) {
 					result.put(
-							run.getName(),
+							run.getRunIdentificationString(),
 							Pair.getPair(
 									Pair.getPair(run.getStatus(),
 											run.getPercentFinished()),
 									run.getOptimizationStatus()));
-					if (result.get(run.getName()).getFirst()
+					if (result.get(run.getRunIdentificationString()).getFirst()
 							.equals(RUN_STATUS.FINISHED))
 						toRemove.add(run);
 				}
@@ -188,12 +188,12 @@ public class RunSchedulerThread extends ClustevalThread {
 			if (this.clientToRunResumes.containsKey(clientId)) {
 				for (Run run : this.clientToRunResumes.get(clientId)) {
 					result.put(
-							run.getName(),
+							run.getRunIdentificationString(),
 							Pair.getPair(
 									Pair.getPair(run.getStatus(),
 											run.getPercentFinished()),
 									run.getOptimizationStatus()));
-					if (result.get(run.getName()).getFirst()
+					if (result.get(run.getRunIdentificationString()).getFirst()
 							.equals(RUN_STATUS.FINISHED))
 						toRemove.add(run);
 				}
@@ -442,7 +442,7 @@ public class RunSchedulerThread extends ClustevalThread {
 		// iterate over all executing runs
 		if (this.clientToRuns.containsKey(clientId)) {
 			for (Run run : this.clientToRuns.get(clientId)) {
-				result.put(run.getName(),
+				result.put(run.getRunIdentificationString(),
 						Pair.getPair(run.getStatus(), run.getPercentFinished()));
 			}
 		}
@@ -452,7 +452,7 @@ public class RunSchedulerThread extends ClustevalThread {
 		 */
 		if (this.clientToRunResumes.containsKey(clientId)) {
 			for (Run run : this.clientToRunResumes.get(clientId)) {
-				result.put(run.getName(),
+				result.put(run.getRunIdentificationString(),
 						Pair.getPair(run.getStatus(), run.getPercentFinished()));
 			}
 		}

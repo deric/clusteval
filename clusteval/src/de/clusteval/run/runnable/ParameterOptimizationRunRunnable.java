@@ -296,12 +296,14 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 						sb.toString());
 			}
 		} finally {
-			// changed 25.01.2013
-			int iterationPercent = Math.min(
-					(int) (this.optimizationMethod.getCurrentCount()
-							/ (double) this.optimizationMethod
-									.getTotalIterationCount() * 100), 100);
-			this.progress.update(iterationPercent);
+			synchronized (this) {
+				// changed 25.01.2013
+				int iterationPercent = Math.min(
+						(int) (this.optimizationMethod.getCurrentCount()
+								/ (double) this.optimizationMethod
+										.getTotalIterationCount() * 100), 100);
+				this.progress.update(iterationPercent);
+			}
 		}
 	}
 
