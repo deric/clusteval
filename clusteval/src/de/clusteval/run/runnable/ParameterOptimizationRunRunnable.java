@@ -279,7 +279,7 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 						.getCurrentCount());
 				super.doRunIteration(iterationWrapper);
 			} catch (ParameterSetAlreadyEvaluatedException e) {
-				this.log.info(run.toString() + " (" + programConfig + ","
+				this.log.debug(run.toString() + " (" + programConfig + ","
 						+ dataConfig + ") "
 						+ "Skipping calculation of iteration "
 						+ e.getParameterSet() + " (has already been assessed)");

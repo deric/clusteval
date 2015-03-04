@@ -357,7 +357,7 @@ public class RunSchedulerThread extends ClustevalThread {
 		 */
 		if (this.clientToRuns.containsKey(clientId)) {
 			for (Run run : this.clientToRuns.get(clientId))
-				if (run.getName().equals(runId)) {
+				if (run.getRunIdentificationString().equals(runId)) {
 					if (run.terminate()) {
 						return this.clientToRuns.get(clientId).remove(run);
 					}
@@ -368,7 +368,7 @@ public class RunSchedulerThread extends ClustevalThread {
 		 */
 		if (this.clientToRunResumes.containsKey(clientId)) {
 			for (Run run : this.clientToRunResumes.get(clientId))
-				if (run.getName().equals(runId)) {
+				if (run.getRunIdentificationString().equals(runId)) {
 					if (run.terminate()) {
 						return this.clientToRunResumes.get(clientId)
 								.remove(run);
