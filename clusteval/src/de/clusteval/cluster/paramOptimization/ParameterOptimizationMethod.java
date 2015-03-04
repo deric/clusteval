@@ -467,14 +467,17 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 
 			int numberIterations = (int) (iterationNumber - this.currentCount);
 
-			for (int i = 0; i < numberIterations - 1; i++) {
-				// take first parameter set to simulate skipping
-				ParameterSet paramSet = this.getResult().getParameterSets()
-						.get(0);
-				ClusteringQualitySet qualitySet = this.getResult()
-						.get(paramSet);
-				ParameterSet ps = this.next(paramSet, this.currentCount + 1);
-				this.giveQualityFeedback(ps, qualitySet);
+			if (!this.getResult().getParameterSets().isEmpty()) {
+				for (int i = 0; i < numberIterations - 1; i++) {
+					// take first parameter set to simulate skipping
+					ParameterSet paramSet = this.getResult().getParameterSets()
+							.get(0);
+					ClusteringQualitySet qualitySet = this.getResult().get(
+							paramSet);
+					ParameterSet ps = this
+							.next(paramSet, this.currentCount + 1);
+					this.giveQualityFeedback(ps, qualitySet);
+				}
 			}
 
 			result = getNextParameterSet(forcedParameterSet);

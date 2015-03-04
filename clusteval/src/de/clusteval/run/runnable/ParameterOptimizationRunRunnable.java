@@ -257,7 +257,7 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			// this exception just indicates, that no parameter set has been
 			// found and the parameter optimization terminated earlier than
 			// expected.
-			e.printStackTrace();
+			this.log.warn(e.getMessage());
 		}
 	}
 
