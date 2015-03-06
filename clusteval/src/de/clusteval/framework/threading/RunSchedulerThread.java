@@ -144,11 +144,11 @@ public class RunSchedulerThread extends ClustevalThread {
 	 * @return
 	 */
 	// TODO
-	public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>>> getOptimizationRunStatusForClientId(
+	public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>>>> getOptimizationRunStatusForClientId(
 			String clientId) {
 
 		synchronized (this.runQueue) {
-			Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>>> result = new HashMap<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>>>();
+			Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>>>> result = new HashMap<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>>>>();
 
 			// add the scheduled runs
 			for (Triple<String, String, Boolean> runTriple : this.runQueue) {
@@ -158,7 +158,7 @@ public class RunSchedulerThread extends ClustevalThread {
 							runTriple.getSecond(),
 							Pair.getPair(
 									Pair.getPair(RUN_STATUS.SCHEDULED, 100f),
-									(Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>) new HashMap<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>()));
+									(Map<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>>) new HashMap<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>>()));
 				}
 			}
 

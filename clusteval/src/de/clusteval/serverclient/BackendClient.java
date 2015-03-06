@@ -639,7 +639,7 @@ public class BackendClient extends Thread {
 
 					// runId ->
 					// ((Status,%),(ProgramConfig,DataConfig)->(QualityMeasure->(ParameterSet->Quality)))
-					Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>>> optStatus = null;
+					Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>>>> optStatus = null;
 					if ((optStatus = this.getMyOptimizationRunStatus()) != null
 							&& optStatus.size() > 0) {
 						RUN_STATUS newStatus;
@@ -656,13 +656,13 @@ public class BackendClient extends Thread {
 						System.out.println();
 						System.out.println("\r Status:\t" + newStatus + " "
 								+ percent + "%");
-						Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>> qualities = optStatus
+						Map<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>> qualities = optStatus
 								.get(runName).getSecond();
 
 						// print the quality measures; just take them from the
 						// first pair of programConfig and dataConfig (runnable)
 						String[] qualityMeasures = qualities.values()
-								.iterator().next().keySet()
+								.iterator().next().getSecond().keySet()
 								.toArray(new String[0]);
 						Arrays.sort(qualityMeasures);
 						int pos = 0;
@@ -695,11 +695,12 @@ public class BackendClient extends Thread {
 						for (String programConfig : programConfigs) {
 							System.out.printf("%s:\n", programConfig);
 							for (String dataConfig : dataConfigs) {
-								System.out.printf("-- %s:\n", dataConfig);
 								Pair<String, String> pcDcPair = Pair.getPair(
 										programConfig, dataConfig);
 								Map<String, Pair<Map<String, String>, String>> qualitiesPcDc = qualities
-										.get(pcDcPair);
+										.get(pcDcPair).getSecond();
+								System.out.printf("-- %s:\t\t\tStatus:\t%.1f%%\n", dataConfig,
+										qualities.get(pcDcPair).getFirst());
 								for (String measure : qualityMeasures) {
 									if (!qualitiesPcDc.containsKey(measure)) {
 										System.out.print("\t");
@@ -806,7 +807,7 @@ public class BackendClient extends Thread {
 		return server.getRunResumes();
 	}
 
-	public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>>> getMyOptimizationRunStatus()
+	public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>>>> getMyOptimizationRunStatus()
 			throws RemoteException {
 		return server.getOptimizationRunStatusForClientId(this.clientId);
 	}

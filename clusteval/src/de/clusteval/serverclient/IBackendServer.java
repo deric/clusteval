@@ -234,7 +234,7 @@ public interface IBackendServer extends Remote {
 	 * @return
 	 * @throws RemoteException
 	 */
-	public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>>> getOptimizationRunStatusForClientId(
+	public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>>>> getOptimizationRunStatusForClientId(
 			String clientId) throws RemoteException;
 
 	/**

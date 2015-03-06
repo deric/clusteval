@@ -786,7 +786,7 @@ public abstract class Run extends RepositoryObject {
 	/**
 	 * @return A map with the optimization status of this run.
 	 */
-	public Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>> getOptimizationStatus() {
+	public Map<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>> getOptimizationStatus() {
 		return null;
 	}
 

@@ -697,7 +697,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	// TODO
 	@Override
-	public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Map<String, Pair<Map<String, String>, String>>>>> getOptimizationRunStatusForClientId(
+	public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>>>> getOptimizationRunStatusForClientId(
 			String clientId) throws RemoteException {
 		return this.repository.getSupervisorThread().getRunScheduler()
 				.getOptimizationRunStatusForClientId(clientId);
