@@ -28,6 +28,7 @@ import utils.Pair;
 import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
+import de.clusteval.cluster.quality.ClusteringQualityMeasureParameters;
 import de.clusteval.cluster.quality.ClusteringQualitySet;
 import de.clusteval.context.Context;
 import de.clusteval.data.DataConfig;
@@ -1961,9 +1962,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			Class<? extends ClusteringQualityMeasure> object) {
 		try {
 			ClusteringQualityMeasure measure = object.getConstructor(
-					Repository.class, boolean.class, long.class, File.class)
-					.newInstance(repository, false, System.currentTimeMillis(),
-							new File(object.getSimpleName()));
+					Repository.class, boolean.class, long.class, File.class,
+					ClusteringQualityMeasureParameters.class).newInstance(
+					repository, false, System.currentTimeMillis(),
+					new File(object.getSimpleName()),
+					new ClusteringQualityMeasureParameters());
 			int id = insert(
 					this.getTableClusteringQualityMeasures(),
 					new String[]{"repository_id", "name", "minValue",
