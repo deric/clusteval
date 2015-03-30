@@ -197,6 +197,7 @@ public class BackendClientCompleter implements Completer {
 		strings.add("generateDataSet");
 		strings.add("randomizeDataConfig");
 		strings.add("getActiveThreads");
+		strings.add("setThreadNumber");
 
 		boolean exception = true;
 		while (exception) {

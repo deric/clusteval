@@ -613,4 +613,10 @@ public class RunSchedulerThread extends ClustevalThread {
 	public synchronized Map<Thread, IterationRunnable> getActiveIterationRunnables() {
 		return this.activeIterationRunnables;
 	}
+
+	public synchronized void updateThreadPoolSize(final int numberThreads) {
+		this.iterationThreadPool.setCorePoolSize(numberThreads);
+		this.iterationThreadPool.setMaximumPoolSize(this.iterationThreadPool
+				.getCorePoolSize());
+	}
 }

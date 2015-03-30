@@ -173,6 +173,13 @@ public class BackendClient extends Thread {
 		option = OptionBuilder.create("getActiveThreads");
 		clientCLIOptions.addOption(option);
 
+		OptionBuilder.withArgName("threadNumber");
+		OptionBuilder.hasArg();
+		OptionBuilder
+				.withDescription("Sets the maximal number of parallel threads.");
+		option = OptionBuilder.create("setThreadNumber");
+		clientCLIOptions.addOption(option);
+
 		OptionBuilder.withArgName("runName");
 		OptionBuilder.hasArg();
 		OptionBuilder
@@ -194,7 +201,7 @@ public class BackendClient extends Thread {
 		option = OptionBuilder.create("terminateRun");
 		clientCLIOptions.addOption(option);
 
-		OptionBuilder.withDescription("Shut down the framework.");
+		OptionBuilder.withDescription("Shut down ClustEval.");
 		option = OptionBuilder.create("shutdown");
 		clientCLIOptions.addOption(option);
 
@@ -330,7 +337,7 @@ public class BackendClient extends Thread {
 		} catch (ParseException e) {
 
 			HelpFormatter formatter = new HelpFormatter();
-			formatter.printHelp("ClustEvalFramework_Client.jar", "",
+			formatter.printHelp("ClustEvalBackendClient.jar", "",
 					clientCLIOptions, "Available commands are:", false);
 
 			throw e;
@@ -523,6 +530,10 @@ public class BackendClient extends Thread {
 					}
 				}
 			}
+			if (params.hasOption("setThreadNumber")) {
+				this.server.setThreadNumber(Integer.valueOf(params
+						.getOptionValue("setThreadNumber")));
+			}
 			if (params.hasOption("getRunResults")) {
 				Map<Pair<String, String>, Map<String, Double>> result = this
 						.getRunResults(params.getOptionValue("getRunResults"));
@@ -699,8 +710,10 @@ public class BackendClient extends Thread {
 										programConfig, dataConfig);
 								Map<String, Pair<Map<String, String>, String>> qualitiesPcDc = qualities
 										.get(pcDcPair).getSecond();
-								System.out.printf("-- %s:\t\t\tStatus:\t%.1f%%\n", dataConfig,
-										qualities.get(pcDcPair).getFirst());
+								System.out.printf(
+										"-- %s:\t\t\tStatus:\t%.1f%%\n",
+										dataConfig, qualities.get(pcDcPair)
+												.getFirst());
 								for (String measure : qualityMeasures) {
 									if (!qualitiesPcDc.containsKey(measure)) {
 										System.out.print("\t");
@@ -1051,7 +1064,7 @@ public class BackendClient extends Thread {
 
 	protected static void setDefaultPromptAndCompleter(String ip, String port,
 			Collection<Completer> newCompleters) {
-		reader.setPrompt("ClusteringEvalFramework @" + ip + ":" + port + "> ");
+		reader.setPrompt("ClustEval @" + ip + ":" + port + "> ");
 
 		List<Completer> oldCompleters = new LinkedList<Completer>(
 				reader.getCompleters());

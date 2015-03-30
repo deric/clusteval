@@ -23,7 +23,6 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import utils.SimilarityMatrix.NUMBER_PRECISION;
-
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
@@ -101,7 +100,8 @@ public class TestDunnIndexRClusteringQualityMeasure
 			ds.getInStandardFormat().loadIntoMemory();
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
 					.parseFromString(getRepository(),
-							"DunnIndexRClusteringQualityMeasure");
+							"DunnIndexRClusteringQualityMeasure",
+							new ClusteringQualityMeasureParameters());
 			double quality = measure.getQualityOfClustering(clustering, null,
 					dc).getValue();
 			ds.getInStandardFormat().unloadFromMemory();

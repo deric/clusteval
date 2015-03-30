@@ -1106,4 +1106,15 @@ public class ClustevalBackendServer implements IBackendServer {
 		}
 		return false;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.serverclient.IBackendServer#setThreadNumber(int)
+	 */
+	@Override
+	public void setThreadNumber(int threadNumber) throws RemoteException {
+		this.repository.getSupervisorThread().getRunScheduler()
+				.updateThreadPoolSize(threadNumber);
+	}
 }

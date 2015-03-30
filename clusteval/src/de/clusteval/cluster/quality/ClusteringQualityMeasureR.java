@@ -49,12 +49,14 @@ public abstract class ClusteringQualityMeasureR
 	 * @param register
 	 * @param changeDate
 	 * @param absPath
+	 * @param parameters
 	 * @throws RegisterException
 	 */
 	public ClusteringQualityMeasureR(final Repository repo,
-			final boolean register, final long changeDate, final File absPath)
+			final boolean register, final long changeDate, final File absPath,
+			final ClusteringQualityMeasureParameters parameters)
 			throws RegisterException {
-		super(repo, false, changeDate, absPath);
+		super(repo, false, changeDate, absPath, parameters);
 
 		if (register)
 			this.register();

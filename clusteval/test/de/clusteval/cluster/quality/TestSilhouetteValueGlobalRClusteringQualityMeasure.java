@@ -22,7 +22,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import utils.SimilarityMatrix.NUMBER_PRECISION;
-
 import ch.qos.logback.classic.Level;
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
@@ -87,7 +86,8 @@ public class TestSilhouetteValueGlobalRClusteringQualityMeasure
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
 					.parseFromString(getRepository(),
-							"SilhouetteValueGlobalRClusteringQualityMeasure");
+							"SilhouetteValueGlobalRClusteringQualityMeasure",
+							new ClusteringQualityMeasureParameters());
 			double quality = measure.getQualityOfClustering(clustering, null,
 					null).getValue();
 			Assert.assertEquals(-1.0, quality, 0.0);
@@ -153,7 +153,8 @@ public class TestSilhouetteValueGlobalRClusteringQualityMeasure
 			ds.getInStandardFormat().loadIntoMemory();
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
 					.parseFromString(getRepository(),
-							"SilhouetteValueGlobalRClusteringQualityMeasure");
+							"SilhouetteValueGlobalRClusteringQualityMeasure",
+							new ClusteringQualityMeasureParameters());
 			double quality = measure.getQualityOfClustering(clustering, null,
 					dc).getValue();
 			ds.getInStandardFormat().unloadFromMemory();

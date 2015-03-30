@@ -44,7 +44,7 @@ public class MyRengine {
 	protected RConnection connection;
 
 	protected int pid;
-	
+
 	protected boolean interrupted;
 
 	protected Logger log;
@@ -136,11 +136,31 @@ public class MyRengine {
 		this.connection.assign(arg0, oneDim);
 		this.eval(arg0 + " <- matrix(" + arg0 + ",nrow=" + x + ",ncol=" + y
 				+ ",byrow=T)");
-		// for (int i = 0; i < arg1.length; i++) {
-		// this.connection.assign(arg0 + "_" + i, arg1[i]);
-		// this.eval(arg0 + " <- rbind(" + arg0 + "," + arg0 + "_" + i + ")");
-		// this.eval("remove(" + arg0 + "_" + i + ")");
-		// }
+	}
+
+	/**
+	 * This method allows to assign a two-dimensional integer array.
+	 * 
+	 * @param arg0
+	 *            The variable name in R.
+	 * @param arg1
+	 *            A two-dimensional integer array which is assigned to the new
+	 *            variable.
+	 * @throws REngineException
+	 */
+	public void assign(String arg0, int[][] arg1) throws REngineException {
+		int x = arg1.length;
+		int y = x > 0 ? arg1[0].length : 0;
+		int[] oneDim = new int[x * y];
+		for (int i = 0; i < x; i++) {
+			for (int j = 0; j < y; j++) {
+				oneDim[j + i * y] = arg1[i][j];
+			}
+		}
+		this.eval(arg0 + " <- c()");
+		this.connection.assign(arg0, oneDim);
+		this.eval(arg0 + " <- matrix(" + arg0 + ",nrow=" + x + ",ncol=" + y
+				+ ",byrow=T)");
 	}
 
 	/*

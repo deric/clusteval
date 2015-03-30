@@ -50,6 +50,8 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 		implements
 			RLibraryInferior {
 
+	protected ClusteringQualityMeasureParameters parameters;
+
 	/**
 	 * Instantiates a new clustering quality measure.
 	 * 
@@ -57,12 +59,16 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 	 * @param register
 	 * @param changeDate
 	 * @param absPath
+	 * @param parameters
 	 * @throws RegisterException
 	 */
 	public ClusteringQualityMeasure(final Repository repo,
-			final boolean register, final long changeDate, final File absPath)
+			final boolean register, final long changeDate, final File absPath,
+			final ClusteringQualityMeasureParameters parameters)
 			throws RegisterException {
 		super(repo, false, changeDate, absPath);
+
+		this.parameters = parameters;
 
 		if (register)
 			this.register();
@@ -78,6 +84,7 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 	public ClusteringQualityMeasure(final ClusteringQualityMeasure other)
 			throws RegisterException {
 		super(other);
+		this.parameters = other.parameters.clone();
 	}
 
 	/**
@@ -139,12 +146,14 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 	 *            the repository
 	 * @param qualityMeasure
 	 *            the quality measure
+	 * @param parameters
 	 * @return the clustering quality measure
 	 * @throws UnknownClusteringQualityMeasureException
 	 *             the unknown clustering quality measure exception
 	 */
 	public static ClusteringQualityMeasure parseFromString(
-			final Repository repository, String qualityMeasure)
+			final Repository repository, String qualityMeasure,
+			ClusteringQualityMeasureParameters parameters)
 			throws UnknownClusteringQualityMeasureException {
 
 		Class<? extends ClusteringQualityMeasure> c = repository
@@ -152,9 +161,10 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 						"de.clusteval.cluster.quality." + qualityMeasure);
 		try {
 			ClusteringQualityMeasure measure = c.getConstructor(
-					Repository.class, boolean.class, long.class, File.class)
-					.newInstance(repository, false, System.currentTimeMillis(),
-							new File(qualityMeasure));
+					Repository.class, boolean.class, long.class, File.class,
+					ClusteringQualityMeasureParameters.class).newInstance(
+					repository, false, System.currentTimeMillis(),
+					new File(qualityMeasure), parameters);
 
 			return measure;
 		} catch (InstantiationException e) {

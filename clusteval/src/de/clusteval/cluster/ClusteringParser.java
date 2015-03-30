@@ -23,6 +23,7 @@ import utils.Pair;
 import utils.parse.TextFileParser;
 import utils.text.TextFileMapParser;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
+import de.clusteval.cluster.quality.ClusteringQualityMeasureParameters;
 import de.clusteval.cluster.quality.ClusteringQualityMeasureValue;
 import de.clusteval.cluster.quality.ClusteringQualitySet;
 import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
@@ -153,8 +154,12 @@ public class ClusteringParser extends TextFileParser {
 					ClusteringQualitySet qualitySet = new ClusteringQualitySet();
 					for (String measure : result.keySet()) {
 						ClusteringQualityMeasure clMeasure;
+
+						// TODO: ClusteringQualityMeasureParameters not
+						// initialized
 						clMeasure = ClusteringQualityMeasure.parseFromString(
-								this.repository, measure);
+								this.repository, measure,
+								new ClusteringQualityMeasureParameters());
 						qualitySet.put(clMeasure, ClusteringQualityMeasureValue
 								.getForDouble(Double.parseDouble(result
 										.get(measure))));

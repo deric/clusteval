@@ -41,7 +41,9 @@ import de.clusteval.utils.RNotAvailableException;
  * @author Christian Wiwie
  * 
  */
-public class TestRandIndexClusteringQualityMeasure extends AbstractClustEvalTest {
+public class TestRandIndexClusteringQualityMeasure
+		extends
+			AbstractClustEvalTest {
 
 	static {
 		ClustevalBackendServer.logLevel(Level.WARN);
@@ -83,7 +85,8 @@ public class TestRandIndexClusteringQualityMeasure extends AbstractClustEvalTest
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
 					.parseFromString(getRepository(),
-							"RandIndexClusteringQualityMeasure");
+							"RandIndexClusteringQualityMeasure",
+							new ClusteringQualityMeasureParameters());
 			double quality = measure.getQualityOfClustering(clustering,
 					goldStandard, null).getValue();
 			System.out.println(measure.getAlias() + " " + quality);
@@ -148,7 +151,8 @@ public class TestRandIndexClusteringQualityMeasure extends AbstractClustEvalTest
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
 					.parseFromString(getRepository(),
-							"RandIndexClusteringQualityMeasure");
+							"RandIndexClusteringQualityMeasure",
+							new ClusteringQualityMeasureParameters());
 			double quality = measure.getQualityOfClustering(clustering,
 					goldStandard, null).getValue();
 			System.out.println(measure.getAlias() + " " + quality);

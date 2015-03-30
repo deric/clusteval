@@ -278,4 +278,12 @@ public interface IBackendServer extends Remote {
 	 */
 	public Options getOptionsForDataRandomizer(final String randomizerName)
 			throws RemoteException;
+
+	/**
+	 * Updates the maximal number of parallel iteration threads.
+	 * 
+	 * @param threadNumber
+	 * @throws RemoteException
+	 */
+	public void setThreadNumber(final int threadNumber) throws RemoteException;
 }

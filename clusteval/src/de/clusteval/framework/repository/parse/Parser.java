@@ -29,6 +29,7 @@ import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterExcept
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
+import de.clusteval.cluster.quality.ClusteringQualityMeasureParameters;
 import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.context.Context;
 import de.clusteval.context.IncompatibleContextException;
@@ -922,8 +923,23 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 		for (String qualityMeasure : getProps().getStringArray(
 				"qualityMeasures")) {
 			try {
-				qualityMeasures.add(ClusteringQualityMeasure.parseFromString(
-						repo, qualityMeasure));
+				// parse parameters for this quality measure
+				ClusteringQualityMeasureParameters p = new ClusteringQualityMeasureParameters();
+				if (getProps().getSections().contains(qualityMeasure)) {
+					Iterator<String> parameters = getProps().getKeys(
+							qualityMeasure);
+					while (parameters.hasNext()) {
+						String param = parameters.next();
+						String value = getProps().getString(param);
+
+						p.put(param, value);
+					}
+				}
+				ClusteringQualityMeasure measure = ClusteringQualityMeasure
+						.parseFromString(repo, qualityMeasure, p);
+
+				qualityMeasures.add(measure);
+
 			} catch (UnknownClusteringQualityMeasureException e) {
 				thrownExceptions.add(e);
 			}
@@ -1117,9 +1133,10 @@ class ParameterOptimizationRunParser
 
 		String paramOptCriterion = getProps()
 				.getString("optimizationCriterion");
-		optimizationCriterion = ClusteringQualityMeasure.parseFromString(repo,
-				paramOptCriterion);
-		if (!qualityMeasures.contains(optimizationCriterion))
+		for (ClusteringQualityMeasure m : qualityMeasures)
+			if (m.toString().equals(paramOptCriterion))
+				optimizationCriterion = m;
+		if (optimizationCriterion == null)
 			throw new UnknownClusteringQualityMeasureException(
 					"The optimization criterion is not contained in the list of quality measures.");
 

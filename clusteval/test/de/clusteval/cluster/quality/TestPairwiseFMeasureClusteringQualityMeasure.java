@@ -43,7 +43,7 @@ import de.clusteval.utils.RNotAvailableException;
  */
 public class TestPairwiseFMeasureClusteringQualityMeasure
 		extends
-		AbstractClustEvalTest {
+			AbstractClustEvalTest {
 
 	static {
 		ClustevalBackendServer.logLevel(Level.WARN);
@@ -85,7 +85,8 @@ public class TestPairwiseFMeasureClusteringQualityMeasure
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
 					.parseFromString(getRepository(),
-							"PairwiseF2ClusteringQualityMeasure");
+							"PairwiseF2ClusteringQualityMeasure",
+							new ClusteringQualityMeasureParameters());
 			double quality = measure.getQualityOfClustering(clustering,
 					goldStandard, null).getValue();
 			System.out.println(measure.getAlias() + " " + quality);
@@ -150,7 +151,8 @@ public class TestPairwiseFMeasureClusteringQualityMeasure
 
 			ClusteringQualityMeasure measure = ClusteringQualityMeasure
 					.parseFromString(getRepository(),
-							"PairwiseF2ClusteringQualityMeasure");
+							"PairwiseF2ClusteringQualityMeasure",
+							new ClusteringQualityMeasureParameters());
 			double quality = measure.getQualityOfClustering(clustering,
 					goldStandard, null).getValue();
 			System.out.println(measure.getAlias() + " " + quality);

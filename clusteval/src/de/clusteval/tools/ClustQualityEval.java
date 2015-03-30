@@ -37,6 +37,7 @@ import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationM
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
 import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
+import de.clusteval.cluster.quality.ClusteringQualityMeasureParameters;
 import de.clusteval.cluster.quality.ClusteringQualitySet;
 import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.context.IncompatibleContextException;
@@ -159,8 +160,9 @@ public class ClustQualityEval {
 			return;
 		}
 		for (String measureSimpleName : qualityMeasures) {
-			measures.add(ClusteringQualityMeasure.parseFromString(this.repo,
-					measureSimpleName));
+			measures.add(ClusteringQualityMeasure
+					.parseFromString(this.repo, measureSimpleName,
+							new ClusteringQualityMeasureParameters()));
 		}
 
 		Set<Thread> threads = new HashSet<Thread>();
@@ -357,8 +359,10 @@ public class ClustQualityEval {
 									for (int i = 2; i < value.length; i++)
 										try {
 											measures.add(ClusteringQualityMeasure
-													.parseFromString(parent,
-															value[i]));
+													.parseFromString(
+															parent,
+															value[i],
+															new ClusteringQualityMeasureParameters()));
 										} catch (UnknownClusteringQualityMeasureException e) {
 											e.printStackTrace();
 											this.terminate();
