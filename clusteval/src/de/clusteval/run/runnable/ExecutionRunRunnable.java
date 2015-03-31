@@ -908,8 +908,9 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 												String[] key, String[] value) {
 											if (currentLine == 0)
 												return this
-														.combineColumns(value);
-											return String.format("%s%s%s",
+														.combineColumns(value)
+														+ "\n";
+											return String.format("%s%s%s\n",
 													value[0], this.inSplit,
 													cl.toFormattedString());
 										};
