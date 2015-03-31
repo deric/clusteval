@@ -71,6 +71,7 @@ import de.clusteval.run.Run;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.format.RunResultFormat;
 import de.clusteval.run.result.format.RunResultFormatParser;
+import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
 import de.clusteval.run.statistics.RunDataStatistic;
 import de.clusteval.run.statistics.RunDataStatisticCalculator;
 import de.clusteval.run.statistics.RunStatistic;
@@ -1531,6 +1532,8 @@ public class Repository {
 				FileUtils.buildPath(this.randomizerBasePath, "data"));
 		this.createAndAddDynamicEntity(DataPreprocessor.class, FileUtils
 				.buildPath(this.supplementaryBasePath, "preprocessing"));
+		this.createAndAddDynamicEntity(RunResultPostprocessor.class, FileUtils
+				.buildPath(this.supplementaryBasePath, "postprocessing"));
 
 		this.dynamicRepositoryEntities
 				.put(RProgram.class,

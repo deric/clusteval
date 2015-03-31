@@ -24,7 +24,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import utils.SimilarityMatrix.NUMBER_PRECISION;
-
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
 import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
@@ -64,6 +63,7 @@ import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
 import de.clusteval.run.RunException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.AbstractClustEvalTest;
@@ -100,7 +100,8 @@ public class TestRemoveZeroSamplesDataPreprocesser
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 
 		File f = new File(
 				"testCaseRepository/data/datasets/sfld/sfld_brown_et_al_amidohydrolases_protein_similarities_for_beh.txt.SimMatrix");

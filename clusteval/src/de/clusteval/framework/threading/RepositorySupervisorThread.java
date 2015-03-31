@@ -51,6 +51,7 @@ import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.RunResultFinderThread;
 import de.clusteval.run.result.format.RunResultFormat;
 import de.clusteval.run.result.format.RunResultFormatFinderThread;
+import de.clusteval.run.result.postprocessing.RunResultPostprocessorFinderThread;
 import de.clusteval.run.statistics.RunDataStatistic;
 import de.clusteval.run.statistics.RunDataStatisticFinderThread;
 import de.clusteval.run.statistics.RunStatistic;
@@ -154,6 +155,7 @@ public class RepositorySupervisorThread extends SupervisorThread {
 						DataSetTypeFinderThread.class,
 						DataSetFinderThread.class,
 						DataPreprocessorFinderThread.class,
+						RunResultPostprocessorFinderThread.class,
 						DistanceMeasureFinderThread.class,
 						DataStatisticFinderThread.class,
 						RunStatisticFinderThread.class,
@@ -175,6 +177,7 @@ public class RepositorySupervisorThread extends SupervisorThread {
 						DataSetTypeFinderThread.class,
 						DataSetFinderThread.class,
 						DataPreprocessorFinderThread.class,
+						RunResultPostprocessorFinderThread.class,
 						DistanceMeasureFinderThread.class,
 						DataStatisticFinderThread.class,
 						RunStatisticFinderThread.class,

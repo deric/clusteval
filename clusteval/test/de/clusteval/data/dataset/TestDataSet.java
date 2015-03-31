@@ -72,6 +72,7 @@ import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
 import de.clusteval.run.RunException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.AbstractClustEvalTest;
@@ -96,6 +97,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -142,8 +144,10 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -184,6 +188,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -234,8 +239,10 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		Repository runResultRepository = new RunResultRepository(
 				new File(
 						"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1")
@@ -265,6 +272,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -311,8 +319,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 
 		this.repositoryObject = Parser
 				.parseFromFile(
@@ -343,6 +352,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -390,8 +400,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -425,6 +436,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -472,8 +484,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -493,6 +506,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -540,8 +554,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -565,6 +580,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -612,8 +628,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -635,6 +652,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -682,8 +700,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -708,6 +727,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -754,8 +774,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -777,6 +798,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -824,8 +846,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -854,6 +877,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -902,8 +926,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -946,6 +971,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -994,8 +1020,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -1042,6 +1069,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -1090,8 +1118,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -1276,8 +1305,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -1314,6 +1344,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -1360,8 +1391,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 
 		File targetFile = new File(
 				"testCaseRepository/data/datasets/rowSimTest/rowSimTestFile.sim.strip.SimMatrix")
@@ -1411,6 +1443,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
@@ -1457,8 +1490,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 
 		this.repositoryObject = Parser
 				.parseFromFile(
@@ -1512,8 +1546,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -1565,8 +1600,9 @@ public class TestDataSet extends AbstractClustEvalTest {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownRunStatisticException, UnknownRunDataStatisticException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,

@@ -64,6 +64,7 @@ import de.clusteval.run.RunException;
 import de.clusteval.run.result.AnalysisRunResultException;
 import de.clusteval.run.result.RunResultParseException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.utils.InternalAttributeException;
 import de.clusteval.utils.InvalidConfigurationFileException;
 import de.clusteval.utils.RNotAvailableException;
@@ -242,7 +243,7 @@ public abstract class RunDataStatisticCalculator<T extends RunDataStatistic>
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleContextException, UnknownContextException,
 			RNotAvailableException, REngineException, UnknownParameterType,
-			InterruptedException {
+			InterruptedException, UnknownRunResultPostprocessorException {
 		return super.calculate();
 	}
 

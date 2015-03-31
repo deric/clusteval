@@ -61,6 +61,7 @@ import de.clusteval.run.RunException;
 import de.clusteval.run.result.AnalysisRunResultException;
 import de.clusteval.run.result.RunResultParseException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 
@@ -173,6 +174,7 @@ public abstract class StatisticCalculator<T extends Statistic>
 	 * @throws RNotAvailableException
 	 * @throws UnknownParameterType
 	 * @throws InterruptedException
+	 * @throws UnknownRunResultPostprocessorException 
 	 */
 	public T calculate() throws IncompatibleDataConfigDataStatisticException,
 			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
@@ -204,7 +206,7 @@ public abstract class StatisticCalculator<T extends Statistic>
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleContextException, UnknownContextException,
 			REngineException, RNotAvailableException, UnknownParameterType,
-			InterruptedException {
+			InterruptedException, UnknownRunResultPostprocessorException {
 		this.lastResult = calculateResult();
 		return this.lastResult;
 	}
@@ -266,6 +268,7 @@ public abstract class StatisticCalculator<T extends Statistic>
 	 * @throws RNotAvailableException
 	 * @throws UnknownParameterType
 	 * @throws InterruptedException
+	 * @throws UnknownRunResultPostprocessorException
 	 */
 	protected abstract T calculateResult()
 			throws IncompatibleDataConfigDataStatisticException,
@@ -298,7 +301,7 @@ public abstract class StatisticCalculator<T extends Statistic>
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
 			REngineException, RNotAvailableException, UnknownParameterType,
-			InterruptedException;
+			InterruptedException, UnknownRunResultPostprocessorException;
 
 	/**
 	 * @param absFolderPath

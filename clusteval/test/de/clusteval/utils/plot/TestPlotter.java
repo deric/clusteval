@@ -27,7 +27,6 @@ import org.junit.Test;
 import org.rosuda.REngine.REngineException;
 
 import utils.SimilarityMatrix.NUMBER_PRECISION;
-
 import ch.qos.logback.classic.Level;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
@@ -77,6 +76,7 @@ import de.clusteval.program.r.UnknownRProgramException;
 import de.clusteval.run.RunException;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.AbstractClustEvalTest;
@@ -115,7 +115,8 @@ public class TestPlotter extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		Context context = Context.parseFromString(getRepository(),
 				"ClusteringContext");
 
@@ -192,7 +193,8 @@ public class TestPlotter extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		Context context = Context.parseFromString(getRepository(),
 				"ClusteringContext");
 

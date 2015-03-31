@@ -68,6 +68,7 @@ import de.clusteval.run.result.format.RunResultFormat;
 import de.clusteval.run.result.format.RunResultFormatParser;
 import de.clusteval.run.result.format.RunResultNotFoundException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.InvalidConfigurationFileException;
@@ -408,6 +409,7 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	 * @throws IncompatibleContextException
 	 * @throws UnknownParameterType
 	 * @throws InterruptedException
+	 * @throws UnknownRunResultPostprocessorException
 	 */
 	public static Run parseFromRunResultFolder(
 			final Repository parentRepository, final File runResultFolder,
@@ -438,7 +440,8 @@ public class ClusteringRunResult extends ExecutionRunResult {
 			UnknownRunDataStatisticException, UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
-			UnknownParameterType, InterruptedException {
+			UnknownParameterType, InterruptedException,
+			UnknownRunResultPostprocessorException {
 
 		Repository childRepository = new RunResultRepository(
 				runResultFolder.getAbsolutePath(), parentRepository);

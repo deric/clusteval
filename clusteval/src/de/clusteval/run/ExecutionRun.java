@@ -37,6 +37,7 @@ import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.result.NoRunResultFormatParserException;
+import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
 import de.clusteval.run.runnable.ExecutionRunRunnable;
 import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.runnable.RunRunnableInitializationException;
@@ -81,6 +82,17 @@ public abstract class ExecutionRun extends Run {
 		return result;
 	}
 
+	protected static List<RunResultPostprocessor> clonePostProcessors(
+			final List<RunResultPostprocessor> postProcessors) {
+		List<RunResultPostprocessor> result = new ArrayList<RunResultPostprocessor>();
+
+		for (RunResultPostprocessor postpro : postProcessors) {
+			result.add(postpro.clone());
+		}
+
+		return result;
+	}
+
 	/**
 	 * A list of program configurations contained in this run.
 	 * 
@@ -118,6 +130,8 @@ public abstract class ExecutionRun extends Run {
 	 */
 	protected List<Map<ProgramParameter<?>, String>> parameterValues;
 
+	protected List<RunResultPostprocessor> postProcessors;
+
 	/**
 	 * The constructor of this class takes a name, date and configuration. It is
 	 * protected, to force usage of the static method
@@ -149,12 +163,14 @@ public abstract class ExecutionRun extends Run {
 			final List<ProgramConfig> programConfigs,
 			final List<DataConfig> dataConfigs,
 			final List<ClusteringQualityMeasure> qualityMeasures,
-			final List<Map<ProgramParameter<?>, String>> parameterValues)
+			final List<Map<ProgramParameter<?>, String>> parameterValues,
+			final List<RunResultPostprocessor> postProcessors)
 			throws RegisterException {
 		super(repository, context, changeDate, absPath);
 
 		this.parameterValues = parameterValues;
 		this.qualityMeasures = qualityMeasures;
+		this.postProcessors = postProcessors;
 
 		initRunPairs(programConfigs, dataConfigs);
 
@@ -173,6 +189,10 @@ public abstract class ExecutionRun extends Run {
 				measure.register();
 				measure.addListener(this);
 			}
+
+			for (RunResultPostprocessor postpro : this.postProcessors) {
+				postpro.addListener(this);
+			}
 		}
 	}
 
@@ -189,6 +209,7 @@ public abstract class ExecutionRun extends Run {
 		this.parameterValues = cloneParameterValues(other.parameterValues);
 		this.qualityMeasures = ClusteringQualityMeasure
 				.cloneQualityMeasures(other.qualityMeasures);
+		this.postProcessors = clonePostProcessors(other.postProcessors);
 
 		initRunPairs(
 				ProgramConfig.cloneProgramConfigurations(other.programConfigs),
@@ -673,6 +694,13 @@ public abstract class ExecutionRun extends Run {
 	 */
 	public List<Map<ProgramParameter<?>, String>> getParameterValues() {
 		return parameterValues;
+	}
+
+	/**
+	 * @return
+	 */
+	public List<RunResultPostprocessor> getPostProcessors() {
+		return this.postProcessors;
 	}
 
 	/**

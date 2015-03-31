@@ -49,6 +49,7 @@ import de.clusteval.program.UnknownProgramParameterException;
 import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.AbstractClustEvalTest;
@@ -80,7 +81,8 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleContextException, UnknownDataStatisticException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		ParameterOptimizationRun run = Parser.parseFromFile(
 				ParameterOptimizationRun.class, new File(
 						"testCaseRepository/runs/testTwiceTheParam.run")
@@ -159,7 +161,8 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 			InterruptedException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, UnknownDataStatisticException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		ParameterOptimizationRun run = Parser.parseFromFile(
 				ParameterOptimizationRun.class, new File(
 						"testCaseRepository/runs/baechler2003.run")

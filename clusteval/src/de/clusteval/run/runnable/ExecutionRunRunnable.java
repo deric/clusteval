@@ -34,6 +34,8 @@ import org.slf4j.LoggerFactory;
 import utils.Pair;
 import utils.StringExt;
 import utils.Triple;
+import utils.parse.TextFileParser;
+import utils.parse.TextFileParser.OUTPUT_MODE;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.NoParameterSetFoundException;
@@ -72,6 +74,7 @@ import de.clusteval.run.result.ClusteringRunResult;
 import de.clusteval.run.result.NoRunResultFormatParserException;
 import de.clusteval.run.result.format.RunResultFormat;
 import de.clusteval.run.result.format.RunResultNotFoundException;
+import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
 import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.InternalAttributeException;
 import de.clusteval.utils.RNotAvailableException;
@@ -870,6 +873,58 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 										+ "," + dataConfig
 										+ ") Finished converting result files");
 
+								// execute runresult postprocessors
+								ExecutionRun run = (ExecutionRun) this.iterationWrapper.runnable.run;
+								ClusteringRunResult tmpResult = iterationWrapper
+										.getConvertedClusteringRunResult();
+								for (RunResultPostprocessor postprocessor : run
+										.getPostProcessors()) {
+									tmpResult.loadIntoMemory();
+
+									final Clustering cl = postprocessor
+											.postprocess(tmpResult
+													.getClustering()
+													.getSecond());
+									tmpResult.unloadFromMemory();
+
+									String targetFile = tmpResult
+											.getAbsolutePath()
+											+ "."
+											+ postprocessor.getClass()
+													.getSimpleName();
+
+									TextFileParser p = new TextFileParser(
+											tmpResult.getAbsolutePath(),
+											new int[0], new int[0], targetFile,
+											OUTPUT_MODE.STREAM) {
+
+										@Override
+										protected void processLine(
+												String[] key, String[] value) {
+										}
+
+										@Override
+										protected String getLineOutput(
+												String[] key, String[] value) {
+											if (currentLine == 0)
+												return this
+														.combineColumns(value);
+											return String.format("%s%s%s",
+													value[0], this.inSplit,
+													cl.toFormattedString());
+										};
+									};
+
+									tmpResult = new ClusteringRunResult(
+											tmpResult.getRepository(),
+											System.currentTimeMillis(),
+											new File(targetFile),
+											tmpResult.getDataConfig(),
+											tmpResult.getProgramConfig(),
+											format, tmpResult.getIdentifier(),
+											run);
+								}
+
 								/*
 								 * We check from time to time, whether this run
 								 * got the order to terminate.
@@ -1436,7 +1491,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 				try {
 					this.log.info("Assessing isoMDS coordinates of dataset samples ...");
-//					Plotter.assessAndWriteIsoMDSCoordinates(dcMDS);
+					// Plotter.assessAndWriteIsoMDSCoordinates(dcMDS);
 				} catch (Throwable e) {
 					e.printStackTrace();
 				} finally {

@@ -95,6 +95,9 @@ import de.clusteval.run.RunDataAnalysisRun;
 import de.clusteval.run.RunException;
 import de.clusteval.run.result.format.RunResultFormat;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
+import de.clusteval.run.result.postprocessing.RunResultPostprocessorParameters;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.RunDataStatistic;
 import de.clusteval.run.statistics.RunStatistic;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
@@ -161,7 +164,8 @@ public abstract class Parser<P extends RepositoryObject> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		Parser<T> parser = getParserForClass(c);
 		parser.parseFromFile(absPath);
 		return parser.getResult();
@@ -188,7 +192,8 @@ public abstract class Parser<P extends RepositoryObject> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		String runMode = Parser.getModeOfRun(file);
 		if (runMode.equals("clustering")) {
 			return Parser.parseFromFile(ClusteringRun.class, file);
@@ -228,7 +233,8 @@ public abstract class Parser<P extends RepositoryObject> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		RunParser<? extends Run> p = (RunParser<Run>) getParserForClass(Run.class);
 		p.parseFromFile(absPath);
 		return p.mode;
@@ -256,7 +262,8 @@ public abstract class Parser<P extends RepositoryObject> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException;
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException;
 
 	public P getResult() {
 		return this.result;
@@ -296,11 +303,13 @@ class ClusteringRunParser extends ExecutionRunParser<ClusteringRun> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		super.parseFromFile(absPath);
 
 		result = new ClusteringRun(repo, context, changeDate, absPath,
-				programConfigs, dataConfigs, qualityMeasures, runParamValues);
+				programConfigs, dataConfigs, qualityMeasures, runParamValues,
+				postprocessor);
 		result = repo.getRegisteredObject(result, false);
 	}
 }
@@ -328,7 +337,8 @@ class DataAnalysisRunParser extends AnalysisRunParser<DataAnalysisRun> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		super.parseFromFile(absPath);
 
 		/*
@@ -401,7 +411,8 @@ class DataConfigParser extends RepositoryObjectParser<DataConfig> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		super.parseFromFile(absPath);
 
 		log.debug("Parsing data config \"" + absPath + "\"");
@@ -483,7 +494,8 @@ class DataSetConfigParser extends RepositoryObjectParser<DataSetConfig> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		super.parseFromFile(absPath);
 
 		log.debug("Parsing dataset config \"" + absPath + "\"");
@@ -583,7 +595,8 @@ class DataSetConfigParser extends RepositoryObjectParser<DataSetConfig> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		if (repo instanceof RunResultRepository)
 			return repo.getStaticObjectWithName(DataSet.class, datasetName
 					+ "/" + datasetFile);
@@ -631,7 +644,8 @@ class DataSetParser extends RepositoryObjectParser<DataSet> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		super.parseFromFile(absPath);
 
 		try {
@@ -757,6 +771,7 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 	protected List<ClusteringQualityMeasure> qualityMeasures;
 	protected List<Map<ProgramParameter<?>, String>> runParamValues;
 	protected Map<ProgramParameter<?>, String> paramMap;
+	protected List<RunResultPostprocessor> postprocessor;
 
 	@Override
 	public void parseFromFile(final File absPath)
@@ -780,7 +795,8 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		super.parseFromFile(absPath);
 
 		/*
@@ -806,6 +822,8 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 
 		parseDataConfigurations();
 
+		parsePostprocessor();
+
 		ExecutionRun.checkCompatibilityQualityMeasuresDataConfigs(dataConfigs,
 				qualityMeasures);
 	}
@@ -830,7 +848,8 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 
 		String[] list = getProps().getStringArray("programConfig");
 		if (list.length == 0)
@@ -861,43 +880,6 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 			 */
 			parseProgramConfigParams(newProgramConfig);
 		}
-	}
-
-	protected void parseProgramConfigParams(final ProgramConfig programConfig)
-			throws NoOptimizableProgramParameterException,
-			UnknownProgramParameterException, RunException,
-			ConfigurationException {
-
-		paramMap = new HashMap<ProgramParameter<?>, String>();
-
-		if (getProps().getSections().contains(programConfig.getName())) {
-			/*
-			 * General parameters, not only for optimization.
-			 */
-			Iterator<String> itParams = getProps().getSection(
-					programConfig.getName()).getKeys();
-			while (itParams.hasNext()) {
-				String param = itParams.next();
-				if (isParamConfigurationEntry(param))
-					try {
-						ProgramParameter<?> p = programConfig
-								.getParamWithId(param);
-
-						if (checkParamValueToMap(param))
-							paramMap.put(
-									p,
-									getProps().getSection(
-											programConfig.getName()).getString(
-											param));
-					} catch (UnknownProgramParameterException e) {
-						log.error("The run " + absPath.getName()
-								+ " contained invalid parameter values: "
-								+ programConfig.getProgram()
-								+ " does not have a parameter " + param);
-					}
-			}
-		}
-		runParamValues.add(paramMap);
 	}
 
 	protected boolean isParamConfigurationEntry(final String name) {
@@ -971,7 +953,8 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		String[] list = getProps().getStringArray("dataConfig");
 		if (list.length == 0)
 			throw new RunException("At least one data config must be specified");
@@ -984,6 +967,78 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 					new File(FileUtils.buildPath(
 							repo.getBasePath(DataConfig.class), dataConfig
 									+ ".dataconfig")))));
+		}
+	}
+
+	protected void parseProgramConfigParams(final ProgramConfig programConfig)
+			throws NoOptimizableProgramParameterException,
+			UnknownProgramParameterException, RunException,
+			ConfigurationException {
+
+		paramMap = new HashMap<ProgramParameter<?>, String>();
+
+		if (getProps().getSections().contains(programConfig.getName())) {
+			/*
+			 * General parameters, not only for optimization.
+			 */
+			Iterator<String> itParams = getProps().getSection(
+					programConfig.getName()).getKeys();
+			while (itParams.hasNext()) {
+				String param = itParams.next();
+				if (isParamConfigurationEntry(param))
+					try {
+						ProgramParameter<?> p = programConfig
+								.getParamWithId(param);
+
+						if (checkParamValueToMap(param))
+							paramMap.put(
+									p,
+									getProps().getSection(
+											programConfig.getName()).getString(
+											param));
+					} catch (UnknownProgramParameterException e) {
+						log.error("The run " + absPath.getName()
+								+ " contained invalid parameter values: "
+								+ programConfig.getProgram()
+								+ " does not have a parameter " + param);
+					}
+			}
+		}
+		runParamValues.add(paramMap);
+	}
+
+	protected void parsePostprocessor()
+			throws UnknownRunResultPostprocessorException,
+			ConfigurationException {
+
+		postprocessor = new ArrayList<RunResultPostprocessor>();
+
+		if (!getProps().containsKey("postprocessor"))
+			return;
+
+		String[] list = getProps().getStringArray("postprocessor");
+		// 10.07.2014: remove duplicates.
+		list = new ArrayList<String>(new HashSet<String>(Arrays.asList(list)))
+				.toArray(new String[0]);
+		for (String postprocessor : list) {
+
+			// parse parameters
+			RunResultPostprocessorParameters params = new RunResultPostprocessorParameters();
+
+			if (getProps().getSections().contains(postprocessor)) {
+				Iterator<String> it = getProps().getSection(postprocessor)
+						.getKeys();
+				while (it.hasNext()) {
+					String param = it.next();
+
+					params.put(param, getProps().getSection(postprocessor)
+							.getString(param));
+				}
+			}
+
+			RunResultPostprocessor newPostprocessor = RunResultPostprocessor
+					.parseFromString(this.repo, postprocessor, params);
+			this.postprocessor.add(newPostprocessor);
 		}
 	}
 }
@@ -1020,7 +1075,8 @@ class GoldStandardConfigParser
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		super.parseFromFile(absPath);
 
 		log.debug("Parsing goldstandard config \"" + absPath + "\"");
@@ -1075,12 +1131,13 @@ class InternalParameterOptimizationRunParser
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		super.parseFromFile(absPath);
 
 		result = new InternalParameterOptimizationRun(repo, context,
 				changeDate, absPath, programConfigs, dataConfigs,
-				qualityMeasures, runParamValues);
+				qualityMeasures, runParamValues, postprocessor);
 		result = repo.getRegisteredObject(result, false);
 
 	}
@@ -1119,7 +1176,8 @@ class ParameterOptimizationRunParser
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 
 		this.optimizationParameters = new ArrayList<List<ProgramParameter<?>>>();
 		/*
@@ -1165,7 +1223,8 @@ class ParameterOptimizationRunParser
 
 		result = new ParameterOptimizationRun(repo, context, changeDate,
 				absPath, programConfigs, dataConfigs, qualityMeasures,
-				runParamValues, optimizationParameters, optimizationMethods);
+				runParamValues, optimizationParameters, optimizationMethods,
+				postprocessor);
 		result = repo.getRegisteredObject(result, false);
 
 		// now we set the run reference of the methods
@@ -1236,7 +1295,8 @@ class ParameterOptimizationRunParser
 			IncompatibleParameterOptimizationMethodException,
 			UnknownParameterOptimizationMethodException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 
 		/*
 		 * Default optimization method for all programs, where no specific
@@ -1363,7 +1423,8 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		super.parseFromFile(absPath);
 
 		log.debug("Parsing program config \"" + absPath + "\"");
@@ -1609,7 +1670,8 @@ class RepositoryObjectParser<T extends RepositoryObject> extends Parser<T> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 
 		if (!absPath.exists())
 			throw new FileNotFoundException("File \"" + absPath
@@ -1652,7 +1714,8 @@ class RunAnalysisRunParser extends AnalysisRunParser<RunAnalysisRun> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		super.parseFromFile(absPath);
 
 		/*
@@ -1713,7 +1776,8 @@ class RunDataAnalysisRunParser extends AnalysisRunParser<RunDataAnalysisRun> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		super.parseFromFile(absPath);
 
 		List<String> uniqueRunAnalysisRunIdentifiers = new LinkedList<String>();
@@ -1782,7 +1846,8 @@ class RunParser<T extends Run> extends RepositoryObjectParser<T> {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		super.parseFromFile(absPath);
 
 		// by default we are in a clustering context

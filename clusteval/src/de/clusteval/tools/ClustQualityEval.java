@@ -83,6 +83,7 @@ import de.clusteval.run.RunException;
 import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.result.RunResultParseException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.FormatConversionException;
@@ -130,7 +131,8 @@ public class ClustQualityEval {
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleContextException, InvalidDataSetFormatVersionException,
-			RNotAvailableException, FormatConversionException {
+			RNotAvailableException, FormatConversionException,
+			UnknownRunResultPostprocessorException {
 		super();
 		ClustevalBackendServer.logLevel(Level.INFO);
 		ClustevalBackendServer.getBackendServerConfiguration().setNoDatabase(
@@ -506,7 +508,8 @@ public class ClustQualityEval {
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleContextException, InvalidDataSetFormatVersionException,
-			RNotAvailableException, FormatConversionException {
+			RNotAvailableException, FormatConversionException,
+			UnknownRunResultPostprocessorException {
 		new ClustQualityEval(args[0], args[1], Arrays.copyOfRange(args, 2,
 				args.length));
 	}

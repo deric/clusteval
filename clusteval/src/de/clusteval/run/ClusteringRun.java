@@ -25,6 +25,8 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
+import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
+import de.clusteval.run.result.postprocessing.RunResultPostprocessorParameters;
 import de.clusteval.run.runnable.ClusteringRunRunnable;
 import de.clusteval.run.runnable.ExecutionRunRunnable;
 
@@ -56,16 +58,18 @@ public class ClusteringRun extends ExecutionRun {
 	 *            The clustering quality measures of the new run.
 	 * @param parameterValues
 	 *            The parameter values of this run.
+	 * @param postProcessorParameters
 	 * @throws RegisterException
 	 */
 	public ClusteringRun(Repository repository, final Context context,
 			long changeDate, File absPath, List<ProgramConfig> programConfigs,
 			List<DataConfig> dataConfigs,
 			List<ClusteringQualityMeasure> qualityMeasures,
-			List<Map<ProgramParameter<?>, String>> parameterValues)
+			List<Map<ProgramParameter<?>, String>> parameterValues,
+			final List<RunResultPostprocessor> postProcessors)
 			throws RegisterException {
 		super(repository, context, true, changeDate, absPath, programConfigs,
-				dataConfigs, qualityMeasures, parameterValues);
+				dataConfigs, qualityMeasures, parameterValues, postProcessors);
 
 		if (this.register()) {
 			// register this Run at all dataconfigs and programconfigs

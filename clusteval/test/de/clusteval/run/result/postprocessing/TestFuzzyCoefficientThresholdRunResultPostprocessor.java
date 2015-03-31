@@ -11,19 +11,18 @@
 /**
  * 
  */
-package de.clusteval.data.preprocessing;
+package de.clusteval.run.result.postprocessing;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import utils.SimilarityMatrix.NUMBER_PRECISION;
+import de.clusteval.cluster.Cluster;
+import de.clusteval.cluster.ClusterItem;
+import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
 import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
@@ -39,15 +38,14 @@ import de.clusteval.data.dataset.DataSetConfigurationException;
 import de.clusteval.data.dataset.DataSetNotFoundException;
 import de.clusteval.data.dataset.IncompatibleDataSetConfigPreprocessorException;
 import de.clusteval.data.dataset.NoDataSetException;
-import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
-import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.dataset.type.UnknownDataSetTypeException;
-import de.clusteval.data.distance.DistanceMeasure;
 import de.clusteval.data.distance.UnknownDistanceMeasureException;
 import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
 import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
+import de.clusteval.data.preprocessing.DataPreprocessor;
+import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
@@ -63,17 +61,15 @@ import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
 import de.clusteval.run.RunException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
-import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.AbstractClustEvalTest;
-import de.clusteval.utils.RNotAvailableException;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public class TestRangeNormalizationDataPreprocesser
+public class TestFuzzyCoefficientThresholdRunResultPostprocessor
 		extends
 			AbstractClustEvalTest {
 
@@ -103,22 +99,44 @@ public class TestRangeNormalizationDataPreprocesser
 			UnknownRunDataStatisticException,
 			UnknownRunResultPostprocessorException {
 
-		File f = new File(
-				"testCaseRepository/data/datasets/synthetic/cassini250");
+		Clustering clustering = new Clustering();
+		Cluster cluster1 = new Cluster("1");
+		cluster1.add(new ClusterItem("id1"), 0.7f);
+		cluster1.add(new ClusterItem("id2"), 0.5f);
+		cluster1.add(new ClusterItem("id3"), 0.0f);
+		clustering.addCluster(cluster1);
 
-		DataSet ds = Parser.parseFromFile(DataSet.class, f);
+		Cluster cluster2 = new Cluster("2");
+		cluster2.add(new ClusterItem("id1"), 0.3f);
+		cluster2.add(new ClusterItem("id2"), 0.5f);
+		cluster2.add(new ClusterItem("id3"), 1.0f);
+		clustering.addCluster(cluster2);
+		
+		
+		
+		
 
-		DataSetAttributeFilterer filterer = new DataSetAttributeFilterer(
-				f.getAbsolutePath());
-		filterer.process();
+		Clustering expected = new Clustering();
+		Cluster expectedCluster1 = new Cluster("1");
+		expectedCluster1.add(new ClusterItem("id1"), 1.0f);
+		expectedCluster1.add(new ClusterItem("id2"), 0.5f);
+		expected.addCluster(expectedCluster1);
 
-		ds.setAbsolutePath(new File(
-				"testCaseRepository/data/datasets/synthetic/cassini250.strip"));
+		Cluster expectedCluster2 = new Cluster("2");
+		expectedCluster2.add(new ClusterItem("id2"), 0.5f);
+		expectedCluster2.add(new ClusterItem("id3"), 1.0f);
+		expected.addCluster(expectedCluster2);
+		
+		
 
-		DataPreprocessor proc = DataPreprocessor.parseFromString(
-				this.getRepository(), "RangeNormalizationDataPreprocessor");
+		RunResultPostprocessorParameters params = new RunResultPostprocessorParameters();
+		params.put("threshold", "0.5");
 
-		DataSet newDs = proc.preprocess(ds);
-		Assert.assertTrue(new File(newDs.getAbsolutePath()).exists());
+		RunResultPostprocessor proc = RunResultPostprocessor.parseFromString(
+				this.getRepository(),
+				"FuzzyCoefficientThresholdRunResultPostprocessor", params);
+
+		Clustering postprocessed = proc.postprocess(clustering);
+		Assert.assertEquals(expected, postprocessed);
 	}
 }

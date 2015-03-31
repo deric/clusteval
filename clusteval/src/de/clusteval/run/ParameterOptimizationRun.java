@@ -33,6 +33,8 @@ import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.result.ParameterOptimizationResult;
+import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
+import de.clusteval.run.result.postprocessing.RunResultPostprocessorParameters;
 import de.clusteval.run.runnable.ExecutionRunRunnable;
 import de.clusteval.run.runnable.ParameterOptimizationRunRunnable;
 import de.clusteval.run.runnable.RunRunnable;
@@ -177,10 +179,11 @@ public class ParameterOptimizationRun extends ExecutionRun {
 			final List<ClusteringQualityMeasure> qualityMeasures,
 			final List<Map<ProgramParameter<?>, String>> parameterValues,
 			final List<List<ProgramParameter<?>>> optimizationParameters,
-			final List<ParameterOptimizationMethod> optimizationMethods)
+			final List<ParameterOptimizationMethod> optimizationMethods,
+			final List<RunResultPostprocessor> postProcessors)
 			throws RegisterException {
 		super(repository, context, false, changeDate, absPath, programConfigs,
-				dataConfigs, qualityMeasures, parameterValues);
+				dataConfigs, qualityMeasures, parameterValues, postProcessors);
 
 		this.optimizationParameters = optimizationParameters;
 		this.optimizationMethods = optimizationMethods;

@@ -46,6 +46,7 @@ import de.clusteval.program.UnknownProgramParameterException;
 import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.UnknownRProgramException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.AbstractClustEvalTest;
@@ -123,7 +124,8 @@ public class TestClusteringRun extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException {
 		ClusteringRun run = Parser.parseFromFile(ClusteringRun.class, new File(
 				"testCaseRepository/runs/all_vs_DS1_clustering.run")
 				.getAbsoluteFile());

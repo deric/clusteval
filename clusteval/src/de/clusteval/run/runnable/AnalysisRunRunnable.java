@@ -70,6 +70,7 @@ import de.clusteval.run.result.AnalysisRunResultException;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.RunResultParseException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.RunStatistic;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
@@ -341,6 +342,9 @@ public abstract class AnalysisRunRunnable<T extends Statistic, R extends RunResu
 				e.printStackTrace();
 			} catch (InterruptedException e) {
 				// TODO: do we have to throw this exception?
+				e.printStackTrace();
+			} catch (UnknownRunResultPostprocessorException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
 				currentPos++;

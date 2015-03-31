@@ -67,6 +67,7 @@ import de.clusteval.run.RunAnalysisRun;
 import de.clusteval.run.RunDataAnalysisRun;
 import de.clusteval.run.RunException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.InvalidConfigurationFileException;
@@ -131,6 +132,7 @@ public abstract class RunResult extends RepositoryObject {
 	 * @throws IncompatibleContextException
 	 * @throws UnknownParameterType
 	 * @throws InterruptedException
+	 * @throws UnknownRunResultPostprocessorException
 	 */
 	// TODO: we cannot move this method into Parser#RunResultParser, because
 	// ParameterOptimizationRun.parseFromRunResultFolder() returns several
@@ -169,7 +171,7 @@ public abstract class RunResult extends RepositoryObject {
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
-			UnknownParameterType, InterruptedException {
+			UnknownParameterType, InterruptedException, UnknownRunResultPostprocessorException {
 
 		Logger log = LoggerFactory.getLogger(RunResult.class);
 		log.debug("Parsing run result from '" + runResultFolder + "'");

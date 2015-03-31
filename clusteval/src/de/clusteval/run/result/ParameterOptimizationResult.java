@@ -70,6 +70,7 @@ import de.clusteval.run.ParameterOptimizationRun;
 import de.clusteval.run.Run;
 import de.clusteval.run.RunException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.InvalidConfigurationFileException;
@@ -141,6 +142,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 * @throws IncompatibleContextException
 	 * @throws UnknownParameterType
 	 * @throws InterruptedException
+	 * @throws UnknownRunResultPostprocessorException
 	 */
 	public static Run parseFromRunResultFolder(
 			final Repository parentRepository, final File runResultFolder,
@@ -173,7 +175,8 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
-			UnknownParameterType, InterruptedException {
+			UnknownParameterType, InterruptedException,
+			UnknownRunResultPostprocessorException {
 
 		Repository childRepository = new RunResultRepository(
 				runResultFolder.getAbsolutePath(), parentRepository);

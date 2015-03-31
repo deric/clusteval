@@ -110,6 +110,7 @@ import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.RunResultParseException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.runnable.ExecutionRunRunnable;
 import de.clusteval.run.runnable.IterationRunnable;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
@@ -906,6 +907,9 @@ public class ClustevalBackendServer implements IBackendServer {
 		} catch (UnknownParameterType e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (UnknownRunResultPostprocessorException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

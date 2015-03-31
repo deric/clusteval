@@ -26,6 +26,7 @@ import de.clusteval.data.DataConfig;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
+import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
 import de.clusteval.utils.AbstractClustEvalTest;
 
 /**
@@ -43,7 +44,8 @@ public class TestRun extends AbstractClustEvalTest {
 				System.currentTimeMillis(), new File("test"),
 				new ArrayList<ProgramConfig>(), new ArrayList<DataConfig>(),
 				new ArrayList<ClusteringQualityMeasure>(),
-				new ArrayList<Map<ProgramParameter<?>, String>>());
+				new ArrayList<Map<ProgramParameter<?>, String>>(),
+				new ArrayList<RunResultPostprocessor>());
 		Assert.assertTrue(run == this.getRepository().getRegisteredObject(run));
 	}
 }
