@@ -914,6 +914,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 													cl.toFormattedString());
 										};
 									};
+									p.process();
 
 									tmpResult = new ClusteringRunResult(
 											tmpResult.getRepository(),
@@ -924,6 +925,9 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 											format, tmpResult.getIdentifier(),
 											run);
 								}
+
+								iterationWrapper
+										.setConvertedClusteringRunResult(tmpResult);
 
 								/*
 								 * We check from time to time, whether this run

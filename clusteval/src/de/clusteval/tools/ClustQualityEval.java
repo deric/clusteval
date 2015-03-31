@@ -161,10 +161,19 @@ public class ClustQualityEval {
 			this.repo.terminateSupervisorThread();
 			return;
 		}
-		for (String measureSimpleName : qualityMeasures) {
-			measures.add(ClusteringQualityMeasure
-					.parseFromString(this.repo, measureSimpleName,
-							new ClusteringQualityMeasureParameters()));
+		for (String measureString : qualityMeasures) {
+			String[] measureSplit = measureString.split(":");
+			String[] paramSplit = measureSplit.length > 1 ? measureSplit[1]
+					.split(";") : new String[0];
+
+			ClusteringQualityMeasureParameters params = new ClusteringQualityMeasureParameters();
+			for (String param : paramSplit) {
+				String[] paramNameValue = param.split("=");
+				params.put(paramNameValue[0], paramNameValue[1]);
+			}
+
+			measures.add(ClusteringQualityMeasure.parseFromString(this.repo,
+					measureSplit[0], params));
 		}
 
 		Set<Thread> threads = new HashSet<Thread>();
