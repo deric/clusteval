@@ -99,7 +99,26 @@ public class Clustering implements Iterable<Cluster> {
 
 	@Override
 	public Clustering clone() {
-		return new Clustering(this);
+		final Clustering result = new Clustering();
+		final Map<Cluster, Cluster> clusters = new HashMap<Cluster, Cluster>();
+		final Map<ClusterItem, ClusterItem> items = new HashMap<ClusterItem, ClusterItem>();
+
+		for (Cluster cl : this.clusters) {
+			Cluster newCluster = new Cluster(cl.id);
+			clusters.put(cl, newCluster);
+
+			for (Map.Entry<ClusterItem, Float> e : cl.fuzzyItems.entrySet()) {
+				if (!items.containsKey(e.getKey())) {
+					ClusterItem newItem = new ClusterItem(e.getKey().id);
+					items.put(e.getKey(), newItem);
+				}
+				ClusterItem item = items.get(e.getKey());
+				newCluster.add(item, e.getValue());
+			}
+
+			result.addCluster(newCluster);
+		}
+		return result;
 	}
 
 	protected static Map<String, Cluster> cloneClusterIdToCluster(
@@ -145,9 +164,19 @@ public class Clustering implements Iterable<Cluster> {
 
 	protected static Set<Cluster> cloneClusters(Set<Cluster> clusters) {
 		final Set<Cluster> result = new HashSet<Cluster>();
+		final Set<ClusterItem> items = new HashSet<ClusterItem>();
 
-		for (Cluster cl : clusters)
-			result.add(cl.clone());
+		for (Cluster cl : clusters) {
+			Cluster newCluster = new Cluster(cl.id);
+
+			for (Map.Entry<ClusterItem, Float> e : cl.fuzzyItems.entrySet()) {
+				if (!items.contains(e.getKey())) {
+					items.add(new ClusterItem(e.getKey().id));
+				}
+			}
+
+			result.add(newCluster);
+		}
 
 		return result;
 	}
