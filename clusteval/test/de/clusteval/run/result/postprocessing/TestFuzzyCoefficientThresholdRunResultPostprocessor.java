@@ -20,6 +20,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import utils.Pair;
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
@@ -55,6 +56,7 @@ import de.clusteval.framework.repository.config.RepositoryConfigNotFoundExceptio
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
+import de.clusteval.program.ParameterSet;
 import de.clusteval.program.UnknownParameterType;
 import de.clusteval.program.UnknownProgramParameterException;
 import de.clusteval.program.UnknownProgramTypeException;
@@ -111,10 +113,6 @@ public class TestFuzzyCoefficientThresholdRunResultPostprocessor
 		cluster2.add(new ClusterItem("id2"), 0.5f);
 		cluster2.add(new ClusterItem("id3"), 1.0f);
 		clustering.addCluster(cluster2);
-		
-		
-		
-		
 
 		Clustering expected = new Clustering();
 		Cluster expectedCluster1 = new Cluster("1");
@@ -126,8 +124,6 @@ public class TestFuzzyCoefficientThresholdRunResultPostprocessor
 		expectedCluster2.add(new ClusterItem("id2"), 0.5f);
 		expectedCluster2.add(new ClusterItem("id3"), 1.0f);
 		expected.addCluster(expectedCluster2);
-		
-		
 
 		RunResultPostprocessorParameters params = new RunResultPostprocessorParameters();
 		params.put("threshold", "0.5");
@@ -138,5 +134,27 @@ public class TestFuzzyCoefficientThresholdRunResultPostprocessor
 
 		Clustering postprocessed = proc.postprocess(clustering);
 		Assert.assertEquals(expected, postprocessed);
+	}
+
+	@Test
+	public void test2() throws IOException,
+			UnknownRunResultPostprocessorException {
+		Clustering clustering = Clustering
+				.parseFromFile(
+						null,
+						new File(
+								"testCaseRepository/results/04_01_2015-10_19_51_martin_spearman_nonabsolute_fanny_50cl_threshold/clusters/Fanny_Clustering_3membexp_50cl_martin_spearman.5.results.conv")
+								.getAbsoluteFile(), false).getSecond();
+
+		RunResultPostprocessorParameters params = new RunResultPostprocessorParameters();
+		params.put("threshold", "0.5");
+
+		RunResultPostprocessor proc = RunResultPostprocessor.parseFromString(
+				this.getRepository(),
+				"FuzzyCoefficientThresholdRunResultPostprocessor", params);
+
+		Clustering postprocessed = proc.postprocess(clustering);
+		System.out.println(postprocessed);
+
 	}
 }

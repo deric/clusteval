@@ -879,52 +879,59 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 										.getConvertedClusteringRunResult();
 								for (RunResultPostprocessor postprocessor : run
 										.getPostProcessors()) {
-									tmpResult.loadIntoMemory();
+									try {
+										tmpResult.loadIntoMemory();
 
-									final Clustering cl = postprocessor
-											.postprocess(tmpResult
-													.getClustering()
-													.getSecond());
-									tmpResult.unloadFromMemory();
+										final Clustering cl = postprocessor
+												.postprocess(tmpResult
+														.getClustering()
+														.getSecond());
+										tmpResult.unloadFromMemory();
 
-									String targetFile = tmpResult
-											.getAbsolutePath()
-											+ "."
-											+ postprocessor.getClass()
-													.getSimpleName();
+										String targetFile = tmpResult
+												.getAbsolutePath()
+												+ "."
+												+ postprocessor.getClass()
+														.getSimpleName();
 
-									TextFileParser p = new TextFileParser(
-											tmpResult.getAbsolutePath(),
-											new int[0], new int[0], targetFile,
-											OUTPUT_MODE.STREAM) {
+										TextFileParser p = new TextFileParser(
+												tmpResult.getAbsolutePath(),
+												new int[0], new int[0],
+												targetFile, OUTPUT_MODE.STREAM) {
 
-										@Override
-										protected void processLine(
-												String[] key, String[] value) {
-										}
+											@Override
+											protected void processLine(
+													String[] key, String[] value) {
+											}
 
-										@Override
-										protected String getLineOutput(
-												String[] key, String[] value) {
-											if (currentLine == 0)
-												return this
-														.combineColumns(value)
-														+ "\n";
-											return String.format("%s%s%s\n",
-													value[0], this.inSplit,
-													cl.toFormattedString());
+											@Override
+											protected String getLineOutput(
+													String[] key, String[] value) {
+												if (currentLine == 0)
+													return this
+															.combineColumns(value)
+															+ "\n";
+												return String.format(
+														"%s%s%s\n", value[0],
+														this.inSplit,
+														cl.toFormattedString());
+											};
 										};
-									};
-									p.process();
+										p.process();
 
-									tmpResult = new ClusteringRunResult(
-											tmpResult.getRepository(),
-											System.currentTimeMillis(),
-											new File(targetFile),
-											tmpResult.getDataConfig(),
-											tmpResult.getProgramConfig(),
-											format, tmpResult.getIdentifier(),
-											run);
+										tmpResult = new ClusteringRunResult(
+												tmpResult.getRepository(),
+												System.currentTimeMillis(),
+												new File(targetFile),
+												tmpResult.getDataConfig(),
+												tmpResult.getProgramConfig(),
+												format,
+												tmpResult.getIdentifier(), run);
+									} catch (Exception e) {
+										throw new RunResultConversionException(
+												"An error occurred when applying postprocessor "
+														+ postprocessor);
+									}
 								}
 
 								iterationWrapper

@@ -308,6 +308,32 @@ public class Clustering implements Iterable<Cluster> {
 	}
 
 	/**
+	 * Remove a cluster item from the specified cluster.
+	 * 
+	 * @param item
+	 *            The item to remove
+	 * @param cluster
+	 *            The cluster to remove the item from.
+	 * @return True if this item was contained in this clustering.
+	 */
+	public boolean removeClusterItem(final ClusterItem item,
+			final Cluster cluster) {
+		if (!this.itemToCluster.containsKey(item))
+			return false;
+
+		float fuzzy = this.itemToCluster.get(item).remove(cluster);
+		boolean result = cluster.remove(item);
+		this.fuzzySize -= fuzzy;
+
+		if (this.itemToCluster.get(item).size() == 0) {
+			this.itemIdToItem.remove(item.id);
+			this.itemToCluster.remove(item);
+		}
+
+		return result;
+	}
+
+	/**
 	 * @return The fuzzy size of this clustering.
 	 * @see #fuzzySize
 	 */
