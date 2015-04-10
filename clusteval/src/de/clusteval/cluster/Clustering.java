@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 import utils.Pair;
+import utils.parse.TextFileParser;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.cluster.quality.ClusteringQualityMeasureValue;
 import de.clusteval.cluster.quality.ClusteringQualitySet;
@@ -30,13 +31,16 @@ import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
+import de.clusteval.framework.repository.NoRepositoryFoundException;
+import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
+import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.program.ParameterSet;
 
 /**
  * A clustering contains several clusters. Every cluster contains cluster items.
  */
-public class Clustering implements Iterable<Cluster> {
+public class Clustering extends RepositoryObject implements Iterable<Cluster> {
 
 	/**
 	 * The fuzzy size of this clustering is the sum of all fuzzy coefficients of
@@ -74,13 +78,21 @@ public class Clustering implements Iterable<Cluster> {
 
 	/**
 	 * Instantiates a new clustering.
+	 * 
+	 * @param repository
+	 * @param changeDate
+	 * @param absPath
+	 * @throws RegisterException
 	 */
-	public Clustering() {
-		super();
+	public Clustering(Repository repository, long changeDate, File absPath)
+			throws RegisterException {
+		super(repository, false, changeDate, absPath);
 		this.clusters = new HashSet<Cluster>();
 		this.clusterIdToCluster = new HashMap<String, Cluster>();
 		this.itemToCluster = new HashMap<ClusterItem, Map<Cluster, Float>>();
 		this.itemIdToItem = new HashMap<String, ClusterItem>();
+
+		this.register();
 	}
 
 	/**
@@ -88,9 +100,10 @@ public class Clustering implements Iterable<Cluster> {
 	 * 
 	 * @param other
 	 *            The object to clone.
+	 * @throws RegisterException
 	 */
-	public Clustering(final Clustering other) {
-		super();
+	public Clustering(final Clustering other) throws RegisterException {
+		super(other);
 		this.clusters = cloneClusters(other.clusters);
 		this.clusterIdToCluster = cloneClusterIdToCluster(other.clusterIdToCluster);
 		this.itemToCluster = cloneItemToClusters(other.itemToCluster);
@@ -99,26 +112,34 @@ public class Clustering implements Iterable<Cluster> {
 
 	@Override
 	public Clustering clone() {
-		final Clustering result = new Clustering();
-		final Map<Cluster, Cluster> clusters = new HashMap<Cluster, Cluster>();
-		final Map<ClusterItem, ClusterItem> items = new HashMap<ClusterItem, ClusterItem>();
+		Clustering result;
+		try {
+			result = new Clustering(this.repository, this.changeDate,
+					this.absPath);
+			final Map<Cluster, Cluster> clusters = new HashMap<Cluster, Cluster>();
+			final Map<ClusterItem, ClusterItem> items = new HashMap<ClusterItem, ClusterItem>();
 
-		for (Cluster cl : this.clusters) {
-			Cluster newCluster = new Cluster(cl.id);
-			clusters.put(cl, newCluster);
+			for (Cluster cl : this.clusters) {
+				Cluster newCluster = new Cluster(cl.id);
+				clusters.put(cl, newCluster);
 
-			for (Map.Entry<ClusterItem, Float> e : cl.fuzzyItems.entrySet()) {
-				if (!items.containsKey(e.getKey())) {
-					ClusterItem newItem = new ClusterItem(e.getKey().id);
-					items.put(e.getKey(), newItem);
+				for (Map.Entry<ClusterItem, Float> e : cl.fuzzyItems.entrySet()) {
+					if (!items.containsKey(e.getKey())) {
+						ClusterItem newItem = new ClusterItem(e.getKey().id);
+						items.put(e.getKey(), newItem);
+					}
+					ClusterItem item = items.get(e.getKey());
+					newCluster.add(item, e.getValue());
 				}
-				ClusterItem item = items.get(e.getKey());
-				newCluster.add(item, e.getValue());
-			}
 
-			result.addCluster(newCluster);
+				result.addCluster(newCluster);
+			}
+			return result;
+		} catch (RegisterException e1) {
+			// should not occur
+			e1.printStackTrace();
 		}
-		return result;
+		return null;
 	}
 
 	protected static Map<String, Cluster> cloneClusterIdToCluster(
@@ -191,7 +212,8 @@ public class Clustering implements Iterable<Cluster> {
 		if (!(obj instanceof Clustering))
 			return false;
 		Clustering other = (Clustering) obj;
-		return this.clusters.equals(other.clusters);
+		return (!this.absPath.equals("") && !other.absPath.equals("") && this.absPath
+				.equals(other.absPath)) || this.clusters.equals(other.clusters);
 	}
 
 	/*
@@ -201,7 +223,8 @@ public class Clustering implements Iterable<Cluster> {
 	 */
 	@Override
 	public int hashCode() {
-		return this.clusters.hashCode();
+		// return this.clusters.hashCode();
+		return this.absPath.hashCode();
 	}
 
 	/**
@@ -387,7 +410,8 @@ public class Clustering implements Iterable<Cluster> {
 					sb.append(",");
 				}
 			}
-			sb.deleteCharAt(sb.length() - 1);
+			if (sb.length() > 0)
+				sb.deleteCharAt(sb.length() - 1);
 			sb.append(";");
 		}
 		if (sb.length() > 0)
@@ -405,34 +429,43 @@ public class Clustering implements Iterable<Cluster> {
 	 */
 	public Clustering toHardClustering() {
 
-		final Clustering result = new Clustering();
+		Clustering result;
+		try {
+			result = new Clustering(this.repository, this.changeDate,
+					this.absPath);
 
-		// assign each item to the cluster with the maximal fuzzy coefficient.
-		Map<String, Cluster> newClusters = new HashMap<String, Cluster>();
-		Set<ClusterItem> items = this.getClusterItems();
-		for (ClusterItem item : items) {
-			Cluster cl = null;
-			double maxFuzzyCoeff = -0.1;
+			// assign each item to the cluster with the maximal fuzzy
+			// coefficient.
+			Map<String, Cluster> newClusters = new HashMap<String, Cluster>();
+			Set<ClusterItem> items = this.getClusterItems();
+			for (ClusterItem item : items) {
+				Cluster cl = null;
+				double maxFuzzyCoeff = -0.1;
 
-			for (Map.Entry<Cluster, Float> p : item.getFuzzyClusters()
-					.entrySet()) {
-				if (p.getValue() > maxFuzzyCoeff) {
-					cl = p.getKey();
-					maxFuzzyCoeff = p.getValue();
+				for (Map.Entry<Cluster, Float> p : item.getFuzzyClusters()
+						.entrySet()) {
+					if (p.getValue() > maxFuzzyCoeff) {
+						cl = p.getKey();
+						maxFuzzyCoeff = p.getValue();
+					}
 				}
+
+				if (cl == null)
+					continue;
+
+				if (!newClusters.containsKey(cl.id))
+					newClusters.put(cl.id, new Cluster(cl.id));
+				newClusters.get(cl.id).add(new ClusterItem(item.id), 1.0f);
 			}
+			for (Cluster cl : newClusters.values())
+				result.addCluster(cl);
 
-			if (cl == null)
-				continue;
-
-			if (!newClusters.containsKey(cl.id))
-				newClusters.put(cl.id, new Cluster(cl.id));
-			newClusters.get(cl.id).add(new ClusterItem(item.id), 1.0f);
+			return result;
+		} catch (RegisterException e) {
+			// should not occur
+			e.printStackTrace();
 		}
-		for (Cluster cl : newClusters.values())
-			result.addCluster(cl);
-
-		return result;
+		return null;
 	}
 
 	/**
@@ -458,6 +491,77 @@ public class Clustering implements Iterable<Cluster> {
 		parser.process();
 
 		return parser.getClusterings();
+	}
+
+	/**
+	 * Loads this clustering into memory (clusters + cluster items);
+	 * 
+	 * @throws ClusteringParseException
+	 */
+	public void loadIntoMemory() throws ClusteringParseException {
+		final Clustering result = this;
+
+		TextFileParser p;
+		try {
+			p = new TextFileParser(this.getAbsolutePath(), new int[]{0},
+					new int[]{1}) {
+
+				@Override
+				protected void processLine(String[] key, String[] value) {
+					if (currentLine == 0)
+						return;
+					try {
+						String clusteringString = value[0];
+						String[] clusters = clusteringString.split(";");
+						int no = 1;
+						for (String cluster : clusters) {
+							Cluster c = new Cluster((no++ + "").intern());
+							String[] items = cluster.split(",");
+							for (String item : items) {
+								String[] itemSplit = item.split(":");
+								String id = itemSplit[0].intern();
+								ClusterItem cItem = result
+										.getClusterItemWithId(id);
+								if (cItem == null)
+									cItem = new ClusterItem(id);
+								c.add(cItem,
+										Float.valueOf(Float.valueOf(
+												itemSplit[1]).floatValue()));
+							}
+							result.addCluster(c);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			};
+			p.process();
+		} catch (IOException e) {
+			throw new ClusteringParseException("The clustering "
+					+ this.getAbsolutePath() + " could not be load into memory");
+		}
+	}
+
+	/**
+	 * Unloads this clustering from memory.
+	 */
+	public void unloadFromMemory() {
+		if (this.clusterIdToCluster != null) {
+			this.clusterIdToCluster.clear();
+			this.clusterIdToCluster = null;
+		}
+		if (this.clusters != null) {
+			this.clusters.clear();
+			this.clusters = null;
+		}
+		if (this.itemIdToItem != null) {
+			this.itemIdToItem.clear();
+			this.itemIdToItem = null;
+		}
+		if (this.itemToCluster != null) {
+			this.itemToCluster.clear();
+			this.itemToCluster = null;
+		}
 	}
 
 	/**
@@ -492,9 +596,9 @@ public class Clustering implements Iterable<Cluster> {
 	 *            Position i holds the cluster id of cluster item i.
 	 * @return A clustering wrapper object.
 	 */
-	public static Clustering parseFromIntArray(final String[] objectIds,
-			final int[] clusterIds) {
-		return parseFromFuzzyCoeffMatrix(objectIds,
+	public static Clustering parseFromIntArray(final Repository repository,
+			final File absPath, final String[] objectIds, final int[] clusterIds) {
+		return parseFromFuzzyCoeffMatrix(repository, absPath, objectIds,
 				clusterIdsToFuzzyCoeff(clusterIds));
 	}
 
@@ -507,6 +611,7 @@ public class Clustering implements Iterable<Cluster> {
 	 * @return A clustering wrapper object.
 	 */
 	public static Clustering parseFromFuzzyCoeffMatrix(
+			final Repository repository, final File absPath,
 			final String[] objectIds, final float[][] fuzzyCoeffs) {
 		if (objectIds.length != fuzzyCoeffs.length)
 			throw new IllegalArgumentException(
@@ -526,10 +631,18 @@ public class Clustering implements Iterable<Cluster> {
 				cluster.add(item, fuzzyCoeffs[i][j]);
 			}
 		}
-		Clustering clustering = new Clustering();
-		for (Cluster cl : clusters.values())
-			clustering.addCluster(cl);
-		return clustering;
+		Clustering clustering;
+		try {
+			clustering = new Clustering(repository, System.currentTimeMillis(),
+					absPath);
+			for (Cluster cl : clusters.values())
+				clustering.addCluster(cl);
+			return clustering;
+		} catch (RegisterException e) {
+			// should not occur
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**

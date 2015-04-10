@@ -16,6 +16,7 @@ package de.clusteval.framework.repository;
 import java.io.FileNotFoundException;
 import java.util.concurrent.ConcurrentHashMap;
 
+import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.context.Context;
@@ -140,6 +141,8 @@ public class RunResultRepository extends Repository {
 
 		this.staticRepositoryEntities.put(Program.class,
 				this.parent.staticRepositoryEntities.get(Program.class));
+		this.staticRepositoryEntities.put(Clustering.class,
+				this.parent.staticRepositoryEntities.get(Clustering.class));
 
 		// this.staticRepositoryEntities.put(
 		// RunResult.class,

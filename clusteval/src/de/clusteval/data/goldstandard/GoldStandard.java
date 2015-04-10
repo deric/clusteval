@@ -14,11 +14,10 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import utils.text.TextFileMapParser;
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
-
-import utils.text.TextFileMapParser;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
@@ -189,7 +188,8 @@ public class GoldStandard extends RepositoryObject {
 				}
 			}
 
-			this.clustering = new Clustering();
+			this.clustering = new Clustering(this.repository,
+					this.absPath.lastModified(), this.absPath);
 			for (String clusterId : clusterMap.keySet())
 				this.clustering.addCluster(clusterMap.get(clusterId));
 			return true;

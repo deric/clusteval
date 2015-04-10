@@ -101,7 +101,8 @@ public class TestFuzzyCoefficientThresholdRunResultPostprocessor
 			UnknownRunDataStatisticException,
 			UnknownRunResultPostprocessorException {
 
-		Clustering clustering = new Clustering();
+		Clustering clustering = new Clustering(this.getRepository(),
+				System.currentTimeMillis(), new File(""));
 		Cluster cluster1 = new Cluster("1");
 		cluster1.add(new ClusterItem("id1"), 0.7f);
 		cluster1.add(new ClusterItem("id2"), 0.5f);
@@ -114,7 +115,8 @@ public class TestFuzzyCoefficientThresholdRunResultPostprocessor
 		cluster2.add(new ClusterItem("id3"), 1.0f);
 		clustering.addCluster(cluster2);
 
-		Clustering expected = new Clustering();
+		Clustering expected = new Clustering(this.getRepository(),
+				System.currentTimeMillis(), new File(""));
 		Cluster expectedCluster1 = new Cluster("1");
 		expectedCluster1.add(new ClusterItem("id1"), 1.0f);
 		expectedCluster1.add(new ClusterItem("id2"), 0.5f);

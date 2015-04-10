@@ -319,7 +319,8 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 			final ClusteringQualitySet qualities) {
 		this.result.put(
 				this.result.getIterationNumberForParameterSet(parameterSet),
-				parameterSet, qualities);
+				parameterSet, qualities,
+				this.result.getClustering(parameterSet));
 	}
 
 	protected ParameterSet getNextParameterSet()
@@ -481,7 +482,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 			}
 
 			result = getNextParameterSet(forcedParameterSet);
-			this.result.put(iterationNumber, result, null);
+			this.result.put(iterationNumber, result, null, null);
 			this.result.getParameterSets().add(result);
 			// 04.04.2013: changed to adapt method to previously skipped
 			// iterations
@@ -494,7 +495,7 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 			long iter = this.result.getIterationNumberForParameterSet(result);
 
 			if (!this.result.getParameterSets().contains(result))
-				this.result.put(this.currentCount, result, null);
+				this.result.put(this.currentCount, result, null, null);
 			this.result.getParameterSets().add(result);
 
 			if (iter > -1) {

@@ -13,6 +13,7 @@
  */
 package de.clusteval.cluster.quality;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -51,7 +52,8 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			RegisterException, NoSuchAlgorithmException,
 			RNotAvailableException, RCalculationException {
 		try {
-			Clustering goldStandard = new Clustering();
+			Clustering goldStandard = new Clustering(this.getRepository(),
+					System.currentTimeMillis(), new File(""));
 			Cluster gsCluster1 = new Cluster("1");
 			gsCluster1.add(new ClusterItem("square1"), 1.0f);
 			gsCluster1.add(new ClusterItem("square2"), 1.0f);
@@ -76,7 +78,8 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			gsCluster3.add(new ClusterItem("circle5"), 1.0f);
 			goldStandard.addCluster(gsCluster3);
 
-			Clustering clustering = new Clustering();
+			Clustering clustering = new Clustering(this.getRepository(),
+					System.currentTimeMillis(), new File(""));
 			Cluster cluster1 = new Cluster("1");
 			cluster1.add(new ClusterItem("square1"), 1.0f);
 			cluster1.add(new ClusterItem("square2"), 1.0f);
@@ -146,7 +149,8 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			RegisterException, NoSuchAlgorithmException,
 			RNotAvailableException, RCalculationException {
 		try {
-			Clustering goldStandard = new Clustering();
+			Clustering goldStandard = new Clustering(this.getRepository(),
+					System.currentTimeMillis(), new File(""));
 			Cluster gsCluster1 = new Cluster("1");
 			gsCluster1.add(new ClusterItem("square1"), 1.0f);
 			gsCluster1.add(new ClusterItem("square2"), 1.0f);
@@ -171,7 +175,8 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			gsCluster3.add(new ClusterItem("circle5"), 1.0f);
 			goldStandard.addCluster(gsCluster3);
 
-			Clustering clustering = new Clustering();
+			Clustering clustering = new Clustering(this.getRepository(),
+					System.currentTimeMillis(), new File(""));
 			Cluster cluster1 = new Cluster("1");
 			cluster1.add(new ClusterItem("square1"), 1.0f);
 			cluster1.add(new ClusterItem("square2"), 1.0f);
@@ -246,7 +251,8 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			RNotAvailableException, RCalculationException {
 		try {
 			ClustevalBackendServer.logLevel(Level.WARN);
-			Clustering goldStandard = new Clustering();
+			Clustering goldStandard = new Clustering(this.getRepository(),
+					System.currentTimeMillis(), new File(""));
 			Cluster gsCluster1 = new Cluster("1");
 			gsCluster1.add(new ClusterItem("square1"), 1.0f);
 			goldStandard.addCluster(gsCluster1);
@@ -260,7 +266,8 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			gsCluster2.add(new ClusterItem("star6"), 1.0f);
 			goldStandard.addCluster(gsCluster2);
 
-			Clustering clustering = new Clustering();
+			Clustering clustering = new Clustering(this.getRepository(),
+					System.currentTimeMillis(), new File(""));
 			Cluster cluster1 = new Cluster("1");
 			cluster1.add(new ClusterItem("square1"), 1.0f);
 			cluster1.add(new ClusterItem("star1"), 1.0f);
@@ -310,7 +317,8 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			RNotAvailableException, RCalculationException {
 		try {
 			ClustevalBackendServer.logLevel(Level.WARN);
-			Clustering goldStandard = new Clustering();
+			Clustering goldStandard = new Clustering(this.getRepository(),
+					System.currentTimeMillis(), new File(""));
 			Cluster gsCluster1 = new Cluster("1");
 			gsCluster1.add(new ClusterItem("square1"), 1.0f);
 			goldStandard.addCluster(gsCluster1);
@@ -325,7 +333,8 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			gsCluster2.add(new ClusterItem("star7"), 1.0f);
 			goldStandard.addCluster(gsCluster2);
 
-			Clustering clustering = new Clustering();
+			Clustering clustering = new Clustering(this.getRepository(),
+					System.currentTimeMillis(), new File(""));
 			Cluster cluster1 = new Cluster("1");
 			cluster1.add(new ClusterItem("square1"), 1.0f);
 			cluster1.add(new ClusterItem("star1"), 1.0f);
@@ -379,7 +388,8 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			RNotAvailableException, RCalculationException {
 		try {
 			ClustevalBackendServer.logLevel(Level.WARN);
-			Clustering goldStandard = new Clustering();
+			Clustering goldStandard = new Clustering(this.getRepository(),
+					System.currentTimeMillis(), new File(""));
 			Cluster gsCluster1 = new Cluster("1");
 			gsCluster1.add(new ClusterItem("square1"), 1.0f);
 			goldStandard.addCluster(gsCluster1);
@@ -394,7 +404,8 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			gsCluster2.add(new ClusterItem("star7"), 1.0f);
 			goldStandard.addCluster(gsCluster2);
 
-			Clustering clustering = new Clustering();
+			Clustering clustering = new Clustering(this.getRepository(),
+					System.currentTimeMillis(), new File(""));
 			Cluster cluster1 = new Cluster("1");
 			cluster1.add(new ClusterItem("square1"), 1.0f);
 			clustering.addCluster(cluster1);

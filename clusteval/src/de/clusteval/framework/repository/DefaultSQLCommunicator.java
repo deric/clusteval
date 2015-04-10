@@ -2341,6 +2341,61 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see
+	 * de.clusteval.framework.repository.SQLCommunicator#register(de.clusteval
+	 * .cluster.Clustering)
+	 */
+	@Override
+	protected int register(Clustering object) {
+
+		try {
+			String[] columns;
+			String[] values;
+
+			columns = new String[]{"repository_id", "absPath"};
+			values = new String[]{"" + this.updateRepositoryId(),
+					"" + object.getAbsolutePath()};
+			int rowId = insert(this.getTableClusterings(), columns, values);
+			return rowId;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.SQLCommunicator#unregister(de.clusteval
+	 * .cluster.Clustering)
+	 */
+	@Override
+	protected int unregister(Clustering object) {
+		Statement stmt = null;
+		try {
+			stmt = conn.createStatement();
+
+			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
+					+ this.getTableClusterings() + "` WHERE `absPath`='"
+					+ object.getAbsolutePath() + "';");
+			stmt.close();
+			return this.getObjectId(object);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			if (stmt != null)
+				stmt.close();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return -1;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see utils.SQLCommunicator#register(data.DataConfig)
 	 */
 	@Override
@@ -3024,6 +3079,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			 * For every iteration in the result insert the parameter values
 			 */
 			List<ParameterSet> paramSets = object.getParameterSets();
+			// List<Pair<ParameterSet, Clustering>> clusterings = object
+			// .getOptimizationClusterings();
 			List<Long> iterationNumbers = object.getIterationNumbers();
 
 			int[] iterationIds = new int[paramSets.size()];
@@ -3039,9 +3096,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				}
 				paramSetAsString.deleteCharAt(paramSetAsString.length() - 1);
 
-				// int clustering_id = getClusteringId(object.getAbsolutePath()
-				// .replace("results.qual.complete",
-				// iteration + ".results.conv"));
+				int clustering_id;
+				if (object.getClustering(paramSets.get(i)) == null)
+					clustering_id = -1;
+				else
+					clustering_id = getClusteringId(object.getClustering(
+							paramSets.get(i)).getAbsolutePath());
 				/*
 				 * insert iteration
 				 */
@@ -3050,15 +3110,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 						new String[]{
 								"repository_id",
 								"run_results_parameter_optimizations_parameter_set_id",
-								"iteration", "paramSetAsString"
-						// ,"clustering_id"
-						}, new String[]{
+								"iteration", "paramSetAsString",
+								"clustering_id"},
+						new String[]{
 								"" + repository_id,
 								run_results_parameter_optimizations_parameter_set_id
 										+ "", iterationNumbers.get(i) + "",
-								paramSetAsString.toString()
-						// , "" + clustering_id
-						});
+								paramSetAsString.toString(), "" + clustering_id});
 			}
 
 			String[] columns = new String[]{
@@ -3103,6 +3161,9 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				int iteration_id = iterationIds[i];
 				Pair<ParameterSet, ClusteringQualitySet> pair = Pair.getPair(
 						paramSets.get(i), object.get(paramSets.get(i)));
+
+				if (pair.getSecond() == null)
+					continue;
 
 				for (ClusteringQualityMeasure measure : pair.getSecond()
 						.keySet()) {

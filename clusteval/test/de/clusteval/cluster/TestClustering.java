@@ -26,6 +26,7 @@ import junitx.framework.ArrayAssert;
 import org.junit.Test;
 
 import utils.Pair;
+import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.utils.AbstractClustEvalTest;
 
@@ -36,11 +37,12 @@ import de.clusteval.utils.AbstractClustEvalTest;
 public class TestClustering extends AbstractClustEvalTest {
 
 	@Test
-	public void testParseFromIntArray() {
+	public void testParseFromIntArray() throws RegisterException {
 		String[] ids = new String[]{"1", "2", "3", "4", "5"};
 		int[] clusterIds = new int[]{1, 1, 1, 2, 2};
 
-		Clustering expected = new Clustering();
+		Clustering expected = new Clustering(this.getRepository(),
+				System.currentTimeMillis(), new File(""));
 		Cluster cluster1 = new Cluster("0");
 		cluster1.add(new ClusterItem("1"), 1.0f);
 		cluster1.add(new ClusterItem("2"), 1.0f);
@@ -51,7 +53,8 @@ public class TestClustering extends AbstractClustEvalTest {
 		cluster2.add(new ClusterItem("5"), 1.0f);
 		expected.addCluster(cluster2);
 
-		Clustering clustering = Clustering.parseFromIntArray(ids, clusterIds);
+		Clustering clustering = Clustering.parseFromIntArray(
+				this.getRepository(), new File(""), ids, clusterIds);
 		Assert.assertEquals(expected, clustering);
 	}
 
@@ -60,7 +63,8 @@ public class TestClustering extends AbstractClustEvalTest {
 		String[] ids = new String[]{"1", "2", "3", "4", "5"};
 		int[] clusterIds = new int[]{1, 1, 1, 2, 2};
 
-		Clustering clustering = Clustering.parseFromIntArray(ids, clusterIds);
+		Clustering clustering = Clustering.parseFromIntArray(
+				this.getRepository(), new File(""), ids, clusterIds);
 		Assert.assertEquals("5:1.0,4:1.0;3:1.0,2:1.0,1:1.0",
 				clustering.toFormattedString());
 	}
@@ -70,17 +74,21 @@ public class TestClustering extends AbstractClustEvalTest {
 		String[] ids = new String[]{};
 		int[] clusterIds = new int[]{};
 
-		Clustering clustering = Clustering.parseFromIntArray(ids, clusterIds);
+		Clustering clustering = Clustering.parseFromIntArray(
+				this.getRepository(), new File(""), ids, clusterIds);
 		Assert.assertEquals("", clustering.toFormattedString());
 	}
 
 	@Test
-	public void testParseFromIntArrayEmpty() {
+	public void testParseFromIntArrayEmpty() throws RegisterException {
 		String[] ids = new String[]{};
 		int[] clusterIds = new int[]{};
 
-		Clustering clustering = Clustering.parseFromIntArray(ids, clusterIds);
-		Assert.assertEquals(new Clustering(), clustering);
+		Clustering clustering = Clustering.parseFromIntArray(
+				this.getRepository(), new File(""), ids, clusterIds);
+		Assert.assertEquals(
+				new Clustering(this.getRepository(),
+						System.currentTimeMillis(), new File("")), clustering);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -88,7 +96,8 @@ public class TestClustering extends AbstractClustEvalTest {
 		String[] ids = new String[]{};
 		int[] clusterIds = new int[]{1};
 
-		Clustering.parseFromIntArray(ids, clusterIds);
+		Clustering.parseFromIntArray(this.getRepository(), new File(""), ids,
+				clusterIds);
 	}
 
 	@Test
@@ -96,7 +105,8 @@ public class TestClustering extends AbstractClustEvalTest {
 		String[] ids = new String[]{"1", "2", "3", "4", "5"};
 		int[] clusterIds = new int[]{1, 1, 1, 2, 2};
 
-		Clustering clustering = Clustering.parseFromIntArray(ids, clusterIds);
+		Clustering clustering = Clustering.parseFromIntArray(
+				this.getRepository(), new File(""), ids, clusterIds);
 		Assert.assertTrue(clustering
 				.getClusterForItem(clustering.getClusterItemWithId("1"))
 				.keySet().iterator().next() == clustering

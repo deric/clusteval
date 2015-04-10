@@ -988,9 +988,9 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 								// not
 								// converted
 								// result
-								getRun().getResults().add(
-										iterationWrapper
-												.getClusteringRunResult());
+								getRun().getResults()
+										.add(iterationWrapper
+												.getConvertedClusteringRunResult());
 							}
 						} catch (RunResultNotFoundException e) {
 							handleMissingRunResult(iterationWrapper);

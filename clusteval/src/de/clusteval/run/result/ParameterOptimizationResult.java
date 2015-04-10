@@ -290,7 +290,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 
 	protected Map<ParameterSet, ClusteringQualitySet> parameterSetToQualities;
 
-	// TODO: added 20.08.2012
+	// added 20.08.2012
 	protected Map<ParameterSet, Clustering> parameterSetToClustering;
 
 	// added 04.04.2013
@@ -365,10 +365,8 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 		this.parameterSetToIterationNumber = new HashMap<ParameterSet, Long>();
 		this.parseClusterings = parseClusterings;
 		this.storeClusterings = storeClusterings;
-		if (parseClusterings) {
-			this.parameterSetToClustering = new HashMap<ParameterSet, Clustering>();
-			this.optimalClustering = new HashMap<ClusteringQualityMeasure, Clustering>();
-		}
+		this.parameterSetToClustering = new HashMap<ParameterSet, Clustering>();
+		this.optimalClustering = new HashMap<ClusteringQualityMeasure, Clustering>();
 
 		if (register)
 			this.register();
@@ -500,10 +498,10 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 *            The qualities which we want to add for the parameter set.
 	 * @return The old value, if this operation replaced an old mapping,
 	 */
-	public ClusteringQualitySet put(long iterationNumber, ParameterSet last,
-			ClusteringQualitySet qualities) {
-		return this.put(iterationNumber, last, qualities, null);
-	}
+	// public ClusteringQualitySet put(long iterationNumber, ParameterSet last,
+	// ClusteringQualitySet qualities) {
+	// return this.put(iterationNumber, last, qualities, null);
+	// }
 
 	/**
 	 * This method adds the given qualities for the given parameter set and

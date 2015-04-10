@@ -32,6 +32,7 @@ import org.rosuda.REngine.Rserve.RserveException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.context.Context;
@@ -1455,6 +1456,15 @@ public class Repository {
 				FileUtils.buildPath(this.basePath, "programs", "configs"));
 		this.createAndAddStaticEntity(Program.class,
 				FileUtils.buildPath(this.basePath, "programs"));
+		// this.createAndAddStaticEntity(Clustering.class,
+		// FileUtils.buildPath(this.basePath, "results"));
+
+		this.staticRepositoryEntities.put(
+				Clustering.class,
+				new ClusteringRepositoryEntity(this, this.parent != null
+						? this.parent.staticRepositoryEntities
+								.get(Clustering.class) : null, FileUtils
+						.buildPath(this.basePath, "results")));
 
 		this.staticRepositoryEntities.put(
 				RunResult.class,

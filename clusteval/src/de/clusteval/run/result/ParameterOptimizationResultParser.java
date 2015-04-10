@@ -14,6 +14,7 @@
 package de.clusteval.run.result;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 import utils.StringExt;
 import utils.parse.TextFileParser;
 import de.clusteval.cluster.Clustering;
+import de.clusteval.cluster.ClusteringParseException;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.cluster.quality.ClusteringQualityMeasureValue;
@@ -28,6 +30,7 @@ import de.clusteval.cluster.quality.ClusteringQualitySet;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.ParameterOptimizationRun;
+import file.FileUtils;
 
 /**
  * @author Christian Wiwie
@@ -95,28 +98,29 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 				if (value[0].contains("*")) {
 					// 13.07.2014: we don't parse duplicated iterations anymore
 					return;
-//					long iterationNumber = Long.valueOf(value[0].replace("*",
-//							""));
-//					long previousIteration = Long.valueOf(value[1]);
-//					int indexOfIteration = tmpResult.iterationNumbers
-//							.indexOf(previousIteration);
-//
-//					ParameterSet paramSet = tmpResult.parameterSets
-//							.get(indexOfIteration);
-//					ClusteringQualitySet qualitySet = tmpResult.parameterSetToQualities
-//							.get(paramSet);
-//
-//					tmpResult.parameterSets.add(paramSet);
-//					tmpResult.iterationNumbers.add(iterationNumber);
-//
-//					if (parseClusterings) {
-//						tmpResult.put(iterationNumber, paramSet, qualitySet,
-//								tmpResult.parameterSetToClustering
-//										.get(paramSet));
-//						return;
-//					}
-//
-//					tmpResult.put(iterationNumber, paramSet, qualitySet);
+					// long iterationNumber = Long.valueOf(value[0].replace("*",
+					// ""));
+					// long previousIteration = Long.valueOf(value[1]);
+					// int indexOfIteration = tmpResult.iterationNumbers
+					// .indexOf(previousIteration);
+					//
+					// ParameterSet paramSet = tmpResult.parameterSets
+					// .get(indexOfIteration);
+					// ClusteringQualitySet qualitySet =
+					// tmpResult.parameterSetToQualities
+					// .get(paramSet);
+					//
+					// tmpResult.parameterSets.add(paramSet);
+					// tmpResult.iterationNumbers.add(iterationNumber);
+					//
+					// if (parseClusterings) {
+					// tmpResult.put(iterationNumber, paramSet, qualitySet,
+					// tmpResult.parameterSetToClustering
+					// .get(paramSet));
+					// return;
+					// }
+					//
+					// tmpResult.put(iterationNumber, paramSet, qualitySet);
 				}
 				long iterationNumber = Long.valueOf(value[0]);
 				ParameterSet paramSet = new ParameterSet();
@@ -135,9 +139,41 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 				// ensure, that the iteration result file containing the
 				// clustering exists
 				String iterationId = iterationNumber + "";
-				String clusteringFilePath = this.getAbsoluteFilePath().replace(
-						"results.qual.complete", iterationId + ".results.conv");
-				File absFile = new File(clusteringFilePath).getAbsoluteFile();
+				// find the file with the longest name with this prefix
+				final String clusteringFilePath = new File(this
+						.getAbsoluteFilePath().replace("results.qual.complete",
+								iterationId + ".results.conv")).getName();
+				FilenameFilter ff = new FilenameFilter() {
+
+					/*
+					 * (non-Javadoc)
+					 * 
+					 * @see java.io.FilenameFilter#accept(java.io.File,
+					 * java.lang.String)
+					 */
+					@Override
+					public boolean accept(File dir, String name) {
+						return name.startsWith(clusteringFilePath);
+					}
+				};
+				String[] clusteringFiles = new File(this.getAbsoluteFilePath())
+						.getParentFile().list(ff);
+
+				String longestFilename;
+				if (clusteringFiles.length > 0) {
+					longestFilename = clusteringFiles[0];
+					for (String name : clusteringFiles)
+						if (name.length() > longestFilename.length())
+							longestFilename = name;
+				} else {
+					longestFilename = new File(this.getAbsoluteFilePath()
+							.replace("results.qual.complete",
+									iterationId + ".results.conv")).getName();
+				}
+
+				File absFile = new File(FileUtils.buildPath(
+						new File(this.getAbsoluteFilePath()).getParent(),
+						longestFilename)).getAbsoluteFile();
 				// if the corresponding file exists take the qualities for
 				// granted
 				// if (absFile.exists()) {
@@ -160,31 +196,27 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 				tmpResult.parameterSets.add(paramSet);
 				tmpResult.iterationNumbers.add(iterationNumber);
 
+				Clustering clustering = Clustering.parseFromFile(
+						method.getRepository(), absFile, false).getSecond();
+
+				tmpResult
+						.put(iterationNumber, paramSet, qualitySet, clustering);
+
 				// added 20.08.2012
 				if (parseClusterings) {
 					// if (absFile.exists()) {
 					try {
-						Clustering clustering = Clustering.parseFromFile(
-								method.getRepository(), absFile, false)
-								.getSecond();
 						if (storeClusterings)
-							tmpResult.put(iterationNumber, paramSet,
-									qualitySet, clustering);
-						else {
-							// in this case, the clustering is only
-							// registerd in the repository and therefore
-							// added to the database
-							tmpResult.put(iterationNumber, paramSet,
-									qualitySet, null);
-						}
+							clustering.loadIntoMemory();
 						return;
-					} catch (IOException e) {
+					} catch (ClusteringParseException e) {
 						e.printStackTrace();
 					}
 				}
 				// }
-				tmpResult.put(iterationNumber, paramSet, qualitySet);
+				// tmpResult.put(iterationNumber, paramSet, qualitySet);
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}

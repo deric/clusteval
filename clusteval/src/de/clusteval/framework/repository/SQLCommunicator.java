@@ -32,6 +32,7 @@ import utils.Formatter;
 
 import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 
+import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.context.Context;
@@ -572,9 +573,11 @@ public abstract class SQLCommunicator {
 			result = this.register((RunDataAnalysisRun) object, updateOnly);
 		} else if (object instanceof RunDataAnalysisRunResult) {
 			result = this.register((RunResult) object);
-		} else if (object instanceof StringProgramParameter)
+		} else if (object instanceof StringProgramParameter) {
 			result = this.register((StringProgramParameter) object);
-		else
+		} else if (object instanceof Clustering) {
+			result = this.register((Clustering) object);
+		} else
 			return false;
 		if (result != -1)
 			this.objectIds.put(object, result);
@@ -624,6 +627,8 @@ public abstract class SQLCommunicator {
 			result = this.unregister((RunDataAnalysisRunResult) object);
 		else if (object instanceof StringProgramParameter)
 			result = this.unregister((StringProgramParameter) object);
+		else if (object instanceof Clustering)
+			result = this.unregister((Clustering) object);
 		else
 			return false;
 
@@ -716,6 +721,8 @@ public abstract class SQLCommunicator {
 	protected abstract int register(final DataSetConfig object,
 			final boolean updateOnly);
 
+	protected abstract int register(final Clustering object);
+
 	protected abstract boolean unregisterRunResultFormat(
 			final Class<? extends RunResultFormat> object);
 
@@ -728,6 +735,8 @@ public abstract class SQLCommunicator {
 	protected abstract int unregister(final GoldStandardConfig object);
 
 	protected abstract int unregister(final GoldStandard object);
+
+	protected abstract int unregister(final Clustering object);
 
 	protected abstract boolean unregisterDataSetFormatClass(
 			final Class<? extends DataSetFormat> object);

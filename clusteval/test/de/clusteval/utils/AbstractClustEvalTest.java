@@ -90,7 +90,7 @@ public abstract class AbstractClustEvalTest {
 	@After
 	public void tearDown() throws Exception {
 		this.repositoryObject = null;
-		getRepository().terminateSupervisorThread();
+		getRepository().terminateSupervisorThread(true);
 		while (getRepository().getSupervisorThread().isAlive()) {
 			Thread.sleep(100);
 		}

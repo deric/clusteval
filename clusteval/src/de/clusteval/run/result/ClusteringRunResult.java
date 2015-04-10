@@ -500,6 +500,7 @@ public class ClusteringRunResult extends ExecutionRunResult {
 				for (String param : pair.getFirst().keySet())
 					paramSet.put(param, pair.getFirst().get(param));
 				this.clustering = Pair.getPair(paramSet, pair.getSecond());
+				this.clustering.getSecond().loadIntoMemory();
 			} catch (Exception e) {
 			}
 		}
@@ -512,6 +513,7 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	 */
 	@Override
 	public void unloadFromMemory() {
+		this.clustering.getSecond().unloadFromMemory();
 		this.clustering = null;
 	}
 }

@@ -15,6 +15,7 @@ package de.clusteval.framework.repository;
 
 import java.sql.SQLException;
 
+import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.context.Context;
@@ -1621,5 +1622,21 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	protected int getRepositoryTypeId(String repositoryType)
 			throws SQLException {
 		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see de.clusteval.framework.repository.SQLCommunicator#register(de.clusteval.cluster.Clustering)
+	 */
+	@Override
+	protected int register(Clustering object) {
+		return -1;
+	}
+
+	/* (non-Javadoc)
+	 * @see de.clusteval.framework.repository.SQLCommunicator#unregister(de.clusteval.cluster.Clustering)
+	 */
+	@Override
+	protected int unregister(Clustering object) {
+		return -1;
 	}
 }

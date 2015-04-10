@@ -351,8 +351,9 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 			Map<String, String> effectiveParams,
 			Map<String, String> internalParams) throws RserveException,
 			REXPMismatchException {
-		Clustering resultClustering = Clustering.parseFromFuzzyCoeffMatrix(ids,
-				getFuzzyCoeffMatrixFromExecResult());
+		Clustering resultClustering = Clustering.parseFromFuzzyCoeffMatrix(
+				dataConfig.getRepository(), new File(internalParams.get("o")),
+				ids, getFuzzyCoeffMatrixFromExecResult());
 
 		StringBuilder sb = new StringBuilder();
 		// TODO: changed 31.01.2014

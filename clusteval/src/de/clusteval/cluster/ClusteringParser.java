@@ -100,30 +100,14 @@ public class ClusteringParser extends TextFileParser {
 			if (repo.getParent() != null)
 				repo = repo.getParent();
 
-			result = new Clustering();
+			result = new Clustering(repo,
+					new File(absoluteFilePath).lastModified(), new File(
+							absoluteFilePath));
 			String[] params = parameterString.split(",");
 
 			ParameterSet paramValues = new ParameterSet();
 			for (int pos = 0; pos < this.params.size(); pos++) {
 				paramValues.put(this.params.get(pos), params[pos]);
-			}
-
-			String clusteringString = value[0];
-			String[] clusters = clusteringString.split(";");
-			int no = 1;
-			for (String cluster : clusters) {
-				Cluster c = new Cluster((no++ + "").intern());
-				String[] items = cluster.split(",");
-				for (String item : items) {
-					String[] itemSplit = item.split(":");
-					String id = itemSplit[0].intern();
-					ClusterItem cItem = result.getClusterItemWithId(id);
-					if (cItem == null)
-						cItem = new ClusterItem(id);
-					c.add(cItem, Float.valueOf(Float.valueOf(itemSplit[1])
-							.floatValue()));
-				}
-				result.addCluster(c);
 			}
 
 			this.result = Pair.getPair(paramValues, result);

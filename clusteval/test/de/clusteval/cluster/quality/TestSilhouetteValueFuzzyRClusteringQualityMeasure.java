@@ -13,6 +13,7 @@
  */
 package de.clusteval.cluster.quality;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -73,7 +74,8 @@ public class TestSilhouetteValueFuzzyRClusteringQualityMeasure
 			RNotAvailableException, RCalculationException,
 			UnknownClusteringQualityMeasureException {
 		try {
-			Clustering clustering = new Clustering();
+			Clustering clustering = new Clustering(this.getRepository(),
+					System.currentTimeMillis(), new File(""));
 			Cluster cluster1 = new Cluster("1");
 			cluster1.add(new ClusterItem("square1"), 1.0f);
 			cluster1.add(new ClusterItem("star1"), 1.0f);
@@ -125,7 +127,8 @@ public class TestSilhouetteValueFuzzyRClusteringQualityMeasure
 
 			Context context = Context.parseFromString(getRepository(),
 					"ClusteringContext");
-			Clustering clustering = new Clustering();
+			Clustering clustering = new Clustering(this.getRepository(),
+					System.currentTimeMillis(), new File(""));
 			Cluster cluster1 = new Cluster("1");
 			cluster1.add(new ClusterItem("id1"), 1.0f);
 			cluster1.add(new ClusterItem("id2"), 1.0f);
@@ -199,7 +202,8 @@ public class TestSilhouetteValueFuzzyRClusteringQualityMeasure
 
 			Context context = Context.parseFromString(getRepository(),
 					"ClusteringContext");
-			Clustering clustering = new Clustering();
+			Clustering clustering = new Clustering(this.getRepository(),
+					System.currentTimeMillis(), new File(""));
 			Cluster cluster1 = new Cluster("1");
 			cluster1.add(new ClusterItem("id1"), 0.7f);
 			cluster1.add(new ClusterItem("id2"), 0.5f);
@@ -270,7 +274,8 @@ public class TestSilhouetteValueFuzzyRClusteringQualityMeasure
 
 			Context context = Context.parseFromString(getRepository(),
 					"ClusteringContext");
-			Clustering clustering = new Clustering();
+			Clustering clustering = new Clustering(this.getRepository(),
+					System.currentTimeMillis(), new File(""));
 			Cluster cluster1 = new Cluster("1");
 			cluster1.add(new ClusterItem("id1"), 0.7f);
 			cluster1.add(new ClusterItem("id2"), 0.5f);

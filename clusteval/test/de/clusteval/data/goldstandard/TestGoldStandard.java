@@ -246,7 +246,8 @@ public class TestGoldStandard extends AbstractClustEvalTest {
 
 		Assert.assertTrue(clustering != null);
 
-		Clustering expected = new Clustering();
+		Clustering expected = new Clustering(this.getRepository(),
+				System.currentTimeMillis(), new File(""));
 		Cluster cluster1 = new Cluster("0");
 		cluster1.add(new ClusterItem("0"), 1.0f);
 		cluster1.add(new ClusterItem("1"), 1.0f);
