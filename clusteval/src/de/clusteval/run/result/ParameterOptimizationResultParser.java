@@ -196,8 +196,10 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 				tmpResult.parameterSets.add(paramSet);
 				tmpResult.iterationNumbers.add(iterationNumber);
 
-				Clustering clustering = Clustering.parseFromFile(
-						method.getRepository(), absFile, false).getSecond();
+				Clustering clustering = null;
+				if (absFile.exists())
+					clustering = Clustering.parseFromFile(
+							method.getRepository(), absFile, false).getSecond();
 
 				tmpResult
 						.put(iterationNumber, paramSet, qualitySet, clustering);
