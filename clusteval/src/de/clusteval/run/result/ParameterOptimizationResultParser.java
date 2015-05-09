@@ -208,7 +208,7 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 				if (parseClusterings) {
 					// if (absFile.exists()) {
 					try {
-						if (storeClusterings)
+						if (storeClusterings && clustering != null)
 							clustering.loadIntoMemory();
 						return;
 					} catch (ClusteringParseException e) {
@@ -221,5 +221,17 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see utils.parse.TextFileParser#split(java.lang.String)
+	 */
+	@Override
+	protected String[] split(String line) {
+		return this.splitLines
+				? StringExt.split(line, this.inSplit)
+				: new String[]{line};
 	}
 }
