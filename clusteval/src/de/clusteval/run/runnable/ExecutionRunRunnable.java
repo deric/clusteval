@@ -338,7 +338,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			DataSetConfig dataSetConfig, GoldStandardConfig goldStandardConfig)
 			throws UnknownGoldStandardFormatException,
 			IncompleteGoldStandardException, IllegalArgumentException {
-		this.log.info("Checking compatibility of goldstandard and dataset ...");
+		this.log.debug("Checking compatibility of goldstandard and dataset ...");
 		DataSet dataSet = dataSetConfig.getDataSet().getInStandardFormat();
 		File dataSetFile = ClustevalBackendServer.getCommonFile(new File(
 				dataSet.getAbsolutePath()));
@@ -1443,7 +1443,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			dataSet = this.dataConfig.getDatasetConfig().getDataSet()
 					.getOriginalDataSet();
 			if (dataSet instanceof AbsoluteDataSet) {
-				this.log.info("Loading the input coordinates into memory ...");
+				this.log.debug("Loading the input coordinates into memory ...");
 				dataSet.loadIntoMemory();
 			}
 
@@ -1502,7 +1502,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 						Thread.currentThread(), this);
 
 				try {
-					this.log.info("Assessing isoMDS coordinates of dataset samples ...");
+					this.log.debug("Assessing isoMDS coordinates of dataset samples ...");
 					// Plotter.assessAndWriteIsoMDSCoordinates(dcMDS);
 				} catch (Throwable e) {
 					e.printStackTrace();
@@ -1552,7 +1552,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 						Thread.currentThread(), this);
 
 				try {
-					this.log.info("Assessing PCA coordinates of dataset samples ...");
+					this.log.debug("Assessing PCA coordinates of dataset samples ...");
 					Plotter.assessAndWritePCACoordinates(dcPCA);
 				} catch (Throwable e) {
 					e.printStackTrace();

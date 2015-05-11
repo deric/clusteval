@@ -453,7 +453,7 @@ public abstract class DataSet extends RepositoryObject {
 
 			// 13.04.2013: update the original dataset of the dataset to itself
 			this.originalDataSet = this;
-			this.log.info("Apply preprocessors");
+			this.log.debug("Apply preprocessors");
 			// 13.04.2013: apply all data preprocessors before distance
 			// conversion
 			DataSet preprocessed = this;
@@ -496,7 +496,7 @@ public abstract class DataSet extends RepositoryObject {
 
 				// 13.04.2013: apply all data preprocessors after distance
 				// conversion
-				this.log.info("Apply preprocessors");
+				this.log.debug("Apply preprocessors");
 				preprocessors = configInputToStandard
 						.getPreprocessorsAfterDistance();
 				for (DataPreprocessor proc : preprocessors) {
