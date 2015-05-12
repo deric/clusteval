@@ -30,6 +30,7 @@ import de.clusteval.cluster.quality.ClusteringQualitySet;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.ParameterOptimizationRun;
+import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
 import file.FileUtils;
 
 /**
@@ -140,40 +141,53 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 				// clustering exists
 				String iterationId = iterationNumber + "";
 				// find the file with the longest name with this prefix
-				final String clusteringFilePath = new File(this
-						.getAbsoluteFilePath().replace("results.qual.complete",
-								iterationId + ".results.conv")).getName();
-				FilenameFilter ff = new FilenameFilter() {
-
-					/*
-					 * (non-Javadoc)
-					 * 
-					 * @see java.io.FilenameFilter#accept(java.io.File,
-					 * java.lang.String)
-					 */
-					@Override
-					public boolean accept(File dir, String name) {
-						return name.startsWith(clusteringFilePath);
-					}
-				};
-				String[] clusteringFiles = new File(this.getAbsoluteFilePath())
-						.getParentFile().list(ff);
-
-				String longestFilename;
-				if (clusteringFiles.length > 0) {
-					longestFilename = clusteringFiles[0];
-					for (String name : clusteringFiles)
-						if (name.length() > longestFilename.length())
-							longestFilename = name;
-				} else {
-					longestFilename = new File(this.getAbsoluteFilePath()
-							.replace("results.qual.complete",
-									iterationId + ".results.conv")).getName();
+				String clusteringFilePath = new File(this.getAbsoluteFilePath()
+						.replace("results.qual.complete",
+								iterationId + ".results.conv"))
+						.getAbsolutePath();
+				for (RunResultPostprocessor postprocessor : run
+						.getPostProcessors()) {
+					String newPath = String.format("%s.%s", clusteringFilePath,
+							postprocessor.getClass().getSimpleName());
+					if (new File(newPath).exists()) {
+						clusteringFilePath = newPath;
+					} else
+						break;
 				}
+				// FilenameFilter ff = new FilenameFilter() {
+				//
+				// /*
+				// * (non-Javadoc)
+				// *
+				// * @see java.io.FilenameFilter#accept(java.io.File,
+				// * java.lang.String)
+				// */
+				// @Override
+				// public boolean accept(File dir, String name) {
+				// return name.startsWith(clusteringFilePath);
+				// }
+				// };
+				// String[] clusteringFiles = new
+				// File(this.getAbsoluteFilePath())
+				// .getParentFile().list(ff);
+				//
+				// String longestFilename;
+				// if (clusteringFiles.length > 0) {
+				// longestFilename = clusteringFiles[0];
+				// for (String name : clusteringFiles)
+				// if (name.length() > longestFilename.length())
+				// longestFilename = name;
+				// } else {
+				// longestFilename = new File(this.getAbsoluteFilePath()
+				// .replace("results.qual.complete",
+				// iterationId + ".results.conv")).getName();
+				// }
+				//
+				// File absFile = new File(FileUtils.buildPath(
+				// new File(this.getAbsoluteFilePath()).getParent(),
+				// longestFilename)).getAbsoluteFile();
 
-				File absFile = new File(FileUtils.buildPath(
-						new File(this.getAbsoluteFilePath()).getParent(),
-						longestFilename)).getAbsoluteFile();
+				File absFile = new File(clusteringFilePath);
 				// if the corresponding file exists take the qualities for
 				// granted
 				// if (absFile.exists()) {
