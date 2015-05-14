@@ -73,48 +73,49 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	public void initDB() {
 		try {
 			if (conn == null) {
-				conn = DriverManager.getConnection("jdbc:mysql://"
-						+ getServer() + "/" + getDatabase() + "?",
-						getDBUsername(), getDBPassword());
+				conn = DriverManager.getConnection(
+						// "jdbc:mysql://"
+						// + getServer() + "/" + getDatabase() + "?",
+						// getDBUsername(), getDBPassword());
+						"jdbc:postgresql://" + getServer() + "/"
+								+ getDatabase(), getDBUsername(),
+						getDBPassword());
 				conn.setAutoCommit(false);
 			}
-			Statement stmt = conn.createStatement();
+			Statement stmt = conn.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableRepositories()
-					+ "` WHERE `basePath`='"
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableRepositories() + " WHERE base_path='"
 					+ this.repository.getParent().getBasePath() + "';");
 			rs.first();
 			int parent_repository_id = rs.getInt("id");
 
 			String repositoryType = this.repository.getClass().getSimpleName();
 			// Get repository_type_id
-			rs = stmt.executeQuery("SELECT `id` FROM `" + this.getDatabase()
-					+ "`.`" + this.getTableRepositoryTypes()
-					+ "` WHERE `name`='" + repositoryType + "';");
+			rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableRepositoryTypes() + " WHERE name='"
+					+ repositoryType + "';");
 			rs.first();
 			int repository_type_id = rs.getInt("id");
 
 			try {
 				// Get repositoryId
-				rs = stmt.executeQuery("SELECT `id` FROM `"
-						+ this.getDatabase() + "`.`"
-						+ this.getTableRepositories() + "` WHERE `basePath`='"
+				rs = stmt.executeQuery("SELECT id FROM "
+						+ this.getTableRepositories() + " WHERE base_path='"
 						+ this.repository.getBasePath() + "';");
 				if (!rs.last() || rs.getRow() == 0) {
-					stmt.execute("INSERT INTO `"
-							+ this.getDatabase()
-							+ "`.`"
+					stmt.execute("INSERT INTO "
 							+ this.getTableRepositories()
-							+ "` (`basePath`,`repository_type_id`,`repository_id`) VALUES ('"
+							+ " (base_path,repository_type_id,repository_id) VALUES ('"
 							+ this.repository.getBasePath() + "','"
 							+ repository_type_id + "','" + parent_repository_id
 							+ "');");
 				}
 
-				rs = stmt.executeQuery("SELECT `id` FROM `"
-						+ this.getDatabase() + "`.`"
-						+ this.getTableRepositories() + "` WHERE `basePath`='"
+				rs = stmt.executeQuery("SELECT id FROM "
+						+ this.getTableRepositories() + " WHERE base_path='"
 						+ this.repository.getBasePath() + "';");
 
 				rs.first();

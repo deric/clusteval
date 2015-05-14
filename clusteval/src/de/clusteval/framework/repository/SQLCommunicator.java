@@ -131,15 +131,15 @@ public abstract class SQLCommunicator {
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("INSERT INTO `");
-		sb.append(this.getDatabase());
-		sb.append("`.`");
+		sb.append("INSERT INTO ");
+		// sb.append(this.getDatabase());
+		// sb.append(".");
 		sb.append(tableName);
-		sb.append("` (");
+		sb.append(" (");
 		for (String s : columnNames) {
-			sb.append("`");
+			sb.append("");
 			sb.append(s);
-			sb.append("`,");
+			sb.append(",");
 		}
 		// remove last comma
 		sb.deleteCharAt(sb.length() - 1);
@@ -178,15 +178,15 @@ public abstract class SQLCommunicator {
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("INSERT INTO `");
-		sb.append(this.getDatabase());
-		sb.append("`.`");
+		sb.append("INSERT INTO ");
+		// sb.append(this.getDatabase());
+		// sb.append(".");
 		sb.append(tableName);
-		sb.append("` (");
+		sb.append(" (");
 		for (String s : columnNames) {
-			sb.append("`");
+			sb.append("");
 			sb.append(s);
-			sb.append("`,");
+			sb.append(",");
 		}
 		// remove last comma
 		sb.deleteCharAt(sb.length() - 1);
@@ -217,11 +217,11 @@ public abstract class SQLCommunicator {
 
 	public void disableKeys(final String tableName) throws SQLException {
 		StringBuilder sb = new StringBuilder();
-		sb.append("ALTER TABLE `");
-		sb.append(this.getDatabase());
-		sb.append("`.`");
+		sb.append("ALTER TABLE ");
+		// sb.append(this.getDatabase());
+		// sb.append(".");
 		sb.append(tableName);
-		sb.append("` DISABLE KEYS");
+		sb.append(" DISABLE KEYS");
 		PreparedStatement prepStmt = conn.prepareStatement(sb.toString(),
 				Statement.NO_GENERATED_KEYS);
 		try {
@@ -233,11 +233,11 @@ public abstract class SQLCommunicator {
 
 	public void enableKeys(final String tableName) throws SQLException {
 		StringBuilder sb = new StringBuilder();
-		sb.append("ALTER TABLE `");
-		sb.append(this.getDatabase());
-		sb.append("`.`");
+		sb.append("ALTER TABLE ");
+		// sb.append(this.getDatabase());
+		// sb.append(".");
 		sb.append(tableName);
-		sb.append("` ENABLE KEYS");
+		sb.append(" ENABLE KEYS");
 		PreparedStatement prepStmt = conn.prepareStatement(sb.toString(),
 				Statement.NO_GENERATED_KEYS);
 		try {
@@ -250,8 +250,15 @@ public abstract class SQLCommunicator {
 	protected void tryInsert(final String tableName,
 			final String[] columnNames, final String[] values) {
 		try {
+			conn.commit();
 			this.insert(tableName, columnNames, values);
 		} catch (SQLException e) {
+//			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+//				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -261,28 +268,29 @@ public abstract class SQLCommunicator {
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("UPDATE `");
-		sb.append(this.getDatabase());
-		sb.append("`.`");
+		sb.append("UPDATE ");
+		// sb.append(this.getDatabase());
+		// sb.append(".");
 		sb.append(tableName);
-		sb.append("` SET ");
+		sb.append(" SET ");
 		for (int i = 0; i < columnNames.length; i++) {
 			String s = columnNames[i];
 			String v = values[i];
 
-			sb.append("`");
+			sb.append("");
 			sb.append(s);
-			sb.append("`='");
+			sb.append("='");
 			sb.append(v);
 			sb.append("',");
 		}
 		// remove last comma
 		sb.deleteCharAt(sb.length() - 1);
-		sb.append(" WHERE `id`='");
+		sb.append(" WHERE id='");
 		sb.append(rowId);
 		sb.append("';");
 
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
 			stmt.execute(sb.toString());
 			return true;
@@ -308,17 +316,18 @@ public abstract class SQLCommunicator {
 			final String columnName) throws SQLException {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("DELETE FROM `");
-		sb.append(this.getDatabase());
-		sb.append("`.`");
+		sb.append("DELETE FROM ");
+		// sb.append(this.getDatabase());
+		// sb.append(".");
 		sb.append(tableName);
-		sb.append("` WHERE `");
+		sb.append(" WHERE ");
 		sb.append(columnName);
-		sb.append("`='");
+		sb.append("='");
 		sb.append(rowId);
 		sb.append("';");
 
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
 			stmt.execute(sb.toString());
 			return true;
@@ -328,7 +337,7 @@ public abstract class SQLCommunicator {
 	}
 
 	/**
-	 * By default we delete rows where `id`=rowId
+	 * By default we delete rows where id=rowId
 	 * 
 	 * @param tableName
 	 * @param rowId
@@ -346,17 +355,17 @@ public abstract class SQLCommunicator {
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("SELECT `" + columnName + "` FROM `");
-		sb.append(this.getDatabase());
-		sb.append("`.`");
+		sb.append("SELECT " + columnName + " FROM ");
+		// sb.append(this.getDatabase());
+		// sb.append(".");
 		sb.append(tableName);
-		sb.append("` WHERE ");
+		sb.append(" WHERE ");
 		for (int c = 0; c < columnNames.length; c++) {
 			String s = columnNames[c];
 			String v = values[c];
-			sb.append("`");
+			sb.append("");
 			sb.append(s);
-			sb.append("`='");
+			sb.append("='");
 			sb.append(v);
 			sb.append("'");
 			if (c < columnNames.length - 1)
@@ -855,14 +864,15 @@ public abstract class SQLCommunicator {
 			while (conn == null) {
 				// first try or wrong password
 				try {
-					conn = DriverManager
-							.getConnection(
-									"jdbc:mysql://"
-											+ getServer()
-											+ "/"
-											+ getDatabase()
-											+ "?useServerPrepStmts=false&rewriteBatchedStatements=true",
-									getDBUsername(), password);
+					conn = DriverManager.getConnection(
+					// "jdbc:mysql://"
+					// + getServer()
+					// + "/"
+					// + getDatabase()
+					// +
+					// "?useServerPrepStmts=false&rewriteBatchedStatements=true",
+							"jdbc:postgresql://" + getServer() + "/"
+									+ getDatabase(), getDBUsername(), password);
 					conn.setAutoCommit(false);
 				} catch (SQLException e) {
 					if (e instanceof CommunicationsException
@@ -890,23 +900,23 @@ public abstract class SQLCommunicator {
 			Logger log = LoggerFactory.getLogger(this.getClass());
 			log.info("Initializing MySQL database");
 
-			Statement stmt = conn.createStatement();
+			Statement stmt = conn.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 
 			/*
 			 * Check if this repository is already in there. if yes, delete it.
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableRepositories()
-					+ "` WHERE `basePath`='" + this.repository.getBasePath()
-					+ "';");
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableRepositories() + " WHERE base_path='"
+					+ this.repository.getBasePath() + "';");
 			if (rs.last() && rs.getRow() > 0) {
 				int repository_id = rs.getInt("id");
 				// delete data corresponding to runresult_repositories with this
 				// parent repository
-				rs = stmt.executeQuery("SELECT `id` FROM `"
-						+ this.getDatabase() + "`.`"
+				rs = stmt.executeQuery("SELECT id FROM "
 						+ this.getTableRepositories()
-						+ "` WHERE `repository_id`='" + repository_id + "';");
+						+ " WHERE repository_id='" + repository_id + "';");
 				List<String> ids = new ArrayList<String>();
 				while (rs.next()) {
 					int run_result_repository_id = rs.getInt("id");
@@ -923,31 +933,28 @@ public abstract class SQLCommunicator {
 				deleteFromTable(this.getTableParameterSets(), "repository_id",
 						ids.toArray(new String[0]));
 				// delete parent repository itself
-				stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-						+ this.getTableRepositories()
-						+ "` WHERE `basePath` = '"
+				stmt.execute("DELETE FROM " + this.getTableRepositories()
+						+ " WHERE base_path = '"
 						+ this.repository.getBasePath() + "';");
 			}
 
 			String repositoryType = this.repository.getClass().getSimpleName();
 			// Get repository_type_id
-			rs = stmt.executeQuery("SELECT `id` FROM `" + this.getDatabase()
-					+ "`.`" + this.getTableRepositoryTypes()
-					+ "` WHERE `name`='" + repositoryType + "';");
+			rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableRepositoryTypes() + " WHERE name='"
+					+ repositoryType + "';");
 			rs.first();
 			int repository_type_id = rs.getInt("id");
 
 			try {
 				// Get repositoryId
-				stmt.execute("INSERT INTO `" + this.getDatabase() + "`.`"
-						+ this.getTableRepositories()
-						+ "` (`basePath`,`repository_type_id`) VALUES ('"
+				stmt.execute("INSERT INTO " + this.getTableRepositories()
+						+ " (base_path,repository_type_id) VALUES ('"
 						+ this.repository.getBasePath() + "','"
 						+ repository_type_id + "');");
 
-				rs = stmt.executeQuery("SELECT `id` FROM `"
-						+ this.getDatabase() + "`.`"
-						+ this.getTableRepositories() + "` WHERE `basePath`='"
+				rs = stmt.executeQuery("SELECT id FROM "
+						+ this.getTableRepositories() + " WHERE base_path='"
 						+ this.repository.getBasePath() + "';");
 
 				rs.first();
@@ -970,20 +977,21 @@ public abstract class SQLCommunicator {
 		// long start = System.currentTimeMillis();
 		if (value.length == 0)
 			return;
-		Statement stmt2 = conn.createStatement();
-		try {
-			stmt2.execute("CREATE TABLE `" + this.getDatabase() + "`.`"
-					+ tableName + "_new` LIKE `" + this.getDatabase() + "`.`"
-					+ tableName + "`;");
-		} catch (SQLException e) {
-			stmt2.execute("DROP TABLE `" + this.getDatabase() + "`.`"
-					+ tableName + "_new`;");
-			stmt2.execute("CREATE TABLE `" + this.getDatabase() + "`.`"
-					+ tableName + "_new` LIKE `" + this.getDatabase() + "`.`"
-					+ tableName + "`;");
-		}
-		// System.out.print(System.currentTimeMillis() - start + " ");
-		// start = System.currentTimeMillis();
+		Statement stmt2 = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		// try {
+		// // stmt2.execute("CREATE TABLE " + tableName + "_new LIKE "
+		// // + tableName + ";");
+		// stmt2.execute("CREATE TABLE " + tableName + "_new AS "
+		// + "SELECT * FROM " + tableName + " LIMIT 0;");
+		// } catch (SQLException e) {
+		// e.printStackTrace();
+		// stmt2.execute("DROP TABLE " + tableName + "_new;");
+		// stmt2.execute("CREATE TABLE " + tableName + "_new LIKE "
+		// + tableName + ";");
+		// }
+		// // System.out.print(System.currentTimeMillis() - start + " ");
+		// // start = System.currentTimeMillis();
 		StringBuilder sb = new StringBuilder();
 		sb.append("(");
 		for (String s : value) {
@@ -992,25 +1000,24 @@ public abstract class SQLCommunicator {
 		}
 		sb.deleteCharAt(sb.length() - 1);
 		sb.append(")");
-		stmt2.execute("INSERT INTO `" + this.getDatabase() + "`.`" + tableName
-				+ "_new` SELECT * FROM `" + this.getDatabase() + "`.`"
-				+ tableName + "` WHERE NOT `" + columnName + "` in "
-				+ sb.toString() + ";");
-		// System.out.print(System.currentTimeMillis() - start + " ");
-		// start = System.currentTimeMillis();
-		stmt2.execute("ALTER TABLE `" + this.getDatabase() + "`.`" + tableName
-				+ "` RENAME `" + this.getDatabase() + "`.`" + tableName
-				+ "_old`;");
-		// System.out.print(System.currentTimeMillis() - start + " ");
-		// start = System.currentTimeMillis();
-		stmt2.execute("ALTER TABLE `" + this.getDatabase() + "`.`" + tableName
-				+ "_new` RENAME `" + this.getDatabase() + "`.`" + tableName
-				+ "`;");
-		// System.out.print(System.currentTimeMillis() - start + " ");
-		// start = System.currentTimeMillis();
-		stmt2.execute("DROP TABLE `" + this.getDatabase() + "`.`" + tableName
-				+ "_old`;");
-		// System.out.println(System.currentTimeMillis() - start);
+		// stmt2.execute("INSERT INTO " + tableName + "_new SELECT * FROM "
+		// + tableName + " WHERE NOT " + columnName + " in "
+		// + sb.toString() + ";");
+		// // System.out.print(System.currentTimeMillis() - start + " ");
+		// // start = System.currentTimeMillis();
+		// stmt2.execute("ALTER TABLE " + tableName + " RENAME TO " + tableName
+		// + "_old;");
+		// // System.out.print(System.currentTimeMillis() - start + " ");
+		// // start = System.currentTimeMillis();
+		// stmt2.execute("ALTER TABLE " + tableName + "_new RENAME TO "
+		// + tableName + ";");
+		// // System.out.print(System.currentTimeMillis() - start + " ");
+		// // start = System.currentTimeMillis();
+		// stmt2.execute("DROP TABLE " + tableName + "_old;");
+		// // System.out.println(System.currentTimeMillis() - start);
+
+		stmt2.execute(String.format("DELETE FROM %s WHERE %s IN %s", tableName,
+				columnName, sb.toString()));
 	}
 
 	/**
@@ -1131,11 +1138,12 @@ public abstract class SQLCommunicator {
 	protected int updateRepositoryId() {
 		ResultSet rs;
 		try {
-			Statement stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT `id` FROM `" + this.getDatabase()
-					+ "`.`" + this.getTableRepositories()
-					+ "` WHERE `basePath`='" + this.repository.getBasePath()
-					+ "';");
+			Statement stmt = conn.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableRepositories() + " WHERE base_path='"
+					+ this.repository.getBasePath() + "';");
 
 			rs.first();
 			this.setRepositoryId(rs.getInt("id"));

@@ -138,6 +138,12 @@ public class ProgramConfig extends RepositoryObject {
 	protected boolean expectsNormalizedDataSet;
 
 	/**
+	 * The maximal time this program config should be executed. The execution is
+	 * terminated when this time is reached.
+	 */
+	protected int maxExecutionTimeMinutes;
+
+	/**
 	 * Instantiates a new program config.
 	 * 
 	 * @param repository
@@ -192,7 +198,8 @@ public class ProgramConfig extends RepositoryObject {
 			final String invocationFormatParameterOptimizationWithoutGoldStandard,
 			final List<ProgramParameter<?>> params,
 			final List<ProgramParameter<?>> optimizableParameters,
-			final boolean expectsNormalizedDataSet) throws RegisterException {
+			final boolean expectsNormalizedDataSet,
+			final int maxExecutionTimeMinutes) throws RegisterException {
 		super(repository, false, changeDate, absPath);
 
 		this.program = program;
@@ -208,6 +215,7 @@ public class ProgramConfig extends RepositoryObject {
 		this.optimizableParameters = optimizableParameters;
 
 		this.expectsNormalizedDataSet = expectsNormalizedDataSet;
+		this.maxExecutionTimeMinutes = maxExecutionTimeMinutes;
 
 		if (register && this.register()) {
 			this.program.register();
@@ -248,6 +256,7 @@ public class ProgramConfig extends RepositoryObject {
 				.cloneParameterList(programConfig.optimizableParameters);
 
 		this.expectsNormalizedDataSet = programConfig.expectsNormalizedDataSet;
+		this.maxExecutionTimeMinutes = programConfig.maxExecutionTimeMinutes;
 	}
 
 	/*
@@ -273,6 +282,14 @@ public class ProgramConfig extends RepositoryObject {
 	 */
 	public boolean expectsNormalizedDataSet() {
 		return this.expectsNormalizedDataSet;
+	}
+
+	public int getMaxExecutionTimeMinutes() {
+		return this.maxExecutionTimeMinutes;
+	}
+
+	public void setMaxExecutionTimeMinutes(final int maxExecutionTimeMinutes) {
+		this.maxExecutionTimeMinutes = maxExecutionTimeMinutes;
 	}
 
 	/**

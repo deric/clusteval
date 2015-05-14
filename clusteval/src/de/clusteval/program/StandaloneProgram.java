@@ -101,7 +101,7 @@ public class StandaloneProgram extends Program {
 			Map<String, String> internalParams) throws IOException {
 		return Runtime.getRuntime().exec(invocationLine,
 				// TODO, check whether this works everywhere
-				new String[]{"TERM=xterm"},
+				new String[]{"TERM=xterm", "DISPLAY=:0"},
 				new File(programConfig.getProgram().getAbsolutePath())
 						.getParentFile());
 	}

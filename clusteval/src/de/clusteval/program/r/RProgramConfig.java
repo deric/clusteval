@@ -71,8 +71,11 @@ public class RProgramConfig extends ProgramConfig {
 			List<DataSetFormat> compatibleDataSetFormats,
 			List<ProgramParameter<?>> params,
 			List<ProgramParameter<?>> optimizableParameters,
-			boolean expectsNormalizedDataSet) throws RegisterException {
-		super(repository, register,
+			boolean expectsNormalizedDataSet, int maxExecutionTimeMinutes)
+			throws RegisterException {
+		super(
+				repository,
+				register,
 				changeDate,
 				absPath,
 				program,
@@ -84,7 +87,8 @@ public class RProgramConfig extends ProgramConfig {
 				((RProgram) program).getInvocationFormat(),
 				((RProgram) program).getInvocationFormat(),
 				((RProgram) program).getInvocationFormat(), params,
-				optimizableParameters, expectsNormalizedDataSet);
+				optimizableParameters, expectsNormalizedDataSet,
+				maxExecutionTimeMinutes);
 	}
 
 	/**

@@ -17,6 +17,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.rosuda.REngine.REXPMismatchException;
 import org.rosuda.REngine.REngineException;
@@ -846,8 +849,27 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 										.start();
 
 								try {
-									proc.waitFor();
+									int maxExecTime = programConfig
+											.getMaxExecutionTimeMinutes();
+									if (maxExecTime == -1) {
+										proc.waitFor();
+									} else if (!proc.waitFor(maxExecTime,
+											TimeUnit.MINUTES)) {
+										// still running
+										this.log.info(String
+												.format("%s (%s,%s, Iteration %d) Going to terminate clustering method as it has been running longer than "
+														+ maxExecTime + "mins.",
+														getRun(),
+														programConfig,
+														dataConfig,
+														iterationWrapper
+																.getOptId()));
+										proc.destroyForcibly();
+
+										proc.waitFor();
+									}
 								} catch (InterruptedException e) {
+									e.printStackTrace();
 								}
 							}
 

@@ -402,7 +402,8 @@ class StreamGobbler extends Thread {
 					bw.flush();
 				}
 		} catch (IOException ioe) {
-			ioe.printStackTrace();
+			// stream closed
+			// ioe.printStackTrace();
 		}
 	}
 }

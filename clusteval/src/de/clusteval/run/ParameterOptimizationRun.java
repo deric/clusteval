@@ -325,31 +325,40 @@ public class ParameterOptimizationRun extends ExecutionRun {
 				Pair<String, String> configs = Pair.getPair(thread
 						.getProgramConfig().toString(), thread.getDataConfig()
 						.toString());
-				// get the best achieved qualities
-				ClusteringQualitySet bestQuals = thread.getOptimizationMethod()
-						.getResult().getOptimalCriterionValue();
-				// get the optimal parameter values
-				Map<ClusteringQualityMeasure, ParameterSet> bestParams = thread
-						.getOptimizationMethod().getResult()
-						.getOptimalParameterSets();
 
-				// measure -> best parameters
-				Map<ClusteringQualityMeasure, Map<String, String>> bestParamsMap = new HashMap<ClusteringQualityMeasure, Map<String, String>>();
-				for (ClusteringQualityMeasure measure : bestParams.keySet()) {
-					ParameterSet pSet = bestParams.get(measure);
-					Map<String, String> tmp = new HashMap<String, String>();
-					for (String p : pSet.keySet())
-						tmp.put(p.toString(), pSet.get(p));
-
-					bestParamsMap.put(measure, tmp);
-				}
+				ParameterOptimizationResult paramOptRes = thread
+						.getOptimizationMethod().getResult();
 
 				// measure -> best qualities
 				Map<String, Pair<Map<String, String>, String>> qualities = new HashMap<String, Pair<Map<String, String>, String>>();
-				for (ClusteringQualityMeasure measure : bestQuals.keySet())
-					qualities.put(measure.getAlias(), Pair.getPair(
-							bestParamsMap.get(measure), bestQuals.get(measure)
-									.toString()));
+				// has the runnable already initialized the optimization method
+				// and result?
+				if (paramOptRes != null) {
+					// get the best achieved qualities
+					ClusteringQualitySet bestQuals = thread
+							.getOptimizationMethod().getResult()
+							.getOptimalCriterionValue();
+					// get the optimal parameter values
+					Map<ClusteringQualityMeasure, ParameterSet> bestParams = thread
+							.getOptimizationMethod().getResult()
+							.getOptimalParameterSets();
+
+					// measure -> best parameters
+					Map<ClusteringQualityMeasure, Map<String, String>> bestParamsMap = new HashMap<ClusteringQualityMeasure, Map<String, String>>();
+					for (ClusteringQualityMeasure measure : bestParams.keySet()) {
+						ParameterSet pSet = bestParams.get(measure);
+						Map<String, String> tmp = new HashMap<String, String>();
+						for (String p : pSet.keySet())
+							tmp.put(p.toString(), pSet.get(p));
+
+						bestParamsMap.put(measure, tmp);
+					}
+
+					for (ClusteringQualityMeasure measure : bestQuals.keySet())
+						qualities.put(measure.getAlias(), Pair.getPair(
+								bestParamsMap.get(measure),
+								bestQuals.get(measure).toString()));
+				}
 
 				result.put(
 						configs,
@@ -358,6 +367,7 @@ public class ParameterOptimizationRun extends ExecutionRun {
 								qualities));
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return result;
 	}

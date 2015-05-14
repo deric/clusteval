@@ -707,6 +707,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 							"" + object.getSimpleName()});
 			return true;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -742,7 +743,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				String[] columns;
 				String[] values;
 				if (object.getRepository() instanceof RunResultRepository) {
-					columns = new String[]{"repository_id", "absPath", "name",
+					columns = new String[]{"repository_id", "abs_path", "name",
 							"run_type_id", "run_id", "status"};
 					values = new String[]{
 							this.updateRepositoryId() + "",
@@ -758,7 +759,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 													object.toString())),
 							"" + object.getStatus()};
 				} else {
-					columns = new String[]{"repository_id", "absPath", "name",
+					columns = new String[]{"repository_id", "abs_path", "name",
 							"run_type_id", "status"};
 					values = new String[]{
 							this.updateRepositoryId() + "",
@@ -886,7 +887,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					.getUniqueRunAnalysisRunIdentifiers()) {
 				insert(this.getTableRunsAnalysisRunRunIdentifiers(),
 						new String[]{"repository_id", "run_run_analysis_id",
-								"runIdentifier"},
+								"run_identifier"},
 						new String[]{"" + this.updateRepositoryId(),
 								"" + run_run_analysis_id,
 								"" + uniqueRunIdentifier});
@@ -934,7 +935,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					.getUniqueRunAnalysisRunIdentifiers()) {
 				insert(this.getTableRunsAnalysisRunDataRunIdentifiers(),
 						new String[]{"repository_id",
-								"run_run_data_analysis_id", "runIdentifier"},
+								"run_run_data_analysis_id", "run_identifier"},
 						new String[]{"" + this.updateRepositoryId(),
 								"" + run_run_data_analysis_id,
 								"" + uniqueRunIdentifier});
@@ -964,6 +965,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 						new String[]{"repository_id", "run_id"}, new String[]{
 								"" + this.updateRepositoryId(), "" + run_id});
 			} catch (SQLException e) {
+				e.printStackTrace();
 				run_execution_id = getRunExecutionId(run_id);
 			}
 
@@ -1208,7 +1210,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	// String[] values;
 	// if (object.getRepository() instanceof RunResultRepository) {
 	// columns = new String[]{"repository_id", "run_id",
-	// "run_type_id", "absPath", "name", "status", "runOrigId"};
+	// "run_type_id", "abs_path", "name", "status", "runOrigId"};
 	// values = new String[]{
 	// "" + this.repositoryId,
 	// "" + run_id,
@@ -1229,7 +1231,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	// "/") + 1)))};
 	// } else {
 	// columns = new String[]{"repository_id", "run_id",
-	// "run_type_id", "absPath", "name", "status"};
+	// "run_type_id", "abs_path", "name", "status"};
 	// values = new String[]{
 	// "" + this.repositoryId,
 	// "" + run_id,
@@ -1273,12 +1275,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 						"program_id",
 						"run_result_format_id",
 						"name",
-						"absPath",
-						"invocationFormat",
-						"invocationFormatWithoutGoldStandard",
-						"invocationFormatParameterOptimization",
-						"invocationFormatParameterOptimizationWithoutGoldStandard",
-						"expectsNormalizedDataSet", "program_config_id"};
+						"abs_path",
+						"invocation_format",
+						"invocation_format_without_gold_standard",
+						"invocation_format_parameter_optimization",
+						"invocation_format_parameter_optimization_without_gold_standard",
+						"expects_normalized_data_set", "program_config_id"};
 				values = new String[]{
 						"" + this.updateRepositoryId(),
 						"" + program_id,
@@ -1309,12 +1311,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 						"program_id",
 						"run_result_format_id",
 						"name",
-						"absPath",
-						"invocationFormat",
-						"invocationFormatWithoutGoldStandard",
-						"invocationFormatParameterOptimization",
-						"invocationFormatParameterOptimizationWithoutGoldStandard",
-						"expectsNormalizedDataSet"};
+						"abs_path",
+						"invocation_format",
+						"invocation_format_without_gold_standard",
+						"invocation_format_parameter_optimization",
+						"invocation_format_parameter_optimization_without_gold_standard",
+						"expects_normalized_data_set"};
 				values = new String[]{
 						"" + this.updateRepositoryId(),
 						"" + program_id,
@@ -1385,13 +1387,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 */
 	@Override
 	protected int getRunId(final Run run) throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableRuns()
-					+ "` WHERE `repository_id`='"
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableRuns() + " WHERE repository_id='"
 					+ getRepositoryId(run.getRepository().getBasePath())
-					+ "' AND `absPath`='" + run.getAbsolutePath() + "';");
+					+ "' AND abs_path='" + run.getAbsolutePath() + "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1407,11 +1409,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 */
 	@Override
 	protected int getClusteringId(String absPath) throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableClusterings()
-					+ "` WHERE `absPath`='" + absPath + "';");
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableClusterings() + " WHERE abs_path='"
+					+ absPath + "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1428,13 +1431,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	@Override
 	protected int getClusterId(int clusteringId, String name)
 			throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableClusters()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `clustering_id`='" + clusteringId
-					+ "' AND `name`='" + name + "';");
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableClusters() + " WHERE repository_id='"
+					+ this.updateRepositoryId() + "' AND clustering_id='"
+					+ clusteringId + "' AND name='" + name + "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1451,14 +1454,14 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	@Override
 	protected int getClusterObjectId(int clusterId, String name)
 			throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
-					+ this.getTableClusterObjects()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `cluster_id`='" + clusterId + "' AND `name`='"
-					+ name + "';");
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+
+			+ this.getTableClusterObjects() + " WHERE repository_id='"
+					+ this.updateRepositoryId() + "' AND cluster_id='"
+					+ clusterId + "' AND name='" + name + "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1469,12 +1472,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	@Override
 	protected int getDataSetTypeId(final String dataSetTypeClassSimpleName)
 			throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableDataSetTypes()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `name`='" + dataSetTypeClassSimpleName + "';");
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableDataSetTypes() + " WHERE repository_id='"
+					+ this.updateRepositoryId() + "' AND name='"
+					+ dataSetTypeClassSimpleName + "';");
 			rs.first();
 			return rs.getInt("id");
 		} catch (SQLException e) {
@@ -1486,11 +1490,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 
 	// @Override
 	// protected int getDataSetId(final DataSet dataSet) throws SQLException {
-	// Statement stmt = conn.createStatement();
+	// Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+	// ResultSet.CONCUR_READ_ONLY);
 	// try {
-	// ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-	// + this.getDatabase() + "`.`" + this.getTableDatasets()
-	// + "` WHERE `absPath`='" + dataSet.getAbsolutePath() + "';");
+	// ResultSet rs = stmt.executeQuery("SELECT id FROM "
+	// + this.getDatabase() + "." + this.getTableDatasets()
+	// + " WHERE abs_path='" + dataSet.getAbsolutePath() + "';");
 	// rs.first();
 	// return rs.getInt("id");
 	// } finally {
@@ -1501,12 +1506,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	@Override
 	protected int getRepositoryTypeId(final String repositoryType)
 			throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
-					+ this.getTableRepositoryTypes() + "` WHERE `name`='"
-					+ repositoryType + "';");
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+
+			+ this.getTableRepositoryTypes() + " WHERE name='" + repositoryType
+					+ "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1517,13 +1523,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	@Override
 	protected int getParameterOptimizationMethodId(final String name)
 			throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
 					+ this.getTableParameterOptimizationMethods()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `name`='" + name + "';");
+					+ " WHERE repository_id='" + this.updateRepositoryId()
+					+ "' AND name='" + name + "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1540,12 +1546,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	@Override
 	protected int getParameterSetId(final int runResultParamOptId)
 			throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableParameterSets()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `run_results_parameter_optimization_id`='"
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableParameterSets() + " WHERE repository_id='"
+					+ this.updateRepositoryId()
+					+ "' AND run_results_parameter_optimization_id='"
 					+ runResultParamOptId + "';");
 			rs.first();
 			return rs.getInt("id");
@@ -1564,16 +1571,15 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	protected int getParameterSetParameterId(
 			int run_results_parameter_optimizations_parameter_set_id,
 			int program_parameter_id) throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
 			ResultSet rs = stmt
-					.executeQuery("SELECT `id` FROM `"
-							+ this.getDatabase()
-							+ "`.`"
+					.executeQuery("SELECT id FROM "
 							+ this.getTableParameterSetParameters()
-							+ "` WHERE `run_results_parameter_optimizations_parameter_set_id`='"
+							+ " WHERE run_results_parameter_optimizations_parameter_set_id='"
 							+ run_results_parameter_optimizations_parameter_set_id
-							+ "' AND `program_parameter_id`='"
+							+ "' AND program_parameter_id='"
 							+ program_parameter_id + "';");
 			rs.first();
 			return rs.getInt("id");
@@ -1593,19 +1599,18 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			final int run_results_parameter_optimizations_parameter_set_id,
 			final int program_parameter_id, final int iteration)
 			throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
 			ResultSet rs = stmt
-					.executeQuery("SELECT `id` FROM `"
-							+ this.getDatabase()
-							+ "`.`"
+					.executeQuery("SELECT id FROM "
 							+ this.getTableParameterSetParameterValues()
-							+ "` WHERE `repository_id`='"
+							+ " WHERE repository_id='"
 							+ this.updateRepositoryId()
-							+ "' AND `run_results_parameter_optimizations_parameter_set_id`='"
+							+ "' AND run_results_parameter_optimizations_parameter_set_id='"
 							+ run_results_parameter_optimizations_parameter_set_id
-							+ "' AND `program_parameter_id`='"
-							+ program_parameter_id + "' AND `iteration`='"
+							+ "' AND program_parameter_id='"
+							+ program_parameter_id + "' AND iteration='"
 							+ iteration + "';");
 			rs.first();
 			return rs.getInt("id");
@@ -1621,11 +1626,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 */
 	@Override
 	protected int getRunTypeId(String name) throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableRunTypes()
-					+ "` WHERE `name`='" + name + "';");
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableRunTypes() + " WHERE name='" + name + "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1640,11 +1645,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 */
 	@Override
 	protected int getRepositoryId(String absPath) throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableRepositories()
-					+ "` WHERE `basePath`='" + absPath + "';");
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableRepositories() + " WHERE base_path='"
+					+ absPath + "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1654,11 +1660,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 
 	@Override
 	protected int getRunAnalysisId(final int run_id) throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableRunsAnalysis()
-					+ "` WHERE `run_id`='" + run_id + "';");
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableRunsAnalysis() + " WHERE run_id='" + run_id
+					+ "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1668,12 +1675,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 
 	@Override
 	protected int getRunExecutionId(final int run_id) throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableRunsExecution()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `run_id`='" + run_id + "';");
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableRunsExecution() + " WHERE repository_id='"
+					+ this.updateRepositoryId() + "' AND run_id='" + run_id
+					+ "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1684,13 +1692,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	@Override
 	protected int getRunResultExecutionId(final int run_results_id)
 			throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
 					+ this.getTableRunResultsExecution()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `run_result_id`='" + run_results_id + "';");
+					+ " WHERE repository_id='" + this.updateRepositoryId()
+					+ "' AND run_result_id='" + run_results_id + "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1701,13 +1709,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	@Override
 	protected int getRunResultFormatId(final String runResultFormatSimpleName)
 			throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
 					+ this.getTableRunResultFormats()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `name`='" + runResultFormatSimpleName + "';");
+					+ " WHERE repository_id='" + this.updateRepositoryId()
+					+ "' AND name='" + runResultFormatSimpleName + "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1718,12 +1726,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	@Override
 	protected int getRunResultId(final String uniqueRunIdentifier)
 			throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableRunResults()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `uniqueRunIdentifier`='" + uniqueRunIdentifier
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableRunResults() + " WHERE repository_id='"
+					+ this.updateRepositoryId()
+					+ "' AND unique_run_identifier='" + uniqueRunIdentifier
 					+ "';");
 			rs.first();
 			return rs.getInt("id");
@@ -1736,12 +1745,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	protected int getStatisticId(final String statisticsName)
 			throws SQLException {
 
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableStatistics()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `name`='" + statisticsName + "';");
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableStatistics() + " WHERE repository_id='"
+					+ this.updateRepositoryId() + "' AND name='"
+					+ statisticsName + "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -1762,7 +1772,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				return this.getObjectId(object);
 			int id = insert(
 					this.getTablePrograms(),
-					new String[]{"repository_id", "absPath", "alias"},
+					new String[]{"repository_id", "abs_path", "alias"},
 					new String[]{"" + this.updateRepositoryId(),
 							"" + object.getAbsolutePath(), object.getAlias()});
 
@@ -1787,7 +1797,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			String[] columns;
 			String[] values;
 			if (object.getRepository() instanceof RunResultRepository) {
-				columns = new String[]{"repository_id", "absPath", "name",
+				columns = new String[]{"repository_id", "abs_path", "name",
 						"goldstandard_id", "goldstandard_config_id"};
 				values = new String[]{
 						"" + this.updateRepositoryId(),
@@ -1803,7 +1813,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 												GoldStandardConfig.class,
 												object.toString()))};
 			} else {
-				columns = new String[]{"repository_id", "absPath", "name",
+				columns = new String[]{"repository_id", "abs_path", "name",
 						"goldstandard_id"};
 				values = new String[]{
 						"" + this.updateRepositoryId(),
@@ -1838,7 +1848,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			String[] columns;
 			String[] values;
 			if (object.getRepository() instanceof RunResultRepository) {
-				columns = new String[]{"repository_id", "absPath",
+				columns = new String[]{"repository_id", "abs_path",
 						"goldstandard_id"};
 				values = new String[]{
 						"" + this.updateRepositoryId(),
@@ -1851,7 +1861,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 												GoldStandard.class,
 												object.toString()))};
 			} else {
-				columns = new String[]{"repository_id", "absPath"};
+				columns = new String[]{"repository_id", "abs_path"};
 				values = new String[]{"" + this.updateRepositoryId(),
 						"" + object.getAbsolutePath()};
 			}
@@ -1888,6 +1898,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 							"" + object.getSimpleName(), format.getAlias()});
 			return true;
 		} catch (SQLException e) {
+			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -1923,6 +1934,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 							"" + object.getSimpleName(), type.getAlias()});
 			return true;
 		} catch (SQLException e) {
+			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -1969,8 +1981,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					new ClusteringQualityMeasureParameters());
 			int id = insert(
 					this.getTableClusteringQualityMeasures(),
-					new String[]{"repository_id", "name", "minValue",
-							"maxValue", "requiresGoldStandard", "alias"},
+					new String[]{"repository_id", "name", "min_value",
+							"max_value", "requires_gold_standard", "alias"},
 					new String[]{"" + this.updateRepositoryId(),
 							"" + object.getSimpleName(),
 							replaceInfinity(measure.getMinimum()),
@@ -2188,7 +2200,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			int paramIdd = insert(
 					this.getTableProgramParameter(),
 					new String[]{"repository_id", "program_config_id", "name",
-							"description", "minValue", "maxValue", "def",
+							"description", "min_value", "max_value", "def",
 							"program_parameter_type_id"},
 					new String[]{"" + this.updateRepositoryId(),
 							"" + program_config_id,
@@ -2225,7 +2237,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			int paramId = insert(
 					this.getTableProgramParameter(),
 					new String[]{"repository_id", "program_config_id", "name",
-							"description", "minValue", "maxValue", "def",
+							"description", "min_value", "max_value", "def",
 							"program_parameter_type_id"},
 					new String[]{"" + this.updateRepositoryId(),
 							"" + program_config_id,
@@ -2262,7 +2274,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			int paramId = insert(
 					this.getTableProgramParameter(),
 					new String[]{"repository_id", "program_config_id", "name",
-							"description", "minValue", "maxValue", "def",
+							"description", "min_value", "max_value", "def",
 							"program_parameter_type_id"},
 					new String[]{"" + this.updateRepositoryId(),
 							"" + program_config_id,
@@ -2295,7 +2307,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			String[] columns;
 			String[] values;
 			if (object.getRepository() instanceof RunResultRepository) {
-				columns = new String[]{"repository_id", "absPath",
+				columns = new String[]{"repository_id", "abs_path",
 						"dataset_format_id", "dataset_id", "checksum",
 						"dataset_type_id", "alias"};
 				values = new String[]{
@@ -2313,7 +2325,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								.getSimpleName())
 								+ "", object.getAlias()};
 			} else {
-				columns = new String[]{"repository_id", "absPath",
+				columns = new String[]{"repository_id", "abs_path",
 						"dataset_format_id", "checksum", "dataset_type_id",
 						"alias"};
 				values = new String[]{
@@ -2352,7 +2364,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			String[] columns;
 			String[] values;
 
-			columns = new String[]{"repository_id", "absPath"};
+			columns = new String[]{"repository_id", "abs_path"};
 			values = new String[]{"" + this.updateRepositoryId(),
 					"" + object.getAbsolutePath()};
 			int rowId = insert(this.getTableClusterings(), columns, values);
@@ -2374,11 +2386,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	protected int unregister(Clustering object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableClusterings() + "` WHERE `absPath`='"
-					+ object.getAbsolutePath() + "';");
+			stmt.execute("DELETE FROM " + this.getTableClusterings()
+					+ " WHERE abs_path='" + object.getAbsolutePath() + "';");
 			stmt.close();
 			return this.getObjectId(object);
 		} catch (SQLException e) {
@@ -2411,7 +2423,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					int goldstandard_config_id = getObjectId(object
 							.getGoldstandardConfig());
 
-					columns = new String[]{"repository_id", "absPath", "name",
+					columns = new String[]{"repository_id", "abs_path", "name",
 							"dataset_config_id", "goldstandard_config_id",
 							"data_config_id"};
 					values = new String[]{
@@ -2430,7 +2442,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 													object.getName()))};
 
 				} else {
-					columns = new String[]{"repository_id", "absPath", "name",
+					columns = new String[]{"repository_id", "abs_path", "name",
 							"dataset_config_id", "data_config_id"};
 					values = new String[]{
 							"" + this.updateRepositoryId(),
@@ -2451,7 +2463,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					int goldstandard_config_id = getObjectId(object
 							.getGoldstandardConfig());
 
-					columns = new String[]{"repository_id", "absPath", "name",
+					columns = new String[]{"repository_id", "abs_path", "name",
 							"dataset_config_id", "goldstandard_config_id"};
 					values = new String[]{
 							"" + this.updateRepositoryId(),
@@ -2461,7 +2473,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 							"" + dataset_config_id, "" + goldstandard_config_id};
 
 				} else {
-					columns = new String[]{"repository_id", "absPath", "name",
+					columns = new String[]{"repository_id", "abs_path", "name",
 							"dataset_config_id"};
 					values = new String[]{
 							"" + this.updateRepositoryId(),
@@ -2499,7 +2511,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			String[] columns;
 			String[] values;
 			if (object.getRepository() instanceof RunResultRepository) {
-				columns = new String[]{"repository_id", "absPath", "name",
+				columns = new String[]{"repository_id", "abs_path", "name",
 						"dataset_id", "dataset_config_id"};
 				values = new String[]{
 						"" + this.updateRepositoryId(),
@@ -2515,7 +2527,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 												DataSetConfig.class,
 												object.toString()))};
 			} else {
-				columns = new String[]{"repository_id", "absPath", "name",
+				columns = new String[]{"repository_id", "abs_path", "name",
 						"dataset_id"};
 				values = new String[]{
 						"" + this.updateRepositoryId(),
@@ -2548,11 +2560,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			Class<? extends RunResultFormat> object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableRunResultFormats()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `name`='" + object.getSimpleName() + "';");
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			stmt.execute("DELETE FROM " + this.getTableRunResultFormats()
+					+ " WHERE repository_id='" + this.updateRepositoryId()
+					+ "' AND name='" + object.getSimpleName() + "';");
 			stmt.close();
 			return true;
 		} catch (SQLException e) {
@@ -2576,7 +2588,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	protected int unregister(ProgramConfig object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 
 			int program_id = getObjectId(object.getProgram());
 
@@ -2584,16 +2597,16 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				int program_config_id = getObjectId(object);
 				int program_parameter_id = getObjectId(param);
 
-				stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
+				stmt.execute("DELETE FROM "
 						+ this.getTableOptimizableProgramParameters()
-						+ "` WHERE `program_config_id`='" + program_config_id
-						+ "' AND `program_parameter_id`='"
-						+ program_parameter_id + "';");
+						+ " WHERE program_config_id='" + program_config_id
+						+ "' AND program_parameter_id='" + program_parameter_id
+						+ "';");
 			}
 
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableProgramConfigs() + "` WHERE `program_id`='"
-					+ program_id + "' AND `name`='" + object.getName() + "';");
+			stmt.execute("DELETE FROM " + this.getTableProgramConfigs()
+					+ " WHERE program_id='" + program_id + "' AND name='"
+					+ object.getName() + "';");
 			stmt.close();
 			return this.getObjectId(object);
 		} catch (SQLException e) {
@@ -2617,11 +2630,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	protected int unregister(Program object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTablePrograms() + "` WHERE `absPath`='"
-					+ object.getAbsolutePath() + "';");
+			stmt.execute("DELETE FROM " + this.getTablePrograms()
+					+ " WHERE abs_path='" + object.getAbsolutePath() + "';");
 			stmt.close();
 			return this.getObjectId(object);
 		} catch (SQLException e) {
@@ -2647,11 +2660,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	protected int unregister(GoldStandardConfig object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableGoldStandardConfigs()
-					+ "` WHERE `absPath`='" + object.getAbsolutePath() + "';");
+			stmt.execute("DELETE FROM " + this.getTableGoldStandardConfigs()
+					+ " WHERE abs_path='" + object.getAbsolutePath() + "';");
 			stmt.close();
 			return this.getObjectId(object);
 		} catch (SQLException e) {
@@ -2676,11 +2689,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	protected int unregister(GoldStandard object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableGoldStandards() + "` WHERE `absPath`='"
-					+ object.getAbsolutePath() + "';");
+			stmt.execute("DELETE FROM " + this.getTableGoldStandards()
+					+ " WHERE abs_path='" + object.getAbsolutePath() + "';");
 			stmt.close();
 			return this.getObjectId(object);
 		} catch (SQLException e) {
@@ -2705,11 +2718,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			Class<? extends DataSetFormat> object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableDataSetFormats()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND  `name`='" + object.getSimpleName() + "';");
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			stmt.execute("DELETE FROM " + this.getTableDataSetFormats()
+					+ " WHERE repository_id='" + this.updateRepositoryId()
+					+ "' AND  name='" + object.getSimpleName() + "';");
 			stmt.close();
 			return true;
 		} catch (SQLException e) {
@@ -2733,11 +2746,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	protected int unregister(DataSet object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableDatasets() + "` WHERE `absPath`='"
-					+ object.getAbsolutePath() + "';");
+			stmt.execute("DELETE FROM " + this.getTableDatasets()
+					+ " WHERE abs_path='" + object.getAbsolutePath() + "';");
 			stmt.close();
 			return this.getObjectId(object);
 		} catch (SQLException e) {
@@ -2761,11 +2774,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	protected int unregister(DataConfig object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableDataConfigs() + "` WHERE `absPath`='"
-					+ object.getAbsolutePath() + "';");
+			stmt.execute("DELETE FROM " + this.getTableDataConfigs()
+					+ " WHERE abs_path='" + object.getAbsolutePath() + "';");
 			stmt.close();
 			return this.getObjectId(object);
 		} catch (SQLException e) {
@@ -2789,11 +2802,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	protected int unregister(DataSetConfig object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableDataSetConfigs() + "` WHERE `absPath`='"
-					+ object.getAbsolutePath() + "';");
+			stmt.execute("DELETE FROM " + this.getTableDataSetConfigs()
+					+ " WHERE abs_path='" + object.getAbsolutePath() + "';");
 			stmt.close();
 			return this.getObjectId(object);
 		} catch (SQLException e) {
@@ -2818,18 +2831,18 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	public boolean updateStatusOfRun(final Run run, String runStatus) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableRuns()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `absPath`='" + run.getAbsolutePath() + "';");
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableRuns() + " WHERE repository_id='"
+					+ this.updateRepositoryId() + "' AND abs_path='"
+					+ run.getAbsolutePath() + "';");
 			rs.first();
 			int runId = rs.getInt("id");
 
-			stmt.execute("UPDATE `" + this.getDatabase() + "`.`"
-					+ this.getTableRuns() + "` SET `status`='" + runStatus
-					+ "' WHERE `id`='" + runId + "';");
+			stmt.execute("UPDATE " + this.getTableRuns() + " SET status='"
+					+ runStatus + "' WHERE id='" + runId + "';");
 			stmt.close();
 			return true;
 		} catch (SQLException e) {
@@ -2890,8 +2903,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			// thus the corresponding run result also.
 			// because of this we use tryInsert instead of insert
 			tryInsert(this.getTableRunResults(), new String[]{"repository_id",
-					"uniqueRunIdentifier", "run_type_id", "run_id", "date",
-					"absPath"}, new String[]{"" + this.updateRepositoryId(),
+					"unique_run_identifier", "run_type_id", "run_id", "date",
+					"abs_path"}, new String[]{"" + this.updateRepositoryId(),
 					"" + object.getIdentifier(), "" + run_type_id, "" + run_id,
 					"" + dateString, resultsPath});
 		} catch (SQLException e) {
@@ -2947,7 +2960,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				clusteringId = insert(
 						this.getTableRunResultsClustering(),
 						new String[]{"repository_id",
-								"run_results_execution_id", "absPath"},
+								"run_results_execution_id", "abs_path"},
 						new String[]{"" + this.updateRepositoryId(),
 								"" + run_results_execution_id,
 								"" + object.getAbsolutePath()});
@@ -2956,10 +2969,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 						this.getTableRunResultsClustering(),
 						"id",
 						new String[]{"repository_id",
-								"run_results_execution_id", "absPath"},
+								"run_results_execution_id", "abs_path"},
 						new String[]{"" + this.updateRepositoryId(),
 								"" + run_results_execution_id,
 								"" + object.getAbsolutePath()});
+				e.printStackTrace();
 			}
 
 			int dataConfigId = getObjectId(object.getDataConfig());
@@ -3029,7 +3043,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				runResultParamOptId = insert(
 						this.getTableRunResultsParameterOptimization(),
 						new String[]{"repository_id",
-								"run_results_execution_id", "absPath",
+								"run_results_execution_id", "abs_path",
 								"data_config_id", "program_config_id"},
 						new String[]{"" + repository_id,
 								"" + run_results_execution_id,
@@ -3037,7 +3051,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 								getObjectId(object.getDataConfig()) + "",
 								getObjectId(object.getProgramConfig()) + ""});
 			} catch (SQLException e) {
-				// e.printStackTrace();
+				e.printStackTrace();
 				runResultParamOptId = getObjectId(object);
 			}
 
@@ -3097,26 +3111,39 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				paramSetAsString.deleteCharAt(paramSetAsString.length() - 1);
 
 				int clustering_id;
-				if (object.getClustering(paramSets.get(i)) == null)
+				if (object.getClustering(paramSets.get(i)) == null) {
 					clustering_id = -1;
-				else
+
+					iterationIds[i] = insert(
+							this.getTableParameterSetIterations(),
+							new String[]{
+									"repository_id",
+									"run_results_parameter_optimizations_parameter_set_id",
+									"iteration", "param_set_as_string"},
+							new String[]{
+									"" + repository_id,
+									run_results_parameter_optimizations_parameter_set_id
+											+ "", iterationNumbers.get(i) + "",
+									paramSetAsString.toString()});
+				} else {
 					clustering_id = getClusteringId(object.getClustering(
 							paramSets.get(i)).getAbsolutePath());
-				/*
-				 * insert iteration
-				 */
-				iterationIds[i] = insert(
-						this.getTableParameterSetIterations(),
-						new String[]{
-								"repository_id",
-								"run_results_parameter_optimizations_parameter_set_id",
-								"iteration", "paramSetAsString",
-								"clustering_id"},
-						new String[]{
-								"" + repository_id,
-								run_results_parameter_optimizations_parameter_set_id
-										+ "", iterationNumbers.get(i) + "",
-								paramSetAsString.toString(), "" + clustering_id});
+					/*
+					 * insert iteration
+					 */
+					iterationIds[i] = insert(
+							this.getTableParameterSetIterations(),
+							new String[]{
+									"repository_id",
+									"run_results_parameter_optimizations_parameter_set_id",
+									"iteration", "param_set_as_string",
+									"clustering_id"}, new String[]{
+									"" + repository_id,
+									run_results_parameter_optimizations_parameter_set_id
+											+ "", iterationNumbers.get(i) + "",
+									paramSetAsString.toString(),
+									"" + clustering_id});
+				}
 			}
 
 			String[] columns = new String[]{
@@ -3284,13 +3311,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	@Override
 	protected int getRunResultAnalysisId(int run_results_id)
 			throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
 					+ this.getTableRunResultsAnalysis()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `run_result_id`='" + run_results_id + "';");
+					+ " WHERE repository_id='" + this.updateRepositoryId()
+					+ "' AND run_result_id='" + run_results_id + "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -3306,13 +3333,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	@Override
 	protected int getRunResultRunAnalysisId(int run_results_analysis_id)
 			throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
 					+ this.getTableRunResultsRunAnalysis()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `run_results_analysis_id`='"
+					+ " WHERE repository_id='" + this.updateRepositoryId()
+					+ "' AND run_results_analysis_id='"
 					+ run_results_analysis_id + "';");
 			rs.first();
 			return rs.getInt("id");
@@ -3421,11 +3448,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	@Override
 	protected int getProgramParameterTypeId(String typeName)
 			throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
-					+ this.getTableProgramParameterType() + "` WHERE `name`='"
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableProgramParameterType() + " WHERE name='"
 					+ typeName + "';");
 			rs.first();
 			return rs.getInt("id");
@@ -3447,6 +3474,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 					this.getObjectId(programParameter));
 			return this.getObjectId(programParameter);
 		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return -1;
 	}
@@ -3454,13 +3482,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	@Override
 	protected int getDataSetFormatId(final String dataSetFormatClassSimpleName)
 			throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = conn.createStatement(
+				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		try {
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`"
-					+ this.getTableDataSetFormats()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `name`='" + dataSetFormatClassSimpleName + "';");
+			ResultSet rs = stmt.executeQuery("SELECT id FROM "
+					+ this.getTableDataSetFormats() + " WHERE repository_id='"
+					+ this.updateRepositoryId() + "' AND name='"
+					+ dataSetFormatClassSimpleName + "';");
 			rs.first();
 			return rs.getInt("id");
 		} finally {
@@ -3487,11 +3515,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	protected int unregister(Run object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableRuns() + "` WHERE `absPath`='"
-					+ object.getAbsolutePath() + "';");
+			stmt.execute("DELETE FROM " + this.getTableRuns()
+					+ " WHERE abs_path='" + object.getAbsolutePath() + "';");
 			stmt.close();
 			return this.getObjectId(object);
 		} catch (SQLException e) {
@@ -3518,25 +3546,25 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	protected int unregister(ParameterOptimizationResult object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
+			stmt.execute("DELETE FROM "
 					+ this.getTableRunResultsParameterOptimization()
-					+ "` WHERE `repository_id`='"
+					+ " WHERE repository_id='"
 					+ this.getRepositoryId(this.repository.getBasePath())
-					+ "' AND  `absPath`='" + object.getAbsolutePath() + "';");
+					+ "' AND  abs_path='" + object.getAbsolutePath() + "';");
 
 			try {
-				stmt.execute("DELETE FROM `"
-						+ this.getDatabase()
-						+ "`.`"
+				stmt.execute("DELETE FROM "
 						+ this.getTableRepositories()
-						+ "` WHERE `id`='"
+						+ " WHERE id='"
 						+ this.getRepositoryId(object.getRepository()
 								.getBasePath()) + "';");
 			} catch (SQLException e) {
 				// might have been deleted by another parameter optimization
 				// run result contained in that folder
+				e.printStackTrace();
 			}
 			stmt.close();
 
@@ -3566,12 +3594,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableRunResults() + "` WHERE `repository_id`='"
+			stmt.execute("DELETE FROM " + this.getTableRunResults()
+					+ " WHERE repository_id='"
 					+ this.getRepositoryId(this.repository.getBasePath())
-					+ "' AND  `uniqueRunIdentifier`='" + object.getIdentifier()
+					+ "' AND  unique_run_identifier='" + object.getIdentifier()
 					+ "';");
 			stmt.close();
 			return this.getObjectId(object);
@@ -3599,11 +3628,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			Class<? extends ParameterOptimizationMethod> object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			stmt.execute("DELETE FROM "
 					+ this.getTableParameterOptimizationMethods()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `name`='" + object.getSimpleName() + "';");
+					+ " WHERE repository_id='" + this.updateRepositoryId()
+					+ "' AND name='" + object.getSimpleName() + "';");
 			stmt.close();
 			return true;
 		} catch (SQLException e) {
@@ -3630,11 +3660,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			Class<? extends ClusteringQualityMeasure> object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			stmt.execute("DELETE FROM "
 					+ this.getTableClusteringQualityMeasures()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `name`='" + object.getSimpleName() + "';");
+					+ " WHERE repository_id='" + this.updateRepositoryId()
+					+ "' AND name='" + object.getSimpleName() + "';");
 			stmt.close();
 			return true;
 		} catch (SQLException e) {
@@ -3661,12 +3692,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			Class<? extends DataStatistic> object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 			int statistic_id = getStatisticId(object.getSimpleName());
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableStatisticsData()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `statistic_id` = '" + statistic_id + "';");
+			stmt.execute("DELETE FROM " + this.getTableStatisticsData()
+					+ " WHERE repository_id='" + this.updateRepositoryId()
+					+ "' AND statistic_id = '" + statistic_id + "';");
 			stmt.close();
 			return true;
 		} catch (SQLException e) {
@@ -3693,12 +3724,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			Class<? extends RunStatistic> object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 			int statistic_id = getStatisticId(object.getSimpleName());
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableStatisticsRun()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `statistic_id`='" + statistic_id + "';");
+			stmt.execute("DELETE FROM " + this.getTableStatisticsRun()
+					+ " WHERE repository_id='" + this.updateRepositoryId()
+					+ "' AND statistic_id='" + statistic_id + "';");
 			stmt.close();
 			return true;
 		} catch (SQLException e) {
@@ -3725,12 +3756,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			Class<? extends RunDataStatistic> object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
 			int statistic_id = getStatisticId(object.getSimpleName());
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableStatisticsRunData()
-					+ "` WHERE `repository_id`='" + this.updateRepositoryId()
-					+ "' AND `statistic_id`='" + statistic_id + "';");
+			stmt.execute("DELETE FROM " + this.getTableStatisticsRunData()
+					+ " WHERE repository_id='" + this.updateRepositoryId()
+					+ "' AND statistic_id='" + statistic_id + "';");
 			stmt.close();
 			return true;
 		} catch (SQLException e) {
@@ -3757,11 +3788,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			Class<? extends DataSetType> object) {
 		Statement stmt = null;
 		try {
-			stmt = conn.createStatement();
-			stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-					+ this.getTableDataSetTypes() + "` WHERE `repository_id`='"
-					+ this.updateRepositoryId() + "' AND  `name`='"
-					+ object.getSimpleName() + "';");
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			stmt.execute("DELETE FROM " + this.getTableDataSetTypes()
+					+ " WHERE repository_id='" + this.updateRepositoryId()
+					+ "' AND  name='" + object.getSimpleName() + "';");
 			stmt.close();
 			return true;
 		} catch (SQLException e) {

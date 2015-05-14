@@ -985,7 +985,11 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 					programConfig.getName()).getKeys();
 			while (itParams.hasNext()) {
 				String param = itParams.next();
-				if (isParamConfigurationEntry(param))
+				if (param.equals("maxExecutionTimeMinutes")) {
+					programConfig.setMaxExecutionTimeMinutes(Integer
+							.parseInt(getProps().getSection(
+									programConfig.getName()).getString(param)));
+				} else if (isParamConfigurationEntry(param))
 					try {
 						ProgramParameter<?> p = programConfig
 								.getParamWithId(param);
@@ -1530,6 +1534,11 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 							+ " for undefined parameters. Please add them to the parameter-list.");
 		}
 
+		int maxExecutionTimeMinutes = -1;
+		if (getProps().containsKey("maxExecutionTimeMinutes"))
+			maxExecutionTimeMinutes = getProps().getInt(
+					"maxExecutionTimeMinutes");
+
 		if (type.equals("standalone")) {
 			String invocationFormat = getProps().getSection("invocationFormat")
 					.getString("invocationFormat");
@@ -1565,13 +1574,15 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 					invocationFormat, invocationFormatWithoutGoldStandard,
 					invocationFormatParameterOptimization,
 					invocationFormatParameterOptimizationWithoutGoldStandard,
-					params, optimizableParameters, expectsNormalizedDataSet);
+					params, optimizableParameters, expectsNormalizedDataSet,
+					maxExecutionTimeMinutes);
 		}
 		// RProgram
 		else {
 			result = new RProgramConfig(repo, true, changeDate, absPath,
 					programP, runresultFormat, compatibleDataSetFormats,
-					params, optimizableParameters, expectsNormalizedDataSet);
+					params, optimizableParameters, expectsNormalizedDataSet,
+					maxExecutionTimeMinutes);
 		}
 
 		// // add parameter objects for input (i), executable (e), output (o)
