@@ -74,31 +74,30 @@ public abstract class DataStatisticRCalculator<T extends DataStatistic>
 	 * de.clusteval.data.statistics.DataStatisticCalculator#calculateResult()
 	 */
 	@Override
-	protected final T calculateResult()
-			throws IncompatibleDataConfigDataStatisticException,
-			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
-			IllegalArgumentException, IOException,
-			InvalidDataSetFormatVersionException, RegisterException,
-			REngineException, RNotAvailableException {
+	protected final T calculateResult() throws DataStatisticCalculateException {
 		try {
-			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
+				MyRengine rEngine = repository.getRengineForCurrentThread();
 				try {
-					return calculateResultHelper(rEngine);
-				} catch (REXPMismatchException e) {
-					// handle this type of exception as an REngineException
-					throw new RException(rEngine, e.getMessage());
+					try {
+						return calculateResultHelper(rEngine);
+					} catch (REXPMismatchException e) {
+						// handle this type of exception as an REngineException
+						throw new RException(rEngine, e.getMessage());
+					}
+				} catch (REngineException e) {
+					this.log.warn("R-framework ("
+							+ this.getClass().getSimpleName() + "): "
+							+ rEngine.getLastError());
+					throw e;
+				} finally {
+					rEngine.clear();
 				}
-			} catch (REngineException e) {
-				this.log.warn("R-framework (" + this.getClass().getSimpleName()
-						+ "): " + rEngine.getLastError());
-				throw e;
+			} catch (RserveException e) {
+				throw new RNotAvailableException(e.getMessage());
 			}
- finally {
-				rEngine.clear();
-			}
-		} catch (RserveException e) {
-			throw new RNotAvailableException(e.getMessage());
+		} catch (Exception e) {
+			throw new DataStatisticCalculateException(e);
 		}
 	}
 

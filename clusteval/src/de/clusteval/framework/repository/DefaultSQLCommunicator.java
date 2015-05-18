@@ -3097,11 +3097,15 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				paramSetAsString.deleteCharAt(paramSetAsString.length() - 1);
 
 				int clustering_id;
-				if (object.getClustering(paramSets.get(i)) == null)
+				try {
+					if (object.getClustering(paramSets.get(i)) == null)
+						clustering_id = -1;
+					else
+						clustering_id = getClusteringId(object.getClustering(
+								paramSets.get(i)).getAbsolutePath());
+				} catch (SQLException e) {
 					clustering_id = -1;
-				else
-					clustering_id = getClusteringId(object.getClustering(
-							paramSets.get(i)).getAbsolutePath());
+				}
 				/*
 				 * insert iteration
 				 */

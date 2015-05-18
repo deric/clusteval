@@ -60,6 +60,28 @@ import de.clusteval.utils.RNotAvailableException;
 public abstract class DataSet extends RepositoryObject {
 
 	/**
+	 * This enum describes the visibility of a dataset on the website.
+	 * 
+	 * @author Christian Wiwie
+	 */
+	public enum WEBSITE_VISIBILITY {
+		/**
+		 * This dataset is not visible on the website at all. It is not even
+		 * listed in the list of all datasets.
+		 */
+		HIDE, /**
+		 * The dataset is listed under all datasets, but not selected by
+		 * default.
+		 */
+		SHOW_OPTIONAL,
+		/**
+		 * This dataset is listed and also selected to be shown by default on
+		 * the website.
+		 */
+		SHOW_ALWAYS
+	}
+
+	/**
 	 * Every data set needs an alias, that is used to represent the data set as
 	 * a short string, for example on the website.
 	 */
@@ -103,6 +125,8 @@ public abstract class DataSet extends RepositoryObject {
 	 */
 	protected long checksum;
 
+	protected WEBSITE_VISIBILITY websiteVisibility;
+
 	/**
 	 * Instantiates a new dataset object.
 	 * 
@@ -124,7 +148,8 @@ public abstract class DataSet extends RepositoryObject {
 	 */
 	public DataSet(final Repository repository, final boolean register,
 			final long changeDate, final File absPath, final String alias,
-			final DataSetFormat dsFormat, final DataSetType dsType)
+			final DataSetFormat dsFormat, final DataSetType dsType,
+			final WEBSITE_VISIBILITY websiteVisibility)
 			throws RegisterException {
 		super(repository, false, changeDate, absPath);
 
@@ -135,6 +160,8 @@ public abstract class DataSet extends RepositoryObject {
 		this.originalDataSet = this;
 
 		this.checksum = absPath.length();
+
+		this.websiteVisibility = websiteVisibility;
 
 		createAndRegisterInternalAttributes();
 
@@ -195,6 +222,8 @@ public abstract class DataSet extends RepositoryObject {
 		this.datasetType = dataset.datasetType.clone();
 
 		this.checksum = absPath.length();
+
+		this.websiteVisibility = dataset.websiteVisibility;
 
 		if (dataset.originalDataSet != null
 				&& dataset.originalDataSet != dataset)
@@ -739,6 +768,10 @@ public abstract class DataSet extends RepositoryObject {
 	 * @return The object ids contained in the dataset.
 	 */
 	public abstract List<String> getIds();
+
+	public WEBSITE_VISIBILITY getWebsiteVisibility() {
+		return this.websiteVisibility;
+	}
 
 	/**
 	 * This method parses the header of a dataset file. A header is required for

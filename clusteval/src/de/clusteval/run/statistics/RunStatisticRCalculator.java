@@ -40,6 +40,7 @@ import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.data.statistics.IncompatibleDataConfigDataStatisticException;
+import de.clusteval.data.statistics.RunStatisticCalculateException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.MyRengine;
@@ -104,52 +105,30 @@ public abstract class RunStatisticRCalculator<T extends RunStatistic>
 	 * de.clusteval.run.statistics.RunDataStatisticCalculator#calculateResult()
 	 */
 	@Override
-	protected final T calculateResult()
-			throws IncompatibleDataConfigDataStatisticException,
-			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
-			IllegalArgumentException, IOException,
-			InvalidDataSetFormatVersionException, ConfigurationException,
-			GoldStandardConfigurationException, DataSetConfigurationException,
-			DataSetNotFoundException, DataSetConfigNotFoundException,
-			GoldStandardConfigNotFoundException, DataConfigurationException,
-			DataConfigNotFoundException, UnknownRunResultFormatException,
-			UnknownClusteringQualityMeasureException, InvalidRunModeException,
-			UnknownParameterOptimizationMethodException,
-			NoOptimizableProgramParameterException,
-			UnknownProgramParameterException, InternalAttributeException,
-			InvalidConfigurationFileException,
-			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			NoRepositoryFoundException, GoldStandardNotFoundException,
-			InvalidOptimizationParameterException, RunException,
-			UnknownDataStatisticException, UnknownProgramTypeException,
-			UnknownRProgramException,
-			IncompatibleParameterOptimizationMethodException,
-			UnknownDistanceMeasureException, UnknownRunStatisticException,
-			AnalysisRunResultException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, RegisterException,
-			UnknownDataSetTypeException, NoDataSetException,
-			UnknownRunDataStatisticException, RunResultParseException,
-			RNotAvailableException, REngineException {
+	protected final T calculateResult() throws RunStatisticCalculateException {
 		try {
-			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
+				MyRengine rEngine = repository.getRengineForCurrentThread();
 				try {
-					return calculateResultHelper(rEngine);
-				} catch (REXPMismatchException e) {
-					// handle this type of exception as an REngineException
-					throw new RException(rEngine, e.getMessage());
+					try {
+						return calculateResultHelper(rEngine);
+					} catch (REXPMismatchException e) {
+						// handle this type of exception as an REngineException
+						throw new RException(rEngine, e.getMessage());
+					}
+				} catch (REngineException e) {
+					this.log.warn("R-framework ("
+							+ this.getClass().getSimpleName() + "): "
+							+ rEngine.getLastError());
+					throw e;
+				} finally {
+					rEngine.clear();
 				}
-			} catch (REngineException e) {
-				this.log.warn("R-framework (" + this.getClass().getSimpleName()
-						+ "): " + rEngine.getLastError());
-				throw e;
-			} finally {
-				rEngine.clear();
+			} catch (RserveException e) {
+				throw new RNotAvailableException(e.getMessage());
 			}
-		} catch (RserveException e) {
-			throw new RNotAvailableException(e.getMessage());
+		} catch (Exception e) {
+			throw new RunStatisticCalculateException(e);
 		}
 	}
 

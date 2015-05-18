@@ -42,6 +42,8 @@ import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
 import de.clusteval.data.statistics.IncompatibleDataConfigDataStatisticException;
+import de.clusteval.data.statistics.RunStatisticCalculateException;
+import de.clusteval.data.statistics.StatisticCalculateException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
@@ -122,91 +124,9 @@ public abstract class StatisticCalculator<T extends Statistic>
 	 * {@link #writeOutputTo(File)}.
 	 * 
 	 * @return The calculated statistic.
-	 * @throws IncompatibleDataConfigDataStatisticException
-	 * @throws UnknownGoldStandardFormatException
-	 * @throws UnknownDataSetFormatException
-	 * @throws IllegalArgumentException
-	 * @throws IOException
-	 * @throws InvalidDataSetFormatVersionException
-	 * @throws ConfigurationException
-	 * @throws GoldStandardConfigurationException
-	 * @throws DataSetConfigurationException
-	 * @throws DataSetNotFoundException
-	 * @throws DataSetConfigNotFoundException
-	 * @throws GoldStandardConfigNotFoundException
-	 * @throws DataConfigurationException
-	 * @throws DataConfigNotFoundException
-	 * @throws UnknownRunResultFormatException
-	 * @throws UnknownClusteringQualityMeasureException
-	 * @throws InvalidRunModeException
-	 * @throws UnknownParameterOptimizationMethodException
-	 * @throws NoOptimizableProgramParameterException
-	 * @throws UnknownProgramParameterException
-	 * @throws InternalAttributeException
-	 * @throws InvalidConfigurationFileException
-	 * @throws RepositoryAlreadyExistsException
-	 * @throws InvalidRepositoryException
-	 * @throws NoRepositoryFoundException
-	 * @throws GoldStandardNotFoundException
-	 * @throws InvalidOptimizationParameterException
-	 * @throws RunException
-	 * @throws UnknownDataStatisticException
-	 * @throws UnknownProgramTypeException
-	 * @throws UnknownRProgramException
-	 * @throws IncompatibleParameterOptimizationMethodException
-	 * @throws UnknownDistanceMeasureException
-	 * @throws UnknownRunStatisticException
-	 * @throws AnalysisRunResultException
-	 * @throws RepositoryConfigNotFoundException
-	 * @throws RepositoryConfigurationException
-	 * @throws RepositoryConfigNotFoundException
-	 * @throws RepositoryConfigurationException
-	 * @throws RegisterException
-	 * @throws UnknownDataSetTypeException
-	 * @throws NoDataSetException
-	 * @throws UnknownRunDataStatisticException
-	 * @throws RunResultParseException
-	 * @throws IncompatibleDataSetConfigPreprocessorException
-	 * @throws UnknownDataPreprocessorException
-	 * @throws IncompatibleContextException
-	 * @throws UnknownContextException
-	 * @throws REngineException
-	 * @throws RNotAvailableException
-	 * @throws UnknownParameterType
-	 * @throws InterruptedException
-	 * @throws UnknownRunResultPostprocessorException 
+	 * @throws StatisticCalculateException
 	 */
-	public T calculate() throws IncompatibleDataConfigDataStatisticException,
-			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
-			IllegalArgumentException, IOException,
-			InvalidDataSetFormatVersionException, ConfigurationException,
-			GoldStandardConfigurationException, DataSetConfigurationException,
-			DataSetNotFoundException, DataSetConfigNotFoundException,
-			GoldStandardConfigNotFoundException, DataConfigurationException,
-			DataConfigNotFoundException, UnknownRunResultFormatException,
-			UnknownClusteringQualityMeasureException, InvalidRunModeException,
-			UnknownParameterOptimizationMethodException,
-			NoOptimizableProgramParameterException,
-			UnknownProgramParameterException, InternalAttributeException,
-			InvalidConfigurationFileException,
-			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			NoRepositoryFoundException, GoldStandardNotFoundException,
-			InvalidOptimizationParameterException, RunException,
-			UnknownDataStatisticException, UnknownProgramTypeException,
-			UnknownRProgramException,
-			IncompatibleParameterOptimizationMethodException,
-			UnknownDistanceMeasureException, UnknownRunStatisticException,
-			AnalysisRunResultException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, RegisterException,
-			UnknownDataSetTypeException, NoDataSetException,
-			UnknownRunDataStatisticException, RunResultParseException,
-			UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException,
-			IncompatibleContextException, UnknownContextException,
-			REngineException, RNotAvailableException, UnknownParameterType,
-			InterruptedException, UnknownRunResultPostprocessorException {
+	public T calculate() throws StatisticCalculateException {
 		this.lastResult = calculateResult();
 		return this.lastResult;
 	}
@@ -269,39 +189,9 @@ public abstract class StatisticCalculator<T extends Statistic>
 	 * @throws UnknownParameterType
 	 * @throws InterruptedException
 	 * @throws UnknownRunResultPostprocessorException
+	 * @throws RunStatisticCalculateException
 	 */
-	protected abstract T calculateResult()
-			throws IncompatibleDataConfigDataStatisticException,
-			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
-			IllegalArgumentException, IOException,
-			InvalidDataSetFormatVersionException, ConfigurationException,
-			GoldStandardConfigurationException, DataSetConfigurationException,
-			DataSetNotFoundException, DataSetConfigNotFoundException,
-			GoldStandardConfigNotFoundException, DataConfigurationException,
-			DataConfigNotFoundException, UnknownRunResultFormatException,
-			UnknownClusteringQualityMeasureException, InvalidRunModeException,
-			UnknownParameterOptimizationMethodException,
-			NoOptimizableProgramParameterException,
-			UnknownProgramParameterException, InternalAttributeException,
-			InvalidConfigurationFileException,
-			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			NoRepositoryFoundException, GoldStandardNotFoundException,
-			InvalidOptimizationParameterException, RunException,
-			UnknownDataStatisticException, UnknownProgramTypeException,
-			UnknownRProgramException,
-			IncompatibleParameterOptimizationMethodException,
-			UnknownDistanceMeasureException, UnknownRunStatisticException,
-			AnalysisRunResultException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, RegisterException,
-			UnknownDataSetTypeException, NoDataSetException,
-			UnknownRunDataStatisticException, RunResultParseException,
-			UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException,
-			UnknownContextException, IncompatibleContextException,
-			REngineException, RNotAvailableException, UnknownParameterType,
-			InterruptedException, UnknownRunResultPostprocessorException;
+	protected abstract T calculateResult() throws StatisticCalculateException;
 
 	/**
 	 * @param absFolderPath

@@ -810,6 +810,16 @@ class DataSetParser extends RepositoryObjectParser<DataSet> {
 								+ absPath.getAbsolutePath());
 			}
 
+			DataSet.WEBSITE_VISIBILITY websiteVisibility = DataSet.WEBSITE_VISIBILITY.HIDE;
+			String vis = attributeValues.getOrDefault("websiteVisibility",
+					"hide");
+			if (vis.equals("hide"))
+				websiteVisibility = DataSet.WEBSITE_VISIBILITY.HIDE;
+			else if (vis.equals("show_always"))
+				websiteVisibility = DataSet.WEBSITE_VISIBILITY.SHOW_ALWAYS;
+			else if (vis.equals("show_optional"))
+				websiteVisibility = DataSet.WEBSITE_VISIBILITY.SHOW_OPTIONAL;
+
 			final long changeDate = absPath.lastModified();
 
 			LoggerFactory.getLogger(DataSet.class).debug(
@@ -821,10 +831,12 @@ class DataSetParser extends RepositoryObjectParser<DataSet> {
 			if (RelativeDataSetFormat.class.isAssignableFrom(dsFormat
 					.getClass()))
 				result = new RelativeDataSet(repo, true, changeDate, absPath,
-						alias, (RelativeDataSetFormat) dsFormat, dsType);
+						alias, (RelativeDataSetFormat) dsFormat, dsType,
+						websiteVisibility);
 			else
 				result = new AbsoluteDataSet(repo, true, changeDate, absPath,
-						alias, (AbsoluteDataSetFormat) dsFormat, dsType);
+						alias, (AbsoluteDataSetFormat) dsFormat, dsType,
+						websiteVisibility);
 			result = repo.getRegisteredObject(result);
 			LoggerFactory.getLogger(DataSet.class).debug("Dataset parsed");
 		} catch (IOException e) {
@@ -1609,7 +1621,8 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 			Iterator<String> vars = getProps().getSection("envVars").getKeys();
 			while (vars.hasNext()) {
 				String var = vars.next();
-				envVars.put(var, getProps().getSection("envVars").getString(var));
+				envVars.put(var, getProps().getSection("envVars")
+						.getString(var));
 			}
 
 			programP = new StandaloneProgram(repo, context, true, changeDate,

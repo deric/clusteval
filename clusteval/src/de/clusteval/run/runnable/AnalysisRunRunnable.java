@@ -21,62 +21,20 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.rosuda.REngine.REngineException;
 
 import utils.ProgressPrinter;
-import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
-import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
-import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
-import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
-import de.clusteval.context.IncompatibleContextException;
-import de.clusteval.context.UnknownContextException;
-import de.clusteval.data.DataConfigNotFoundException;
-import de.clusteval.data.DataConfigurationException;
-import de.clusteval.data.dataset.DataSetConfigNotFoundException;
-import de.clusteval.data.dataset.DataSetConfigurationException;
-import de.clusteval.data.dataset.DataSetNotFoundException;
-import de.clusteval.data.dataset.IncompatibleDataSetConfigPreprocessorException;
-import de.clusteval.data.dataset.NoDataSetException;
 import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
-import de.clusteval.data.dataset.type.UnknownDataSetTypeException;
-import de.clusteval.data.distance.UnknownDistanceMeasureException;
-import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
-import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
-import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
-import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
-import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
 import de.clusteval.data.statistics.DataStatistic;
-import de.clusteval.data.statistics.IncompatibleDataConfigDataStatisticException;
-import de.clusteval.data.statistics.UnknownDataStatisticException;
-import de.clusteval.framework.repository.InvalidRepositoryException;
-import de.clusteval.framework.repository.NoRepositoryFoundException;
+import de.clusteval.data.statistics.StatisticCalculateException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
-import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
-import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
-import de.clusteval.framework.repository.config.RepositoryConfigurationException;
-import de.clusteval.program.NoOptimizableProgramParameterException;
-import de.clusteval.program.UnknownParameterType;
-import de.clusteval.program.UnknownProgramParameterException;
-import de.clusteval.program.UnknownProgramTypeException;
-import de.clusteval.program.r.UnknownRProgramException;
 import de.clusteval.run.AnalysisRun;
-import de.clusteval.run.InvalidRunModeException;
 import de.clusteval.run.Run;
-import de.clusteval.run.RunException;
-import de.clusteval.run.result.AnalysisRunResultException;
 import de.clusteval.run.result.RunResult;
-import de.clusteval.run.result.RunResultParseException;
-import de.clusteval.run.result.format.UnknownRunResultFormatException;
-import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.RunStatistic;
-import de.clusteval.run.statistics.UnknownRunDataStatisticException;
-import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.FormatConversionException;
-import de.clusteval.utils.InternalAttributeException;
-import de.clusteval.utils.InvalidConfigurationFileException;
 import de.clusteval.utils.RNotAvailableException;
 import de.clusteval.utils.Statistic;
 import de.clusteval.utils.StatisticCalculator;
@@ -249,102 +207,13 @@ public abstract class AnalysisRunRunnable<T extends Statistic, R extends RunResu
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
-			} catch (ConfigurationException e) {
-				e.printStackTrace();
-			} catch (GoldStandardConfigurationException e) {
-				e.printStackTrace();
-			} catch (DataSetConfigurationException e) {
-				e.printStackTrace();
-			} catch (DataSetNotFoundException e) {
-				e.printStackTrace();
-			} catch (DataSetConfigNotFoundException e) {
-				e.printStackTrace();
-			} catch (GoldStandardConfigNotFoundException e) {
-				e.printStackTrace();
-			} catch (DataConfigurationException e) {
-				e.printStackTrace();
-			} catch (DataConfigNotFoundException e) {
-				e.printStackTrace();
-			} catch (IncompatibleDataConfigDataStatisticException e) {
-				e.printStackTrace();
-			} catch (UnknownGoldStandardFormatException e) {
-				e.printStackTrace();
-			} catch (UnknownDataSetFormatException e) {
-				e.printStackTrace();
-			} catch (UnknownRunResultFormatException e) {
-				e.printStackTrace();
-			} catch (UnknownClusteringQualityMeasureException e) {
-				e.printStackTrace();
-			} catch (InvalidRunModeException e) {
-				e.printStackTrace();
-			} catch (UnknownParameterOptimizationMethodException e) {
-				e.printStackTrace();
-			} catch (NoOptimizableProgramParameterException e) {
-				e.printStackTrace();
-			} catch (UnknownProgramParameterException e) {
-				e.printStackTrace();
-			} catch (InternalAttributeException e) {
-				e.printStackTrace();
-			} catch (InvalidConfigurationFileException e) {
-				e.printStackTrace();
-			} catch (RepositoryAlreadyExistsException e) {
-				e.printStackTrace();
-			} catch (InvalidRepositoryException e) {
-				e.printStackTrace();
-			} catch (NoRepositoryFoundException e) {
-				e.printStackTrace();
-			} catch (GoldStandardNotFoundException e) {
-				e.printStackTrace();
-			} catch (InvalidOptimizationParameterException e) {
-				e.printStackTrace();
-			} catch (RunException e) {
-				e.printStackTrace();
-			} catch (UnknownDataStatisticException e) {
-				e.printStackTrace();
-			} catch (UnknownProgramTypeException e) {
-				e.printStackTrace();
-			} catch (UnknownRProgramException e) {
-				e.printStackTrace();
-			} catch (IncompatibleParameterOptimizationMethodException e) {
-				e.printStackTrace();
-			} catch (UnknownDistanceMeasureException e) {
-				e.printStackTrace();
-			} catch (UnknownRunStatisticException e) {
-				e.printStackTrace();
-			} catch (AnalysisRunResultException e) {
-				e.printStackTrace();
-			} catch (RepositoryConfigNotFoundException e) {
-				e.printStackTrace();
-			} catch (RepositoryConfigurationException e) {
-				e.printStackTrace();
-			} catch (UnknownDataSetTypeException e) {
-				e.printStackTrace();
-			} catch (NoDataSetException e) {
-				e.printStackTrace();
-			} catch (UnknownRunDataStatisticException e) {
-				e.printStackTrace();
-			} catch (NullPointerException e) {
-				e.printStackTrace();
-			} catch (RunResultParseException e) {
-				e.printStackTrace();
-			} catch (UnknownDataPreprocessorException e) {
-				e.printStackTrace();
-			} catch (IncompatibleDataSetConfigPreprocessorException e) {
-				e.printStackTrace();
-			} catch (UnknownContextException e) {
-				e.printStackTrace();
-			} catch (IncompatibleContextException e) {
+			} catch (StatisticCalculateException e) {
 				e.printStackTrace();
 			} catch (RNotAvailableException e) {
+				e.printStackTrace();
 			} catch (REngineException e) {
-			} catch (UnknownParameterType e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO: do we have to throw this exception?
-				e.printStackTrace();
-			} catch (UnknownRunResultPostprocessorException e) {
-				// TODO Auto-generated catch block
+			} catch (UnknownDataSetFormatException e) {
 				e.printStackTrace();
 			} finally {
 				currentPos++;

@@ -38,6 +38,7 @@ import de.clusteval.context.UnknownContextException;
 import de.clusteval.data.DataConfig;
 import de.clusteval.data.DataConfigNotFoundException;
 import de.clusteval.data.DataConfigurationException;
+import de.clusteval.data.dataset.DataSet.WEBSITE_VISIBILITY;
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
 import de.clusteval.data.dataset.format.ConversionStandardToInputConfiguration;
 import de.clusteval.data.dataset.format.DataSetFormat;
@@ -428,7 +429,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 						(RelativeDataSetFormat) (DataSetFormat.parseFromString(
 								getRepository(), "RowSimDataSetFormat")),
 						DataSetType.parseFromString(getRepository(),
-								"PPIDataSetType")), this.repositoryObject);
+								"PPIDataSetType"), WEBSITE_VISIBILITY.HIDE),
+				this.repositoryObject);
 	}
 
 	/**

@@ -20,6 +20,7 @@ import java.util.List;
 
 import utils.SimilarityMatrix;
 import utils.SimilarityMatrix.NUMBER_PRECISION;
+import de.clusteval.data.dataset.DataSet.WEBSITE_VISIBILITY;
 import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.RelativeDataSetFormat;
 import de.clusteval.data.dataset.type.DataSetType;
@@ -59,10 +60,11 @@ public class RelativeDataSet extends DataSet {
 	 */
 	public RelativeDataSet(Repository repository, final boolean register,
 			long changeDate, File absPath, final String alias,
-			RelativeDataSetFormat dsFormat, DataSetType dsType)
+			RelativeDataSetFormat dsFormat, DataSetType dsType,
+			final WEBSITE_VISIBILITY websiteVisibility)
 			throws RegisterException {
 		super(repository, register, changeDate, absPath, alias, dsFormat,
-				dsType);
+				dsType, websiteVisibility);
 	}
 
 	/**
