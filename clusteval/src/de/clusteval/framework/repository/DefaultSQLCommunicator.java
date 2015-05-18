@@ -2297,7 +2297,7 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			if (object.getRepository() instanceof RunResultRepository) {
 				columns = new String[]{"repository_id", "absPath",
 						"dataset_format_id", "dataset_id", "checksum",
-						"dataset_type_id", "alias"};
+						"dataset_type_id", "alias", "visibility"};
 				values = new String[]{
 						"" + this.updateRepositoryId(),
 						"" + object.getAbsolutePath(),
@@ -2311,11 +2311,12 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 						object.getChecksum() + "",
 						getDataSetTypeId(object.getDataSetType().getClass()
 								.getSimpleName())
-								+ "", object.getAlias()};
+								+ "", object.getAlias(),
+						"" + object.getWebsiteVisibility().ordinal()};
 			} else {
 				columns = new String[]{"repository_id", "absPath",
 						"dataset_format_id", "checksum", "dataset_type_id",
-						"alias"};
+						"alias", "visibility"};
 				values = new String[]{
 						"" + this.updateRepositoryId(),
 						"" + object.getAbsolutePath(),
@@ -2323,7 +2324,8 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 						object.getChecksum() + "",
 						getDataSetTypeId(object.getDataSetType().getClass()
 								.getSimpleName())
-								+ "", object.getAlias()};
+								+ "", object.getAlias(),
+						"" + object.getWebsiteVisibility().ordinal()};
 			}
 			int rowId;
 			if (updateOnly) {
