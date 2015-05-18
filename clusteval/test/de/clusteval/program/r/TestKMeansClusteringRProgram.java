@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import ch.qos.logback.classic.Level;
 import de.clusteval.data.dataset.format.IncompatibleDataSetFormatException;
+import de.clusteval.data.randomizer.UnknownDataRandomizerException;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.Repository;
@@ -34,6 +35,7 @@ import de.clusteval.framework.repository.config.RepositoryConfigNotFoundExceptio
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.run.Run;
+import de.clusteval.run.RunInitializationException;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.runnable.RunRunnableInitializationException;
@@ -86,13 +88,15 @@ public class TestKMeansClusteringRProgram {
 	 * @throws RepositoryConfigurationException
 	 * @throws IOException
 	 * @throws RunRunnableInitializationException
+	 * @throws RunInitializationException
 	 */
 	@Test
 	public void testApplyToRelativeDataSet()
 			throws RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, IOException,
-			RunRunnableInitializationException, InterruptedException {
+			RunRunnableInitializationException, InterruptedException,
+			UnknownDataRandomizerException, RunInitializationException {
 		ClustevalBackendServer.logLevel(Level.INFO);
 
 		RunSchedulerThread scheduler = repo.getSupervisorThread()

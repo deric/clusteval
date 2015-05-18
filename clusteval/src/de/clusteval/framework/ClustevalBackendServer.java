@@ -83,6 +83,7 @@ import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.randomizer.DataRandomizeException;
 import de.clusteval.data.randomizer.DataRandomizer;
 import de.clusteval.data.randomizer.UnknownDataRandomizerException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
@@ -911,6 +912,9 @@ public class ClustevalBackendServer implements IBackendServer {
 		} catch (UnknownRunResultPostprocessorException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (UnknownDataRandomizerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		return result;
@@ -1105,7 +1109,7 @@ public class ClustevalBackendServer implements IBackendServer {
 			randomizer.randomize(args);
 		} catch (UnknownDataRandomizerException e) {
 			e.printStackTrace();
-		} catch (ParseException e) {
+		} catch (DataRandomizeException e) {
 			e.printStackTrace();
 		}
 		return false;

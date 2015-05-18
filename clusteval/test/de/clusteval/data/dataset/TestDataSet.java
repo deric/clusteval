@@ -53,6 +53,7 @@ import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.preprocessing.DataPreprocessor;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.randomizer.UnknownDataRandomizerException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.InvalidRepositoryException;
@@ -123,6 +124,7 @@ public class TestDataSet extends AbstractClustEvalTest {
 	 * @throws DataSetConfigNotFoundException
 	 * @throws GoldStandardConfigurationException
 	 * @throws GoldStandardNotFoundException
+	 * @throws UnknownDataRandomizerException
 	 */
 	public void testRegister() throws UnknownDataSetFormatException,
 			NoRepositoryFoundException, DataSetNotFoundException,
@@ -147,7 +149,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
 			UnknownRunStatisticException, UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -242,7 +245,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
 			UnknownRunStatisticException, UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		Repository runResultRepository = new RunResultRepository(
 				new File(
 						"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1")
@@ -321,7 +325,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 
 		this.repositoryObject = Parser
 				.parseFromFile(
@@ -402,7 +407,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -486,7 +492,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException, UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -556,7 +563,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -630,7 +638,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -702,7 +711,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -776,7 +786,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -848,7 +859,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -928,7 +940,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -1022,7 +1035,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -1120,7 +1134,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -1307,7 +1322,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -1393,7 +1409,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 
 		File targetFile = new File(
 				"testCaseRepository/data/datasets/rowSimTest/rowSimTestFile.sim.strip.SimMatrix")
@@ -1492,7 +1509,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 
 		this.repositoryObject = Parser
 				.parseFromFile(
@@ -1548,7 +1566,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,
@@ -1602,7 +1621,8 @@ public class TestDataSet extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownRunStatisticException, UnknownRunDataStatisticException {
+			UnknownRunStatisticException, UnknownRunDataStatisticException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSet.class,

@@ -65,6 +65,8 @@ import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.preprocessing.DataPreprocessor;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.randomizer.DataRandomizer;
+import de.clusteval.data.randomizer.UnknownDataRandomizerException;
 import de.clusteval.data.statistics.DataStatistic;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
@@ -73,6 +75,7 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.program.NoOptimizableProgramParameterException;
+import de.clusteval.program.ParameterSet;
 import de.clusteval.program.Program;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
@@ -89,6 +92,7 @@ import de.clusteval.run.DataAnalysisRun;
 import de.clusteval.run.ExecutionRun;
 import de.clusteval.run.InternalParameterOptimizationRun;
 import de.clusteval.run.ParameterOptimizationRun;
+import de.clusteval.run.RobustnessAnalysisRun;
 import de.clusteval.run.Run;
 import de.clusteval.run.RunAnalysisRun;
 import de.clusteval.run.RunDataAnalysisRun;
@@ -125,6 +129,8 @@ public abstract class Parser<P extends RepositoryObject> {
 			return (Parser<T>) new RunAnalysisRunParser();
 		else if (c.equals(RunDataAnalysisRun.class))
 			return (Parser<T>) new RunDataAnalysisRunParser();
+		else if (c.equals(RobustnessAnalysisRun.class))
+			return (Parser<T>) new RobustnessAnalysisRunParser();
 		else if (c.equals(DataSetConfig.class))
 			return (Parser<T>) new DataSetConfigParser();
 		else if (c.equals(RunResultDataSetConfig.class))
@@ -165,7 +171,8 @@ public abstract class Parser<P extends RepositoryObject> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		Parser<T> parser = getParserForClass(c);
 		parser.parseFromFile(absPath);
 		return parser.getResult();
@@ -193,7 +200,8 @@ public abstract class Parser<P extends RepositoryObject> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		String runMode = Parser.getModeOfRun(file);
 		if (runMode.equals("clustering")) {
 			return Parser.parseFromFile(ClusteringRun.class, file);
@@ -208,6 +216,8 @@ public abstract class Parser<P extends RepositoryObject> {
 			return Parser.parseFromFile(RunAnalysisRun.class, file);
 		} else if (runMode.equals("runDataAnalysis")) {
 			return Parser.parseFromFile(RunDataAnalysisRun.class, file);
+		} else if (runMode.equals("robustnessAnalysis")) {
+			return Parser.parseFromFile(RobustnessAnalysisRun.class, file);
 		}
 		return null;
 	}
@@ -234,7 +244,8 @@ public abstract class Parser<P extends RepositoryObject> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		RunParser<? extends Run> p = (RunParser<Run>) getParserForClass(Run.class);
 		p.parseFromFile(absPath);
 		return p.mode;
@@ -263,7 +274,8 @@ public abstract class Parser<P extends RepositoryObject> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException;
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException;
 
 	public P getResult() {
 		return this.result;
@@ -304,12 +316,93 @@ class ClusteringRunParser extends ExecutionRunParser<ClusteringRun> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		super.parseFromFile(absPath);
 
 		result = new ClusteringRun(repo, context, changeDate, absPath,
 				programConfigs, dataConfigs, qualityMeasures, runParamValues,
-				postprocessor);
+				postprocessor, maxExecutionTimes);
+		result = repo.getRegisteredObject(result, false);
+	}
+}
+
+class RobustnessAnalysisRunParser
+		extends
+			ExecutionRunParser<RobustnessAnalysisRun> {
+
+	protected List<String> uniqueRunIdentifiers;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.ExecutionRunParser#parseFromFile(java
+	 * .io.File)
+	 */
+	@Override
+	public void parseFromFile(File absPath) throws ConfigurationException,
+			UnknownContextException, NoRepositoryFoundException,
+			UnknownClusteringQualityMeasureException, RunException,
+			UnknownDataSetFormatException, FileNotFoundException,
+			RegisterException, UnknownParameterType,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, GoldStandardNotFoundException,
+			GoldStandardConfigurationException, DataSetConfigurationException,
+			DataSetNotFoundException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
+		super.parseFromFile(absPath);
+
+		String[] list = getProps().getStringArray("uniqueRunIdentifiers");
+		if (list.length == 0)
+			throw new RunException(
+					"At least one run result identifier must be specified");
+		// 10.07.2014: remove duplicates.
+		list = new ArrayList<String>(new HashSet<String>(Arrays.asList(list)))
+				.toArray(new String[0]);
+		this.uniqueRunIdentifiers = Arrays.asList(list);
+
+		String randomizerS = getProps().getString("randomizer");
+		DataRandomizer randomizer = DataRandomizer.parseFromString(this.repo,
+				randomizerS);
+		int numberOfRandomizedDataSets = getProps().getInt(
+				"numberOfRandomizedDataSets");
+
+		// get randomizer parameter sets
+		List<ParameterSet> paramSets = new ArrayList<ParameterSet>();
+		int c = 1;
+		while (getProps().getSections().contains(randomizerS + "_" + c)) {
+			ParameterSet paramSet = new ParameterSet();
+			Iterator<String> parameters = getProps().getKeys(
+					randomizerS + "_" + c);
+			while (parameters.hasNext()) {
+				String param = parameters.next();
+				String value = getProps().getString(param);
+
+				paramSet.put(param.replace(randomizerS + "_" + c + ".", ""),
+						value);
+			}
+			c++;
+			paramSets.add(paramSet);
+		}
+
+		result = new RobustnessAnalysisRun(repo, context, changeDate, absPath,
+				uniqueRunIdentifiers, programConfigs, dataConfigs,
+				qualityMeasures, runParamValues, postprocessor, randomizer,
+				paramSets, numberOfRandomizedDataSets, maxExecutionTimes);
 		result = repo.getRegisteredObject(result, false);
 	}
 }
@@ -338,7 +431,8 @@ class DataAnalysisRunParser extends AnalysisRunParser<DataAnalysisRun> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		super.parseFromFile(absPath);
 
 		/*
@@ -412,7 +506,8 @@ class DataConfigParser extends RepositoryObjectParser<DataConfig> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		super.parseFromFile(absPath);
 
 		log.debug("Parsing data config \"" + absPath + "\"");
@@ -495,7 +590,8 @@ class DataSetConfigParser extends RepositoryObjectParser<DataSetConfig> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		super.parseFromFile(absPath);
 
 		log.debug("Parsing dataset config \"" + absPath + "\"");
@@ -596,7 +692,8 @@ class DataSetConfigParser extends RepositoryObjectParser<DataSetConfig> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		if (repo instanceof RunResultRepository)
 			return repo.getStaticObjectWithName(DataSet.class, datasetName
 					+ "/" + datasetFile);
@@ -645,7 +742,8 @@ class DataSetParser extends RepositoryObjectParser<DataSet> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		super.parseFromFile(absPath);
 
 		try {
@@ -772,6 +870,7 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 	protected List<Map<ProgramParameter<?>, String>> runParamValues;
 	protected Map<ProgramParameter<?>, String> paramMap;
 	protected List<RunResultPostprocessor> postprocessor;
+	protected Map<ProgramConfig, Integer> maxExecutionTimes;
 
 	@Override
 	public void parseFromFile(final File absPath)
@@ -796,7 +895,8 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		super.parseFromFile(absPath);
 
 		/*
@@ -815,6 +915,8 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 		 * will overwrite the default values of the program config.
 		 */
 		runParamValues = new ArrayList<Map<ProgramParameter<?>, String>>();
+
+		maxExecutionTimes = new HashMap<ProgramConfig, Integer>();
 
 		parseProgramConfigurations();
 
@@ -849,7 +951,8 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 			UnknownParameterOptimizationMethodException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 
 		String[] list = getProps().getStringArray("programConfig");
 		if (list.length == 0)
@@ -954,7 +1057,8 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		String[] list = getProps().getStringArray("dataConfig");
 		if (list.length == 0)
 			throw new RunException("At least one data config must be specified");
@@ -986,8 +1090,9 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 			while (itParams.hasNext()) {
 				String param = itParams.next();
 				if (param.equals("maxExecutionTimeMinutes")) {
-					programConfig.setMaxExecutionTimeMinutes(Integer
-							.parseInt(getProps().getSection(
+					this.maxExecutionTimes.put(
+							programConfig,
+							Integer.parseInt(getProps().getSection(
 									programConfig.getName()).getString(param)));
 				} else if (isParamConfigurationEntry(param))
 					try {
@@ -1080,7 +1185,8 @@ class GoldStandardConfigParser
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		super.parseFromFile(absPath);
 
 		log.debug("Parsing goldstandard config \"" + absPath + "\"");
@@ -1136,12 +1242,14 @@ class InternalParameterOptimizationRunParser
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		super.parseFromFile(absPath);
 
 		result = new InternalParameterOptimizationRun(repo, context,
 				changeDate, absPath, programConfigs, dataConfigs,
-				qualityMeasures, runParamValues, postprocessor);
+				qualityMeasures, runParamValues, postprocessor,
+				maxExecutionTimes);
 		result = repo.getRegisteredObject(result, false);
 
 	}
@@ -1181,7 +1289,8 @@ class ParameterOptimizationRunParser
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 
 		this.optimizationParameters = new ArrayList<List<ProgramParameter<?>>>();
 		/*
@@ -1228,7 +1337,7 @@ class ParameterOptimizationRunParser
 		result = new ParameterOptimizationRun(repo, context, changeDate,
 				absPath, programConfigs, dataConfigs, qualityMeasures,
 				runParamValues, optimizationParameters, optimizationMethods,
-				postprocessor);
+				postprocessor, maxExecutionTimes);
 		result = repo.getRegisteredObject(result, false);
 
 		// now we set the run reference of the methods
@@ -1300,7 +1409,8 @@ class ParameterOptimizationRunParser
 			UnknownParameterOptimizationMethodException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 
 		/*
 		 * Default optimization method for all programs, where no specific
@@ -1428,7 +1538,8 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		super.parseFromFile(absPath);
 
 		log.debug("Parsing program config \"" + absPath + "\"");
@@ -1494,8 +1605,15 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 
 			String alias = getProps().getString("alias");
 
+			Map<String, String> envVars = new HashMap<String, String>();
+			Iterator<String> vars = getProps().getSection("envVars").getKeys();
+			while (vars.hasNext()) {
+				String var = vars.next();
+				envVars.put(var, getProps().getSection("envVars").getString(var));
+			}
+
 			programP = new StandaloneProgram(repo, context, true, changeDate,
-					programFile, alias);
+					programFile, alias, envVars);
 		} else if (repo.isClassRegistered(RProgram.class,
 				"de.clusteval.program.r." + type)) {
 			programP = RProgram.parseFromString(repo, type);
@@ -1522,6 +1640,7 @@ class ProgramConfigParser extends RepositoryObjectParser<ProgramConfig> {
 		// not listed in the parameters-list
 		Set<String> sections = getProps().getSections();
 		sections.removeAll(paras);
+		sections.remove("envVars");
 		sections.remove(null);
 		sections.remove("invocationFormat");
 
@@ -1682,7 +1801,8 @@ class RepositoryObjectParser<T extends RepositoryObject> extends Parser<T> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 
 		if (!absPath.exists())
 			throw new FileNotFoundException("File \"" + absPath
@@ -1726,7 +1846,8 @@ class RunAnalysisRunParser extends AnalysisRunParser<RunAnalysisRun> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		super.parseFromFile(absPath);
 
 		/*
@@ -1788,7 +1909,8 @@ class RunDataAnalysisRunParser extends AnalysisRunParser<RunDataAnalysisRun> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		super.parseFromFile(absPath);
 
 		List<String> uniqueRunAnalysisRunIdentifiers = new LinkedList<String>();
@@ -1858,7 +1980,8 @@ class RunParser<T extends Run> extends RepositoryObjectParser<T> {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		super.parseFromFile(absPath);
 
 		// by default we are in a clustering context

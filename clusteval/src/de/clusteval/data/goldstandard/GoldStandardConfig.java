@@ -10,12 +10,17 @@
  ******************************************************************************/
 package de.clusteval.data.goldstandard;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
+import de.clusteval.framework.repository.DumpableRepositoryObject;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryEvent;
-import de.clusteval.framework.repository.RepositoryObject;
+import de.clusteval.framework.repository.RepositoryMoveEvent;
+import de.clusteval.framework.repository.RepositoryObjectDumpException;
 import de.clusteval.framework.repository.RepositoryRemoveEvent;
 import de.clusteval.framework.repository.RepositoryReplaceEvent;
 
@@ -38,7 +43,7 @@ import de.clusteval.framework.repository.RepositoryReplaceEvent;
  * @author Christian Wiwie
  * 
  */
-public class GoldStandardConfig extends RepositoryObject {
+public class GoldStandardConfig extends DumpableRepositoryObject {
 
 	/**
 	 * A goldstandard configuration encapsulates a goldstandard. This attribute
@@ -146,6 +151,21 @@ public class GoldStandardConfig extends RepositoryObject {
 					this.notify(newEvent);
 				}
 			}
+		} else if (e instanceof RepositoryMoveEvent) {
+			RepositoryMoveEvent event = (RepositoryMoveEvent) e;
+			if (event.getObject().equals(this))
+				super.notify(event);
+			else {
+				if (event.getObject().equals(goldStandard)) {
+					this.log.info("GoldStandardConfig " + this
+							+ " updated with new goldstandard path.");
+					try {
+						this.dumpToFile();
+					} catch (RepositoryObjectDumpException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
 		}
 	}
 
@@ -157,5 +177,29 @@ public class GoldStandardConfig extends RepositoryObject {
 	@Override
 	public String toString() {
 		return this.absPath.getName().replace(".gsconfig", "");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.DumpableRepositoryObject#dumpToFileHelper
+	 * ()
+	 */
+	@Override
+	protected void dumpToFileHelper() throws RepositoryObjectDumpException {
+		BufferedWriter writer;
+		try {
+			writer = new BufferedWriter(new FileWriter(this.absPath));
+			writer.append("goldstandardName = "
+					+ this.goldStandard.getMajorName());
+			writer.newLine();
+			writer.append("goldstandardFile = "
+					+ this.goldStandard.getMinorName());
+			writer.newLine();
+			writer.close();
+		} catch (IOException e) {
+			throw new RepositoryObjectDumpException(e);
+		}
 	}
 }

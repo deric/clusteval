@@ -28,6 +28,7 @@ import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ProgramConfig;
+import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.ClusteringRun;
 import de.clusteval.run.Run;
 import de.clusteval.run.result.NoRunResultFormatParserException;
@@ -66,8 +67,10 @@ public class ClusteringRunRunnable extends ExecutionRunRunnable {
 	 */
 	public ClusteringRunRunnable(RunSchedulerThread runScheduler, Run run,
 			ProgramConfig programConfig, DataConfig dataConfig,
-			String runIdentString, boolean isResume) {
-		super(run, programConfig, dataConfig, runIdentString, isResume);
+			String runIdentString, boolean isResume,
+			Map<ProgramParameter<?>, String> runParams) {
+		super(run, programConfig, dataConfig, runIdentString, isResume,
+				runParams);
 		this.future = runScheduler.registerRunRunnable(this);
 	}
 

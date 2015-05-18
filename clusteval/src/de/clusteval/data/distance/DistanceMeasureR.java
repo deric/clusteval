@@ -102,7 +102,7 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 		try {
 			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
-				this.log.info("Transferring coordinates to R");
+				this.log.debug("Transferring coordinates to R");
 				rEngine.assign("matrix", matrix);
 				rEngine.eval("matrix.t <- t(matrix)");
 				try {
@@ -112,7 +112,7 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 					// calculate similarities package-wise (in each iteration
 					// all
 					// similarities of 1/100 of all objects, but at least 100
-					this.log.info("Calculating pairwise distances in R and transferring back to Java");
+					this.log.debug("Calculating pairwise distances in R and transferring back to Java");
 					int rowsPerInvocation = Math.max(matrix.length / 100, 100);
 					for (int i = 0; i < matrix.length; i += rowsPerInvocation) {
 						int firstRow = i + 1;

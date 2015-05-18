@@ -37,6 +37,7 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.run.MissingParameterValueException;
 import de.clusteval.run.RUN_STATUS;
 import de.clusteval.run.Run;
+import de.clusteval.run.RunInitializationException;
 import de.clusteval.run.result.NoRunResultFormatParserException;
 import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.result.RunResult;
@@ -503,6 +504,8 @@ public class RunSchedulerThread extends ClustevalThread {
 							} catch (IOException e1) {
 								e1.printStackTrace();
 							} catch (RunRunnableInitializationException e) {
+								e.printStackTrace();
+							} catch (RunInitializationException e) {
 								e.printStackTrace();
 							}
 						}

@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import utils.SimilarityMatrix.NUMBER_PRECISION;
-
 import de.clusteval.context.Context;
 import de.clusteval.data.dataset.format.AbsoluteDataSetFormat;
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
@@ -33,6 +32,7 @@ import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryEvent;
+import de.clusteval.framework.repository.RepositoryMoveEvent;
 import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.RepositoryRemoveEvent;
 import de.clusteval.framework.repository.RepositoryReplaceEvent;
@@ -471,7 +471,7 @@ public abstract class DataSet extends RepositoryObject {
 				// .getSimpleName());
 				standardFormat.setNormalized(targetFormat.getNormalized());
 
-				this.log.info(String.format(
+				this.log.debug(String.format(
 						"Convert input to standard format %s",
 						standardFormat.toString()));
 
@@ -491,7 +491,7 @@ public abstract class DataSet extends RepositoryObject {
 							configInputToStandard);
 				} catch (Exception e) {
 					e.printStackTrace();
-//					throw e;
+					// throw e;
 				}
 
 				// 13.04.2013: apply all data preprocessors after distance
@@ -503,7 +503,7 @@ public abstract class DataSet extends RepositoryObject {
 					result = proc.preprocess(result);
 				}
 
-				this.log.info(String.format(
+				this.log.debug(String.format(
 						"Convert to input format of method %s",
 						targetFormat.toString()));
 				/*
@@ -661,6 +661,10 @@ public abstract class DataSet extends RepositoryObject {
 				this.unregister();
 				this.notify(newEvent);
 			}
+		} else if (e instanceof RepositoryMoveEvent) {
+			RepositoryMoveEvent event = (RepositoryMoveEvent) e;
+			if (event.getObject().equals(this))
+				super.notify(event);
 		}
 	}
 
@@ -679,12 +683,19 @@ public abstract class DataSet extends RepositoryObject {
 	 *            target file.
 	 * @return True, if this dataset has been moved successfully.
 	 */
-	public boolean move(final File targetFile, final boolean overwrite) {
+	@Override
+	public boolean moveTo(final File targetFile, final boolean overwrite) {
 		if (!targetFile.exists() || overwrite) {
 			boolean result = this.datasetFormat.moveDataSetTo(this, targetFile,
 					overwrite);
-			if (targetFile.exists())
+			if (targetFile.exists()) {
 				this.absPath = targetFile;
+				try {
+					this.notify(new RepositoryMoveEvent(this));
+				} catch (RegisterException e) {
+					e.printStackTrace();
+				}
+			}
 			return result;
 		}
 		if (targetFile.exists())

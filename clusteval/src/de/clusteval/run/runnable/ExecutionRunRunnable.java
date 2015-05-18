@@ -17,8 +17,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.ProcessBuilder.Redirect;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -179,13 +177,15 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 *            completely new execution.
 	 */
 	public ExecutionRunRunnable(Run run, ProgramConfig programConfig,
-			DataConfig dataConfig, String runIdentString, boolean isResume) {
+			DataConfig dataConfig, String runIdentString, boolean isResume,
+			Map<ProgramParameter<?>, String> runParams) {
 		super(run, runIdentString, isResume);
 
 		this.programConfig = programConfig;
 		this.dataConfig = dataConfig;
 		this.futures = new ArrayList<Future<?>>();
 		this.iterationRunnables = new ArrayList<IterationRunnable>();
+		this.runParams = runParams;
 	}
 
 	/*
@@ -302,7 +302,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 									.getAbsolutePath())) {
 						ds.copyTo(new File(newFileName), false, true);
 					} else
-						ds.move(new File(newFileName), false);
+						ds.moveTo(new File(newFileName), false);
 
 					dataConfig.getDatasetConfig().setDataSet(ds);
 					// found a convertable compatible format
@@ -385,6 +385,10 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 */
 	public DataConfig getDataConfig() {
 		return this.dataConfig;
+	}
+
+	public String getCompleteQualityOutput() {
+		return this.completeQualityOutput;
 	}
 
 	/**
@@ -790,6 +794,8 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			else if (prevItRunnable.getrNotAvailableException() != null)
 				throw prevItRunnable.getrNotAvailableException();
 
+		final ExecutionRun run = this.getRun();
+
 		IterationRunnable iterationRunnable = new IterationRunnable(
 				iterationWrapper) {
 
@@ -849,8 +855,11 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 										.start();
 
 								try {
-									int maxExecTime = programConfig
-											.getMaxExecutionTimeMinutes();
+									int maxExecTime = run
+											.hasMaxExecutionTime(programConfig)
+											? run.getMaxExecutionTime(programConfig)
+											: programConfig
+													.getMaxExecutionTimeMinutes();
 									if (maxExecTime == -1) {
 										proc.waitFor();
 									} else if (!proc.waitFor(maxExecTime,
@@ -866,6 +875,19 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 																.getOptId()));
 										proc.destroyForcibly();
 
+										// Class<?> ProcessImpl =
+										// proc.getClass();
+										// Field field = ProcessImpl
+										// .getDeclaredField("pid");
+										// field.setAccessible(true);
+										// int pid = field.getInt(proc);
+										//
+										// ProcessBuilder pb = new
+										// ProcessBuilder(
+										// "kill -9 " + pid);
+										// Process killProc = pb.start();
+										// killProc.waitFor();
+										//
 										proc.waitFor();
 									}
 								} catch (InterruptedException e) {
@@ -1419,23 +1441,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 		this.format = programConfig.getOutputFormat();
 
-		/*
-		 * A Run holds actual values for the parameters of the program. If a
-		 * parameter is set to a value here, this will overwrite the default
-		 * value of the parameter defined in the program configuration.
-		 */
-		// 06.04.2013: changed from indexOf to manual search, because
-		// programConfig of this runnable and of the run are not identical
-		int p = -1;
-		for (int i = 0; i < this.getRun().getProgramConfigs().size(); i++) {
-			ProgramConfig programConfig = this.getRun().getProgramConfigs()
-					.get(i);
-			if (programConfig.getName().equals(this.programConfig.getName())) {
-				p = i;
-				break;
-			}
-		}
-		this.runParams = this.getRun().getParameterValues().get(p);
+		// this.getRunParametersFromRun();
 		this.log.info("Converting and preprocessing dataset ...");
 		boolean found = preprocessAndCheckCompatibleDataSetFormat();
 		if (!found) {
@@ -1453,7 +1459,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			return;
 
 		try {
-			this.log.info("Loading the input similarities into memory ...");
+			this.log.debug("Loading the input similarities into memory ...");
 			// Load the dataset into memory
 			DataSet dataSet = this.dataConfig.getDatasetConfig().getDataSet()
 					.getInStandardFormat();
@@ -1629,6 +1635,26 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 							programConfig + "_" + dataConfig
 									+ ".results.qual.complete");
 	}
+
+	// /**
+	// * A Run holds actual values for the parameters of the program. If a
+	// * parameter is set to a value here, this will overwrite the default value
+	// * of the parameter defined in the program configuration.
+	// */
+	// protected void getRunParametersFromRun() {
+	// // 06.04.2013: changed from indexOf to manual search, because
+	// // programConfig of this runnable and of the run are not identical
+	// int p = -1;
+	// for (int i = 0; i < this.getRun().getProgramConfigs().size(); i++) {
+	// ProgramConfig programConfig = this.getRun().getProgramConfigs()
+	// .get(i);
+	// if (programConfig.getName().equals(this.programConfig.getName())) {
+	// p = i;
+	// break;
+	// }
+	// }
+	// this.runParams = this.getRun().getParameterValues().get(p);
+	// }
 
 	/*
 	 * (non-Javadoc)

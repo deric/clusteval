@@ -67,10 +67,12 @@ public class InternalParameterOptimizationRun extends ExecutionRun {
 			List<ProgramConfig> programConfigs, List<DataConfig> dataConfigs,
 			List<ClusteringQualityMeasure> qualityMeasures,
 			List<Map<ProgramParameter<?>, String>> parameterValues,
-			final List<RunResultPostprocessor> postProcessors)
+			final List<RunResultPostprocessor> postProcessors,
+			final Map<ProgramConfig, Integer> maxExecutionTimes)
 			throws RegisterException {
 		super(repository, context, true, changeDate, absPath, programConfigs,
-				dataConfigs, qualityMeasures, parameterValues, postProcessors);
+				dataConfigs, qualityMeasures, parameterValues, postProcessors,
+				maxExecutionTimes);
 	}
 
 	/**
@@ -97,9 +99,10 @@ public class InternalParameterOptimizationRun extends ExecutionRun {
 	protected ExecutionRunRunnable createRunRunnableFor(
 			RunSchedulerThread runScheduler, Run run,
 			ProgramConfig programConfig, DataConfig dataConfig,
-			String runIdentString, boolean isResume) {
+			String runIdentString, boolean isResume,
+			Map<ProgramParameter<?>, String> runParams) {
 		return new InternalParameterOptimizationRunRunnable(runScheduler, run,
-				programConfig, dataConfig, runIdentString, isResume);
+				programConfig, dataConfig, runIdentString, isResume, runParams);
 	}
 
 	/*

@@ -15,12 +15,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import utils.SimilarityMatrix.NUMBER_PRECISION;
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
 import de.clusteval.data.dataset.format.ConversionStandardToInputConfiguration;
+import de.clusteval.data.preprocessing.DataPreprocessor;
+import de.clusteval.framework.repository.DumpableRepositoryObject;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryEvent;
-import de.clusteval.framework.repository.RepositoryObject;
+import de.clusteval.framework.repository.RepositoryMoveEvent;
+import de.clusteval.framework.repository.RepositoryObjectDumpException;
 import de.clusteval.framework.repository.RepositoryRemoveEvent;
 import de.clusteval.framework.repository.RepositoryReplaceEvent;
 
@@ -43,7 +47,7 @@ import de.clusteval.framework.repository.RepositoryReplaceEvent;
  * @author Christian Wiwie
  * 
  */
-public class DataSetConfig extends RepositoryObject {
+public class DataSetConfig extends DumpableRepositoryObject {
 
 	/**
 	 * A dataset configuration encapsulates a dataset. This attribute stores a
@@ -200,6 +204,24 @@ public class DataSetConfig extends RepositoryObject {
 					this.notify(newEvent);
 				}
 			}
+		} else if (e instanceof RepositoryMoveEvent) {
+			RepositoryMoveEvent event = (RepositoryMoveEvent) e;
+			if (event.getObject().equals(this)) {
+				super.notify(event);
+			} else {
+				if (event.getObject().equals(dataset)) {
+					this.log.info("DataSetConfig " + this.absPath.getName()
+							+ ": updated with new dataset path.");
+					// dump this dataset config to file with the updated dataset
+					// file path.
+					try {
+						this.dumpToFile();
+						// TODO: replace with new exception type
+					} catch (RepositoryObjectDumpException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
 		}
 	}
 
@@ -237,5 +259,68 @@ public class DataSetConfig extends RepositoryObject {
 	 */
 	public void setDataSet(DataSet dataset) {
 		this.dataset = dataset;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.DumpableRepositoryObject#dumpToFile()
+	 */
+	@Override
+	public void dumpToFileHelper() throws RepositoryObjectDumpException {
+		BufferedWriter writer;
+		try {
+			writer = new BufferedWriter(new FileWriter(this.absPath));
+			writer.append("datasetName = " + this.dataset.getMajorName());
+			writer.newLine();
+			writer.append("datasetFile = " + this.dataset.getMinorName());
+			writer.newLine();
+			writer.append("distanceMeasureAbsoluteToRelative = "
+					+ configInputToStandard
+							.getDistanceMeasureAbsoluteToRelative().getClass()
+							.getSimpleName());
+			writer.newLine();
+
+			String simString = "";
+			if (configInputToStandard.getSimilarityPrecision() == NUMBER_PRECISION.DOUBLE)
+				simString = "double";
+			else if (configInputToStandard.getSimilarityPrecision() == NUMBER_PRECISION.FLOAT)
+				simString = "float";
+			else if (configInputToStandard.getSimilarityPrecision() == NUMBER_PRECISION.SHORT)
+				simString = "short";
+			writer.append("similarityPrecision = " + simString);
+			writer.newLine();
+
+			StringBuilder sb = new StringBuilder();
+			if (!configInputToStandard.getPreprocessorsBeforeDistance()
+					.isEmpty()) {
+				for (DataPreprocessor pre : configInputToStandard
+						.getPreprocessorsBeforeDistance()) {
+					sb.append(pre.getClass().getSimpleName());
+					sb.append(",");
+				}
+				sb.deleteCharAt(sb.length() - 1);
+				writer.append("preprocessorBeforeDistance = " + sb.toString());
+				writer.newLine();
+			}
+
+			if (!configInputToStandard.getPreprocessorsAfterDistance()
+					.isEmpty()) {
+				sb = new StringBuilder();
+				for (DataPreprocessor pre : configInputToStandard
+						.getPreprocessorsAfterDistance()) {
+					sb.append(pre.getClass().getSimpleName());
+					sb.append(",");
+				}
+				sb.deleteCharAt(sb.length() - 1);
+				writer.append("preprocessorAfterDistance = " + sb.toString());
+				writer.newLine();
+			}
+
+			writer.close();
+		} catch (IOException e) {
+			throw new RepositoryObjectDumpException(e);
+		}
 	}
 }

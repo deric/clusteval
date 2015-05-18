@@ -278,8 +278,10 @@ public abstract class Run extends RepositoryObject {
 	 * performed in the runnables asynchronously instead.
 	 * 
 	 * @throws IOException
+	 * @throws RunInitializationException
 	 */
-	protected void beforePerform() throws IOException {
+	protected void beforePerform() throws IOException,
+			RunInitializationException {
 		log.info("Starting run \"" + this.getName() + "\"");
 		log.info("Run mode is \"" + this.getClass().getSimpleName() + "\"");
 		/*
@@ -707,9 +709,11 @@ public abstract class Run extends RepositoryObject {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 * @throws RunRunnableInitializationException
+	 * @throws RunInitializationException
 	 */
 	public void perform(final RunSchedulerThread runScheduler)
-			throws IOException, RunRunnableInitializationException {
+			throws IOException, RunRunnableInitializationException,
+			RunInitializationException {
 		beforePerform();
 		doPerform(runScheduler);
 		waitForRunnablesToFinish();

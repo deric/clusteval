@@ -49,6 +49,7 @@ import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.randomizer.UnknownDataRandomizerException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
@@ -143,6 +144,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 * @throws UnknownParameterType
 	 * @throws InterruptedException
 	 * @throws UnknownRunResultPostprocessorException
+	 * @throws UnknownDataRandomizerException
 	 */
 	public static Run parseFromRunResultFolder(
 			final Repository parentRepository, final File runResultFolder,
@@ -176,7 +178,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
 			UnknownParameterType, InterruptedException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException, UnknownDataRandomizerException {
 
 		Repository childRepository = new RunResultRepository(
 				runResultFolder.getAbsolutePath(), parentRepository);

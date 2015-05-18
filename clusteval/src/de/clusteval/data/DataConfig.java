@@ -10,17 +10,21 @@
  ******************************************************************************/
 package de.clusteval.data;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.data.dataset.DataSetConfig;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
+import de.clusteval.framework.repository.DumpableRepositoryObject;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryEvent;
-import de.clusteval.framework.repository.RepositoryObject;
+import de.clusteval.framework.repository.RepositoryObjectDumpException;
 import de.clusteval.framework.repository.RepositoryRemoveEvent;
 import de.clusteval.framework.repository.RepositoryReplaceEvent;
 
@@ -43,7 +47,7 @@ import de.clusteval.framework.repository.RepositoryReplaceEvent;
  * @author Christian Wiwie
  * 
  */
-public class DataConfig extends RepositoryObject {
+public class DataConfig extends DumpableRepositoryObject {
 
 	/**
 	 * A helper method for cloning a list of data configurations.
@@ -183,8 +187,8 @@ public class DataConfig extends RepositoryObject {
 	}
 
 	/**
-	 * The name of a gold standard configuration is the filename of the
-	 * corresponding file on the filesystem, without the file extension.
+	 * The name of a data configuration is the filename of the corresponding
+	 * file on the filesystem, without the file extension.
 	 * 
 	 * @return The name of this data configuration.
 	 */
@@ -274,6 +278,32 @@ public class DataConfig extends RepositoryObject {
 					this.notify(newEvent);
 				}
 			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.DumpableRepositoryObject#dumpToFileHelper
+	 * ()
+	 */
+	@Override
+	protected void dumpToFileHelper() throws RepositoryObjectDumpException {
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(
+					this.absPath));
+			writer.append("datasetConfig = "
+					+ new File(this.dataSetConfig.getAbsolutePath()).getName()
+							.replace(".dsconfig", ""));
+			writer.newLine();
+			writer.append("goldstandardConfig = "
+					+ new File(this.goldstandardConfig.getAbsolutePath())
+							.getName().replace(".gsconfig", ""));
+			writer.newLine();
+			writer.close();
+		} catch (IOException e) {
+			throw new RepositoryObjectDumpException(e);
 		}
 	}
 }

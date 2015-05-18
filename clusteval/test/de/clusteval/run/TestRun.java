@@ -15,6 +15,7 @@ package de.clusteval.run;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.Assert;
@@ -45,7 +46,8 @@ public class TestRun extends AbstractClustEvalTest {
 				new ArrayList<ProgramConfig>(), new ArrayList<DataConfig>(),
 				new ArrayList<ClusteringQualityMeasure>(),
 				new ArrayList<Map<ProgramParameter<?>, String>>(),
-				new ArrayList<RunResultPostprocessor>());
+				new ArrayList<RunResultPostprocessor>(),
+				new HashMap<ProgramConfig, Integer>());
 		Assert.assertTrue(run == this.getRepository().getRegisteredObject(run));
 	}
 }

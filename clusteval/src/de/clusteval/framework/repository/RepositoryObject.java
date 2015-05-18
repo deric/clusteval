@@ -302,6 +302,82 @@ public abstract class RepositoryObject implements RepositoryListener {
 	}
 
 	/**
+	 * A convenience method for {@link #moveTo(File, boolean)}, with overwriting
+	 * enabled.
+	 * 
+	 * @param moveDestination
+	 *            The absolute path to the destination file.
+	 * @return True, if the move operation was successful.
+	 */
+	public boolean moveTo(final File moveDestination) {
+		return moveTo(moveDestination, true);
+	}
+
+	/**
+	 * This method moves the file corresponding to this repository object to the
+	 * destination.
+	 * 
+	 * <p>
+	 * <b>Hint:</b> Use the wait parameter with caution: It might increase the
+	 * ressource load of this method considerably. Also the wait operation might
+	 * not terminate, if source and target filesystem use different encodings
+	 * and the equality checks return false.
+	 * 
+	 * @param moveDest
+	 *            The absolute path to the destination file.
+	 * @param overwrite
+	 *            Whether the possibly already existing target file should be
+	 *            overwritten.
+	 * @return True, if the move operation was successful.
+	 */
+	public boolean moveTo(final File moveDest, final boolean overwrite) {
+		try {
+			if (!moveDest.exists() || overwrite) {
+				org.apache.commons.io.FileUtils
+						.moveFile(this.absPath, moveDest);
+				this.absPath = moveDest;
+				this.notify(new RepositoryMoveEvent(this));
+			}
+		} catch (IOException e) {
+			return false;
+		} catch (RegisterException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	/**
+	 * A convenience method for {@link #moveToFolder(File, boolean)}, with
+	 * overwriting enabled.
+	 * 
+	 * @param moveFolderDestination
+	 *            The folder into which this file should be move
+	 * @return True, if the move operation was successful.
+	 */
+	public boolean moveToFolder(final File moveFolderDestination) {
+		return moveToFolder(moveFolderDestination, true);
+	}
+
+	/**
+	 * This method moves the file corresponding to this repository object into
+	 * the destination folder.
+	 * 
+	 * @param moveFolderDestination
+	 *            The folder in which this file should be copied
+	 * @param overwrite
+	 *            Whether a possibly already existing target file within the
+	 *            destination folder should be overwritten.
+	 * @return True, if the copy operation was successful.
+	 */
+	public boolean moveToFolder(final File moveFolderDestination,
+			final boolean overwrite) {
+		File targetFile = new File(
+				FileUtils.buildPath(moveFolderDestination.getAbsolutePath(),
+						this.absPath.getName()));
+		return moveTo(targetFile, overwrite);
+	}
+
+	/**
 	 * A convenience method for {@link #copyToFolder(File, boolean)}, with
 	 * overwriting enabled.
 	 * 
@@ -397,6 +473,14 @@ public abstract class RepositoryObject implements RepositoryListener {
 			if (event.old.equals(this)) {
 				// this object is going to be removed and replaced from the
 				// repository
+				this.notifyListener(event);
+			} else {
+				// do something in subclasses
+			}
+		} else if (e instanceof RepositoryMoveEvent) {
+			RepositoryMoveEvent event = (RepositoryMoveEvent) e;
+			if (event.object.equals(this)) {
+				// this object has been moved
 				this.notifyListener(event);
 			} else {
 				// do something in subclasses

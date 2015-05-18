@@ -15,6 +15,7 @@ package de.clusteval.program;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import de.clusteval.context.Context;
@@ -32,6 +33,7 @@ public class StandaloneProgram extends Program {
 
 	protected String alias;
 	protected Context context;
+	protected Map<String, String> envVars;
 
 	/**
 	 * @param repository
@@ -45,14 +47,19 @@ public class StandaloneProgram extends Program {
 	 *            The absolute path of this program.
 	 * @param alias
 	 *            The alias of this program.
+	 * @param envVars
+	 *            The environmental variables to set when this program is
+	 *            executed.
 	 * @throws RegisterException
 	 */
 	public StandaloneProgram(Repository repository, final Context context,
 			final boolean register, long changeDate, File absPath,
-			final String alias) throws RegisterException {
+			final String alias, final Map<String, String> envVars)
+			throws RegisterException {
 		super(repository, false, changeDate, absPath);
 		this.alias = alias;
 		this.context = context;
+		this.envVars = envVars;
 
 		if (register)
 			this.register();
@@ -69,6 +76,7 @@ public class StandaloneProgram extends Program {
 			throws RegisterException {
 		super(program);
 		this.alias = program.alias;
+		this.envVars = new HashMap<String, String>(program.envVars);
 	}
 
 	/*
@@ -99,9 +107,18 @@ public class StandaloneProgram extends Program {
 			final ProgramConfig programConfig, final String[] invocationLine,
 			Map<String, String> effectiveParams,
 			Map<String, String> internalParams) throws IOException {
-		return Runtime.getRuntime().exec(invocationLine,
-				// TODO, check whether this works everywhere
-				new String[]{"TERM=xterm", "DISPLAY=:0"},
+		String[] envVarsArray = new String[this.envVars.size() + 1];
+		// TODO, check whether this works everywhere
+		envVarsArray[0] = "TERM=xterm";
+		int i = 1;
+		for (Map.Entry<String, String> e : this.envVars.entrySet()) {
+			envVarsArray[i] = String.format("%s=%s", e.getKey(), e.getValue());
+			i++;
+		}
+
+		return Runtime.getRuntime().exec(
+				invocationLine,
+				envVarsArray,
 				new File(programConfig.getProgram().getAbsolutePath())
 						.getParentFile());
 	}

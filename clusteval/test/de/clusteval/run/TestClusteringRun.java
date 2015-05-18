@@ -31,6 +31,7 @@ import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
 import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.randomizer.UnknownDataRandomizerException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
@@ -125,7 +126,8 @@ public class TestClusteringRun extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		ClusteringRun run = Parser.parseFromFile(ClusteringRun.class, new File(
 				"testCaseRepository/runs/all_vs_DS1_clustering.run")
 				.getAbsoluteFile());

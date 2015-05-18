@@ -26,7 +26,6 @@ import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
-import de.clusteval.run.result.postprocessing.RunResultPostprocessorParameters;
 import de.clusteval.run.runnable.ClusteringRunRunnable;
 import de.clusteval.run.runnable.ExecutionRunRunnable;
 
@@ -66,10 +65,12 @@ public class ClusteringRun extends ExecutionRun {
 			List<DataConfig> dataConfigs,
 			List<ClusteringQualityMeasure> qualityMeasures,
 			List<Map<ProgramParameter<?>, String>> parameterValues,
-			final List<RunResultPostprocessor> postProcessors)
+			final List<RunResultPostprocessor> postProcessors,
+			final Map<ProgramConfig, Integer> maxExecutionTimes)
 			throws RegisterException {
 		super(repository, context, true, changeDate, absPath, programConfigs,
-				dataConfigs, qualityMeasures, parameterValues, postProcessors);
+				dataConfigs, qualityMeasures, parameterValues, postProcessors,
+				maxExecutionTimes);
 
 		if (this.register()) {
 			// register this Run at all dataconfigs and programconfigs
@@ -128,8 +129,9 @@ public class ClusteringRun extends ExecutionRun {
 	protected ExecutionRunRunnable createRunRunnableFor(
 			RunSchedulerThread runScheduler, Run run,
 			ProgramConfig programConfig, DataConfig dataConfig,
-			String runIdentString, boolean isResume) {
+			String runIdentString, boolean isResume,
+			Map<ProgramParameter<?>, String> runParams) {
 		return new ClusteringRunRunnable(runScheduler, run, programConfig,
-				dataConfig, runIdentString, isResume);
+				dataConfig, runIdentString, isResume, runParams);
 	}
 }

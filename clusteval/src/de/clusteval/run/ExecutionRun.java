@@ -103,6 +103,8 @@ public abstract class ExecutionRun extends Run {
 	 */
 	protected List<ProgramConfig> programConfigs;
 
+	protected Map<ProgramConfig, Integer> maxExecutionTimes;
+
 	/**
 	 * A list of data configurations contained in this run.
 	 * 
@@ -164,13 +166,15 @@ public abstract class ExecutionRun extends Run {
 			final List<DataConfig> dataConfigs,
 			final List<ClusteringQualityMeasure> qualityMeasures,
 			final List<Map<ProgramParameter<?>, String>> parameterValues,
-			final List<RunResultPostprocessor> postProcessors)
+			final List<RunResultPostprocessor> postProcessors,
+			final Map<ProgramConfig, Integer> maxExecutionTimes)
 			throws RegisterException {
 		super(repository, context, changeDate, absPath);
 
 		this.parameterValues = parameterValues;
 		this.qualityMeasures = qualityMeasures;
 		this.postProcessors = postProcessors;
+		this.maxExecutionTimes = maxExecutionTimes;
 
 		initRunPairs(programConfigs, dataConfigs);
 
@@ -210,6 +214,8 @@ public abstract class ExecutionRun extends Run {
 		this.qualityMeasures = ClusteringQualityMeasure
 				.cloneQualityMeasures(other.qualityMeasures);
 		this.postProcessors = clonePostProcessors(other.postProcessors);
+		this.maxExecutionTimes = new HashMap<ProgramConfig, Integer>(
+				other.maxExecutionTimes);
 
 		initRunPairs(
 				ProgramConfig.cloneProgramConfigurations(other.programConfigs),
@@ -255,10 +261,12 @@ public abstract class ExecutionRun extends Run {
 	 * to the list of run results.
 	 * 
 	 * @throws RunRunnableInitializationException
+	 * @throws RunInitializationException
 	 */
 	@Override
 	public void perform(final RunSchedulerThread runScheduler)
-			throws IOException, RunRunnableInitializationException {
+			throws IOException, RunRunnableInitializationException,
+			RunInitializationException {
 		/*
 		 * Before we start we check, whether this run has been terminated by
 		 * invoking terminate(). This is also the reason, why we have to
@@ -437,7 +445,8 @@ public abstract class ExecutionRun extends Run {
 		 * logFile.
 		 */
 		final ExecutionRunRunnable t = createRunRunnableFor(runScheduler,
-				runCopy, newProgramConfig, newDataConfig, runIdentString, false);
+				runCopy, newProgramConfig, newDataConfig, runIdentString,
+				false, this.getRunParameterForRunPair(p));
 		return t;
 	}
 
@@ -566,9 +575,16 @@ public abstract class ExecutionRun extends Run {
 		 * logFile.
 		 */
 		final ExecutionRunRunnable t = createRunRunnableFor(runScheduler,
-				runCopy, newProgramConfig, newDataConfig, runIdentString, true);
+				runCopy, newProgramConfig, newDataConfig, runIdentString, true,
+				this.getRunParameterForRunPair(p));
 		return t;
 
+	}
+
+	protected Map<ProgramParameter<? extends Object>, String> getRunParameterForRunPair(
+			final int p) {
+		return this.parameterValues.get(Math.floorDiv(p,
+				this.dataConfigs.size()));
 	}
 
 	/**
@@ -601,7 +617,8 @@ public abstract class ExecutionRun extends Run {
 	protected abstract ExecutionRunRunnable createRunRunnableFor(
 			RunSchedulerThread runScheduler, Run run,
 			ProgramConfig programConfig, DataConfig dataConfig,
-			String runIdentString, boolean isResume);
+			String runIdentString, boolean isResume,
+			Map<ProgramParameter<?>, String> runParams);
 
 	/**
 	 * This method verifies that all quality measures can be calculated for
@@ -662,7 +679,7 @@ public abstract class ExecutionRun extends Run {
 	 *            The list of data configurations of this run.
 	 * @throws RegisterException
 	 */
-	private void initRunPairs(final List<ProgramConfig> programConfigs,
+	protected void initRunPairs(final List<ProgramConfig> programConfigs,
 			final List<DataConfig> dataConfigs) throws RegisterException {
 
 		this.programConfigs = programConfigs;
@@ -801,5 +818,13 @@ public abstract class ExecutionRun extends Run {
 				}
 			}
 		}
+	}
+
+	public boolean hasMaxExecutionTime(final ProgramConfig pc) {
+		return this.maxExecutionTimes.containsKey(pc);
+	}
+
+	public int getMaxExecutionTime(final ProgramConfig pc) {
+		return this.maxExecutionTimes.get(pc);
 	}
 }

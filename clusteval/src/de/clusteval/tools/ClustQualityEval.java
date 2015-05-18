@@ -60,6 +60,7 @@ import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.randomizer.UnknownDataRandomizerException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.InvalidRepositoryException;
@@ -132,7 +133,8 @@ public class ClustQualityEval {
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleContextException, InvalidDataSetFormatVersionException,
 			RNotAvailableException, FormatConversionException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		super();
 		ClustevalBackendServer.logLevel(Level.INFO);
 		ClustevalBackendServer.getBackendServerConfiguration().setNoDatabase(
@@ -518,7 +520,8 @@ public class ClustQualityEval {
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleContextException, InvalidDataSetFormatVersionException,
 			RNotAvailableException, FormatConversionException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		new ClustQualityEval(args[0], args[1], Arrays.copyOfRange(args, 2,
 				args.length));
 	}

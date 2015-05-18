@@ -42,6 +42,7 @@ import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.randomizer.UnknownDataRandomizerException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
@@ -133,6 +134,7 @@ public abstract class RunResult extends RepositoryObject {
 	 * @throws UnknownParameterType
 	 * @throws InterruptedException
 	 * @throws UnknownRunResultPostprocessorException
+	 * @throws UnknownDataRandomizerException
 	 */
 	// TODO: we cannot move this method into Parser#RunResultParser, because
 	// ParameterOptimizationRun.parseFromRunResultFolder() returns several
@@ -171,7 +173,9 @@ public abstract class RunResult extends RepositoryObject {
 			UnknownDataPreprocessorException,
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
-			UnknownParameterType, InterruptedException, UnknownRunResultPostprocessorException {
+			UnknownParameterType, InterruptedException,
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 
 		Logger log = LoggerFactory.getLogger(RunResult.class);
 		log.debug("Parsing run result from '" + runResultFolder + "'");

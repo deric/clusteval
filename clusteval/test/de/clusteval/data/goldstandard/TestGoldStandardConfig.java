@@ -41,6 +41,7 @@ import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.dataset.type.UnknownDataSetTypeException;
 import de.clusteval.data.distance.UnknownDistanceMeasureException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.randomizer.UnknownDataRandomizerException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
@@ -74,7 +75,8 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 	 * @throws IOException
 	 * @throws GoldStandardConfigurationException
 	 * @throws RegisterException
-	 * @throws UnknownRunDataStatisticException, UnknownRunResultPostprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
 	 * @throws NoOptimizableProgramParameterException
@@ -124,7 +126,9 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException, UnknownRunResultPostprocessorException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						GoldStandardConfig.class,
@@ -158,7 +162,8 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 	 * @throws IOException
 	 * @throws GoldStandardConfigurationException
 	 * @throws RegisterException
-	 * @throws UnknownRunDataStatisticException, UnknownRunResultPostprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
 	 * @throws NoOptimizableProgramParameterException
@@ -208,7 +213,9 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException, UnknownRunResultPostprocessorException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						GoldStandardConfig.class,
@@ -235,7 +242,8 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 	 * @throws IOException
 	 * @throws GoldStandardConfigurationException
 	 * @throws RegisterException
-	 * @throws UnknownRunDataStatisticException, UnknownRunResultPostprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
 	 * @throws NoOptimizableProgramParameterException
@@ -287,7 +295,9 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException, UnknownRunResultPostprocessorException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 
 		/*
 		 * REPLACE
@@ -359,7 +369,8 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 	 * @throws IOException
 	 * @throws GoldStandardConfigurationException
 	 * @throws RegisterException
-	 * @throws UnknownRunDataStatisticException, UnknownRunResultPostprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
 	 * @throws NoOptimizableProgramParameterException
@@ -411,7 +422,9 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException, UnknownRunResultPostprocessorException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		// create empty file
 		File f = new File(
 				"testCaseRepository/data/goldstandards/configs/goldStandardConfigTest.gsconfig")
@@ -438,7 +451,8 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 	 * @throws IOException
 	 * @throws GoldStandardConfigurationException
 	 * @throws RegisterException
-	 * @throws UnknownRunDataStatisticException, UnknownRunResultPostprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
 	 * @throws NoOptimizableProgramParameterException
@@ -489,7 +503,9 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException, UnknownRunResultPostprocessorException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		GoldStandardConfig gsConfig = Parser
 				.parseFromFile(
 						GoldStandardConfig.class,
@@ -520,7 +536,8 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 	 * @throws IOException
 	 * @throws GoldStandardConfigurationException
 	 * @throws RegisterException
-	 * @throws UnknownRunDataStatisticException, UnknownRunResultPostprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
 	 * @throws NoOptimizableProgramParameterException
@@ -572,7 +589,9 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException, UnknownRunResultPostprocessorException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 
 		File f = new File(
 				"testCaseRepository/data/goldstandards/configs/goldStandardConfigTest2.gsconfig")
@@ -603,7 +622,8 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 	 * @throws GoldStandardConfigurationException
 	 * @throws GoldStandardConfigNotFoundException
 	 * @throws RegisterException
-	 * @throws UnknownRunDataStatisticException, UnknownRunResultPostprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
 	 * @throws NoOptimizableProgramParameterException
@@ -655,7 +675,9 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException, UnknownRunResultPostprocessorException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		Parser.parseFromFile(
 				GoldStandardConfig.class,
 				new File(
@@ -671,7 +693,8 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 	 * @throws NoRepositoryFoundException
 	 * @throws GoldStandardConfigurationException
 	 * @throws RegisterException
-	 * @throws UnknownRunDataStatisticException, UnknownRunResultPostprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
 	 * @throws NoOptimizableProgramParameterException
@@ -724,7 +747,9 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException, UnknownRunResultPostprocessorException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		GoldStandardConfig gsConfig = Parser
 				.parseFromFile(
 						GoldStandardConfig.class,
@@ -748,7 +773,8 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 	 * @throws GoldStandardConfigurationException
 	 * @throws GoldStandardConfigNotFoundException
 	 * @throws RegisterException
-	 * @throws UnknownRunDataStatisticException, UnknownRunResultPostprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 *             , UnknownRunResultPostprocessorException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
 	 * @throws NoOptimizableProgramParameterException
@@ -799,7 +825,9 @@ public class TestGoldStandardConfig extends AbstractClustEvalTest {
 			UnknownParameterOptimizationMethodException,
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException, UnknownRunResultPostprocessorException {
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		GoldStandardConfig gsConfig = Parser
 				.parseFromFile(
 						GoldStandardConfig.class,

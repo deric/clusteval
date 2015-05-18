@@ -33,6 +33,7 @@ import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
 import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.randomizer.UnknownDataRandomizerException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.InvalidRepositoryException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
@@ -82,7 +83,8 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 			IncompatibleDataSetConfigPreprocessorException,
 			IncompatibleContextException, UnknownDataStatisticException,
 			UnknownRunStatisticException, UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		ParameterOptimizationRun run = Parser.parseFromFile(
 				ParameterOptimizationRun.class, new File(
 						"testCaseRepository/runs/testTwiceTheParam.run")
@@ -162,7 +164,8 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, UnknownDataStatisticException,
 			UnknownRunStatisticException, UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		ParameterOptimizationRun run = Parser.parseFromFile(
 				ParameterOptimizationRun.class, new File(
 						"testCaseRepository/runs/baechler2003.run")

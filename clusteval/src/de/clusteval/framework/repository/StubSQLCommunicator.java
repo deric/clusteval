@@ -574,8 +574,7 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(data.goldstandard.GoldStandardConfig)
 	 */
 	@Override
-	protected int register(GoldStandardConfig object,
-			final boolean updateOnly) {
+	protected int register(GoldStandardConfig object, final boolean updateOnly) {
 		return -1;
 	}
 
@@ -1624,16 +1623,24 @@ public class StubSQLCommunicator extends SQLCommunicator {
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see de.clusteval.framework.repository.SQLCommunicator#register(de.clusteval.cluster.Clustering)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.SQLCommunicator#register(de.clusteval
+	 * .cluster.Clustering)
 	 */
 	@Override
 	protected int register(Clustering object) {
 		return -1;
 	}
 
-	/* (non-Javadoc)
-	 * @see de.clusteval.framework.repository.SQLCommunicator#unregister(de.clusteval.cluster.Clustering)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.SQLCommunicator#unregister(de.clusteval
+	 * .cluster.Clustering)
 	 */
 	@Override
 	protected int unregister(Clustering object) {

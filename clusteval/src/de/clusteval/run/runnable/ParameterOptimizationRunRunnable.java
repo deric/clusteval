@@ -95,8 +95,10 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	public ParameterOptimizationRunRunnable(RunSchedulerThread runScheduler,
 			Run run, ProgramConfig programConfig, DataConfig dataConfig,
 			ParameterOptimizationMethod optimizationMethod,
-			String runIdentString, boolean isResume) {
-		super(run, programConfig, dataConfig, runIdentString, isResume);
+			String runIdentString, boolean isResume,
+			Map<ProgramParameter<?>, String> runParams) {
+		super(run, programConfig, dataConfig, runIdentString, isResume,
+				runParams);
 
 		this.optimizationMethod = optimizationMethod;
 		if (optimizationMethod != null) {

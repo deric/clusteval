@@ -34,7 +34,6 @@ import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
-import de.clusteval.run.result.postprocessing.RunResultPostprocessorParameters;
 import de.clusteval.run.runnable.ExecutionRunRunnable;
 import de.clusteval.run.runnable.ParameterOptimizationRunRunnable;
 import de.clusteval.run.runnable.RunRunnable;
@@ -180,10 +179,12 @@ public class ParameterOptimizationRun extends ExecutionRun {
 			final List<Map<ProgramParameter<?>, String>> parameterValues,
 			final List<List<ProgramParameter<?>>> optimizationParameters,
 			final List<ParameterOptimizationMethod> optimizationMethods,
-			final List<RunResultPostprocessor> postProcessors)
+			final List<RunResultPostprocessor> postProcessors,
+			final Map<ProgramConfig, Integer> maxExecutionTimes)
 			throws RegisterException {
 		super(repository, context, false, changeDate, absPath, programConfigs,
-				dataConfigs, qualityMeasures, parameterValues, postProcessors);
+				dataConfigs, qualityMeasures, parameterValues, postProcessors,
+				maxExecutionTimes);
 
 		this.optimizationParameters = optimizationParameters;
 		this.optimizationMethods = optimizationMethods;
@@ -235,7 +236,8 @@ public class ParameterOptimizationRun extends ExecutionRun {
 	protected ExecutionRunRunnable createRunRunnableFor(
 			RunSchedulerThread runScheduler, Run run,
 			ProgramConfig programConfig, DataConfig dataConfig,
-			String runIdentString, boolean isResume) {
+			String runIdentString, boolean isResume,
+			Map<ProgramParameter<?>, String> runParams) {
 
 		// 06.04.2013: changed from indexOf to this manual search, because at
 		// this point the passed programConfig and dataConfig are moved clones
@@ -256,7 +258,7 @@ public class ParameterOptimizationRun extends ExecutionRun {
 				.getOptimizationMethods().get(p);
 		ParameterOptimizationRunRunnable t = new ParameterOptimizationRunRunnable(
 				runScheduler, run, programConfig, dataConfig,
-				optimizationMethod, runIdentString, isResume);
+				optimizationMethod, runIdentString, isResume, runParams);
 		run.progress.addSubProgress(t.getProgressPrinter(), 100);
 		return t;
 	}

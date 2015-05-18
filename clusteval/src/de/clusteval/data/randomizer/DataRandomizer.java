@@ -14,6 +14,7 @@
 package de.clusteval.data.randomizer;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.cli.CommandLine;
@@ -23,14 +24,53 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.configuration.ConfigurationException;
 
+import utils.Pair;
+import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
+import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
+import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
+import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
+import de.clusteval.context.IncompatibleContextException;
+import de.clusteval.context.UnknownContextException;
 import de.clusteval.data.DataConfig;
+import de.clusteval.data.DataConfigNotFoundException;
+import de.clusteval.data.DataConfigurationException;
 import de.clusteval.data.dataset.DataSet;
+import de.clusteval.data.dataset.DataSetConfig;
+import de.clusteval.data.dataset.DataSetConfigNotFoundException;
+import de.clusteval.data.dataset.DataSetConfigurationException;
+import de.clusteval.data.dataset.DataSetNotFoundException;
+import de.clusteval.data.dataset.IncompatibleDataSetConfigPreprocessorException;
+import de.clusteval.data.dataset.NoDataSetException;
+import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.dataset.generator.DataSetGenerationException;
+import de.clusteval.data.dataset.type.UnknownDataSetTypeException;
+import de.clusteval.data.distance.UnknownDistanceMeasureException;
+import de.clusteval.data.goldstandard.GoldStandard;
+import de.clusteval.data.goldstandard.GoldStandardConfig;
+import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
+import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
+import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
+import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.statistics.UnknownDataStatisticException;
+import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
+import de.clusteval.framework.repository.RepositoryObjectDumpException;
+import de.clusteval.framework.repository.parse.Parser;
+import de.clusteval.program.NoOptimizableProgramParameterException;
+import de.clusteval.program.UnknownParameterType;
+import de.clusteval.program.UnknownProgramParameterException;
+import de.clusteval.program.UnknownProgramTypeException;
 import de.clusteval.program.r.RLibraryInferior;
+import de.clusteval.program.r.UnknownRProgramException;
+import de.clusteval.run.RunException;
+import de.clusteval.run.result.format.UnknownRunResultFormatException;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
+import de.clusteval.run.statistics.UnknownRunDataStatisticException;
+import de.clusteval.run.statistics.UnknownRunStatisticException;
 import file.FileUtils;
 
 /**
@@ -45,6 +85,8 @@ public abstract class DataRandomizer extends RepositoryObject
 	 * This attribute holds the name of the data configuration to randomize.
 	 */
 	protected DataConfig dataConfig;
+
+	protected String uniqueId;
 
 	/**
 	 * @param repository
@@ -75,7 +117,7 @@ public abstract class DataRandomizer extends RepositoryObject
 	 * @see framework.repository.RepositoryObject#clone()
 	 */
 	@Override
-	public RepositoryObject clone() {
+	public DataRandomizer clone() {
 		try {
 			return this.getClass().getConstructor(this.getClass())
 					.newInstance(this);
@@ -128,31 +170,104 @@ public abstract class DataRandomizer extends RepositoryObject
 	 * 
 	 * @param cliArguments
 	 * @return The generated {@link DataSet}.
-	 * @throws ParseException
+	 * @throws DataRandomizeException
 	 *             This exception is thrown, if the passed arguments are not
-	 *             valid.
+	 *             valid, or parsing of the written data set/ gold standard or
+	 *             config files fails.
+	 * @throws DataRandomizeException
 	 */
 	public DataConfig randomize(final String[] cliArguments)
-			throws ParseException {
-		CommandLineParser parser = new PosixParser();
+			throws DataRandomizeException {
+		try {
+			CommandLineParser parser = new PosixParser();
 
-		Options options = this.getAllOptions();
+			Options options = this.getAllOptions();
 
-		CommandLine cmd = parser.parse(options, cliArguments);
+			CommandLine cmd = parser.parse(options, cliArguments);
 
-		// get data config with the specified name
-		String absFilePath = FileUtils.buildPath(
-				this.repository.getBasePath(DataConfig.class),
-				cmd.getOptionValue("dataConfig") + ".dataconfig");
-		this.dataConfig = (DataConfig) this.repository
-				.getRegisteredObject(new File(absFilePath));
+			// get data config with the specified name
+			String absFilePath = FileUtils.buildPath(
+					this.repository.getBasePath(DataConfig.class),
+					cmd.getOptionValue("dataConfig") + ".dataconfig");
+			this.dataConfig = (DataConfig) this.repository
+					.getRegisteredObject(new File(absFilePath));
 
-		this.handleOptions(cmd);
+			this.uniqueId = cmd.getOptionValue("uniqueId");
 
-		DataConfig dataConfig = randomizeDataConfig();
+			this.handleOptions(cmd);
+
+			Pair<DataSet, GoldStandard> newObjects = randomizeDataConfig();
+
+			DataConfig dataConfig = this.writeConfigFiles(
+					newObjects.getFirst(), newObjects.getSecond());
+
+			return dataConfig;
+		} catch (Exception e) {
+			throw new DataRandomizeException(e);
+		}
+	}
+
+	protected DataConfig writeConfigFiles(final DataSet newDataSet,
+			final GoldStandard newGoldStandard) throws IOException,
+			UnknownDataSetFormatException, GoldStandardNotFoundException,
+			GoldStandardConfigurationException, DataSetConfigurationException,
+			DataSetNotFoundException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, ConfigurationException,
+			UnknownContextException, RegisterException, UnknownParameterType,
+			NoRepositoryFoundException,
+			UnknownClusteringQualityMeasureException, RunException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException, RepositoryObjectDumpException {
+		// write dataset config file
+		File dsConfigFile = new File(FileUtils.buildPath(
+				repository.getBasePath(DataSetConfig.class), this.uniqueId
+						+ "_" + this.dataConfig.getDatasetConfig().toString()
+						+ getDataSetFileNamePostFix() + ".dsconfig"));
+		DataSetConfig dsConfig = new DataSetConfig(this.repository,
+				System.currentTimeMillis(), dsConfigFile, newDataSet,
+				this.dataConfig.getDatasetConfig()
+						.getConversionInputToStandardConfiguration().clone(),
+				this.dataConfig.getDatasetConfig()
+						.getConversionStandardToInputConfiguration().clone());
+		dsConfig.dumpToFile();
+
+		File gsConfigFile = new File(FileUtils.buildPath(
+				repository.getBasePath(GoldStandardConfig.class), this.uniqueId
+						+ "_"
+						+ this.dataConfig.getGoldstandardConfig().toString()
+						+ getDataSetFileNamePostFix() + ".gsconfig"));
+
+		// write goldstandard config file
+		GoldStandardConfig gsConfig = new GoldStandardConfig(this.repository,
+				System.currentTimeMillis(), gsConfigFile, newGoldStandard);
+		gsConfig.dumpToFile();
+
+		// write data config file
+		File dataConfigFile = new File(FileUtils.buildPath(
+				repository.getBasePath(DataConfig.class), this.uniqueId + "_"
+						+ this.dataConfig.getName()
+						+ getDataSetFileNamePostFix() + ".dataconfig"));
+		DataConfig dataConfig = new DataConfig(this.repository,
+				System.currentTimeMillis(), dataConfigFile, dsConfig, gsConfig);
+		dataConfig.dumpToFile();
 
 		return dataConfig;
 	}
+
+	protected abstract String getDataSetFileNamePostFix();
 
 	/**
 	 * Adds the default options of dataset generators to the given Options
@@ -171,6 +286,13 @@ public abstract class DataRandomizer extends RepositoryObject
 		Option option = OptionBuilder.create("dataConfig");
 		options.addOption(option);
 
+		OptionBuilder.withArgName("uniqueId");
+		OptionBuilder.isRequired();
+		OptionBuilder.hasArg();
+		OptionBuilder
+				.withDescription("A unique id (infix) for the generated files.");
+		option = OptionBuilder.create("uniqueId");
+		options.addOption(option);
 	}
 
 	/**
@@ -194,13 +316,11 @@ public abstract class DataRandomizer extends RepositoryObject
 	 * generator by generating the dataset file and creating a {@link DataSet}
 	 * wrapper object for it.
 	 * 
-	 * @return A {@link DataConfig} wrapper object for the randomized
-	 *         dataconfig.
 	 * @throws DataSetGenerationException
 	 *             If something goes wrong during the generation process, this
 	 *             exception is thrown.
 	 */
-	protected abstract DataConfig randomizeDataConfig();
+	protected abstract Pair<DataSet, GoldStandard> randomizeDataConfig();
 
 	/**
 	 * Parses a dataconfig randomizer from string.

@@ -45,6 +45,7 @@ import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
 import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
 import de.clusteval.data.preprocessing.DataPreprocessor;
 import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
+import de.clusteval.data.randomizer.UnknownDataRandomizerException;
 import de.clusteval.data.statistics.UnknownDataStatisticException;
 import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
@@ -130,7 +131,8 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSetConfig.class,
@@ -212,7 +214,8 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		this.repositoryObject = Parser
 				.parseFromFile(
 						DataSetConfig.class,
@@ -289,7 +292,8 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 
 		/*
 		 * REPLACE
@@ -390,6 +394,7 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 	 * @throws GoldStandardConfigurationException
 	 * @throws GoldStandardNotFoundException
 	 * @throws IOException
+	 * @throws UnknownDataRandomizerException
 	 */
 	@Test(expected = DataSetConfigurationException.class)
 	public void testParseFromFileDataSetNameMissing()
@@ -413,7 +418,8 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException, IOException {
+			UnknownRunResultPostprocessorException, IOException,
+			UnknownDataRandomizerException {
 		// create empty file
 		File f = new File(
 				"testCaseRepository/data/datasets/configs/testDataSetConfig.dsconfig")
@@ -493,7 +499,8 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		DataSetConfig gsConfig = Parser
 				.parseFromFile(
 						DataSetConfig.class,
@@ -585,7 +592,8 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException, IOException {
+			UnknownRunResultPostprocessorException, IOException,
+			UnknownDataRandomizerException {
 
 		File f = new File(
 				"testCaseRepository/data/datasets/configs/testDataSetConfig2.dsconfig")
@@ -668,7 +676,8 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		Parser.parseFromFile(DataSetConfig.class, new File(
 				"testCaseRepository/data/datasets/configs/DS1_12.gsconfig")
 				.getAbsoluteFile());
@@ -735,7 +744,8 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		DataSetConfig dsConfig = Parser
 				.parseFromFile(
 						DataSetConfig.class,
@@ -815,7 +825,8 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		DataSetConfig dsConfig = Parser
 				.parseFromFile(
 						DataSetConfig.class,
@@ -902,7 +913,8 @@ public class TestDataSetConfig extends AbstractClustEvalTest {
 			NoOptimizableProgramParameterException,
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 		DataSetConfig gsConfig = Parser
 				.parseFromFile(
 						DataSetConfig.class,
