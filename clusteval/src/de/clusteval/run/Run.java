@@ -606,7 +606,7 @@ public abstract class Run extends RepositoryObject {
 	 */
 	public float getPercentFinished() {
 		if (this.status.equals(RUN_STATUS.SCHEDULED))
-			return 100;
+			return 0;
 		else if (this.status.equals(RUN_STATUS.RUNNING))
 			synchronized (this.progress) {
 				return this.progress.getPercent();
@@ -614,7 +614,7 @@ public abstract class Run extends RepositoryObject {
 		else if (this.status.equals(RUN_STATUS.FINISHED))
 			return 100;
 		else if (this.status.equals(RUN_STATUS.TERMINATED))
-			return 100;
+			return this.progress.getPercent();
 		return 0;
 	}
 

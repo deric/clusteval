@@ -191,7 +191,7 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			if (isResume) {
 				// in case of resume, we have to update the current percentage
 				int iterationPercent = Math.min(
-						(int) (this.optimizationMethod.getCurrentCount()
+						(int) (this.optimizationMethod.getStartedCount()
 								/ (double) this.optimizationMethod
 										.getTotalIterationCount() * 100), 100);
 				this.progress.update(iterationPercent);
@@ -278,7 +278,7 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			try {
 				iterationWrapper.setParameterSet(optimizationMethod.next());
 				iterationWrapper.setOptId(this.optimizationMethod
-						.getCurrentCount());
+						.getStartedCount());
 				super.doRunIteration(iterationWrapper);
 			} catch (ParameterSetAlreadyEvaluatedException e) {
 				this.log.debug(run.toString() + " (" + programConfig + ","
@@ -301,7 +301,7 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			synchronized (this) {
 				// changed 25.01.2013
 				int iterationPercent = Math.min(
-						(int) (this.optimizationMethod.getCurrentCount()
+						(int) (this.optimizationMethod.getFinishedCount()
 								/ (double) this.optimizationMethod
 										.getTotalIterationCount() * 100), 100);
 				this.progress.update(iterationPercent);

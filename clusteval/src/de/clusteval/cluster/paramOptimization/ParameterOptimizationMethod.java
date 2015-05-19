@@ -122,6 +122,11 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	protected int currentCount;
 
 	/**
+	 * The number of iterations for which qualities have been returned.
+	 */
+	protected int finishedCount;
+
+	/**
 	 * This array holds the number of iterations that should be performed for
 	 * each optimization parameter.
 	 * 
@@ -317,6 +322,8 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	public synchronized void giveQualityFeedback(
 			final ParameterSet parameterSet,
 			final ClusteringQualitySet qualities) {
+		if (this.result.get(parameterSet) == null)
+			finishedCount++;
 		this.result.put(
 				this.result.getIterationNumberForParameterSet(parameterSet),
 				parameterSet, qualities,
@@ -729,8 +736,17 @@ public abstract class ParameterOptimizationMethod extends RepositoryObject {
 	/**
 	 * @return The number of iterations that has been performed so far.
 	 */
-	public int getCurrentCount() {
+	public int getStartedCount() {
 		return this.currentCount;
+	}
+
+	/**
+	 * 
+	 * @return The number of finished iterations, for which we have received
+	 *         qualities.
+	 */
+	public int getFinishedCount() {
+		return this.finishedCount;
 	}
 
 	/**
