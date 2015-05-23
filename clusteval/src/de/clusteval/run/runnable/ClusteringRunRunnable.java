@@ -13,7 +13,9 @@
  */
 package de.clusteval.run.runnable;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
 
@@ -31,6 +33,7 @@ import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.ClusteringRun;
 import de.clusteval.run.Run;
+import de.clusteval.run.result.ClusteringRunResult;
 import de.clusteval.run.result.NoRunResultFormatParserException;
 import de.clusteval.utils.InternalAttributeException;
 import de.clusteval.utils.RNotAvailableException;
@@ -46,6 +49,8 @@ import de.clusteval.utils.RNotAvailableException;
  * 
  */
 public class ClusteringRunRunnable extends ExecutionRunRunnable {
+
+	protected boolean finished;
 
 	/**
 	 * @param runScheduler
@@ -90,6 +95,35 @@ public class ClusteringRunRunnable extends ExecutionRunRunnable {
 
 		if (!new File(completeQualityOutput).exists() || !isResume)
 			writeHeaderIntoCompleteFile(completeQualityOutput);
+
+		// count lines in completeQualityOutput;
+		// if the file contains at least 2 lines, it means that the result
+		// is
+		// already there and we do not need to execute this runnable
+		BufferedReader br = new BufferedReader(new FileReader(
+				completeQualityOutput));
+		int noLines = 0;
+		while (br.ready()) {
+			br.readLine();
+			noLines++;
+		}
+		br.close();
+		this.finished = noLines >= 2;
+		if (this.finished) {
+			ClusteringRunResult res = ClusteringRunResult
+					.parseFromRunResultCompleteFile(
+							this.run.getRepository(),
+							(ClusteringRun) this.getRun(),
+							this.dataConfig,
+							this.programConfig,
+							new File(completeQualityOutput
+									.replace(".results.qual.complete",
+											".1.results.conv")), false);
+
+			synchronized (getRun().getResults()) {
+				getRun().getResults().add(res);
+			}
+		}
 	}
 
 	@Override
@@ -97,6 +131,11 @@ public class ClusteringRunRunnable extends ExecutionRunRunnable {
 			RegisterException, IOException, NoRunResultFormatParserException,
 			NoParameterSetFoundException, RNotAvailableException,
 			RLibraryNotLoadedException, InterruptedException {
+		if (this.finished) {
+			this.log.info("skipping (" + this.dataConfig + ","
+					+ this.programConfig + ") - Finished");
+			return;
+		}
 		final IterationWrapper iterationWrapper = new IterationWrapper();
 		iterationWrapper.setOptId(1);
 		this.doRunIteration(iterationWrapper);

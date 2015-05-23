@@ -290,13 +290,14 @@ public abstract class ExecutionRun extends Run {
 	 * to the list of run results.
 	 * 
 	 * @throws RunRunnableInitializationException
+	 * @throws RunInitializationException
 	 */
 	@SuppressWarnings("unused")
 	@Override
 	public void resume(final RunSchedulerThread runScheduler,
 			final String runIdentString) throws MissingParameterValueException,
 			IOException, NoRunResultFormatParserException,
-			RunRunnableInitializationException {
+			RunRunnableInitializationException, RunInitializationException {
 		/*
 		 * Before we start we check, whether this run has been terminated by
 		 * invoking terminate(). This is also the reason, why we have to
@@ -583,8 +584,8 @@ public abstract class ExecutionRun extends Run {
 
 	protected Map<ProgramParameter<? extends Object>, String> getRunParameterForRunPair(
 			final int p) {
-		return this.parameterValues.get(Math.floorDiv(p,
-				this.dataConfigs.size()));
+		return this.parameterValues.get((int) Math.round(Math.floor(p
+				/ (double) this.dataConfigs.size())));
 	}
 
 	/**

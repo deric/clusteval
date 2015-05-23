@@ -5,6 +5,7 @@ package de.clusteval.framework.repository.parse;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -332,6 +333,7 @@ class RobustnessAnalysisRunParser
 			ExecutionRunParser<RobustnessAnalysisRun> {
 
 	protected List<String> uniqueRunIdentifiers;
+	protected List<DataConfig> originalDataConfigs;
 
 	/*
 	 * (non-Javadoc)
@@ -404,6 +406,85 @@ class RobustnessAnalysisRunParser
 				qualityMeasures, runParamValues, postprocessor, randomizer,
 				paramSets, numberOfRandomizedDataSets, maxExecutionTimes);
 		result = repo.getRegisteredObject(result, false);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.framework.repository.parse.ExecutionRunParser#
+	 * parseDataConfigurations()
+	 */
+	@Override
+	protected void parseDataConfigurations() throws RunException,
+			UnknownDataSetFormatException, GoldStandardNotFoundException,
+			GoldStandardConfigurationException, DataSetConfigurationException,
+			DataSetNotFoundException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, RegisterException,
+			NoRepositoryFoundException, UnknownDistanceMeasureException,
+			UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			ConfigurationException, UnknownContextException,
+			FileNotFoundException, UnknownParameterType,
+			UnknownClusteringQualityMeasureException,
+			IncompatibleContextException, UnknownRunResultFormatException,
+			InvalidOptimizationParameterException,
+			UnknownProgramParameterException, UnknownProgramTypeException,
+			UnknownRProgramException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException,
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
+
+		if (this.repo instanceof RunResultRepository) {
+			this.originalDataConfigs = new ArrayList<DataConfig>();
+			// get the original data configs
+			String[] list = getProps().getStringArray("dataConfig");
+			if (list.length == 0)
+				throw new RunException(
+						"At least one data config must be specified");
+			// 10.07.2014: remove duplicates.
+			list = new ArrayList<String>(new HashSet<String>(
+					Arrays.asList(list))).toArray(new String[0]);
+			for (String dataConfig : list) {
+				this.originalDataConfigs.add(repo.getParent()
+						.getStaticObjectWithName(DataConfig.class, dataConfig));
+			}
+
+			class DataConfigFileExtFilter implements FilenameFilter {
+
+				/**
+			 * 
+			 */
+				public DataConfigFileExtFilter() {
+				}
+
+				/*
+				 * (non-Javadoc)
+				 * 
+				 * @see java.io.FilenameFilter#accept(java.io.File,
+				 * java.lang.String)
+				 */
+				@Override
+				public boolean accept(File dir, String name) {
+					return name.endsWith(".dataconfig");
+				}
+			}
+
+			List<DataConfig> randomizedDataConfigs = new ArrayList<DataConfig>();
+			String[] dataConfigFiles = new File(
+					this.repo.getBasePath(DataConfig.class))
+					.list(new DataConfigFileExtFilter());
+			for (String dcFile : dataConfigFiles)
+				randomizedDataConfigs.add(this.repo.getStaticObjectWithName(
+						DataConfig.class, dcFile.replace(".dataconfig", "")));
+			this.dataConfigs = randomizedDataConfigs;
+		} else
+			super.parseDataConfigurations();
 	}
 }
 
@@ -811,8 +892,9 @@ class DataSetParser extends RepositoryObjectParser<DataSet> {
 			}
 
 			DataSet.WEBSITE_VISIBILITY websiteVisibility = DataSet.WEBSITE_VISIBILITY.HIDE;
-			String vis = attributeValues.getOrDefault("websiteVisibility",
-					"hide");
+			String vis = attributeValues.containsKey("websiteVisibility")
+					? attributeValues.get("websiteVisibility")
+					: "hide";
 			if (vis.equals("hide"))
 				websiteVisibility = DataSet.WEBSITE_VISIBILITY.HIDE;
 			else if (vis.equals("show_always"))

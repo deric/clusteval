@@ -549,6 +549,9 @@ public class RunSchedulerThread extends ClustevalThread {
 									e1.printStackTrace();
 								} catch (RunRunnableInitializationException e) {
 									e.printStackTrace();
+								} catch (RunInitializationException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
 								}
 							}
 						};

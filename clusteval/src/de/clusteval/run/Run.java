@@ -277,7 +277,6 @@ public abstract class Run extends RepositoryObject {
 	 * input files to avoid overriding files unintentionally when they would be
 	 * performed in the runnables asynchronously instead.
 	 * 
-	 * @throws IOException
 	 * @throws RunInitializationException
 	 */
 	protected void beforePerform() throws IOException,
@@ -345,53 +344,62 @@ public abstract class Run extends RepositoryObject {
 	 *            resumed.
 	 * 
 	 * @throws IOException
+	 * @throws RunInitializationException
 	 */
-	protected void beforeResume(final String runIdentString) throws IOException {
-		log.info("RESUMING run \"" + this.getName() + "\"");
-		log.info("Run mode is \"" + this.getClass().getSimpleName() + "\"");
-		/*
-		 * Change the status of this run
-		 */
-		// this.status = RUN_STATUS.RUNNING;
+	protected void beforeResume(final String runIdentString)
+			throws RunInitializationException {
+		try {
+			log.info("RESUMING run \"" + this.getName() + "\"");
+			log.info("Run mode is \"" + this.getClass().getSimpleName() + "\"");
+			/*
+			 * Change the status of this run
+			 */
+			// this.status = RUN_STATUS.RUNNING;
 
-		/*
-		 * Initialize a ProgressPrinter, which keeps the progression of the run
-		 */
-		this.progress = new ProgressPrinter(getUpperLimitProgress(), true);
+			/*
+			 * Initialize a ProgressPrinter, which keeps the progression of the
+			 * run
+			 */
+			this.progress = new ProgressPrinter(getUpperLimitProgress(), true);
 
-		this.runIdentString = runIdentString;
+			this.runIdentString = runIdentString;
 
-		this.startTime = System.currentTimeMillis();
+			this.startTime = System.currentTimeMillis();
 
-		this.copyConfigurationFiles(true);
+			this.copyConfigurationFiles(true);
 
-		this.logFilePath = FileUtils.buildPath(new File(this.getRepository()
-				.getParent().getClusterResultsBasePath()).getParentFile()
-				.getAbsolutePath().replace("%RUNIDENTSTRING", runIdentString),
-				"logs", runIdentString + ".log");
-		if (!new File(this.logFilePath).exists()) {
-			new File(this.logFilePath).getParentFile().mkdirs();
-			new File(this.logFilePath).createNewFile();
+			this.logFilePath = FileUtils.buildPath(
+					new File(this.getRepository().getParent()
+							.getClusterResultsBasePath()).getParentFile()
+							.getAbsolutePath()
+							.replace("%RUNIDENTSTRING", runIdentString),
+					"logs", runIdentString + ".log");
+			if (!new File(this.logFilePath).exists()) {
+				new File(this.logFilePath).getParentFile().mkdirs();
+				new File(this.logFilePath).createNewFile();
+			}
+
+			FileUtils.appendStringToFile(
+					this.logFilePath,
+					Formatter.currentTimeAsString(true, "MM_dd_yyyy-HH_mm_ss",
+							Locale.UK)
+							+ "\tRESUMING run \""
+							+ this.getName()
+							+ "\"" + System.getProperty("line.separator"));
+
+			/*
+			 * All threads are stored in this list, to be able to wait for them
+			 * asynchronously later on.
+			 */
+			this.runnables.clear();
+
+			/*
+			 * Reset the results list
+			 */
+			this.results = new ArrayList<RunResult>();
+		} catch (Exception e) {
+			throw new RunInitializationException(e);
 		}
-
-		FileUtils.appendStringToFile(
-				this.logFilePath,
-				Formatter.currentTimeAsString(true, "MM_dd_yyyy-HH_mm_ss",
-						Locale.UK)
-						+ "\tRESUMING run \""
-						+ this.getName()
-						+ "\"" + System.getProperty("line.separator"));
-
-		/*
-		 * All threads are stored in this list, to be able to wait for them
-		 * asynchronously later on.
-		 */
-		this.runnables.clear();
-
-		/*
-		 * Reset the results list
-		 */
-		this.results = new ArrayList<RunResult>();
 	}
 
 	/**
@@ -744,12 +752,13 @@ public abstract class Run extends RepositoryObject {
 	 *             framework for later analysis. If no such parser exists for
 	 *             some format, this exception will be thrown.
 	 * @throws RunRunnableInitializationException
+	 * @throws RunInitializationException
 	 */
 	@SuppressWarnings("unused")
 	public void resume(final RunSchedulerThread runScheduler,
 			final String runIdentString) throws MissingParameterValueException,
 			IOException, NoRunResultFormatParserException,
-			RunRunnableInitializationException {
+			RunRunnableInitializationException, RunInitializationException {
 		beforeResume(runIdentString);
 		doResume(runScheduler, runIdentString);
 		waitForRunnablesToFinish();

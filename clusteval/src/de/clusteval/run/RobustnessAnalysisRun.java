@@ -13,30 +13,70 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.cli.Options;
+import org.apache.commons.configuration.ConfigurationException;
 
 import utils.Triple;
 import de.clusteval.cluster.Clustering;
+import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
+import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
+import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.cluster.quality.ClusteringQualityMeasureValue;
 import de.clusteval.cluster.quality.ClusteringQualitySet;
+import de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException;
 import de.clusteval.context.Context;
+import de.clusteval.context.IncompatibleContextException;
+import de.clusteval.context.UnknownContextException;
 import de.clusteval.data.DataConfig;
+import de.clusteval.data.DataConfigNotFoundException;
+import de.clusteval.data.DataConfigurationException;
 import de.clusteval.data.dataset.DataSet;
+import de.clusteval.data.dataset.DataSetConfigNotFoundException;
+import de.clusteval.data.dataset.DataSetConfigurationException;
+import de.clusteval.data.dataset.DataSetNotFoundException;
+import de.clusteval.data.dataset.IncompatibleDataSetConfigPreprocessorException;
+import de.clusteval.data.dataset.NoDataSetException;
+import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
+import de.clusteval.data.dataset.type.UnknownDataSetTypeException;
+import de.clusteval.data.distance.UnknownDistanceMeasureException;
 import de.clusteval.data.goldstandard.GoldStandard;
+import de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException;
+import de.clusteval.data.goldstandard.GoldStandardConfigurationException;
+import de.clusteval.data.goldstandard.GoldStandardNotFoundException;
+import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
+import de.clusteval.data.preprocessing.UnknownDataPreprocessorException;
 import de.clusteval.data.randomizer.DataRandomizeException;
 import de.clusteval.data.randomizer.DataRandomizer;
+import de.clusteval.data.randomizer.UnknownDataRandomizerException;
+import de.clusteval.data.statistics.UnknownDataStatisticException;
+import de.clusteval.framework.repository.InvalidRepositoryException;
+import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
+import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
+import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
+import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.framework.threading.RunSchedulerThread;
+import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
+import de.clusteval.program.UnknownParameterType;
+import de.clusteval.program.UnknownProgramParameterException;
+import de.clusteval.program.UnknownProgramTypeException;
+import de.clusteval.program.r.UnknownRProgramException;
 import de.clusteval.run.result.ClusteringRunResult;
 import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.result.RunResult;
+import de.clusteval.run.result.RunResultParseException;
+import de.clusteval.run.result.format.UnknownRunResultFormatException;
 import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
+import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.runnable.ExecutionRunRunnable;
 import de.clusteval.run.runnable.RobustnessAnalysisRunRunnable;
+import de.clusteval.run.statistics.UnknownRunDataStatisticException;
+import de.clusteval.run.statistics.UnknownRunStatisticException;
+import de.clusteval.utils.InvalidConfigurationFileException;
 import file.FileUtils;
 
 /**
@@ -147,6 +187,114 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see de.clusteval.run.Run#beforeResume(java.lang.String)
+	 */
+	@Override
+	protected void beforeResume(String runIdentString)
+			throws RunInitializationException {
+		super.beforeResume(runIdentString);
+
+		this.log.info("Finding best parameters in run results");
+		// find best parameters in run results
+		try {
+			this.findBestParamsAndInitParameterValues(this.getRepository()
+					.getParent());
+
+			this.log.info("Get dataconfigs corresponding to original data configs");
+
+			// override the old run pairs from constructor
+			initRunPairs(programConfigs, dataConfigs);
+		} catch (Exception e) {
+			throw new RunInitializationException(e);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.run.Run#afterResume(java.lang.String)
+	 */
+	@Override
+	protected void afterResume(String runIdentString) {
+		this.createAnalysesDirectory();
+
+		super.afterResume(runIdentString);
+	}
+
+	/**
+	 * 
+	 */
+	protected void createAnalysesDirectory() {
+		new File(FileUtils.buildPath(
+				this.repository.getBasePath(RunResult.class),
+				this.getRunIdentificationString(), "analyses")).delete();
+		new File(FileUtils.buildPath(
+				this.repository.getBasePath(RunResult.class),
+				this.getRunIdentificationString(), "analyses")).mkdir();
+
+		Set<String> paths = new HashSet<String>();
+
+		for (int i = 0; i < this.results.size(); i++) {
+			// int pc = (int) Math.round(Math.floor(i
+			// / (double) dataConfigs.size()));
+			// int dc = (int) Math.round(Math.floor(i % dataConfigs.size()));
+			// int origDc = (int) Math
+			// .round(Math
+			// .floor(dc
+			// / (double) (this.numberOfDistortedDataSets *
+			// this.distortionParams
+			// .size())));
+			// ProgramConfig programConfig = this.programConfigs.get(pc);
+			// DataConfig dataConfig = this.dataConfigs.get(dc);
+			// DataConfig origDataConfig = this.originalDataConfigs.get(origDc);
+
+			ClusteringRunResult result = (ClusteringRunResult) this.results
+					.get(i);
+			result.loadIntoMemory();
+			ClusteringQualitySet quals = result.getClustering().getSecond()
+					.getQualities();
+			result.unloadFromMemory();
+
+			ProgramConfig programConfig = result.getProgramConfig();
+			DataConfig dataConfig = result.getDataConfig();
+
+			String resultPath = FileUtils.buildPath(
+					this.repository.getBasePath(RunResult.class),
+					this.getRunIdentificationString(), "analyses",
+					programConfig.getName() + ".robustness");
+
+			// new File(resultPath).delete();
+
+			StringBuilder sb = new StringBuilder();
+			if (!paths.contains(resultPath)) {
+				sb.append("DataConfig");
+				sb.append("\t");
+				// first time we write into this file
+				for (ClusteringQualityMeasure measure : this.qualityMeasures) {
+					sb.append(measure.getClass().getSimpleName());
+					sb.append("\t");
+				}
+				sb.deleteCharAt(sb.length() - 1);
+				sb.append(System.getProperty("line.separator"));
+			}
+
+			sb.append(dataConfig.getName());
+			sb.append("\t");
+			for (ClusteringQualityMeasure measure : this.qualityMeasures) {
+				sb.append(quals.get(measure));
+				sb.append("\t");
+			}
+			sb.deleteCharAt(sb.length() - 1);
+			sb.append(System.getProperty("line.separator"));
+			FileUtils.appendStringToFile(resultPath, sb.toString());
+
+			paths.add(resultPath);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.clusteval.run.Run#beforePerform()
 	 */
 	@Override
@@ -157,142 +305,7 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 		this.log.info("Finding best parameters in run results");
 		// find best parameters in run results
 		try {
-			List<String> programConfigNames = new ArrayList<String>();
-			for (ProgramConfig programConfig : programConfigs)
-				programConfigNames.add(programConfig.getName());
-			List<String> dataConfigNames = new ArrayList<String>();
-			for (DataConfig dataConfig : dataConfigs)
-				dataConfigNames.add(dataConfig.getName());
-
-			Map<String, Map<String, Triple<List<ParameterSet>, ClusteringQualityMeasure, ClusteringQualityMeasureValue>>> bestParams = new HashMap<String, Map<String, Triple<List<ParameterSet>, ClusteringQualityMeasure, ClusteringQualityMeasureValue>>>();
-
-			// get best parameters for each pair of program and dataset
-			// from run results
-			for (String runIdentifier : this.uniqueRunAnalysisRunIdentifiers) {
-				this.log.info("... parsing run result '" + runIdentifier + "'");
-				List<RunResult> results = new ArrayList<RunResult>();
-				RunResult.parseFromRunResultFolder(
-						getRepository(),
-						new File(FileUtils.buildPath(this.getRepository()
-								.getBasePath(RunResult.class), runIdentifier)),
-						results, false, false, false);
-				for (RunResult runResult : results) {
-					if (runResult instanceof ParameterOptimizationResult) {
-						ParameterOptimizationResult paramOptResult = (ParameterOptimizationResult) runResult;
-						paramOptResult.loadIntoMemory();
-						ProgramConfig pc = paramOptResult.getProgramConfig();
-						DataConfig dc = paramOptResult.getDataConfig();
-						ClusteringQualityMeasure measure = paramOptResult
-								.getMethod().getOptimizationCriterion();
-						ClusteringQualityMeasureValue min = ClusteringQualityMeasureValue
-								.getForDouble(measure.getMinimum());
-						ClusteringQualityMeasureValue max = ClusteringQualityMeasureValue
-								.getForDouble(measure.getMaximum());
-						ClusteringQualityMeasureValue def;
-						if (measure.isBetterThan(max, min))
-							def = min;
-						else
-							def = max;
-
-						if (programConfigNames.contains(pc.getName())
-								&& dataConfigNames.contains(dc.getName())) {
-							if (!bestParams.containsKey(pc.getName()))
-								bestParams
-										.put(pc.getName(),
-												new HashMap<String, Triple<List<ParameterSet>, ClusteringQualityMeasure, ClusteringQualityMeasureValue>>());
-							if (!bestParams.get(pc.getName()).containsKey(
-									dc.getName()))
-								bestParams
-										.get(pc.getName())
-										.put(dc.getName(),
-												new Triple<List<ParameterSet>, ClusteringQualityMeasure, ClusteringQualityMeasureValue>(
-														new ArrayList<ParameterSet>(),
-														measure, def));
-
-							ClusteringQualityMeasureValue currentOpt = bestParams
-									.get(pc.getName()).get(dc.getName())
-									.getThird();
-							Map<ClusteringQualityMeasure, ParameterSet> optParams = paramOptResult
-									.getOptimalParameterSets();
-							ParameterSet bestParamSet = optParams.get(measure);
-							Clustering cl = paramOptResult
-									.getClustering(bestParamSet);
-							if (paramOptResult.get(bestParamSet) == null)
-								continue;
-							ClusteringQualityMeasureValue newBestValue = paramOptResult
-									.get(bestParamSet).get(measure);
-
-							if (measure.isBetterThan(newBestValue, currentOpt)) {
-								// we found a better quality, so we empty
-								// the list and add the new parameter sets
-								List<ParameterSet> paramSets = bestParams
-										.get(pc.getName()).get(dc.getName())
-										.getFirst();
-								paramSets.clear();
-								paramSets.add(bestParamSet);
-
-								bestParams.get(pc.getName()).get(dc.getName())
-										.setThird(newBestValue);
-							} else if (newBestValue.isTerminated()
-									&& newBestValue.getValue() == currentOpt
-											.getValue()) {
-								// we found a parameter set with the same
-								// quality, add it to the list
-								List<ParameterSet> paramSets = bestParams
-										.get(pc.getName()).get(dc.getName())
-										.getFirst();
-								paramSets.add(bestParamSet);
-							}
-						}
-						paramOptResult.unloadFromMemory();
-					}
-				}
-			}
-
-			for (String pc : bestParams.keySet()) {
-				for (String dc : bestParams.get(pc).keySet()) {
-					System.out.println(String.format("%s\t%s\t%s\n", pc, dc,
-							bestParams.get(pc).get(dc).getFirst().get(0)));
-				}
-			}
-
-			this.log.info("Taking one parameter set for each pair of program config and data config");
-			this.parameterValues.clear();
-			// TODO: for numerical parameter ranges, take the mean
-			// for string parameters, just take any one
-			for (ProgramConfig pc : programConfigs) {
-				for (DataConfig dc : dataConfigs) {
-					Map<ProgramParameter<? extends Object>, String> m = new HashMap<ProgramParameter<? extends Object>, String>();
-
-					if (bestParams.containsKey(pc.getName())
-							&& bestParams.get(pc.getName()).containsKey(
-									dc.getName())) {
-						Triple<List<ParameterSet>, ClusteringQualityMeasure, ClusteringQualityMeasureValue> params = bestParams
-								.get(pc.getName()).get(dc.getName());
-
-						if (params.getFirst().size() > 0) {
-							for (String p : params.getFirst().get(0).keySet())
-								m.put(pc.getParameterForName(p), params
-										.getFirst().get(0).get(p));
-						}
-					}
-					// add it several times, once for each randomized dataset
-					// per data config
-					for (int i = 0; i < this.numberOfDistortedDataSets; i++)
-						for (int j = 0; j < this.distortionParams.size(); j++)
-							this.parameterValues
-									.add(new HashMap<ProgramParameter<? extends Object>, String>(
-											m));
-				}
-			}
-
-			// for (int i = 0; i < this.runnables.size(); i++) {
-			// Map<ProgramParameter<? extends Object>, String> vals =
-			// this.parameterValues.get(i);
-			// this.runnables.get(i);
-			// System.out.println(String.format("%s\t%s\t%s\n", pc, dc,
-			// bestParams.get(pc).get(dc).getFirst().get(0)));
-			// }
+			this.findBestParamsAndInitParameterValues(this.getRepository());
 
 			this.log.info("Generate randomized data sets...");
 			// generate randomized data sets
@@ -375,6 +388,213 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 		}
 	}
 
+	/**
+	 * @throws UnknownDataRandomizerException
+	 * @throws UnknownRunResultPostprocessorException
+	 * @throws InterruptedException
+	 * @throws IncompatibleContextException
+	 * @throws IncompatibleDataSetConfigPreprocessorException
+	 * @throws UnknownDataPreprocessorException
+	 * @throws UnknownRunDataStatisticException
+	 * @throws UnknownDataSetTypeException
+	 * @throws RepositoryConfigurationException
+	 * @throws RepositoryConfigNotFoundException
+	 * @throws UnknownRunStatisticException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws UnknownRProgramException
+	 * @throws UnknownProgramTypeException
+	 * @throws UnknownDataStatisticException
+	 * @throws RunException
+	 * @throws InvalidOptimizationParameterException
+	 * @throws NoRepositoryFoundException
+	 * @throws InvalidRepositoryException
+	 * @throws RepositoryAlreadyExistsException
+	 * @throws InvalidConfigurationFileException
+	 * @throws UnknownProgramParameterException
+	 * @throws NoOptimizableProgramParameterException
+	 * @throws UnknownParameterOptimizationMethodException
+	 * @throws InvalidRunModeException
+	 * @throws UnknownClusteringQualityMeasureException
+	 * @throws UnknownRunResultFormatException
+	 * @throws IOException
+	 * @throws UnknownParameterType
+	 * @throws UnknownContextException
+	 * @throws RegisterException
+	 * @throws ConfigurationException
+	 * @throws RunResultParseException
+	 * @throws NumberFormatException
+	 * @throws DataConfigNotFoundException
+	 * @throws DataConfigurationException
+	 * @throws NoDataSetException
+	 * @throws GoldStandardConfigNotFoundException
+	 * @throws DataSetConfigNotFoundException
+	 * @throws DataSetNotFoundException
+	 * @throws DataSetConfigurationException
+	 * @throws GoldStandardConfigurationException
+	 * @throws GoldStandardNotFoundException
+	 * @throws UnknownGoldStandardFormatException
+	 * @throws UnknownDataSetFormatException
+	 * 
+	 */
+	protected void findBestParamsAndInitParameterValues(
+			final Repository repository) throws UnknownDataSetFormatException,
+			UnknownGoldStandardFormatException, GoldStandardNotFoundException,
+			GoldStandardConfigurationException, DataSetConfigurationException,
+			DataSetNotFoundException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException,
+			DataConfigurationException, DataConfigNotFoundException,
+			NumberFormatException, RunResultParseException,
+			ConfigurationException, RegisterException, UnknownContextException,
+			UnknownParameterType, IOException, UnknownRunResultFormatException,
+			UnknownClusteringQualityMeasureException, InvalidRunModeException,
+			UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException,
+			UnknownProgramParameterException,
+			InvalidConfigurationFileException,
+			RepositoryAlreadyExistsException, InvalidRepositoryException,
+			NoRepositoryFoundException, InvalidOptimizationParameterException,
+			RunException, UnknownDataStatisticException,
+			UnknownProgramTypeException, UnknownRProgramException,
+			IncompatibleParameterOptimizationMethodException,
+			UnknownDistanceMeasureException, UnknownRunStatisticException,
+			RepositoryConfigNotFoundException,
+			RepositoryConfigurationException, UnknownDataSetTypeException,
+			UnknownRunDataStatisticException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException,
+			IncompatibleContextException, InterruptedException,
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
+
+		List<String> programConfigNames = new ArrayList<String>();
+		for (ProgramConfig programConfig : programConfigs)
+			programConfigNames.add(programConfig.getName());
+		List<String> dataConfigNames = new ArrayList<String>();
+		for (DataConfig dataConfig : dataConfigs)
+			dataConfigNames.add(dataConfig.getName());
+
+		Map<String, Map<String, Triple<List<ParameterSet>, ClusteringQualityMeasure, ClusteringQualityMeasureValue>>> bestParams = new HashMap<String, Map<String, Triple<List<ParameterSet>, ClusteringQualityMeasure, ClusteringQualityMeasureValue>>>();
+
+		// get best parameters for each pair of program and dataset
+		// from run results
+		for (String runIdentifier : this.uniqueRunAnalysisRunIdentifiers) {
+			this.log.info("... parsing run result '" + runIdentifier + "'");
+			List<RunResult> results = new ArrayList<RunResult>();
+			RunResult.parseFromRunResultFolder(
+					repository,
+					new File(FileUtils.buildPath(
+							repository.getBasePath(RunResult.class),
+							runIdentifier)), results, false, false, false);
+			for (RunResult runResult : results) {
+				if (runResult instanceof ParameterOptimizationResult) {
+					ParameterOptimizationResult paramOptResult = (ParameterOptimizationResult) runResult;
+					paramOptResult.loadIntoMemory();
+					ProgramConfig pc = paramOptResult.getProgramConfig();
+					DataConfig dc = paramOptResult.getDataConfig();
+					ClusteringQualityMeasure measure = paramOptResult
+							.getMethod().getOptimizationCriterion();
+					ClusteringQualityMeasureValue min = ClusteringQualityMeasureValue
+							.getForDouble(measure.getMinimum());
+					ClusteringQualityMeasureValue max = ClusteringQualityMeasureValue
+							.getForDouble(measure.getMaximum());
+					ClusteringQualityMeasureValue def;
+					if (measure.isBetterThan(max, min))
+						def = min;
+					else
+						def = max;
+
+					if (programConfigNames.contains(pc.getName())
+							&& dataConfigNames.contains(dc.getName())) {
+						if (!bestParams.containsKey(pc.getName()))
+							bestParams
+									.put(pc.getName(),
+											new HashMap<String, Triple<List<ParameterSet>, ClusteringQualityMeasure, ClusteringQualityMeasureValue>>());
+						if (!bestParams.get(pc.getName()).containsKey(
+								dc.getName()))
+							bestParams
+									.get(pc.getName())
+									.put(dc.getName(),
+											new Triple<List<ParameterSet>, ClusteringQualityMeasure, ClusteringQualityMeasureValue>(
+													new ArrayList<ParameterSet>(),
+													measure, def));
+
+						ClusteringQualityMeasureValue currentOpt = bestParams
+								.get(pc.getName()).get(dc.getName()).getThird();
+						Map<ClusteringQualityMeasure, ParameterSet> optParams = paramOptResult
+								.getOptimalParameterSets();
+						ParameterSet bestParamSet = optParams.get(measure);
+						Clustering cl = paramOptResult
+								.getClustering(bestParamSet);
+						if (paramOptResult.get(bestParamSet) == null)
+							continue;
+						ClusteringQualityMeasureValue newBestValue = paramOptResult
+								.get(bestParamSet).get(measure);
+
+						if (measure.isBetterThan(newBestValue, currentOpt)) {
+							// we found a better quality, so we empty
+							// the list and add the new parameter sets
+							List<ParameterSet> paramSets = bestParams
+									.get(pc.getName()).get(dc.getName())
+									.getFirst();
+							paramSets.clear();
+							paramSets.add(bestParamSet);
+
+							bestParams.get(pc.getName()).get(dc.getName())
+									.setThird(newBestValue);
+						} else if (newBestValue.isTerminated()
+								&& newBestValue.getValue() == currentOpt
+										.getValue()) {
+							// we found a parameter set with the same
+							// quality, add it to the list
+							List<ParameterSet> paramSets = bestParams
+									.get(pc.getName()).get(dc.getName())
+									.getFirst();
+							paramSets.add(bestParamSet);
+						}
+					}
+					paramOptResult.unloadFromMemory();
+				}
+			}
+		}
+
+		for (String pc : bestParams.keySet()) {
+			for (String dc : bestParams.get(pc).keySet()) {
+				System.out.println(String.format("%s\t%s\t%s\n", pc, dc,
+						bestParams.get(pc).get(dc).getFirst().get(0)));
+			}
+		}
+
+		this.log.info("Taking one parameter set for each pair of program config and data config");
+		this.parameterValues.clear();
+		// TODO: for numerical parameter ranges, take the mean
+		// for string parameters, just take any one
+		for (ProgramConfig pc : programConfigs) {
+			for (DataConfig dc : dataConfigs) {
+				Map<ProgramParameter<? extends Object>, String> m = new HashMap<ProgramParameter<? extends Object>, String>();
+
+				if (bestParams.containsKey(pc.getName())
+						&& bestParams.get(pc.getName()).containsKey(
+								dc.getName())) {
+					Triple<List<ParameterSet>, ClusteringQualityMeasure, ClusteringQualityMeasureValue> params = bestParams
+							.get(pc.getName()).get(dc.getName());
+
+					if (params.getFirst().size() > 0) {
+						for (String p : params.getFirst().get(0).keySet())
+							m.put(pc.getParameterForName(p), params.getFirst()
+									.get(0).get(p));
+					}
+				}
+				// add it several times, once for each randomized dataset
+				// per data config
+				for (int i = 0; i < this.numberOfDistortedDataSets; i++)
+					for (int j = 0; j < this.distortionParams.size(); j++)
+						this.parameterValues
+								.add(new HashMap<ProgramParameter<? extends Object>, String>(
+										m));
+			}
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -382,62 +602,7 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 	 */
 	@Override
 	protected void afterPerform() {
-		Set<String> paths = new HashSet<String>();
-
-		for (int i = 0; i < this.runnables.size(); i++) {
-			int pc = (int) Math.round(Math.floor(i
-					/ (double) dataConfigs.size()));
-			int dc = (int) Math.round(Math.floor(i % dataConfigs.size()));
-			int origDc = (int) Math
-					.round(Math
-							.floor(dc
-									/ (double) (this.numberOfDistortedDataSets * this.distortionParams
-											.size())));
-			ProgramConfig programConfig = this.programConfigs.get(pc);
-			DataConfig dataConfig = this.dataConfigs.get(dc);
-			DataConfig origDataConfig = this.originalDataConfigs.get(origDc);
-
-			new File(FileUtils.buildPath(
-					this.repository.getBasePath(RunResult.class),
-					this.getRunIdentificationString(), "analyses")).mkdir();
-
-			String resultPath = FileUtils.buildPath(
-					this.repository.getBasePath(RunResult.class),
-					this.getRunIdentificationString(), "analyses",
-					programConfig.getName() + "_" + origDataConfig.getName()
-							+ ".robustness");
-
-			ClusteringRunResult result = (ClusteringRunResult) this.results
-					.get(i);
-			result.loadIntoMemory();
-			ClusteringQualitySet quals = result.getClustering().getSecond()
-					.getQualities();
-			result.unloadFromMemory();
-			StringBuilder sb = new StringBuilder();
-			if (!paths.contains(resultPath)) {
-				sb.append("DataConfig");
-				sb.append("\t");
-				// first time we write into this file
-				for (ClusteringQualityMeasure measure : this.qualityMeasures) {
-					sb.append(measure.getClass().getSimpleName());
-					sb.append("\t");
-				}
-				sb.deleteCharAt(sb.length() - 1);
-				sb.append(System.getProperty("line.separator"));
-			}
-
-			sb.append(dataConfig.getName());
-			sb.append("\t");
-			for (ClusteringQualityMeasure measure : this.qualityMeasures) {
-				sb.append(quals.get(measure));
-				sb.append("\t");
-			}
-			sb.deleteCharAt(sb.length() - 1);
-			sb.append(System.getProperty("line.separator"));
-			FileUtils.appendStringToFile(resultPath, sb.toString());
-
-			paths.add(resultPath);
-		}
+		this.createAnalysesDirectory();
 
 		super.afterPerform();
 	}

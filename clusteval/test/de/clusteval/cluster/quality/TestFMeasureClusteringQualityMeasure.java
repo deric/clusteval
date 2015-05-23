@@ -25,8 +25,11 @@ import ch.qos.logback.classic.Level;
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
+import de.clusteval.cluster.ClusteringParseException;
+import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
+import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.InvalidRepositoryException;
@@ -287,4 +290,42 @@ public class TestFMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 		Assert.assertEquals(0.9027777777777778, quality);
 		System.out.println(measure.getAlias() + " " + quality);
 	}
+
+	@Test
+	public void testOverlappingClusters() throws InstantiationException,
+			IllegalAccessException, RepositoryAlreadyExistsException,
+			InvalidRepositoryException, RepositoryConfigNotFoundException,
+			RepositoryConfigurationException, NoRepositoryFoundException,
+			RegisterException, NoSuchAlgorithmException,
+			RNotAvailableException, RCalculationException,
+			UnknownClusteringQualityMeasureException,
+			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
+			InvalidDataSetFormatVersionException, IOException,
+			ClusteringParseException {
+		ClustevalBackendServer.logLevel(Level.WARN);
+
+		DataConfig dataConfig = this.getRepository().getStaticObjectWithName(
+				DataConfig.class, "astral_40");
+
+		GoldStandard goldStandard = dataConfig.getGoldstandardConfig()
+				.getGoldstandard();
+
+		Clustering clustering = Clustering
+				.parseFromFile(
+						this.getRepository(),
+						new File(
+								"/home/wiwiec/git/clusteval/clusteval/testCaseRepository/results/01_30_2013-21_31_25_tc_vs_DS1/clusters/clusterONE_astral_40.1.results.conv"),
+						false).getSecond();
+
+		clustering.loadIntoMemory();
+
+		ClusteringQualityMeasure measure = ClusteringQualityMeasure
+				.parseFromString(getRepository(),
+						"TransClustFClusteringQualityMeasure",
+						new ClusteringQualityMeasureParameters());
+		double quality = measure.getQualityOfClustering(clustering,
+				goldStandard.getClustering(), dataConfig).getValue();
+		System.out.println(measure.getAlias() + " " + quality);
+	}
+
 }

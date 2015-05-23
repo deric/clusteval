@@ -11,14 +11,14 @@
 /**
  * 
  */
-package de.clusteval.framework.repository;
+package de.clusteval.framework.repository.db;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import de.clusteval.framework.repository.config.MysqlConfig;
+import de.clusteval.framework.repository.Repository;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.run.Run;
 
@@ -33,9 +33,9 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	 * @param mysqlConfig
 	 */
 	public RunResultSQLCommunicator(Repository repository,
-			final MysqlConfig mysqlConfig) {
+			final SQLConfig mysqlConfig) {
 		super(repository, mysqlConfig);
-		this.objectIds = repository.getParent().sqlCommunicator.objectIds;
+		this.objectIds = repository.getParent().getSqlCommunicator().objectIds;
 	}
 
 	/*
@@ -73,57 +73,58 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	public void initDB() {
 		try {
 			if (conn == null) {
-				conn = DriverManager.getConnection("jdbc:mysql://"
-						+ getServer() + "/" + getDatabase() + "?",
+				conn = DriverManager.getConnection(
+						this.queryBuilder.getConnectionstring(),
 						getDBUsername(), getDBPassword());
-				conn.setAutoCommit(false);
+				conn.setAutoCommit(true);
 			}
-			Statement stmt = conn.createStatement();
+			Statement stmt = this.queryBuilder.createStatement(conn);
 
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableRepositories()
-					+ "` WHERE `basePath`='"
-					+ this.repository.getParent().getBasePath() + "';");
+			ResultSet rs = stmt.executeQuery(this.queryBuilder.select(this
+					.getTableRepositories(), "id", new String[]{"base_path"},
+					new String[]{this.repository.getParent().getBasePath()}));
 			rs.first();
 			int parent_repository_id = rs.getInt("id");
 
 			String repositoryType = this.repository.getClass().getSimpleName();
 			// Get repository_type_id
-			rs = stmt.executeQuery("SELECT `id` FROM `" + this.getDatabase()
-					+ "`.`" + this.getTableRepositoryTypes()
-					+ "` WHERE `name`='" + repositoryType + "';");
+			rs = stmt.executeQuery(this.queryBuilder.select(
+					this.getTableRepositoryTypes(), "id", new String[]{"name"},
+					new String[]{repositoryType}));
 			rs.first();
 			int repository_type_id = rs.getInt("id");
 
 			try {
 				// Get repositoryId
-				rs = stmt.executeQuery("SELECT `id` FROM `"
-						+ this.getDatabase() + "`.`"
-						+ this.getTableRepositories() + "` WHERE `basePath`='"
-						+ this.repository.getBasePath() + "';");
+				rs = stmt.executeQuery(this.queryBuilder.select(
+						this.getTableRepositories(), "id",
+						new String[]{"base_path"},
+						new String[]{this.repository.getBasePath()}));
 				if (!rs.last() || rs.getRow() == 0) {
-					stmt.execute("INSERT INTO `"
-							+ this.getDatabase()
-							+ "`.`"
-							+ this.getTableRepositories()
-							+ "` (`basePath`,`repository_type_id`,`repository_id`) VALUES ('"
-							+ this.repository.getBasePath() + "','"
-							+ repository_type_id + "','" + parent_repository_id
-							+ "');");
+
+					stmt.execute(this.queryBuilder.insert(
+							this.getTableRepositories(), new String[]{
+									"base_path", "repository_type_id",
+									"repository_id"}, new String[]{
+									this.repository.getBasePath(),
+									repository_type_id + "",
+									parent_repository_id + ""}));
 				}
 
-				rs = stmt.executeQuery("SELECT `id` FROM `"
-						+ this.getDatabase() + "`.`"
-						+ this.getTableRepositories() + "` WHERE `basePath`='"
-						+ this.repository.getBasePath() + "';");
+				rs = stmt.executeQuery(this.queryBuilder.select(
+						this.getTableRepositories(), "id",
+						new String[]{"base_path"},
+						new String[]{this.repository.getBasePath()}));
 
 				rs.first();
 				this.setRepositoryId(rs.getInt("id"));
 			} catch (SQLException ex) {
+				this.exceptionHandler.handleException(ex);
 				ex.printStackTrace();
 			}
-			conn.commit();
+//			conn.commit();
 		} catch (SQLException e1) {
+			this.exceptionHandler.handleException(e1);
 			e1.printStackTrace();
 		}
 	}
@@ -148,6 +149,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 		try {
 			return super.getRunAnalysisId(runId);
 		} catch (SQLException e) {
+			this.exceptionHandler.handleException(e);
 			return this.repository.getParent().getSqlCommunicator()
 					.getRunAnalysisId(runId);
 		}
@@ -163,6 +165,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 		try {
 			return super.getRunExecutionId(runId);
 		} catch (SQLException e) {
+			this.exceptionHandler.handleException(e);
 			return this.repository.getParent().getSqlCommunicator()
 					.getRunExecutionId(runId);
 		}
@@ -178,6 +181,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 		try {
 			return super.getRunId(run);
 		} catch (SQLException e) {
+			this.exceptionHandler.handleException(e);
 			return this.repository.getParent().getSqlCommunicator()
 					.getRunId(run);
 		}

@@ -58,6 +58,10 @@ import de.clusteval.framework.repository.config.DefaultRepositoryConfig;
 import de.clusteval.framework.repository.config.RepositoryConfig;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DefaultSQLCommunicator;
+import de.clusteval.framework.repository.db.RunResultSQLCommunicator;
+import de.clusteval.framework.repository.db.SQLCommunicator;
+import de.clusteval.framework.repository.db.StubSQLCommunicator;
 import de.clusteval.framework.threading.RepositorySupervisorThread;
 import de.clusteval.framework.threading.RunResultRepositorySupervisorThread;
 import de.clusteval.framework.threading.SupervisorThread;
@@ -515,7 +519,7 @@ public class Repository {
 	 * @return A new instance of sql communicator.
 	 */
 	protected SQLCommunicator createSQLCommunicator() {
-		if (this.repositoryConfig.getMysqlConfig().usesMysql())
+		if (this.repositoryConfig.getMysqlConfig().usesSql())
 			return new DefaultSQLCommunicator(this,
 					this.repositoryConfig.getMysqlConfig());
 

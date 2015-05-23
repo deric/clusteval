@@ -11,7 +11,7 @@
 /**
  * 
  */
-package de.clusteval.framework.repository;
+package de.clusteval.framework.repository.db;
 
 import java.net.ConnectException;
 import java.sql.Connection;
@@ -44,6 +44,9 @@ import de.clusteval.data.dataset.type.DataSetType;
 import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.data.statistics.DataStatistic;
+import de.clusteval.framework.repository.Repository;
+import de.clusteval.framework.repository.RepositoryObject;
+import de.clusteval.framework.repository.db.SQLConfig.DB_TYPE;
 import de.clusteval.program.DoubleProgramParameter;
 import de.clusteval.program.IntegerProgramParameter;
 import de.clusteval.program.Program;
@@ -91,6 +94,18 @@ public abstract class SQLCommunicator {
 	 */
 	protected static Connection conn;
 
+	protected Logger log;
+
+	/**
+	 * A sql communicator needs a mysql configuration to know, how to connect to
+	 * the database server.
+	 */
+	protected SQLConfig sqlConfig;
+
+	protected SQLQueryBuilder queryBuilder;
+
+	protected SQLExceptionHandler exceptionHandler;
+
 	/*
 	 * One SQLCommunicator belongs to exactly one repository
 	 */
@@ -103,13 +118,40 @@ public abstract class SQLCommunicator {
 
 	protected Map<RepositoryObject, Integer> objectIds;
 
+	public Map<RepositoryObject, Integer> getObjectIds() {
+		return objectIds;
+	}
+
 	/**
 	 * @param repository
+	 * @param sqlConfig
 	 */
-	public SQLCommunicator(final Repository repository) {
+	public SQLCommunicator(final Repository repository,
+			final SQLConfig sqlConfig) {
 		super();
+
+		this.log = LoggerFactory.getLogger(this.getClass());
 		this.repository = repository;
 		this.objectIds = new HashMap<RepositoryObject, Integer>();
+		this.sqlConfig = sqlConfig;
+		this.queryBuilder = this.createQueryBuilder();
+		this.exceptionHandler = this.createExceptionHandler();
+	}
+
+	protected SQLQueryBuilder createQueryBuilder() {
+		if (this.sqlConfig.getDatabaseType().equals(DB_TYPE.MYSQL))
+			return new MySQLQueryBuilder(sqlConfig);
+		else if (this.sqlConfig.getDatabaseType().equals(DB_TYPE.POSTGRESQL))
+			return new PostgreSQLQueryBuilder(sqlConfig);
+		return new DummyQueryBuilder(sqlConfig);
+	}
+
+	protected SQLExceptionHandler createExceptionHandler() {
+		if (this.sqlConfig.getDatabaseType().equals(DB_TYPE.MYSQL))
+			return new MySQLExceptionHandler(this);
+		else if (this.sqlConfig.getDatabaseType().equals(DB_TYPE.POSTGRESQL))
+			return new PostgreSQLExceptionHandler(this);
+		return new DummySQLExceptionHandler();
 	}
 
 	protected abstract String getServer();
@@ -129,39 +171,9 @@ public abstract class SQLCommunicator {
 	protected int insert(final String tableName, final String[] columnNames,
 			final List<String[]> values) throws SQLException {
 
-		StringBuilder sb = new StringBuilder();
+		String query = this.queryBuilder.insert(tableName, columnNames, values);
 
-		sb.append("INSERT INTO `");
-		sb.append(this.getDatabase());
-		sb.append("`.`");
-		sb.append(tableName);
-		sb.append("` (");
-		for (String s : columnNames) {
-			sb.append("`");
-			sb.append(s);
-			sb.append("`,");
-		}
-		// remove last comma
-		sb.deleteCharAt(sb.length() - 1);
-		sb.append(") VALUES");
-		for (String[] vals : values) {
-			sb.append(" (");
-			for (String s : vals) {
-				if (s == null)
-					sb.append("null,");
-				else {
-					sb.append("'");
-					sb.append(s);
-					sb.append("',");
-				}
-			}
-			sb.deleteCharAt(sb.length() - 1);
-			sb.append("),");
-		}
-		sb.deleteCharAt(sb.length() - 1);
-		sb.append(";");
-
-		PreparedStatement prepStmt = conn.prepareStatement(sb.toString(),
+		PreparedStatement prepStmt = conn.prepareStatement(query,
 				Statement.RETURN_GENERATED_KEYS);
 		try {
 			prepStmt.executeUpdate();
@@ -175,35 +187,9 @@ public abstract class SQLCommunicator {
 
 	protected int insert(final String tableName, final String[] columnNames,
 			final String[] values) throws SQLException {
+		String query = this.queryBuilder.insert(tableName, columnNames, values);
 
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("INSERT INTO `");
-		sb.append(this.getDatabase());
-		sb.append("`.`");
-		sb.append(tableName);
-		sb.append("` (");
-		for (String s : columnNames) {
-			sb.append("`");
-			sb.append(s);
-			sb.append("`,");
-		}
-		// remove last comma
-		sb.deleteCharAt(sb.length() - 1);
-		sb.append(") VALUES (");
-		for (String s : values) {
-			if (s == null)
-				sb.append("null,");
-			else {
-				sb.append("'");
-				sb.append(s);
-				sb.append("',");
-			}
-		}
-		sb.deleteCharAt(sb.length() - 1);
-		sb.append(");");
-
-		PreparedStatement prepStmt = conn.prepareStatement(sb.toString(),
+		PreparedStatement prepStmt = conn.prepareStatement(query,
 				Statement.RETURN_GENERATED_KEYS);
 		try {
 			prepStmt.executeUpdate();
@@ -215,112 +201,50 @@ public abstract class SQLCommunicator {
 		}
 	}
 
-	public void disableKeys(final String tableName) throws SQLException {
-		StringBuilder sb = new StringBuilder();
-		sb.append("ALTER TABLE `");
-		sb.append(this.getDatabase());
-		sb.append("`.`");
-		sb.append(tableName);
-		sb.append("` DISABLE KEYS");
-		PreparedStatement prepStmt = conn.prepareStatement(sb.toString(),
-				Statement.NO_GENERATED_KEYS);
-		try {
-			prepStmt.executeUpdate();
-		} finally {
-			prepStmt.close();
-		}
-	}
-
-	public void enableKeys(final String tableName) throws SQLException {
-		StringBuilder sb = new StringBuilder();
-		sb.append("ALTER TABLE `");
-		sb.append(this.getDatabase());
-		sb.append("`.`");
-		sb.append(tableName);
-		sb.append("` ENABLE KEYS");
-		PreparedStatement prepStmt = conn.prepareStatement(sb.toString(),
-				Statement.NO_GENERATED_KEYS);
-		try {
-			prepStmt.executeUpdate();
-		} finally {
-			prepStmt.close();
-		}
-	}
-
 	protected void tryInsert(final String tableName,
 			final String[] columnNames, final String[] values) {
 		try {
 			this.insert(tableName, columnNames, values);
 		} catch (SQLException e) {
+			this.exceptionHandler.handleException(e);
 		}
 	}
 
 	protected boolean update(final String tableName,
 			final String[] columnNames, final String[] values, final int rowId)
 			throws SQLException {
+		String query = this.queryBuilder.update(tableName, columnNames, values,
+				rowId);
 
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("UPDATE `");
-		sb.append(this.getDatabase());
-		sb.append("`.`");
-		sb.append(tableName);
-		sb.append("` SET ");
-		for (int i = 0; i < columnNames.length; i++) {
-			String s = columnNames[i];
-			String v = values[i];
-
-			sb.append("`");
-			sb.append(s);
-			sb.append("`='");
-			sb.append(v);
-			sb.append("',");
-		}
-		// remove last comma
-		sb.deleteCharAt(sb.length() - 1);
-		sb.append(" WHERE `id`='");
-		sb.append(rowId);
-		sb.append("';");
-
-		Statement stmt = conn.createStatement();
+		Statement stmt = this.queryBuilder.createStatement(conn);
 		try {
-			stmt.execute(sb.toString());
+			stmt.execute(query);
 			return true;
 		} finally {
 			stmt.close();
 		}
 	}
 
-	// protected boolean update(final String tableName,
-	// final String[] columnNames, final String[] values, final int rowId)
-	// throws SQLException {
-	// final String[] newColumns = Arrays.copyOf(columnNames,
-	// columnNames.length + 1);
-	// newColumns[newColumns.length - 1] = "id";
-	// final String[] newValues = Arrays.copyOf(values, values.length + 1);
-	// newValues[newValues.length - 1] = "" + rowId;
-	// delete(tableName, rowId);
-	// insert(tableName, newColumns, newValues);
-	// return true;
-	// }
-
-	protected boolean delete(final String tableName, final int rowId,
+	protected boolean delete(final String tableName, final String value,
 			final String columnName) throws SQLException {
-		StringBuilder sb = new StringBuilder();
+		String query = this.queryBuilder.delete(tableName, value, columnName);
 
-		sb.append("DELETE FROM `");
-		sb.append(this.getDatabase());
-		sb.append("`.`");
-		sb.append(tableName);
-		sb.append("` WHERE `");
-		sb.append(columnName);
-		sb.append("`='");
-		sb.append(rowId);
-		sb.append("';");
-
-		Statement stmt = conn.createStatement();
+		Statement stmt = this.queryBuilder.createStatement(conn);
 		try {
-			stmt.execute(sb.toString());
+			stmt.execute(query);
+			return true;
+		} finally {
+			stmt.close();
+		}
+	}
+
+	protected boolean delete(final String tableName, final String[] value,
+			final String columnName[]) throws SQLException {
+		String query = this.queryBuilder.delete(tableName, value, columnName);
+
+		Statement stmt = this.queryBuilder.createStatement(conn);
+		try {
+			stmt.execute(query);
 			return true;
 		} finally {
 			stmt.close();
@@ -335,39 +259,20 @@ public abstract class SQLCommunicator {
 	 * @return
 	 * @throws SQLException
 	 */
-	protected boolean delete(final String tableName, final int rowId)
+	protected boolean delete(final String tableName, final String value)
 			throws SQLException {
-		return delete(tableName, rowId, "id");
+		return delete(tableName, value, "id");
 	}
 
 	protected int select(final String tableName, final String columnName,
 			final String[] columnNames, final String[] values)
 			throws SQLException {
+		String query = this.queryBuilder.select(tableName, columnName,
+				columnNames, values);
 
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("SELECT `" + columnName + "` FROM `");
-		sb.append(this.getDatabase());
-		sb.append("`.`");
-		sb.append(tableName);
-		sb.append("` WHERE ");
-		for (int c = 0; c < columnNames.length; c++) {
-			String s = columnNames[c];
-			String v = values[c];
-			sb.append("`");
-			sb.append(s);
-			sb.append("`='");
-			sb.append(v);
-			sb.append("'");
-			if (c < columnNames.length - 1)
-				sb.append(" AND ");
-		}
-		sb.append(";");
-
-		PreparedStatement prepStmt = conn.prepareStatement(sb.toString(),
-				Statement.RETURN_GENERATED_KEYS);
+		Statement prepStmt = this.queryBuilder.createStatement(conn);
 		try {
-			ResultSet rs = prepStmt.executeQuery();
+			ResultSet rs = prepStmt.executeQuery(query);
 			rs.next();
 			return rs.getInt(columnName);
 		} finally {
@@ -528,7 +433,7 @@ public abstract class SQLCommunicator {
 			final boolean updateOnly);
 
 	// TODO
-	protected boolean register(final RepositoryObject object,
+	public boolean register(final RepositoryObject object,
 			final boolean updateOnly) {
 		int result;
 		if (object instanceof DataSet)
@@ -585,7 +490,7 @@ public abstract class SQLCommunicator {
 	}
 
 	// TODO
-	protected boolean unregister(final RepositoryObject object) {
+	public boolean unregister(final RepositoryObject object) {
 		int result;
 		if (object instanceof DataSet)
 			result = this.unregister((DataSet) object);
@@ -639,7 +544,7 @@ public abstract class SQLCommunicator {
 	}
 
 	// TODO
-	protected boolean register(final Class<? extends RepositoryObject> c) {
+	public boolean register(final Class<? extends RepositoryObject> c) {
 		if (ClusteringQualityMeasure.class.isAssignableFrom(c))
 			return this
 					.registerClusteringQualityMeasureClass((Class<? extends ClusteringQualityMeasure>) c);
@@ -670,7 +575,7 @@ public abstract class SQLCommunicator {
 	}
 
 	// TODO
-	protected boolean unregister(final Class<? extends RepositoryObject> c) {
+	public boolean unregister(final Class<? extends RepositoryObject> c) {
 		if (ClusteringQualityMeasure.class.isAssignableFrom(c))
 			return this
 					.unregisterClusteringQualityMeasureClass((Class<? extends ClusteringQualityMeasure>) c);
@@ -855,21 +760,16 @@ public abstract class SQLCommunicator {
 			while (conn == null) {
 				// first try or wrong password
 				try {
-					conn = DriverManager
-							.getConnection(
-									"jdbc:mysql://"
-											+ getServer()
-											+ "/"
-											+ getDatabase()
-											+ "?useServerPrepStmts=false&rewriteBatchedStatements=true",
-									getDBUsername(), password);
-					conn.setAutoCommit(false);
+					conn = DriverManager.getConnection(
+							this.queryBuilder.getConnectionstring(),
+							getDBUsername(), password);
+					conn.setAutoCommit(true);
 				} catch (SQLException e) {
+					this.exceptionHandler.handleException(e);
 					if (e instanceof CommunicationsException
 							&& e.getCause() instanceof ConnectException) {
-						this.repository.log
-								.warn("Could not connect to the database server. Retrying in "
-										+ Formatter.formatMsToDuration(5000));
+						this.log.warn("Could not connect to the database server. Retrying in "
+								+ Formatter.formatMsToDuration(5000));
 						try {
 							Thread.sleep(5000);
 						} catch (InterruptedException e1) {
@@ -890,23 +790,23 @@ public abstract class SQLCommunicator {
 			Logger log = LoggerFactory.getLogger(this.getClass());
 			log.info("Initializing MySQL database");
 
-			Statement stmt = conn.createStatement();
+			Statement stmt = this.queryBuilder.createStatement(conn);
 
 			/*
 			 * Check if this repository is already in there. if yes, delete it.
 			 */
-			ResultSet rs = stmt.executeQuery("SELECT `id` FROM `"
-					+ this.getDatabase() + "`.`" + this.getTableRepositories()
-					+ "` WHERE `basePath`='" + this.repository.getBasePath()
-					+ "';");
+			ResultSet rs = stmt.executeQuery(this.queryBuilder.select(
+					this.getTableRepositories(), "id",
+					new String[]{"base_path"},
+					new String[]{this.repository.getBasePath()}));
 			if (rs.last() && rs.getRow() > 0) {
 				int repository_id = rs.getInt("id");
 				// delete data corresponding to runresult_repositories with this
 				// parent repository
-				rs = stmt.executeQuery("SELECT `id` FROM `"
-						+ this.getDatabase() + "`.`"
-						+ this.getTableRepositories()
-						+ "` WHERE `repository_id`='" + repository_id + "';");
+				rs = stmt.executeQuery(this.queryBuilder.select(
+						this.getTableRepositories(), "id",
+						new String[]{"repository_id"},
+						new String[]{repository_id + ""}));
 				List<String> ids = new ArrayList<String>();
 				while (rs.next()) {
 					int run_result_repository_id = rs.getInt("id");
@@ -923,42 +823,53 @@ public abstract class SQLCommunicator {
 				deleteFromTable(this.getTableParameterSets(), "repository_id",
 						ids.toArray(new String[0]));
 				// delete parent repository itself
-				stmt.execute("DELETE FROM `" + this.getDatabase() + "`.`"
-						+ this.getTableRepositories()
-						+ "` WHERE `basePath` = '"
-						+ this.repository.getBasePath() + "';");
+				stmt.execute(this.queryBuilder.delete(
+						this.getTableRepositories(),
+						this.repository.getBasePath(), "base_path"));
 			}
 
 			String repositoryType = this.repository.getClass().getSimpleName();
 			// Get repository_type_id
-			rs = stmt.executeQuery("SELECT `id` FROM `" + this.getDatabase()
-					+ "`.`" + this.getTableRepositoryTypes()
-					+ "` WHERE `name`='" + repositoryType + "';");
+			rs = stmt.executeQuery(this.queryBuilder.select(
+					this.getTableRepositoryTypes(), "id", new String[]{"name"},
+					new String[]{repositoryType}));
 			rs.first();
 			int repository_type_id = rs.getInt("id");
 
 			try {
 				// Get repositoryId
-				stmt.execute("INSERT INTO `" + this.getDatabase() + "`.`"
-						+ this.getTableRepositories()
-						+ "` (`basePath`,`repository_type_id`) VALUES ('"
-						+ this.repository.getBasePath() + "','"
-						+ repository_type_id + "');");
+				stmt.execute(this.queryBuilder.insert(
+						this.getTableRepositories(), new String[]{"base_path",
+								"repository_type_id"}, new String[]{
+								this.repository.getBasePath(),
+								repository_type_id + ""}));
 
-				rs = stmt.executeQuery("SELECT `id` FROM `"
-						+ this.getDatabase() + "`.`"
-						+ this.getTableRepositories() + "` WHERE `basePath`='"
-						+ this.repository.getBasePath() + "';");
+				rs = stmt.executeQuery(this.queryBuilder.select(
+						this.getTableRepositories(), "id",
+						new String[]{"base_path"},
+						new String[]{this.repository.getBasePath()}));
 
 				rs.first();
 				this.setRepositoryId(rs.getInt("id"));
 			} catch (SQLException ex) {
+				this.exceptionHandler.handleException(ex);
 				ex.printStackTrace();
 			}
-			conn.commit();
+//			conn.commit();
 		} catch (SQLException e1) {
+			this.exceptionHandler.handleException(e1);
 			e1.printStackTrace();
 		}
+	}
+
+	protected boolean checkIfPresent(final String table, final String column,
+			final String value) throws SQLException {
+		Statement stmt = this.queryBuilder.createStatement(conn);
+
+		String query = this.queryBuilder.checkIfPresent(table, column, value);
+
+		ResultSet rs = stmt.executeQuery(query);
+		return (rs.last() && rs.getRow() > 0);
 	}
 
 	/**
@@ -967,61 +878,48 @@ public abstract class SQLCommunicator {
 	 */
 	protected void deleteFromTable(String tableName, String columnName,
 			String[] value) throws SQLException {
-		// long start = System.currentTimeMillis();
 		if (value.length == 0)
 			return;
-		Statement stmt2 = conn.createStatement();
-		try {
-			stmt2.execute("CREATE TABLE `" + this.getDatabase() + "`.`"
-					+ tableName + "_new` LIKE `" + this.getDatabase() + "`.`"
-					+ tableName + "`;");
-		} catch (SQLException e) {
-			stmt2.execute("DROP TABLE `" + this.getDatabase() + "`.`"
-					+ tableName + "_new`;");
-			stmt2.execute("CREATE TABLE `" + this.getDatabase() + "`.`"
-					+ tableName + "_new` LIKE `" + this.getDatabase() + "`.`"
-					+ tableName + "`;");
-		}
-		// System.out.print(System.currentTimeMillis() - start + " ");
-		// start = System.currentTimeMillis();
-		StringBuilder sb = new StringBuilder();
-		sb.append("(");
-		for (String s : value) {
-			sb.append(s);
-			sb.append(",");
-		}
-		sb.deleteCharAt(sb.length() - 1);
-		sb.append(")");
-		stmt2.execute("INSERT INTO `" + this.getDatabase() + "`.`" + tableName
-				+ "_new` SELECT * FROM `" + this.getDatabase() + "`.`"
-				+ tableName + "` WHERE NOT `" + columnName + "` in "
-				+ sb.toString() + ";");
-		// System.out.print(System.currentTimeMillis() - start + " ");
-		// start = System.currentTimeMillis();
-		stmt2.execute("ALTER TABLE `" + this.getDatabase() + "`.`" + tableName
-				+ "` RENAME `" + this.getDatabase() + "`.`" + tableName
-				+ "_old`;");
-		// System.out.print(System.currentTimeMillis() - start + " ");
-		// start = System.currentTimeMillis();
-		stmt2.execute("ALTER TABLE `" + this.getDatabase() + "`.`" + tableName
-				+ "_new` RENAME `" + this.getDatabase() + "`.`" + tableName
-				+ "`;");
-		// System.out.print(System.currentTimeMillis() - start + " ");
-		// start = System.currentTimeMillis();
-		stmt2.execute("DROP TABLE `" + this.getDatabase() + "`.`" + tableName
-				+ "_old`;");
-		// System.out.println(System.currentTimeMillis() - start);
+		Statement stmt2 = this.queryBuilder.createStatement(conn);
+
+		// try {
+		// stmt2.execute(this.queryBuilder.dropTable(tableName + "_old"));
+		// } catch (SQLException e) {
+		// // drop if exists
+		// conn.rollback();
+		// }
+		//
+		// try {
+		// stmt2.execute(this.queryBuilder.createTableLike(tableName + "_new",
+		// tableName));
+		// } catch (SQLException e) {
+		// conn.rollback();
+		// stmt2.execute(this.queryBuilder.dropTable(tableName + "_new"));
+		// stmt2.execute(this.queryBuilder.createTableLike(tableName + "_new",
+		// tableName));
+		// }
+		// stmt2.execute(this.queryBuilder.insertSelectWhereNotIn(tableName
+		// + "_new", tableName, columnName, value));
+		// stmt2.execute(this.queryBuilder.renameTable(tableName, tableName
+		// + "_old"));
+		// stmt2.execute(this.queryBuilder.renameTable(tableName + "_new",
+		// tableName));
+		// stmt2.execute(this.queryBuilder.dropTable(tableName + "_old"));
+
+		stmt2.execute(this.queryBuilder.deleteWhereIn(tableName, value,
+				columnName));
 	}
 
 	/**
 	 * 
 	 */
 	public void commitDB() {
-		try {
-			conn.commit();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			conn.commit();
+//		} catch (SQLException e) {
+//			this.exceptionHandler.handleException(e);
+//			e.printStackTrace();
+//		}
 	}
 
 	protected static String replaceNull(final String text, final String replace) {
@@ -1131,15 +1029,15 @@ public abstract class SQLCommunicator {
 	protected int updateRepositoryId() {
 		ResultSet rs;
 		try {
-			Statement stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT `id` FROM `" + this.getDatabase()
-					+ "`.`" + this.getTableRepositories()
-					+ "` WHERE `basePath`='" + this.repository.getBasePath()
-					+ "';");
+			Statement stmt = this.queryBuilder.createStatement(conn);
+			rs = stmt.executeQuery(this.queryBuilder.select(
+					getTableRepositories(), "id", new String[]{"base_path"},
+					new String[]{this.repository.getBasePath()}));
 
 			rs.first();
 			this.setRepositoryId(rs.getInt("id"));
 		} catch (SQLException e) {
+			this.exceptionHandler.handleException(e);
 			e.printStackTrace();
 		}
 		return repositoryId;

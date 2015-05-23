@@ -15,6 +15,9 @@ package de.clusteval.framework.repository.config;
 
 import java.util.HashMap;
 
+import de.clusteval.framework.repository.db.SQLConfig;
+import de.clusteval.framework.repository.db.SQLConfig.DB_TYPE;
+
 /**
  * @author Christian Wiwie
  * 
@@ -24,7 +27,7 @@ public class DefaultRepositoryConfig extends RepositoryConfig {
 	/**
 	 */
 	public DefaultRepositoryConfig() {
-		super(new MysqlConfig(false, null, null, null),
+		super(new SQLConfig(false, DB_TYPE.NONE, null, null, null),
 				new HashMap<String, Long>());
 	}
 }

@@ -11,7 +11,7 @@
 /**
  * 
  */
-package de.clusteval.framework.repository;
+package de.clusteval.framework.repository.db;
 
 import java.sql.SQLException;
 
@@ -27,6 +27,7 @@ import de.clusteval.data.dataset.type.DataSetType;
 import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.data.goldstandard.GoldStandardConfig;
 import de.clusteval.data.statistics.DataStatistic;
+import de.clusteval.framework.repository.Repository;
 import de.clusteval.program.DoubleProgramParameter;
 import de.clusteval.program.IntegerProgramParameter;
 import de.clusteval.program.Program;
@@ -60,12 +61,12 @@ import de.clusteval.utils.Statistic;
  * 
  */
 @SuppressWarnings({"unused", "rawtypes"})
-public class StubSQLCommunicator extends SQLCommunicator {
+public class StubSQLCommunicator_pg extends SQLCommunicator {
 
 	/**
 	 * @param repository
 	 */
-	public StubSQLCommunicator(Repository repository) {
+	public StubSQLCommunicator_pg(Repository repository) {
 		super(repository);
 	}
 
@@ -574,7 +575,8 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	 * @see utils.SQLCommunicator#register(data.goldstandard.GoldStandardConfig)
 	 */
 	@Override
-	protected int register(GoldStandardConfig object, final boolean updateOnly) {
+	protected int register(GoldStandardConfig object,
+			final boolean updateOnly) {
 		return -1;
 	}
 
@@ -1623,24 +1625,16 @@ public class StubSQLCommunicator extends SQLCommunicator {
 		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.clusteval.framework.repository.SQLCommunicator#register(de.clusteval
-	 * .cluster.Clustering)
+	/* (non-Javadoc)
+	 * @see de.clusteval.framework.repository.SQLCommunicator#register(de.clusteval.cluster.Clustering)
 	 */
 	@Override
 	protected int register(Clustering object) {
 		return -1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.clusteval.framework.repository.SQLCommunicator#unregister(de.clusteval
-	 * .cluster.Clustering)
+	/* (non-Javadoc)
+	 * @see de.clusteval.framework.repository.SQLCommunicator#unregister(de.clusteval.cluster.Clustering)
 	 */
 	@Override
 	protected int unregister(Clustering object) {

@@ -27,6 +27,8 @@ import org.slf4j.LoggerFactory;
 
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.Repository;
+import de.clusteval.framework.repository.db.SQLConfig;
+import de.clusteval.framework.repository.db.SQLConfig.DB_TYPE;
 
 /**
  * A repository configuration determines certain settings and options for a
@@ -90,7 +92,7 @@ public class RepositoryConfig {
 			props.setThrowExceptionOnMissing(true);
 
 			boolean usesMysql = false;
-			MysqlConfig mysqlConfig = null;
+			SQLConfig mysqlConfig = null;
 
 			if (props.getSections().contains("mysql")
 					&& !ClustevalBackendServer.getBackendServerConfiguration()
@@ -102,10 +104,22 @@ public class RepositoryConfig {
 
 				mysqlDatabase = mysql.getString("database");
 				mysqlHost = mysql.getString("host");
-				mysqlConfig = new MysqlConfig(usesMysql, mysqlUsername,
-						mysqlDatabase, mysqlHost);
+				mysqlConfig = new SQLConfig(usesMysql, DB_TYPE.MYSQL,
+						mysqlUsername, mysqlDatabase, mysqlHost);
+			} else if (props.getSections().contains("postgresql")
+					&& !ClustevalBackendServer.getBackendServerConfiguration()
+							.getNoDatabase()) {
+				usesMysql = true;
+				String username, db, host;
+				SubnodeConfiguration mysql = props.getSection("postgresql");
+				username = mysql.getString("user");
+
+				db = mysql.getString("database");
+				host = mysql.getString("host");
+				mysqlConfig = new SQLConfig(usesMysql, DB_TYPE.POSTGRESQL,
+						username, db, host);
 			} else
-				mysqlConfig = new MysqlConfig(usesMysql, "", "", "");
+				mysqlConfig = new SQLConfig(usesMysql, DB_TYPE.NONE, "", "", "");
 
 			Map<String, Long> threadingSleepTimes = new HashMap<String, Long>();
 
@@ -140,7 +154,7 @@ public class RepositoryConfig {
 	/**
 	 * The configuration of the mysql connection of the repository.
 	 */
-	protected MysqlConfig mysqlConfig;
+	protected SQLConfig mysqlConfig;
 
 	/**
 	 * Creates a new repository configuration.
@@ -150,7 +164,7 @@ public class RepositoryConfig {
 	 * @param threadingSleepTimes
 	 *            The sleep times of the threads created for the repository.
 	 */
-	public RepositoryConfig(final MysqlConfig mysqlConfig,
+	public RepositoryConfig(final SQLConfig mysqlConfig,
 			final Map<String, Long> threadingSleepTimes) {
 		super();
 		this.mysqlConfig = mysqlConfig;
@@ -160,7 +174,7 @@ public class RepositoryConfig {
 	/**
 	 * @return The mysql configuration of this repository.
 	 */
-	public MysqlConfig getMysqlConfig() {
+	public SQLConfig getMysqlConfig() {
 		return this.mysqlConfig;
 	}
 
@@ -170,7 +184,7 @@ public class RepositoryConfig {
 	 * @param mysqlConfig
 	 *            The new mysql configuration.
 	 */
-	public void setMysqlConfig(final MysqlConfig mysqlConfig) {
+	public void setMysqlConfig(final SQLConfig mysqlConfig) {
 		this.mysqlConfig = mysqlConfig;
 	}
 

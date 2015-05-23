@@ -27,7 +27,7 @@ import de.clusteval.context.Context;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
-import de.clusteval.framework.repository.StubSQLCommunicator;
+import de.clusteval.framework.repository.db.StubSQLCommunicator;
 import de.clusteval.run.result.RunResult;
 
 /**
