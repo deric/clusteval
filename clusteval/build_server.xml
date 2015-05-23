@@ -32,6 +32,7 @@
 			<zipfileset excludes="META-INF/*.SF" src="lib/apacheCommons/commons-logging-api-1.1.1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="lib/apacheCommons/commons-cli-1.2.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="lib/jansi-1.9.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="lib/postgresql-9.3-1103.jdbc41.jar" />
 		</jar>
 	</target>
 
@@ -39,16 +40,16 @@
 		<tstamp>
 			<format property="builtat" pattern="MM/dd/yyyy hh:mm aa" timezone="Europe/Berlin" />
 		</tstamp>
-		<exec executable="git" outputproperty="gitrev" >
+		<exec executable="git" outputproperty="gitrev">
 			<arg value="log" />
 			<arg value="-n" />
 			<arg value="1" />
 			<arg value='--pretty=format:%h, %ai' />
 		</exec>
-		<exec executable="git" outputproperty="gitbranch" >
+		<exec executable="git" outputproperty="gitbranch">
 			<arg value="branch" />
 		</exec>
-		<exec executable="git" outputproperty="gitrepo" >
+		<exec executable="git" outputproperty="gitrepo">
 			<arg value="config" />
 			<arg value="--get" />
 			<arg value="remote.origin.url" />
