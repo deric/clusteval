@@ -2872,18 +2872,31 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 				/*
 				 * insert iteration
 				 */
-				iterationIds[i] = insert(
-						this.getTableParameterSetIterations(),
-						new String[]{
-								"repository_id",
-								"run_results_parameter_optimizations_parameter_set_id",
-								"iteration", "param_set_as_string",
-								"clustering_id"},
-						new String[]{
-								"" + repository_id,
-								run_results_parameter_optimizations_parameter_set_id
-										+ "", iterationNumbers.get(i) + "",
-								paramSetAsString.toString(), "" + clustering_id});
+				if (clustering_id > -1)
+					iterationIds[i] = insert(
+							this.getTableParameterSetIterations(),
+							new String[]{
+									"repository_id",
+									"run_results_parameter_optimizations_parameter_set_id",
+									"iteration", "param_set_as_string",
+									"clustering_id"}, new String[]{
+									"" + repository_id,
+									run_results_parameter_optimizations_parameter_set_id
+											+ "", iterationNumbers.get(i) + "",
+									paramSetAsString.toString(),
+									"" + clustering_id});
+				else
+					iterationIds[i] = insert(
+							this.getTableParameterSetIterations(),
+							new String[]{
+									"repository_id",
+									"run_results_parameter_optimizations_parameter_set_id",
+									"iteration", "param_set_as_string"},
+							new String[]{
+									"" + repository_id,
+									run_results_parameter_optimizations_parameter_set_id
+											+ "", iterationNumbers.get(i) + "",
+									paramSetAsString.toString()});
 			}
 
 			String[] columns = new String[]{

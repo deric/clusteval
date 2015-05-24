@@ -76,7 +76,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 				conn = DriverManager.getConnection(
 						this.queryBuilder.getConnectionstring(),
 						getDBUsername(), getDBPassword());
-				conn.setAutoCommit(true);
+				conn.setAutoCommit(false);
 			}
 			Statement stmt = this.queryBuilder.createStatement(conn);
 
@@ -122,7 +122,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 				this.exceptionHandler.handleException(ex);
 				ex.printStackTrace();
 			}
-//			conn.commit();
+			conn.commit();
 		} catch (SQLException e1) {
 			this.exceptionHandler.handleException(e1);
 			e1.printStackTrace();

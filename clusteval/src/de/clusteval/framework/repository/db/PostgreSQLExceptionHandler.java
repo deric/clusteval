@@ -27,11 +27,11 @@ public class PostgreSQLExceptionHandler extends SQLExceptionHandler {
 	 */
 	@Override
 	public void handleException(SQLException e) {
-//		try {
-//			SQLCommunicator.conn.rollback();
-//		} catch (SQLException e1) {
-//			e1.printStackTrace();
-//		}
+		try {
+			SQLCommunicator.conn.commit();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 }

@@ -189,10 +189,11 @@ public abstract class SQLCommunicator {
 			final String[] values) throws SQLException {
 		String query = this.queryBuilder.insert(tableName, columnNames, values);
 
-		PreparedStatement prepStmt = conn.prepareStatement(query,
-				Statement.RETURN_GENERATED_KEYS);
+		Statement prepStmt = this.queryBuilder.createStatement(conn);
+		// conn.pre.prepareStatement(query,
+		// Statement.RETURN_GENERATED_KEYS);
 		try {
-			prepStmt.executeUpdate();
+			prepStmt.execute(query, Statement.RETURN_GENERATED_KEYS);
 			ResultSet rs = prepStmt.getGeneratedKeys();
 			rs.next();
 			return rs.getInt(1);
@@ -201,13 +202,22 @@ public abstract class SQLCommunicator {
 		}
 	}
 
-	protected void tryInsert(final String tableName,
-			final String[] columnNames, final String[] values) {
+	protected int tryInsert(final String tableName, final String[] columnNames,
+			final String[] values) {
+		int id;
 		try {
-			this.insert(tableName, columnNames, values);
+			id = this.select(tableName, "id", columnNames, values);
+		} catch (SQLException e) {
+			this.exceptionHandler.handleException(e);
+			id = -1;
+		}
+		try {
+			if (id == -1)
+				return this.insert(tableName, columnNames, values);
 		} catch (SQLException e) {
 			this.exceptionHandler.handleException(e);
 		}
+		return -1;
 	}
 
 	protected boolean update(final String tableName,
@@ -763,7 +773,7 @@ public abstract class SQLCommunicator {
 					conn = DriverManager.getConnection(
 							this.queryBuilder.getConnectionstring(),
 							getDBUsername(), password);
-					conn.setAutoCommit(true);
+					conn.setAutoCommit(false);
 				} catch (SQLException e) {
 					this.exceptionHandler.handleException(e);
 					if (e instanceof CommunicationsException
@@ -855,7 +865,7 @@ public abstract class SQLCommunicator {
 				this.exceptionHandler.handleException(ex);
 				ex.printStackTrace();
 			}
-//			conn.commit();
+			conn.commit();
 		} catch (SQLException e1) {
 			this.exceptionHandler.handleException(e1);
 			e1.printStackTrace();
@@ -914,12 +924,12 @@ public abstract class SQLCommunicator {
 	 * 
 	 */
 	public void commitDB() {
-//		try {
-//			conn.commit();
-//		} catch (SQLException e) {
-//			this.exceptionHandler.handleException(e);
-//			e.printStackTrace();
-//		}
+		try {
+			conn.commit();
+		} catch (SQLException e) {
+			this.exceptionHandler.handleException(e);
+			e.printStackTrace();
+		}
 	}
 
 	protected static String replaceNull(final String text, final String replace) {
