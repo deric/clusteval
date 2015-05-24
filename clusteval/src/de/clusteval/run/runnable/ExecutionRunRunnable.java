@@ -891,7 +891,6 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 										proc.waitFor();
 									}
 								} catch (InterruptedException e) {
-									e.printStackTrace();
 								}
 							}
 
