@@ -470,7 +470,7 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 		for (ProgramConfig programConfig : programConfigs)
 			programConfigNames.add(programConfig.getName());
 		List<String> dataConfigNames = new ArrayList<String>();
-		for (DataConfig dataConfig : dataConfigs)
+		for (DataConfig dataConfig : this.originalDataConfigs)
 			dataConfigNames.add(dataConfig.getName());
 
 		Map<String, Map<String, Triple<List<ParameterSet>, ClusteringQualityMeasure, ClusteringQualityMeasureValue>>> bestParams = new HashMap<String, Map<String, Triple<List<ParameterSet>, ClusteringQualityMeasure, ClusteringQualityMeasureValue>>>();
@@ -487,6 +487,7 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 							runIdentifier)), results, false, false, false);
 			for (RunResult runResult : results) {
 				if (runResult instanceof ParameterOptimizationResult) {
+					this.log.info("...... " + runResult.getAbsolutePath());
 					ParameterOptimizationResult paramOptResult = (ParameterOptimizationResult) runResult;
 					paramOptResult.loadIntoMemory();
 					ProgramConfig pc = paramOptResult.getProgramConfig();
