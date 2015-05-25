@@ -14,21 +14,15 @@
 package de.clusteval.run.runnable;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import utils.Pair;
 import de.clusteval.framework.repository.RegisterException;
-import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.run.Run;
 import de.clusteval.run.RunDataAnalysisRun;
 import de.clusteval.run.result.RunDataAnalysisRunResult;
 import de.clusteval.run.statistics.RunDataStatistic;
-import de.clusteval.run.statistics.RunDataStatisticCalculator;
-
-import utils.Pair;
-import file.FileUtils;
 
 /**
  * A type of analysis runnable, that corresponds to {@link RunDataAnalysisRun}
@@ -40,7 +34,7 @@ import file.FileUtils;
  */
 public class RunDataAnalysisRunRunnable
 		extends
-			AnalysisRunRunnable<RunDataStatistic, RunDataAnalysisRunResult> {
+			AnalysisRunRunnable<RunDataStatistic, RunDataAnalysisRunResult, RunDataAnalysisIterationWrapper, RunDataAnalysisIterationRunnable> {
 
 	/**
 	 * The identifiers of run analysis run results.
@@ -51,6 +45,8 @@ public class RunDataAnalysisRunRunnable
 	 * The identifiers of data analysis run results.
 	 */
 	protected List<String> uniqueDataAnalysisRunIdentifier;
+
+	protected int currentIteration = -1;
 
 	/**
 	 * @param runScheduler
@@ -87,54 +83,6 @@ public class RunDataAnalysisRunRunnable
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see run.runnable.AnalysisRunRunnable#getOutputPath()
-	 */
-	@Override
-	protected String getOutputPath() {
-		return FileUtils.buildPath(analysesFolder,
-				currentStatistic.getIdentifier() + ".txt");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see run.runnable.AnalysisRunRunnable#getStatisticCalculator()
-	 */
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	@Override
-	protected RunDataStatisticCalculator<RunDataStatistic> getStatisticCalculator()
-			throws SecurityException, NoSuchMethodException,
-			IllegalArgumentException, InstantiationException,
-			IllegalAccessException, InvocationTargetException {
-		Class<? extends RunDataStatisticCalculator> calcClass = run
-				.getRepository().getRunDataStatisticCalculator(
-						currentStatistic.getClass().getName());
-		Constructor<? extends RunDataStatisticCalculator> constr = calcClass
-				.getConstructor(Repository.class, long.class, File.class,
-						List.class, List.class);
-		RunDataStatisticCalculator calc = constr.newInstance(repo,
-				calcFile.lastModified(), calcFile,
-				this.uniqueRunAnalysisRunIdentifier,
-				this.uniqueDataAnalysisRunIdentifier);
-		return calc;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see run.runnable.AnalysisRunRunnable#beforeStatisticCalculate()
-	 */
-	@Override
-	protected void beforeStatisticCalculate() {
-		this.log.info("Run " + this.getRun() + " - ("
-				+ this.uniqueRunAnalysisRunIdentifier + ","
-				+ this.uniqueDataAnalysisRunIdentifier + ") Analysing "
-				+ currentStatistic.getIdentifier());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see run.runnable.AnalysisRunRunnable#createRunResult()
 	 */
 	@Override
@@ -156,5 +104,66 @@ public class RunDataAnalysisRunRunnable
 		result.put(Pair.getPair(uniqueDataAnalysisRunIdentifier,
 				uniqueRunAnalysisRunIdentifier), results);
 		this.getRun().getResults().add(result);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.run.runnable.RunRunnable#hasNextIteration()
+	 */
+	@Override
+	protected boolean hasNextIteration() {
+		return this.currentIteration < this.statistics.size();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.run.runnable.RunRunnable#consumeNextIteration()
+	 */
+	@Override
+	protected int consumeNextIteration() throws RunIterationException {
+		return ++currentIteration;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.run.runnable.AnalysisRunRunnable#createIterationWrapper()
+	 */
+	@Override
+	protected RunDataAnalysisIterationWrapper createIterationWrapper() {
+		return new RunDataAnalysisIterationWrapper();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.run.runnable.RunRunnable#createIterationRunnable(de.clusteval
+	 * .run.runnable.IterationWrapper)
+	 */
+	@Override
+	protected RunDataAnalysisIterationRunnable createIterationRunnable(
+			RunDataAnalysisIterationWrapper iterationWrapper) {
+		return new RunDataAnalysisIterationRunnable(iterationWrapper);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.run.runnable.RunRunnable#doRunIteration(de.clusteval.run
+	 * .runnable.IterationWrapper)
+	 */
+	@Override
+	protected void doRunIteration(
+			RunDataAnalysisIterationWrapper iterationWrapper)
+			throws RunIterationException {
+		RunDataAnalysisIterationRunnable iterationRunnable = this
+				.createIterationRunnable(iterationWrapper);
+
+		this.submitIterationRunnable(iterationRunnable);
 	}
 }

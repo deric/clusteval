@@ -15,25 +15,15 @@ package de.clusteval.run;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.HierarchicalINIConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.clusteval.context.Context;
-import de.clusteval.context.UnknownContextException;
-import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.run.runnable.RunDataAnalysisRunRunnable;
 import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.statistics.RunDataStatistic;
-import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 
 /**
  * A type of analysis run that conducts analyses on both run results and data

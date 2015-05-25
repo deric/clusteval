@@ -17,22 +17,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import de.clusteval.cluster.paramOptimization.NoParameterSetFoundException;
 import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.format.IncompatibleDataSetFormatException;
 import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.goldstandard.IncompleteGoldStandardException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
-import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.Run;
-import de.clusteval.run.result.NoRunResultFormatParserException;
 import de.clusteval.utils.InternalAttributeException;
-import de.clusteval.utils.RNotAvailableException;
 
 /**
  * @author Christian Wiwie
@@ -41,6 +37,8 @@ import de.clusteval.utils.RNotAvailableException;
 public class InternalParameterOptimizationRunRunnable
 		extends
 			ExecutionRunRunnable {
+
+	protected boolean hasNext = true;
 
 	/**
 	 * @param runScheduler
@@ -89,14 +87,19 @@ public class InternalParameterOptimizationRunRunnable
 			writeHeaderIntoCompleteFile(completeQualityOutput);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.run.runnable.ExecutionRunRunnable#decorateIterationWrapper
+	 * (de.clusteval.run.runnable.ExecutionIterationWrapper, int)
+	 */
 	@Override
-	protected void doRun() throws InternalAttributeException,
-			RegisterException, IOException, NoRunResultFormatParserException,
-			NoParameterSetFoundException, RNotAvailableException,
-			RLibraryNotLoadedException, InterruptedException {
-		final IterationWrapper iterationWrapper = new IterationWrapper();
+	protected void decorateIterationWrapper(
+			ExecutionIterationWrapper iterationWrapper, int currentPos)
+			throws RunIterationException {
+		super.decorateIterationWrapper(iterationWrapper, currentPos);
 		iterationWrapper.setOptId(1);
-		this.doRunIteration(iterationWrapper);
 	}
 
 	/*
@@ -106,12 +109,33 @@ public class InternalParameterOptimizationRunRunnable
 	 */
 	@Override
 	protected void handleMissingRunResult(
-			final IterationWrapper iterationWrapper) {
+			final ExecutionIterationWrapper iterationWrapper) {
 		this.log.info(this.getRun()
 				+ " ("
 				+ this.programConfig
 				+ ","
 				+ this.dataConfig
 				+ ") The result of this run could not be found. Please consult the log files of the program");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.run.runnable.RunRunnable#hasNextIteration()
+	 */
+	@Override
+	protected boolean hasNextIteration() {
+		return this.hasNext;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.run.runnable.RunRunnable#consumeNextIteration()
+	 */
+	@Override
+	protected int consumeNextIteration() throws RunIterationException {
+		this.hasNext = false;
+		return 1;
 	}
 }

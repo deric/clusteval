@@ -18,14 +18,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.rosuda.REngine.REXPMismatchException;
@@ -91,7 +88,9 @@ import format.Formatter;
  * @author Christian Wiwie
  * 
  */
-public abstract class ExecutionRunRunnable extends RunRunnable {
+public abstract class ExecutionRunRunnable
+		extends
+			RunRunnable<ExecutionIterationRunnable, ExecutionIterationWrapper> {
 
 	/**
 	 * The program configuration this thread combines with a data configuration.
@@ -121,47 +120,6 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	protected String completeQualityOutput;
 
 	/**
-	 * This list holds wrapper objects for each iteration runnable started.
-	 */
-	protected List<Future<?>> futures;
-	protected List<IterationRunnable> iterationRunnables;
-
-	//
-	// /**
-	// * A temporary variable holding a file object pointing to the absolute
-	// path
-	// * of the current log output file during execution of the runnable
-	// */
-	// protected File logFile;
-
-	// /**
-	// * A temporary variable holding a file object pointing to the absolute
-	// path
-	// * of the current clustering output file during execution of the runnable
-	// */
-	// protected File clusteringResultFile;
-	//
-	// /**
-	// * A temporary variable holding a file object pointing to the absolute
-	// path
-	// * of the current clustering quality output file during execution of the
-	// * runnable
-	// */
-	// protected File resultQualityFile;
-
-	// /**
-	// * This number indicates the current iteration performed by the runnable
-	// * object.
-	// *
-	// * <p>
-	// * This is only larger than 1, if we are in PARAMETER_OPTIMIZATION mode.
-	// * Then the optimization method will determine, how often we iterate in
-	// * total and this attribute will be increased by the runnable after every
-	// * iteration.
-	// */
-	// protected int optId;
-
-	/**
 	 * @param run
 	 *            The run this runnable belongs to.
 	 * @param runIdentString
@@ -183,8 +141,6 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 		this.programConfig = programConfig;
 		this.dataConfig = dataConfig;
-		this.futures = new ArrayList<Future<?>>();
-		this.iterationRunnables = new ArrayList<IterationRunnable>();
 		this.runParams = runParams;
 	}
 
@@ -196,20 +152,6 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	@Override
 	public ExecutionRun getRun() {
 		return (ExecutionRun) super.getRun();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.clusteval.run.runnable.RunRunnable#terminate()
-	 */
-	@Override
-	public void terminate() {
-		// TODO: cancel all the iteration threads
-		for (Future<?> f : this.futures)
-			f.cancel(true);
-
-		super.terminate();
 	}
 
 	/**
@@ -549,7 +491,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 * 
 	 */
 	protected String[] parseInvocationLineAndEffectiveParameters(
-			final IterationWrapper iterationWrapper)
+			final ExecutionIterationWrapper iterationWrapper)
 			throws InternalAttributeException, RegisterException,
 			NoParameterSetFoundException {
 
@@ -681,6 +623,55 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		return parsed;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.run.runnable.RunRunnable#createIterationWrapper(int)
+	 */
+	@Override
+	protected ExecutionIterationWrapper createIterationWrapper() {
+		return new ExecutionIterationWrapper();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.run.runnable.RunRunnable#decorateIterationWrapper(de.clusteval
+	 * .run.runnable.IterationWrapper, int)
+	 */
+	@Override
+	protected void decorateIterationWrapper(
+			ExecutionIterationWrapper iterationWrapper, int currentPos)
+			throws RunIterationException {
+		try {
+			super.decorateIterationWrapper(iterationWrapper, currentPos);
+			iterationWrapper.setRunnable(this);
+			iterationWrapper.setDataConfig(dataConfig);
+			iterationWrapper.setProgramConfig(programConfig.clone());
+
+			this.initAndEnsureIterationFilesAndFolders(iterationWrapper);
+
+			final String[] invocation = this
+					.parseInvocationLineAndEffectiveParameters(iterationWrapper);
+			iterationWrapper.setInvocation(invocation);
+
+			/*
+			 * An object that wraps up all results calculated during the
+			 * execution of this runnable. The runnable is responsible for
+			 * adding new results to this object during the execution.
+			 */
+			iterationWrapper.setClusteringRunResult(new ClusteringRunResult(
+					this.getRun().getRepository(), System.currentTimeMillis(),
+					iterationWrapper.getClusteringResultFile(),
+					iterationWrapper.getDataConfig(), iterationWrapper
+							.getProgramConfig(), format, runThreadIdentString,
+					run));
+		} catch (Exception e) {
+			throw new RunIterationException(e);
+		}
+	}
+
 	/**
 	 * Method invoked by {@link #doRun()} which performs a single iteration of
 	 * the run. If this runnable is of type parameter optimization, this method
@@ -718,98 +709,76 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 * {@link #handleMissingRunResult()} is responsible for performing actions
 	 * ensuring, that the next iterations can be executed without problems.
 	 * 
-	 * @throws InternalAttributeException
-	 * @throws RegisterException
-	 * @throws IOException
-	 * @throws NoRunResultFormatParserException
-	 * @throws NoParameterSetFoundException
-	 *             This exception is thrown, if no parameter set was found that
-	 *             was not already evaluated before.
-	 * @throws REXPMismatchException
-	 * @throws REngineException
-	 * @throws RLibraryNotLoadedException
-	 * @throws RNotAvailableException
-	 * @throws InterruptedException
 	 */
-	protected void doRunIteration(final IterationWrapper iterationWrapper)
-			throws InternalAttributeException, RegisterException, IOException,
-			NoRunResultFormatParserException, NoParameterSetFoundException,
-			RNotAvailableException, RLibraryNotLoadedException,
-			InterruptedException {
-		if (this.isPaused()) {
-			log.info("Pausing...");
-			this.runningTime += System.currentTimeMillis() - this.lastStartTime;
-			while (this.isPaused()) {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
+	@Override
+	protected void doRunIteration(
+			final ExecutionIterationWrapper iterationWrapper)
+			throws RunIterationException {
+		try {
+			if (this.isPaused()) {
+				log.info("Pausing...");
+				this.runningTime += System.currentTimeMillis()
+						- this.lastStartTime;
+				while (this.isPaused()) {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+					}
 				}
+				log.info("Resuming...");
+				this.lastStartTime = System.currentTimeMillis();
 			}
-			log.info("Resuming...");
-			this.lastStartTime = System.currentTimeMillis();
+
+			/*
+			 * We check from time to time, whether this run got the order to
+			 * terminate.
+			 */
+			if (checkForInterrupted())
+				return;
+			/*
+			 * We check from time to time, whether this run got the order to
+			 * terminate.
+			 */
+			if (checkForInterrupted())
+				return;
+
+			// only create new iteration runnables, if none of the old iteration
+			// runnables threw exceptions
+			for (ExecutionIterationRunnable prevItRunnable : this.iterationRunnables)
+				if (prevItRunnable.getIoException() != null)
+					throw prevItRunnable.getIoException();
+				else if (prevItRunnable.getNoRunResultException() != null)
+					throw prevItRunnable.getNoRunResultException();
+				else if (prevItRunnable.getrLibraryException() != null)
+					throw prevItRunnable.getrLibraryException();
+				else if (prevItRunnable.getrNotAvailableException() != null)
+					throw prevItRunnable.getrNotAvailableException();
+
+			ExecutionIterationRunnable iterationRunnable = this
+					.createIterationRunnable(iterationWrapper);
+
+			this.submitIterationRunnable(iterationRunnable);
+		} catch (Exception e) {
+			throw new RunIterationException(e);
 		}
+	}
 
-		/*
-		 * We check from time to time, whether this run got the order to
-		 * terminate.
-		 */
-		if (checkForInterrupted())
-			return;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.run.runnable.RunRunnable#createIterationRunnable(de.clusteval
+	 * .run.runnable.IterationWrapper)
+	 */
+	@Override
+	protected ExecutionIterationRunnable createIterationRunnable(
+			ExecutionIterationWrapper iterationWrapper) {
 
-		iterationWrapper.setRunnable(this);
-		iterationWrapper.setDataConfig(dataConfig);
-		iterationWrapper.setProgramConfig(programConfig.clone());
-
-		this.initAndEnsureIterationFilesAndFolders(iterationWrapper);
-
-		final String[] invocation = this
-				.parseInvocationLineAndEffectiveParameters(iterationWrapper);
-
-		/*
-		 * An object that wraps up all results calculated during the execution
-		 * of this runnable. The runnable is responsible for adding new results
-		 * to this object during the execution.
-		 */
-		iterationWrapper.setClusteringRunResult(new ClusteringRunResult(this
-				.getRun().getRepository(), System.currentTimeMillis(),
-				iterationWrapper.getClusteringResultFile(), iterationWrapper
-						.getDataConfig(), iterationWrapper.getProgramConfig(),
-				format, runThreadIdentString, run));
-		/*
-		 * We check from time to time, whether this run got the order to
-		 * terminate.
-		 */
-		if (checkForInterrupted())
-			return;
-
-		// only create new iteration runnables, if none of the old iteration
-		// runnables threw exceptions
-		for (IterationRunnable prevItRunnable : this.iterationRunnables)
-			if (prevItRunnable.getIoException() != null)
-				throw prevItRunnable.getIoException();
-			else if (prevItRunnable.getNoRunResultException() != null)
-				throw prevItRunnable.getNoRunResultException();
-			else if (prevItRunnable.getrLibraryException() != null)
-				throw prevItRunnable.getrLibraryException();
-			else if (prevItRunnable.getrNotAvailableException() != null)
-				throw prevItRunnable.getrNotAvailableException();
-
-		final ExecutionRun run = this.getRun();
-
-		IterationRunnable iterationRunnable = new IterationRunnable(
-				iterationWrapper) {
+		return new ExecutionIterationRunnable(iterationWrapper) {
 
 			@Override
-			public void run() {
-				super.run();
+			public void doRun() {
 				try {
-					RunSchedulerThread scheduler = null;
-					Repository repo = getRun().getRepository();
-					if (repo instanceof RunResultRepository)
-						repo = repo.getParent();
-					scheduler = repo.getSupervisorThread().getRunScheduler();
-					scheduler.informOnStartedIterationRunnable(
-							Thread.currentThread(), this);
 					try {
 						if (isInterrupted())
 							return;
@@ -825,9 +794,14 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 								iterationWrapper.getOptId(),
 								iterationWrapper.getEffectiveParams()));
 
-						this.log.debug(getRun() + " (" + programConfig + ","
-								+ dataConfig + ") Invoking command line: "
-								+ StringExt.paste(" ", invocation));
+						this.log.debug(getRun()
+								+ " ("
+								+ programConfig
+								+ ","
+								+ dataConfig
+								+ ") Invoking command line: "
+								+ StringExt.paste(" ",
+										iterationWrapper.getInvocation()));
 						this.log.debug(getRun()
 								+ " ("
 								+ programConfig
@@ -844,7 +818,8 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 						Process proc = null;
 						try {
 							proc = programConfig.getProgram().exec(dataConfig,
-									programConfig, invocation,
+									programConfig,
+									iterationWrapper.getInvocation(),
 									iterationWrapper.getEffectiveParams(),
 									iterationWrapper.getInternalParams());
 
@@ -855,9 +830,10 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 										.start();
 
 								try {
-									int maxExecTime = run
+									int maxExecTime = getRun()
 											.hasMaxExecutionTime(programConfig)
-											? run.getMaxExecutionTime(programConfig)
+											? getRun().getMaxExecutionTime(
+													programConfig)
 											: programConfig
 													.getMaxExecutionTimeMinutes();
 									if (maxExecTime == -1) {
@@ -1068,9 +1044,6 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 						rNotAvailableException = e;
 					} catch (Throwable t) {
 						t.printStackTrace();
-					} finally {
-						scheduler.informOnFinishedIterationRunnable(
-								Thread.currentThread(), this);
 					}
 				} catch (Throwable t) {
 					// print and catch all throwables, otherwise we will see odd
@@ -1079,18 +1052,6 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 				}
 			}
 		};
-
-		this.iterationRunnables.add(iterationRunnable);
-
-		final RunSchedulerThread runScheduler;
-		if (this.getRun().getRepository() instanceof RunResultRepository)
-			runScheduler = this.getRun().getRepository().getParent()
-					.getSupervisorThread().getRunScheduler();
-		else
-			runScheduler = this.getRun().getRepository().getSupervisorThread()
-					.getRunScheduler();
-		this.futures.add(runScheduler
-				.registerIterationRunnable(iterationRunnable));
 	}
 
 	/**
@@ -1229,7 +1190,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 * {@link #clusteringResultFile} and {@link #resultQualityFile}.
 	 */
 	protected void initAndEnsureIterationFilesAndFolders(
-			final IterationWrapper iterationWrapper) {
+			final ExecutionIterationWrapper iterationWrapper) {
 
 		int optId = iterationWrapper.getOptId();
 		/*
@@ -1316,7 +1277,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	 * executed smoothly.
 	 */
 	protected abstract void handleMissingRunResult(
-			final IterationWrapper iterationWrapper);
+			final ExecutionIterationWrapper iterationWrapper);
 
 	// /**
 	// * After a clustering has been calculated by the program, converted to the
@@ -1508,18 +1469,17 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		// 30.06.2014: performing isoMDS calculations in parallel
 		final DataConfig dcMDS = this.dataConfig;
 
-		IterationWrapper wrapper = new IterationWrapper();
+		ExecutionIterationWrapper wrapper = new ExecutionIterationWrapper();
 		wrapper.setDataConfig(dcMDS);
 		wrapper.setProgramConfig(programConfig);
 		wrapper.setRunnable(this);
 		wrapper.setOptId(-1);
 
-		IterationRunnable iterationRunnable = new IterationRunnable(wrapper) {
+		ExecutionIterationRunnable iterationRunnable = new ExecutionIterationRunnable(
+				wrapper) {
 
 			@Override
-			public void run() {
-				super.run();
-
+			public void doRun() {
 				RunSchedulerThread scheduler = null;
 				Repository repo = getRun().getRepository();
 				if (repo instanceof RunResultRepository)
@@ -1540,17 +1500,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			}
 		};
 
-		this.iterationRunnables.add(iterationRunnable);
-
-		final RunSchedulerThread runScheduler;
-		if (this.getRun().getRepository() instanceof RunResultRepository)
-			runScheduler = this.getRun().getRepository().getParent()
-					.getSupervisorThread().getRunScheduler();
-		else
-			runScheduler = this.getRun().getRepository().getSupervisorThread()
-					.getRunScheduler();
-		this.futures.add(runScheduler
-				.registerIterationRunnable(iterationRunnable));
+		this.submitIterationRunnable(iterationRunnable);
 
 		if (checkForInterrupted())
 			return;
@@ -1558,18 +1508,16 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 		// 30.06.2014: performing isoMDS calculations in parallel
 		final DataConfig dcPCA = this.dataConfig;
 
-		wrapper = new IterationWrapper();
+		wrapper = new ExecutionIterationWrapper();
 		wrapper.setDataConfig(dcPCA);
 		wrapper.setProgramConfig(programConfig);
 		wrapper.setRunnable(this);
 		wrapper.setOptId(-2);
 
-		iterationRunnable = new IterationRunnable(wrapper) {
+		iterationRunnable = new ExecutionIterationRunnable(wrapper) {
 
 			@Override
-			public void run() {
-				super.run();
-
+			public void doRun() {
 				RunSchedulerThread scheduler = null;
 				Repository repo = getRun().getRepository();
 				if (repo instanceof RunResultRepository)
@@ -1590,10 +1538,7 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 			}
 		};
 
-		this.iterationRunnables.add(iterationRunnable);
-
-		this.futures.add(runScheduler
-				.registerIterationRunnable(iterationRunnable));
+		this.submitIterationRunnable(iterationRunnable);
 
 		setInternalAttributes();
 
@@ -1663,16 +1608,6 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 	@Override
 	protected void afterRun() {
 		try {
-			// wait for all iteration runnables to finish
-			for (Future<?> f : this.futures)
-				try {
-					f.get();
-				} catch (InterruptedException e) {
-					// we don't care about those interrupted exceptions
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				}
-
 			super.afterRun();
 		} finally {
 			// unload the dataset from memory
@@ -1710,155 +1645,5 @@ public abstract class ExecutionRunRunnable extends RunRunnable {
 
 		this.log.info("Run " + this.getRun() + " (" + this.programConfig + ","
 				+ this.dataConfig + ") finished");
-	}
-}
-
-class IterationWrapper {
-
-	/**
-	 * A temporary variable holding a file object pointing to the absolute path
-	 * of the current clustering output file during execution of the runnable
-	 */
-	private File clusteringResultFile;
-
-	/**
-	 * A temporary variable holding a file object pointing to the absolute path
-	 * of the current log output file during execution of the runnable
-	 */
-	private File logfile;
-
-	/**
-	 * A temporary variable holding a file object pointing to the absolute path
-	 * of the current clustering quality output file during execution of the
-	 * runnable
-	 */
-	private File resultQualityFile;
-
-	/**
-	 * This number indicates the current iteration performed by the runnable
-	 * object.
-	 * 
-	 * <p>
-	 * This is only larger than 1, if we are in PARAMETER_OPTIMIZATION mode.
-	 * Then the optimization method will determine, how often we iterate in
-	 * total and this attribute will be increased by the runnable after every
-	 * iteration.
-	 */
-	private int optId;
-
-	/**
-	 * A map containing the parameters of {@link #runParams} and additionally
-	 * internal parameters like file paths that are used throughout execution of
-	 * this runnable.
-	 */
-	final private Map<String, String> effectiveParams;
-
-	/**
-	 * The internal parameters are parameters, that cannot be directly
-	 * influenced by the user, e.g. the absolute input or output path.
-	 */
-	final private Map<String, String> internalParams;
-	private ClusteringRunResult clusteringRunResult;
-	private ClusteringRunResult convertedClusteringRunResult;
-
-	private ParameterSet parameterSet;
-	protected RunRunnable runnable;
-	protected ProgramConfig programConfig;
-	protected DataConfig dataConfig;
-
-	public IterationWrapper() {
-		super();
-		this.internalParams = new HashMap<String, String>();
-		this.effectiveParams = new HashMap<String, String>();
-	}
-
-	protected File getClusteringResultFile() {
-		return clusteringResultFile;
-	}
-
-	protected void setClusteringResultFile(File clusteringResultFile) {
-		this.clusteringResultFile = clusteringResultFile;
-	}
-
-	protected File getLogfile() {
-		return logfile;
-	}
-
-	protected void setLogfile(File logfile) {
-		this.logfile = logfile;
-	}
-
-	protected File getResultQualityFile() {
-		return resultQualityFile;
-	}
-
-	protected void setResultQualityFile(File resultQualityFile) {
-		this.resultQualityFile = resultQualityFile;
-	}
-
-	protected int getOptId() {
-		return optId;
-	}
-
-	protected void setOptId(int optId) {
-		this.optId = optId;
-	}
-
-	protected Map<String, String> getEffectiveParams() {
-		return effectiveParams;
-	}
-
-	protected Map<String, String> getInternalParams() {
-		return internalParams;
-	}
-
-	protected ClusteringRunResult getClusteringRunResult() {
-		return clusteringRunResult;
-	}
-
-	protected ClusteringRunResult getConvertedClusteringRunResult() {
-		return convertedClusteringRunResult;
-	}
-
-	protected void setClusteringRunResult(
-			ClusteringRunResult clusteringRunResult) {
-		this.clusteringRunResult = clusteringRunResult;
-	}
-
-	protected ProgramConfig getProgramConfig() {
-		return programConfig;
-	}
-
-	protected void setProgramConfig(ProgramConfig programConfig) {
-		this.programConfig = programConfig;
-	}
-
-	protected DataConfig getDataConfig() {
-		return dataConfig;
-	}
-
-	protected void setDataConfig(DataConfig dataConfig) {
-		this.dataConfig = dataConfig;
-	}
-
-	protected void setConvertedClusteringRunResult(
-			ClusteringRunResult clusteringRunResult) {
-		this.convertedClusteringRunResult = clusteringRunResult;
-	}
-
-	protected RunRunnable getRunnable() {
-		return runnable;
-	}
-
-	protected void setRunnable(RunRunnable runnable) {
-		this.runnable = runnable;
-	}
-
-	protected ParameterSet getParameterSet() {
-		return parameterSet;
-	}
-
-	protected void setParameterSet(ParameterSet parameterSet) {
-		this.parameterSet = parameterSet;
 	}
 }

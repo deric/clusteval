@@ -244,7 +244,7 @@ public interface IBackendServer extends Remote {
 	 * @return
 	 * @throws RemoteException
 	 */
-	public Map<String, Triple<String, Integer, Long>> getActiveThreads()
+	public Map<String, Triple<String, String, Long>> getActiveThreads()
 			throws RemoteException;
 
 	/**

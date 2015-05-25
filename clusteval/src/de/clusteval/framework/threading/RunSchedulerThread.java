@@ -42,6 +42,7 @@ import de.clusteval.run.result.NoRunResultFormatParserException;
 import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.runnable.IterationRunnable;
+import de.clusteval.run.runnable.IterationWrapper;
 import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.runnable.RunRunnableInitializationException;
 import file.FileUtils;
@@ -101,7 +102,7 @@ public class RunSchedulerThread extends ClustevalThread {
 	 */
 	protected ScheduledThreadPoolExecutor iterationThreadPool;
 
-	protected Map<Thread, IterationRunnable> activeIterationRunnables;
+	protected Map<Thread, IterationRunnable<? extends IterationWrapper>> activeIterationRunnables;
 
 	/**
 	 * Constructor of run scheduler threads.
@@ -136,7 +137,7 @@ public class RunSchedulerThread extends ClustevalThread {
 				numberThreads);
 		this.iterationThreadPool.setMaximumPoolSize(this.iterationThreadPool
 				.getCorePoolSize());
-		this.activeIterationRunnables = new HashMap<Thread, IterationRunnable>();
+		this.activeIterationRunnables = new HashMap<Thread, IterationRunnable<? extends IterationWrapper>>();
 		this.start();
 	}
 
@@ -616,7 +617,7 @@ public class RunSchedulerThread extends ClustevalThread {
 			this.activeIterationRunnables.remove(t);
 	}
 
-	public synchronized Map<Thread, IterationRunnable> getActiveIterationRunnables() {
+	public synchronized Map<Thread, IterationRunnable<? extends IterationWrapper>> getActiveIterationRunnables() {
 		return this.activeIterationRunnables;
 	}
 

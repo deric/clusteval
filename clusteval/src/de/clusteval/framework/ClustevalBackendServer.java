@@ -112,8 +112,17 @@ import de.clusteval.run.result.RunResult;
 import de.clusteval.run.result.RunResultParseException;
 import de.clusteval.run.result.format.UnknownRunResultFormatException;
 import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
+import de.clusteval.run.runnable.AnalysisIterationRunnable;
+import de.clusteval.run.runnable.DataAnalysisIterationRunnable;
+import de.clusteval.run.runnable.DataAnalysisRunRunnable;
+import de.clusteval.run.runnable.ExecutionIterationRunnable;
 import de.clusteval.run.runnable.ExecutionRunRunnable;
 import de.clusteval.run.runnable.IterationRunnable;
+import de.clusteval.run.runnable.IterationWrapper;
+import de.clusteval.run.runnable.RunAnalysisIterationRunnable;
+import de.clusteval.run.runnable.RunAnalysisRunRunnable;
+import de.clusteval.run.runnable.RunDataAnalysisIterationRunnable;
+import de.clusteval.run.runnable.RunDataAnalysisRunRunnable;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.serverclient.BackendClient;
@@ -1049,22 +1058,57 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * @see de.clusteval.serverclient.IBackendServer#getActiveThreads()
 	 */
 	@Override
-	public Map<String, Triple<String, Integer, Long>> getActiveThreads()
+	public Map<String, Triple<String, String, Long>> getActiveThreads()
 			throws RemoteException {
-		Map<String, Triple<String, Integer, Long>> result = new HashMap<String, Triple<String, Integer, Long>>();
+		Map<String, Triple<String, String, Long>> result = new HashMap<String, Triple<String, String, Long>>();
 
 		RunSchedulerThread scheduler = this.getRepository()
 				.getSupervisorThread().getRunScheduler();
-		Map<Thread, IterationRunnable> map = scheduler
+		Map<Thread, IterationRunnable<? extends IterationWrapper>> map = scheduler
 				.getActiveIterationRunnables();
-		for (Map.Entry<Thread, IterationRunnable> e : map.entrySet()) {
+		for (Map.Entry<Thread, IterationRunnable<? extends IterationWrapper>> e : map
+				.entrySet()) {
 			long startTime = e.getValue().getStartTime();
-			ExecutionRunRunnable r = (ExecutionRunRunnable) (e.getValue()
-					.getParentRunnable());
-			result.put(e.getKey().getName(), Triple.getTriple(
-					r.getRun().getName() + ": " + r.getProgramConfig() + ","
-							+ r.getDataConfig(), e.getValue()
-							.getIterationNumber(), startTime));
+
+			String name = "";
+			String status = "";
+			if (e.getValue() instanceof ExecutionIterationRunnable) {
+				ExecutionRunRunnable r = (ExecutionRunRunnable) (e.getValue()
+						.getParentRunnable());
+				status = ((ExecutionIterationRunnable) e.getValue())
+						.getIterationNumber() + "";
+				name = r.getRun().getName() + ": " + r.getProgramConfig() + ","
+						+ r.getDataConfig();
+			} else if (e.getValue() instanceof DataAnalysisIterationRunnable) {
+				DataAnalysisRunRunnable r = (DataAnalysisRunRunnable) (e
+						.getValue().getParentRunnable());
+
+				status = ((AnalysisIterationRunnable) e.getValue())
+						.getStatistic().getAlias();
+				name = r.getRun().getName() + ": " + status + ","
+						+ r.getDataConfig();
+			} else if (e.getValue() instanceof RunAnalysisIterationRunnable) {
+				RunAnalysisRunRunnable r = (RunAnalysisRunRunnable) (e
+						.getValue().getParentRunnable());
+
+				status = ((AnalysisIterationRunnable) e.getValue())
+						.getStatistic().getAlias();
+				name = r.getRun().getName() + ": " + status + ","
+						+ r.getRunIdentifier();
+			}
+			// TODO
+			// else if (e.getValue() instanceof
+			// RunDataAnalysisIterationRunnable) {
+			// RunDataAnalysisRunRunnable r = (RunDataAnalysisRunRunnable) (e
+			// .getValue().getParentRunnable());
+			//
+			// status = ((AnalysisIterationRunnable) e.getValue())
+			// .getStatistic().getAlias();
+			// name = r.getRun().getName() + ": " + r.get;
+			// }
+
+			result.put(e.getKey().getName(),
+					Triple.getTriple(name, "", startTime));
 		}
 		return result;
 	}

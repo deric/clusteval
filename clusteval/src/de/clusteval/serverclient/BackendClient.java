@@ -479,7 +479,7 @@ public class BackendClient extends Thread {
 				System.out.println("Queue: " + this.getQueue());
 			}
 			if (params.hasOption("getActiveThreads")) {
-				Map<String, Triple<String, Integer, Long>> activeThreads = this.server
+				Map<String, Triple<String, String, Long>> activeThreads = this.server
 						.getActiveThreads();
 				if (activeThreads.isEmpty())
 					System.out.println("No active threads");
@@ -493,40 +493,47 @@ public class BackendClient extends Thread {
 					Collections.sort(threadNames);
 					int i = 1;
 					for (String t : threadNames) {
-						Triple<String, Integer, Long> value = activeThreads
+						Triple<String, String, Long> value = activeThreads
 								.get(t);
 						String[] split1 = value.getFirst().split(": ");
 						String[] split2 = split1[1].split(",");
 
-						switch (value.getSecond()) {
-							case -1 :
-								System.out.format(
-										"%10d%20s%50s%30s%40s%10s%20s\n", i++,
-										t, split1[0], split2[0], split2[1],
-										"isoMDS", Formatter.formatMsToDuration(
-												System.currentTimeMillis()
-														- value.getThird(),
-												false));
-								break;
-							case -2 :
-								System.out.format(
-										"%10d%20s%50s%30s%40s%10s%20s\n", i++,
-										t, split1[0], split2[0], split2[1],
-										"PCA", Formatter.formatMsToDuration(
-												System.currentTimeMillis()
-														- value.getThird(),
-												false));
-								break;
-							default :
-								System.out.format(
-										"%10d%20s%50s%30s%40s%10d%20s\n", i++,
-										t, split1[0], split2[0], split2[1],
-										value.getSecond(),
-										Formatter.formatMsToDuration(
-												System.currentTimeMillis()
-														- value.getThird(),
-												false));
-						}
+						if (value.getSecond().equals("-1")) {
+							System.out.format(
+									"%10d%20s%50s%30s%40s%10s%20s\n",
+									i++,
+									t,
+									split1[0],
+									split2[0],
+									split2[1],
+									"isoMDS",
+									Formatter.formatMsToDuration(
+											System.currentTimeMillis()
+													- value.getThird(), false));
+						} else if (value.getSecond().equals("-2")) {
+							System.out.format(
+									"%10d%20s%50s%30s%40s%10s%20s\n",
+									i++,
+									t,
+									split1[0],
+									split2[0],
+									split2[1],
+									"PCA",
+									Formatter.formatMsToDuration(
+											System.currentTimeMillis()
+													- value.getThird(), false));
+						} else
+							System.out.format(
+									"%10d%20s%50s%30s%40s%10s%20s\n",
+									i++,
+									t,
+									split1[0],
+									split2[0],
+									split2[1],
+									value.getSecond(),
+									Formatter.formatMsToDuration(
+											System.currentTimeMillis()
+													- value.getThird(), false));
 					}
 				}
 			}

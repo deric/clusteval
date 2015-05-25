@@ -9,18 +9,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.clusteval.framework.RLibraryNotLoadedException;
-import de.clusteval.run.result.NoRunResultFormatParserException;
+import de.clusteval.framework.repository.Repository;
+import de.clusteval.framework.repository.RunResultRepository;
+import de.clusteval.framework.threading.RunSchedulerThread;
+import de.clusteval.run.Run;
 import de.clusteval.utils.RNotAvailableException;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public abstract class IterationRunnable implements Runnable {
+public abstract class IterationRunnable<IW extends IterationWrapper>
+		implements
+			Runnable {
 
 	protected Logger log;
-	protected IterationWrapper iterationWrapper;
-	protected NoRunResultFormatParserException noRunResultException;
+	protected IW iterationWrapper;
+	// TODO think of nicer design
 	protected IOException ioException;
 	protected RLibraryNotLoadedException rLibraryException;
 	protected RNotAvailableException rNotAvailableException;
@@ -28,17 +33,10 @@ public abstract class IterationRunnable implements Runnable {
 
 	protected long startTime;
 
-	public IterationRunnable(final IterationWrapper iterationWrapper) {
+	public IterationRunnable(final IW iterationWrapper) {
 		super();
 		this.iterationWrapper = iterationWrapper;
 		this.log = LoggerFactory.getLogger(getClass());
-	}
-
-	/**
-	 * @return the noRunResultException
-	 */
-	public NoRunResultFormatParserException getNoRunResultException() {
-		return noRunResultException;
 	}
 
 	/**
@@ -70,8 +68,8 @@ public abstract class IterationRunnable implements Runnable {
 		return this.iterationWrapper.getRunnable();
 	}
 
-	public int getIterationNumber() {
-		return this.iterationWrapper.getOptId();
+	public Run getRun() {
+		return this.iterationWrapper.getRunnable().getRun();
 	}
 
 	/*
@@ -80,8 +78,37 @@ public abstract class IterationRunnable implements Runnable {
 	 * @see java.lang.Runnable#run()
 	 */
 	@Override
-	public void run() {
+	public final void run() {
+		beforeRun();
+		try {
+			doRun();
+		} finally {
+			afterRun();
+		}
+	}
+
+	protected void beforeRun() {
 		this.startTime = System.currentTimeMillis();
+
+		Repository repo = getRun().getRepository();
+		if (repo instanceof RunResultRepository)
+			repo = repo.getParent();
+		RunSchedulerThread scheduler = repo.getSupervisorThread()
+				.getRunScheduler();
+		scheduler
+				.informOnStartedIterationRunnable(Thread.currentThread(), this);
+	}
+
+	protected abstract void doRun();
+
+	protected void afterRun() {
+		Repository repo = getRun().getRepository();
+		if (repo instanceof RunResultRepository)
+			repo = repo.getParent();
+		RunSchedulerThread scheduler = repo.getSupervisorThread()
+				.getRunScheduler();
+		scheduler.informOnFinishedIterationRunnable(Thread.currentThread(),
+				this);
 	}
 
 	public long getStartTime() {

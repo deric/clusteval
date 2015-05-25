@@ -26,26 +26,21 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.rosuda.REngine.REXPMismatchException;
-import org.rosuda.REngine.REngineException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import utils.ProgressPrinter;
-import de.clusteval.cluster.paramOptimization.NoParameterSetFoundException;
 import de.clusteval.data.dataset.format.IncompatibleDataSetFormatException;
 import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.goldstandard.IncompleteGoldStandardException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
-import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.repository.RegisterException;
+import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.run.RUN_STATUS;
 import de.clusteval.run.Run;
-import de.clusteval.run.result.NoRunResultFormatParserException;
 import de.clusteval.utils.InternalAttributeException;
-import de.clusteval.utils.RNotAvailableException;
 
 /**
  * An abstract class that corresponds to a smaller atomic part of a {@link Run}.
@@ -64,7 +59,9 @@ import de.clusteval.utils.RNotAvailableException;
  * 
  * @author Christian Wiwie
  */
-public abstract class RunRunnable implements Runnable {
+public abstract class RunRunnable<IR extends IterationRunnable, IW extends IterationWrapper>
+		implements
+			Runnable {
 
 	/**
 	 * The run this runnable object was created by.
@@ -125,6 +122,13 @@ public abstract class RunRunnable implements Runnable {
 	 */
 	protected String runThreadIdentString;
 
+	protected List<IR> iterationRunnables;
+
+	/**
+	 * This list holds wrapper objects for each iteration runnable started.
+	 */
+	protected List<Future<?>> futures;
+
 	/**
 	 * Instantiates a new run runnable.
 	 * 
@@ -144,6 +148,8 @@ public abstract class RunRunnable implements Runnable {
 		this.isResume = isResume;
 		this.exceptions = new ArrayList<Throwable>();
 		this.runThreadIdentString = runIdentString;
+		this.iterationRunnables = new ArrayList<IR>();
+		this.futures = new ArrayList<Future<?>>();
 		this.log = LoggerFactory.getLogger(this.getClass());
 	}
 
@@ -190,7 +196,15 @@ public abstract class RunRunnable implements Runnable {
 		}
 	}
 
+	// public void terminate() {
+	// this.getFuture().cancel(true);
+	// }
+
 	public void terminate() {
+		// TODO: cancel all the iteration threads
+		for (Future<?> f : this.futures)
+			f.cancel(true);
+
 		this.getFuture().cancel(true);
 	}
 
@@ -218,30 +232,31 @@ public abstract class RunRunnable implements Runnable {
 			IncompatibleDataSetFormatException,
 			UnknownGoldStandardFormatException,
 			IncompleteGoldStandardException, InterruptedException {
-
+		this.futures.clear();
 	}
 
 	/**
 	 * This method is invoked by {@link #run()} after {@link #beforeRun()} has
 	 * finished and is responsible for the operation and execution of the
 	 * runnable itself.
-	 * 
-	 * @throws NoParameterSetFoundException
-	 * @throws NoRunResultFormatParserException
-	 * @throws IOException
-	 * @throws RegisterException
-	 * @throws InternalAttributeException
-	 * @throws REXPMismatchException
-	 * @throws REngineException
-	 * @throws RLibraryNotLoadedException
-	 * @throws RNotAvailableException
-	 * @throws InterruptedException
 	 */
-	protected abstract void doRun() throws InternalAttributeException,
-			RegisterException, IOException, NoRunResultFormatParserException,
-			NoParameterSetFoundException, RNotAvailableException,
-			RLibraryNotLoadedException, REngineException,
-			REXPMismatchException, InterruptedException;
+	protected void doRun() throws RunIterationException {
+		while (this.hasNextIteration()) {
+			if (checkForInterrupted())
+				return;
+			final IW iterationWrapper = this.createIterationWrapper();
+			this.decorateIterationWrapper(iterationWrapper,
+					consumeNextIteration());
+			this.doRunIteration(iterationWrapper);
+		}
+	}
+
+	protected abstract boolean hasNextIteration();
+
+	protected abstract int consumeNextIteration() throws RunIterationException;
+
+	protected abstract void doRunIteration(IW iterationWrapper)
+			throws RunIterationException;
 
 	/**
 	 * This method is invoked by {@link #run()} after {@link #doRun()} has
@@ -249,6 +264,16 @@ public abstract class RunRunnable implements Runnable {
 	 * doing all kinds of postcalculations.
 	 */
 	protected void afterRun() {
+		// wait for all iteration runnables to finish
+		for (Future<?> f : this.futures)
+			try {
+				f.get();
+			} catch (InterruptedException e) {
+				// we don't care about those interrupted exceptions
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+
 		// print exceptions
 		if (this.exceptions.size() > 0) {
 			this.log.warn("During the execution of this run runnable exceptions were thrown:");
@@ -366,6 +391,29 @@ public abstract class RunRunnable implements Runnable {
 	 */
 	public Run getRun() {
 		return this.run;
+	}
+
+	protected abstract IR createIterationRunnable(final IW iterationWrapper);
+
+	protected abstract IW createIterationWrapper();
+
+	protected void decorateIterationWrapper(final IW iterationWrapper,
+			final int currentPos) throws RunIterationException {
+		iterationWrapper.setResume(isResume);
+	}
+
+	protected void submitIterationRunnable(final IR iterationRunnable) {
+		this.iterationRunnables.add(iterationRunnable);
+
+		final RunSchedulerThread runScheduler;
+		if (this.getRun().getRepository() instanceof RunResultRepository)
+			runScheduler = this.getRun().getRepository().getParent()
+					.getSupervisorThread().getRunScheduler();
+		else
+			runScheduler = this.getRun().getRepository().getSupervisorThread()
+					.getRunScheduler();
+		this.futures.add(runScheduler
+				.registerIterationRunnable(iterationRunnable));
 	}
 }
 

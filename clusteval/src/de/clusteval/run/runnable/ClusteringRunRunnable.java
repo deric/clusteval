@@ -19,14 +19,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
 
-import de.clusteval.cluster.paramOptimization.NoParameterSetFoundException;
 import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.format.IncompatibleDataSetFormatException;
 import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.goldstandard.IncompleteGoldStandardException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
-import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ProgramConfig;
@@ -34,9 +32,7 @@ import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.ClusteringRun;
 import de.clusteval.run.Run;
 import de.clusteval.run.result.ClusteringRunResult;
-import de.clusteval.run.result.NoRunResultFormatParserException;
 import de.clusteval.utils.InternalAttributeException;
-import de.clusteval.utils.RNotAvailableException;
 
 /**
  * A type of an execution runnable, that corresponds to {@link ClusteringRun}
@@ -50,6 +46,7 @@ import de.clusteval.utils.RNotAvailableException;
  */
 public class ClusteringRunRunnable extends ExecutionRunRunnable {
 
+	protected boolean hasNext = true;
 	protected boolean finished;
 
 	/**
@@ -126,19 +123,40 @@ public class ClusteringRunRunnable extends ExecutionRunRunnable {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.run.runnable.RunRunnable#hasNextIteration()
+	 */
 	@Override
-	protected void doRun() throws InternalAttributeException,
-			RegisterException, IOException, NoRunResultFormatParserException,
-			NoParameterSetFoundException, RNotAvailableException,
-			RLibraryNotLoadedException, InterruptedException {
-		if (this.finished) {
-			this.log.info("skipping (" + this.dataConfig + ","
-					+ this.programConfig + ") - Finished");
-			return;
-		}
-		final IterationWrapper iterationWrapper = new IterationWrapper();
+	protected boolean hasNextIteration() {
+		return this.hasNext;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.run.runnable.RunRunnable#consumeNextIteration()
+	 */
+	@Override
+	protected int consumeNextIteration() {
+		this.hasNext = false;
+		return 1;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.run.runnable.RunRunnable#decorateIterationWrapper(de.clusteval
+	 * .run.runnable.IterationWrapper, int)
+	 */
+	@Override
+	protected void decorateIterationWrapper(
+			ExecutionIterationWrapper iterationWrapper, int currentPos)
+			throws RunIterationException {
+		super.decorateIterationWrapper(iterationWrapper, currentPos);
 		iterationWrapper.setOptId(1);
-		this.doRunIteration(iterationWrapper);
 	}
 
 	/*
@@ -148,7 +166,7 @@ public class ClusteringRunRunnable extends ExecutionRunRunnable {
 	 */
 	@Override
 	protected void handleMissingRunResult(
-			final IterationWrapper iterationWrapper) {
+			final ExecutionIterationWrapper iterationWrapper) {
 		this.log.info(this.getRun()
 				+ " ("
 				+ this.programConfig

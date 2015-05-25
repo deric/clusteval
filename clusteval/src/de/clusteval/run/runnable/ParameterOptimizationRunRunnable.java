@@ -34,7 +34,6 @@ import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.goldstandard.IncompleteGoldStandardException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
-import de.clusteval.framework.RLibraryNotLoadedException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ParameterSet;
@@ -42,11 +41,9 @@ import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.ParameterOptimizationRun;
 import de.clusteval.run.Run;
-import de.clusteval.run.result.NoRunResultFormatParserException;
 import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.result.RunResultParseException;
 import de.clusteval.utils.InternalAttributeException;
-import de.clusteval.utils.RNotAvailableException;
 import de.clusteval.utils.plot.Plotter;
 import file.FileUtils;
 
@@ -70,6 +67,12 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	 * optimization process.
 	 */
 	protected ParameterOptimizationMethod optimizationMethod;
+
+	/**
+	 * A temporary variable holding the last consumed parameter set for the next
+	 * iteration.
+	 */
+	protected ParameterSet lastConsumedParamSet;
 
 	/**
 	 * @param runScheduler
@@ -243,24 +246,75 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.run.runnable.RunRunnable#hasNextIteration()
+	 */
 	@Override
-	protected void doRun() throws InternalAttributeException,
-			RegisterException, IOException, NoRunResultFormatParserException,
-			RNotAvailableException, RLibraryNotLoadedException,
-			InterruptedException {
+	protected boolean hasNextIteration() {
+		return this.optimizationMethod.hasNext();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.run.runnable.RunRunnable#consumeNextIteration()
+	 */
+	@Override
+	protected int consumeNextIteration() throws RunIterationException {
 		try {
-			while (this.optimizationMethod.hasNext()) {
-				if (checkForInterrupted())
-					return;
-				final IterationWrapper iterationWrapper = new IterationWrapper();
-				this.doRunIteration(iterationWrapper);
-			}
-		} catch (NoParameterSetFoundException e) {
-			// this exception just indicates, that no parameter set has been
-			// found and the parameter optimization terminated earlier than
-			// expected.
-			this.log.warn(e.getMessage());
+			this.lastConsumedParamSet = this.optimizationMethod.next();
+		} catch (ParameterSetAlreadyEvaluatedException e) {
+			this.log.debug(run.toString() + " (" + programConfig + ","
+					+ dataConfig + ") " + "Skipping calculation of iteration "
+					+ e.getParameterSet() + " (has already been assessed)");
+
+			// if this parameter set has already been evaluated, write into
+			// the complete file
+			StringBuilder sb = new StringBuilder();
+			sb.append(e.getIterationNumber());
+			sb.append("*\t");
+			sb.append(e.getPreviousIterationNumber());
+			sb.append(System.getProperty("line.separator"));
+
+			FileUtils.appendStringToFile(completeQualityOutput, sb.toString());
+		} catch (Exception e) {
+			throw new RunIterationException(e);
 		}
+		return this.optimizationMethod.getStartedCount();
+	}
+
+	@Override
+	protected void doRun() throws RunIterationException {
+		try {
+			super.doRun();
+		} catch (RunIterationException e) {
+			if (e.getCause() instanceof NoParameterSetFoundException) {
+				// this exception just indicates, that no parameter set has been
+				// found and the parameter optimization terminated earlier than
+				// expected.
+				this.log.warn(e.getMessage());
+			} else
+				throw e;
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.run.runnable.ExecutionRunRunnable#decorateIterationWrapper
+	 * (de.clusteval.run.runnable.ExecutionIterationWrapper, int)
+	 */
+	@Override
+	protected void decorateIterationWrapper(
+			ExecutionIterationWrapper iterationWrapper, int currentPos)
+			throws RunIterationException {
+		iterationWrapper.setParameterSet(lastConsumedParamSet);
+		iterationWrapper.setOptId(this.optimizationMethod.getStartedCount());
+
+		super.decorateIterationWrapper(iterationWrapper, currentPos);
 	}
 
 	/*
@@ -269,34 +323,10 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	 * @see run.runnable.ExecutionRunRunnable#doRunIteration()
 	 */
 	@Override
-	protected void doRunIteration(final IterationWrapper iterationWrapper)
-			throws InternalAttributeException, RegisterException, IOException,
-			NoRunResultFormatParserException, NoParameterSetFoundException,
-			RNotAvailableException, RLibraryNotLoadedException,
-			InterruptedException {
+	protected void doRunIteration(ExecutionIterationWrapper iterationWrapper)
+			throws RunIterationException {
 		try {
-			try {
-				iterationWrapper.setParameterSet(optimizationMethod.next());
-				iterationWrapper.setOptId(this.optimizationMethod
-						.getStartedCount());
-				super.doRunIteration(iterationWrapper);
-			} catch (ParameterSetAlreadyEvaluatedException e) {
-				this.log.debug(run.toString() + " (" + programConfig + ","
-						+ dataConfig + ") "
-						+ "Skipping calculation of iteration "
-						+ e.getParameterSet() + " (has already been assessed)");
-
-				// if this parameter set has already been evaluated, write into
-				// the complete file
-				StringBuilder sb = new StringBuilder();
-				sb.append(e.getIterationNumber());
-				sb.append("*\t");
-				sb.append(e.getPreviousIterationNumber());
-				sb.append(System.getProperty("line.separator"));
-
-				FileUtils.appendStringToFile(completeQualityOutput,
-						sb.toString());
-			}
+			super.doRunIteration(iterationWrapper);
 		} finally {
 			synchronized (this) {
 				// changed 25.01.2013
@@ -316,7 +346,7 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	 */
 	@Override
 	protected void handleMissingRunResult(
-			final IterationWrapper iterationWrapper) {
+			final ExecutionIterationWrapper iterationWrapper) {
 		final Map<String, String> effectiveParams = iterationWrapper
 				.getEffectiveParams();
 		final Map<String, String> internalParams = iterationWrapper
