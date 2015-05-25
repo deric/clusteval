@@ -165,7 +165,9 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 		for (ParameterSet paramSet : other.distortionParams)
 			this.distortionParams.add(paramSet.clone());
 		this.numberOfDistortedDataSets = other.numberOfDistortedDataSets;
-		this.originalDataConfigs = new ArrayList<DataConfig>(other.dataConfigs);
+		this.dataConfigs = new ArrayList<DataConfig>(other.dataConfigs);
+		this.originalDataConfigs = new ArrayList<DataConfig>(
+				other.originalDataConfigs);
 	}
 
 	/*
@@ -637,5 +639,9 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 			int p) {
 		// we have one parameter set for each run pair
 		return this.parameterValues.get(p);
+	}
+
+	public void setOriginalDataConfigurations(final List<DataConfig> dataConfigs) {
+		this.originalDataConfigs = dataConfigs;
 	}
 }

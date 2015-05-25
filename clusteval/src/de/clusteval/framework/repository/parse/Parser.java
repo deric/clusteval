@@ -405,6 +405,7 @@ class RobustnessAnalysisRunParser
 				uniqueRunIdentifiers, programConfigs, dataConfigs,
 				qualityMeasures, runParamValues, postprocessor, randomizer,
 				paramSets, numberOfRandomizedDataSets, maxExecutionTimes);
+		result.setOriginalDataConfigurations(originalDataConfigs);
 		result = repo.getRegisteredObject(result, false);
 	}
 
