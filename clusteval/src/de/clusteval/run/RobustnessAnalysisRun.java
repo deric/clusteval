@@ -625,8 +625,10 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 			ProgramConfig programConfig, DataConfig dataConfig,
 			String runIdentString, boolean isResume,
 			Map<ProgramParameter<?>, String> runParams) {
-		return new RobustnessAnalysisRunRunnable(runScheduler, run,
+		RobustnessAnalysisRunRunnable r = new RobustnessAnalysisRunRunnable(runScheduler, run,
 				programConfig, dataConfig, runIdentString, isResume, runParams);
+		run.progress.addSubProgress(r.getProgressPrinter(), 100);
+		return r;
 	}
 
 	/*
