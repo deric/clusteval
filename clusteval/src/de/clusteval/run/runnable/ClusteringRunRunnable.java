@@ -126,7 +126,7 @@ public class ClusteringRunRunnable extends ExecutionRunRunnable {
 	 */
 	@Override
 	protected boolean hasNextIteration() {
-		return this.hasNext;
+		return !finished && this.hasNext;
 	}
 
 	/*

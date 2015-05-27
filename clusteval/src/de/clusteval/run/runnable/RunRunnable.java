@@ -151,6 +151,7 @@ public abstract class RunRunnable<IR extends IterationRunnable, IW extends Itera
 		this.iterationRunnables = new ArrayList<IR>();
 		this.futures = new ArrayList<Future<?>>();
 		this.log = LoggerFactory.getLogger(this.getClass());
+		this.progress = new ProgressPrinter(100, false);
 	}
 
 	/**

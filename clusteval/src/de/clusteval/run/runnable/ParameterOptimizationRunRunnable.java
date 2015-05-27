@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import utils.ProgressPrinter;
 import utils.Triple;
 import de.clusteval.cluster.paramOptimization.IDivergingParameterOptimizationMethod;
 import de.clusteval.cluster.paramOptimization.NoParameterSetFoundException;
@@ -107,7 +106,6 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 		if (optimizationMethod != null) {
 			this.optimizationMethod.setResume(isResume);
 		}
-		this.progress = new ProgressPrinter(100, false);
 		this.future = runScheduler.registerRunRunnable(this);
 	}
 
