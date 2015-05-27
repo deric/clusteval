@@ -403,9 +403,9 @@ class RobustnessAnalysisRunParser
 
 		result = new RobustnessAnalysisRun(repo, context, changeDate, absPath,
 				uniqueRunIdentifiers, programConfigs, dataConfigs,
-				qualityMeasures, runParamValues, postprocessor, randomizer,
-				paramSets, numberOfRandomizedDataSets, maxExecutionTimes);
-		result.setOriginalDataConfigurations(originalDataConfigs);
+				originalDataConfigs, qualityMeasures, runParamValues,
+				postprocessor, randomizer, paramSets,
+				numberOfRandomizedDataSets, maxExecutionTimes);
 		result = repo.getRegisteredObject(result, false);
 	}
 
@@ -484,8 +484,11 @@ class RobustnessAnalysisRunParser
 				randomizedDataConfigs.add(this.repo.getStaticObjectWithName(
 						DataConfig.class, dcFile.replace(".dataconfig", "")));
 			this.dataConfigs = randomizedDataConfigs;
-		} else
+		} else {
 			super.parseDataConfigurations();
+			this.originalDataConfigs = new ArrayList<DataConfig>(
+					this.dataConfigs);
+		}
 	}
 }
 

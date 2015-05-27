@@ -151,8 +151,8 @@ public class ClusteringRunRunnable extends ExecutionRunRunnable {
 	protected void decorateIterationWrapper(
 			ExecutionIterationWrapper iterationWrapper, int currentPos)
 			throws RunIterationException {
-		super.decorateIterationWrapper(iterationWrapper, currentPos);
 		iterationWrapper.setOptId(1);
+		super.decorateIterationWrapper(iterationWrapper, currentPos);
 	}
 
 	/*

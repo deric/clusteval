@@ -116,6 +116,7 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 	public RobustnessAnalysisRun(Repository repository, final Context context,
 			long changeDate, File absPath, List<String> uniqueRunIdentifiers,
 			List<ProgramConfig> programConfigs, List<DataConfig> dataConfigs,
+			List<DataConfig> originalDataConfigs,
 			List<ClusteringQualityMeasure> qualityMeasures,
 			List<Map<ProgramParameter<?>, String>> parameterValues,
 			final List<RunResultPostprocessor> postProcessors,
@@ -134,6 +135,7 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 		this.randomizer = randomizer;
 		this.distortionParams = randomizerParams;
 		this.numberOfDistortedDataSets = numberOfRandomizedDataSets;
+		this.originalDataConfigs = originalDataConfigs;
 
 		if (this.register()) {
 			// for (RunStatistic statistic : this.statistics) {
@@ -279,7 +281,7 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 				FileUtils.appendStringToFile(resultPath, sb.toString());
 
 				paths.add(resultPath);
-			} catch (NullPointerException e) {
+			} catch (Exception e) {
 				// just skip that run result when
 				System.out.println(result.getAbsolutePath());
 			}

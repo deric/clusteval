@@ -31,7 +31,6 @@ import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
-import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;

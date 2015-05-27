@@ -443,7 +443,8 @@ public class ClusteringRunResult extends ExecutionRunResult {
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
 			UnknownParameterType, InterruptedException,
-			UnknownRunResultPostprocessorException, UnknownDataRandomizerException {
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
 
 		Repository childRepository = new RunResultRepository(
 				runResultFolder.getAbsolutePath(), parentRepository);
@@ -496,7 +497,11 @@ public class ClusteringRunResult extends ExecutionRunResult {
 		if (absPath.exists()) {
 			try {
 				final Pair<ParameterSet, Clustering> pair = Clustering
-						.parseFromFile(repository, absPath, true);
+						.parseFromFile(
+								repository,
+								new File(absPath.getAbsolutePath().replace(
+										"results.qual.complete",
+										"1.results.conv")), true);
 
 				ParameterSet paramSet = new ParameterSet();
 				for (String param : pair.getFirst().keySet())
