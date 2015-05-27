@@ -108,14 +108,10 @@ public class ClusteringRunRunnable extends ExecutionRunRunnable {
 		this.finished = noLines >= 2;
 		if (this.finished) {
 			ClusteringRunResult res = ClusteringRunResult
-					.parseFromRunResultCompleteFile(
-							this.run.getRepository(),
-							(ClusteringRun) this.getRun(),
-							this.dataConfig,
+					.parseFromRunResultCompleteFile(this.run.getRepository(),
+							(ClusteringRun) this.getRun(), this.dataConfig,
 							this.programConfig,
-							new File(completeQualityOutput
-									.replace(".results.qual.complete",
-											".1.results.conv")), false);
+							new File(completeQualityOutput), false);
 
 			synchronized (getRun().getResults()) {
 				getRun().getResults().add(res);

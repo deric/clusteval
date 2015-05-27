@@ -5,7 +5,6 @@ package de.clusteval.run.runnable;
 
 import java.util.Map;
 
-import utils.Pair;
 import de.clusteval.data.DataConfig;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ProgramConfig;

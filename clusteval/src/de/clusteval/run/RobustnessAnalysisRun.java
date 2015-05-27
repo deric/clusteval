@@ -572,7 +572,7 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 		// TODO: for numerical parameter ranges, take the mean
 		// for string parameters, just take any one
 		for (ProgramConfig pc : programConfigs) {
-			for (DataConfig dc : dataConfigs) {
+			for (DataConfig dc : originalDataConfigs) {
 				Map<ProgramParameter<? extends Object>, String> m = new HashMap<ProgramParameter<? extends Object>, String>();
 
 				if (bestParams.containsKey(pc.getName())
