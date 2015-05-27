@@ -227,9 +227,9 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 	 * 
 	 */
 	protected void createAnalysesDirectory() {
-		new File(FileUtils.buildPath(
+		FileUtils.delete(new File(FileUtils.buildPath(
 				this.repository.getBasePath(RunResult.class),
-				this.getRunIdentificationString(), "analyses")).delete();
+				this.getRunIdentificationString(), "analyses")));
 		new File(FileUtils.buildPath(
 				this.repository.getBasePath(RunResult.class),
 				this.getRunIdentificationString(), "analyses")).mkdir();
