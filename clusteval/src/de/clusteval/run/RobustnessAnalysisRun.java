@@ -237,60 +237,52 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 		Set<String> paths = new HashSet<String>();
 
 		for (int i = 0; i < this.results.size(); i++) {
-			// int pc = (int) Math.round(Math.floor(i
-			// / (double) dataConfigs.size()));
-			// int dc = (int) Math.round(Math.floor(i % dataConfigs.size()));
-			// int origDc = (int) Math
-			// .round(Math
-			// .floor(dc
-			// / (double) (this.numberOfDistortedDataSets *
-			// this.distortionParams
-			// .size())));
-			// ProgramConfig programConfig = this.programConfigs.get(pc);
-			// DataConfig dataConfig = this.dataConfigs.get(dc);
-			// DataConfig origDataConfig = this.originalDataConfigs.get(origDc);
-
 			ClusteringRunResult result = (ClusteringRunResult) this.results
 					.get(i);
-			result.loadIntoMemory();
-			ClusteringQualitySet quals = result.getClustering().getSecond()
-					.getQualities();
-			result.unloadFromMemory();
+			try {
+				result.loadIntoMemory();
+				ClusteringQualitySet quals = result.getClustering().getSecond()
+						.getQualities();
+				result.unloadFromMemory();
 
-			ProgramConfig programConfig = result.getProgramConfig();
-			DataConfig dataConfig = result.getDataConfig();
+				ProgramConfig programConfig = result.getProgramConfig();
+				DataConfig dataConfig = result.getDataConfig();
 
-			String resultPath = FileUtils.buildPath(
-					this.repository.getBasePath(RunResult.class),
-					this.getRunIdentificationString(), "analyses",
-					programConfig.getName() + ".robustness");
+				String resultPath = FileUtils.buildPath(
+						this.repository.getBasePath(RunResult.class),
+						this.getRunIdentificationString(), "analyses",
+						programConfig.getName() + ".robustness");
 
-			// new File(resultPath).delete();
+				// new File(resultPath).delete();
 
-			StringBuilder sb = new StringBuilder();
-			if (!paths.contains(resultPath)) {
-				sb.append("DataConfig");
+				StringBuilder sb = new StringBuilder();
+				if (!paths.contains(resultPath)) {
+					sb.append("DataConfig");
+					sb.append("\t");
+					// first time we write into this file
+					for (ClusteringQualityMeasure measure : this.qualityMeasures) {
+						sb.append(measure.getClass().getSimpleName());
+						sb.append("\t");
+					}
+					sb.deleteCharAt(sb.length() - 1);
+					sb.append(System.getProperty("line.separator"));
+				}
+
+				sb.append(dataConfig.getName());
 				sb.append("\t");
-				// first time we write into this file
 				for (ClusteringQualityMeasure measure : this.qualityMeasures) {
-					sb.append(measure.getClass().getSimpleName());
+					sb.append(quals.get(measure));
 					sb.append("\t");
 				}
 				sb.deleteCharAt(sb.length() - 1);
 				sb.append(System.getProperty("line.separator"));
-			}
+				FileUtils.appendStringToFile(resultPath, sb.toString());
 
-			sb.append(dataConfig.getName());
-			sb.append("\t");
-			for (ClusteringQualityMeasure measure : this.qualityMeasures) {
-				sb.append(quals.get(measure));
-				sb.append("\t");
+				paths.add(resultPath);
+			} catch (NullPointerException e) {
+				// just skip that run result when
+				System.out.println(result.getAbsolutePath());
 			}
-			sb.deleteCharAt(sb.length() - 1);
-			sb.append(System.getProperty("line.separator"));
-			FileUtils.appendStringToFile(resultPath, sb.toString());
-
-			paths.add(resultPath);
 		}
 	}
 
@@ -625,8 +617,9 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 			ProgramConfig programConfig, DataConfig dataConfig,
 			String runIdentString, boolean isResume,
 			Map<ProgramParameter<?>, String> runParams) {
-		RobustnessAnalysisRunRunnable r = new RobustnessAnalysisRunRunnable(runScheduler, run,
-				programConfig, dataConfig, runIdentString, isResume, runParams);
+		RobustnessAnalysisRunRunnable r = new RobustnessAnalysisRunRunnable(
+				runScheduler, run, programConfig, dataConfig, runIdentString,
+				isResume, runParams);
 		run.progress.addSubProgress(r.getProgressPrinter(), 100);
 		return r;
 	}

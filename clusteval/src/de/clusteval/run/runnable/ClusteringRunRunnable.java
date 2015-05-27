@@ -169,5 +169,7 @@ public class ClusteringRunRunnable extends ExecutionRunRunnable {
 				+ ","
 				+ this.dataConfig
 				+ ") The result of this run could not be found. Please consult the log files of the program");
+
+		super.handleMissingRunResult(iterationWrapper);
 	}
 }

@@ -345,11 +345,6 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	@Override
 	protected void handleMissingRunResult(
 			final ExecutionIterationWrapper iterationWrapper) {
-		final Map<String, String> effectiveParams = iterationWrapper
-				.getEffectiveParams();
-		final Map<String, String> internalParams = iterationWrapper
-				.getInternalParams();
-		final int optId = iterationWrapper.getOptId();
 		if (this.optimizationMethod instanceof IDivergingParameterOptimizationMethod) {
 			this.log.info(this.getRun()
 					+ " ("
@@ -369,32 +364,8 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 					+ iterationWrapper.getOptId()
 					+ ") The result of this run could not be found. Please consult the log files of the program");
 		}
-
-		/*
-		 * There is no results file
-		 */
-		/*
-		 * Write the minimal quality values into the complete results file
-		 */
-		StringBuilder sb = new StringBuilder();
-		sb.append(optId);
-		sb.append("\t");
-		for (int p = 0; p < programConfig.getOptimizableParams().size(); p++) {
-			ProgramParameter<?> param = programConfig.getOptimizableParams()
-					.get(p);
-			if (p > 0)
-				sb.append(",");
-			sb.append(effectiveParams.get(param.getName()));
-		}
-		sb.append("\t");
-		for (int i = 0; i < this.getRun().getQualityMeasures().size(); i++) {
-			sb.append(ClusteringQualityMeasureValue.getForNotTerminated());
-			sb.append("\t");
-		}
-		sb.deleteCharAt(sb.length() - 1);
-		sb.append("\n");
-
-		FileUtils.appendStringToFile(completeQualityOutput, sb.toString());
+		
+		super.handleMissingRunResult(iterationWrapper);
 
 		ClusteringQualitySet minimalQualities = new ClusteringQualitySet();
 		for (ClusteringQualityMeasure measure : this.getRun()

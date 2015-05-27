@@ -38,6 +38,7 @@ import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.NoParameterSetFoundException;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
+import de.clusteval.cluster.quality.ClusteringQualityMeasureValue;
 import de.clusteval.cluster.quality.ClusteringQualitySet;
 import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.AbsoluteDataSet;
@@ -1276,8 +1277,39 @@ public abstract class ExecutionRunRunnable
 	 * This can comprise actions ensuring that further iterations can be
 	 * executed smoothly.
 	 */
-	protected abstract void handleMissingRunResult(
-			final ExecutionIterationWrapper iterationWrapper);
+	protected void handleMissingRunResult(
+			final ExecutionIterationWrapper iterationWrapper) {
+		final Map<String, String> effectiveParams = iterationWrapper
+				.getEffectiveParams();
+		final Map<String, String> internalParams = iterationWrapper
+				.getInternalParams();
+		final int optId = iterationWrapper.getOptId();
+		/*
+		 * There is no results file
+		 */
+		/*
+		 * Write the minimal quality values into the complete results file
+		 */
+		StringBuilder sb = new StringBuilder();
+		sb.append(optId);
+		sb.append("\t");
+		for (int p = 0; p < programConfig.getOptimizableParams().size(); p++) {
+			ProgramParameter<?> param = programConfig.getOptimizableParams()
+					.get(p);
+			if (p > 0)
+				sb.append(",");
+			sb.append(effectiveParams.get(param.getName()));
+		}
+		sb.append("\t");
+		for (int i = 0; i < this.getRun().getQualityMeasures().size(); i++) {
+			sb.append(ClusteringQualityMeasureValue.getForNotTerminated());
+			sb.append("\t");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		sb.append("\n");
+
+		FileUtils.appendStringToFile(completeQualityOutput, sb.toString());
+	}
 
 	// /**
 	// * After a clustering has been calculated by the program, converted to the
