@@ -26,6 +26,7 @@ import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.AbsoluteDataSet;
 import de.clusteval.data.dataset.DataMatrix;
 import de.clusteval.data.dataset.DataSet;
+import de.clusteval.data.dataset.RelativeDataSet;
 import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;
 import de.clusteval.framework.repository.MyRengine;
@@ -186,31 +187,49 @@ public abstract class Plotter {
 			MyRengine rEngine = dataConfig.getRepository()
 					.getRengineForCurrentThread();
 			try {
-				DataSet standard = dataConfig.getDatasetConfig().getDataSet()
-						.getOriginalDataSet();
-				if (!(standard instanceof AbsoluteDataSet))
-					return;
 
-				AbsoluteDataSet absStandard = (AbsoluteDataSet) standard;
-
-				String newPath = absStandard.getAbsolutePath() + ".PCA";
-				if (new File(newPath).exists())
-					return;
-
-				boolean wasLoaded = absStandard.isInMemory();
-				if (!wasLoaded)
-					absStandard.loadIntoMemory();
-				DataMatrix dataMatrix;
 				double[][] x;
 				String[] ids;
 
-				try {
-					dataMatrix = absStandard.getDataSetContent();
-					x = dataMatrix.getData();
-					ids = dataMatrix.getIds();
-				} finally {
+				DataSet standard = dataConfig.getDatasetConfig().getDataSet()
+						.getOriginalDataSet();
+				String newPath = standard.getAbsolutePath() + ".PCA";
+				if (new File(newPath).exists())
+					return;
+
+				if (standard instanceof AbsoluteDataSet) {
+					AbsoluteDataSet absStandard = (AbsoluteDataSet) standard;
+
+					boolean wasLoaded = absStandard.isInMemory();
 					if (!wasLoaded)
-						absStandard.unloadFromMemory();
+						absStandard.loadIntoMemory();
+					DataMatrix dataMatrix;
+
+					try {
+						dataMatrix = absStandard.getDataSetContent();
+						x = dataMatrix.getData();
+						ids = dataMatrix.getIds();
+					} finally {
+						if (!wasLoaded)
+							absStandard.unloadFromMemory();
+					}
+				} else {
+					RelativeDataSet absStandard = (RelativeDataSet) standard;
+
+					boolean wasLoaded = absStandard.isInMemory();
+					if (!wasLoaded)
+						absStandard.loadIntoMemory();
+					SimilarityMatrix dataMatrix;
+
+					try {
+						dataMatrix = absStandard.getDataSetContent();
+						x = dataMatrix.toArray();
+						ids = dataMatrix.getIdsArray();
+					} finally {
+						if (!wasLoaded)
+							absStandard.unloadFromMemory();
+					}
+
 				}
 
 				rEngine.assign("x", x);
