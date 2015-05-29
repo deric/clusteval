@@ -5,7 +5,6 @@ package de.clusteval.framework.repository.parse;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -378,8 +377,12 @@ class RobustnessAnalysisRunParser
 		this.uniqueRunIdentifiers = Arrays.asList(list);
 
 		String randomizerS = getProps().getString("randomizer");
-		DataRandomizer randomizer = DataRandomizer.parseFromString(this.repo,
-				randomizerS);
+		DataRandomizer randomizer;
+		if (this.repo instanceof RunResultRepository)
+			randomizer = DataRandomizer.parseFromString(this.repo.getParent(),
+					randomizerS);
+		else
+			randomizer = DataRandomizer.parseFromString(this.repo, randomizerS);
 		int numberOfRandomizedDataSets = getProps().getInt(
 				"numberOfRandomizedDataSets");
 
@@ -455,35 +458,38 @@ class RobustnessAnalysisRunParser
 				this.originalDataConfigs.add(repo.getParent()
 						.getStaticObjectWithName(DataConfig.class, dataConfig));
 			}
+			this.dataConfigs = new ArrayList<DataConfig>(
+					this.originalDataConfigs);
 
-			class DataConfigFileExtFilter implements FilenameFilter {
-
-				/**
-			 * 
-			 */
-				public DataConfigFileExtFilter() {
-				}
-
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see java.io.FilenameFilter#accept(java.io.File,
-				 * java.lang.String)
-				 */
-				@Override
-				public boolean accept(File dir, String name) {
-					return name.endsWith(".dataconfig");
-				}
-			}
-
-			List<DataConfig> randomizedDataConfigs = new ArrayList<DataConfig>();
-			String[] dataConfigFiles = new File(
-					this.repo.getBasePath(DataConfig.class))
-					.list(new DataConfigFileExtFilter());
-			for (String dcFile : dataConfigFiles)
-				randomizedDataConfigs.add(this.repo.getStaticObjectWithName(
-						DataConfig.class, dcFile.replace(".dataconfig", "")));
-			this.dataConfigs = randomizedDataConfigs;
+			// class DataConfigFileExtFilter implements FilenameFilter {
+			//
+			// /**
+			// *
+			// */
+			// public DataConfigFileExtFilter() {
+			// }
+			//
+			// /*
+			// * (non-Javadoc)
+			// *
+			// * @see java.io.FilenameFilter#accept(java.io.File,
+			// * java.lang.String)
+			// */
+			// @Override
+			// public boolean accept(File dir, String name) {
+			// return name.endsWith(".dataconfig");
+			// }
+			// }
+			//
+			// List<DataConfig> randomizedDataConfigs = new
+			// ArrayList<DataConfig>();
+			// String[] dataConfigFiles = new File(
+			// this.repo.getBasePath(DataConfig.class))
+			// .list(new DataConfigFileExtFilter());
+			// for (String dcFile : dataConfigFiles)
+			// randomizedDataConfigs.add(this.repo.getStaticObjectWithName(
+			// DataConfig.class, dcFile.replace(".dataconfig", "")));
+			// this.dataConfigs = randomizedDataConfigs;
 		} else {
 			super.parseDataConfigurations();
 			this.originalDataConfigs = new ArrayList<DataConfig>(

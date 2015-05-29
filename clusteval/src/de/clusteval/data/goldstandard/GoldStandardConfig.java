@@ -113,6 +113,10 @@ public class GoldStandardConfig extends DumpableRepositoryObject {
 		return goldStandard;
 	}
 
+	public void setGoldStandard(final GoldStandard goldStandard) {
+		this.goldStandard = goldStandard;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

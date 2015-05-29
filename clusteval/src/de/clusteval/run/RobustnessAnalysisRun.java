@@ -74,6 +74,7 @@ import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
 import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.runnable.ExecutionRunRunnable;
 import de.clusteval.run.runnable.RobustnessAnalysisRunRunnable;
+import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.InvalidConfigurationFileException;
@@ -203,6 +204,121 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 		try {
 			this.findBestParamsAndInitParameterValues(this.getRepository()
 					.getParent());
+
+			// generate randomized data sets
+			// the directory, the new data sets will be stored in
+			String dataSetBasePath = this.getRepository().getParent()
+					.getBasePath(DataSet.class);
+			File newDataSetDir = new File(FileUtils.buildPath(dataSetBasePath,
+					this.getRunIdentificationString()));
+			newDataSetDir.mkdir();
+			// the directory, the new gold standards will be stored in
+			String goldStandardBasePath = this.getRepository().getParent()
+					.getBasePath(GoldStandard.class);
+			File newGoldStandardDir = new File(FileUtils.buildPath(
+					goldStandardBasePath, this.getRunIdentificationString()));
+			newGoldStandardDir.mkdir();
+
+			Map<DataConfig, List<DataConfig>> newDataConfigs = new HashMap<DataConfig, List<DataConfig>>();
+
+			Options options = this.randomizer.getAllOptions();
+
+			// generate those randomized data sets which are not generated yet
+			for (DataConfig dataConfig : this.dataConfigs) {
+				this.log.info("... for data config '" + dataConfig.getName()
+						+ "'");
+				newDataConfigs.put(dataConfig, new ArrayList<DataConfig>());
+				for (ParameterSet paramSet : this.distortionParams) {
+
+					for (int i = 1; i <= this.numberOfDistortedDataSets; i++) {
+						List<String> params = new ArrayList<String>();
+						for (String param : paramSet.keySet()) {
+							if (options.hasOption(param)) {
+								params.add("-" + param);
+								params.add(paramSet.get(param));
+							}
+						}
+						params.add("-dataConfig");
+						params.add(dataConfig.getName());
+						params.add("-uniqueId");
+						params.add(this.runIdentString + "_" + i);
+						try {
+							DataConfig newDataConfig = this.randomizer
+									.randomize(params.toArray(new String[0]),
+											true);
+
+							File targetDataSetFile = new File(
+									FileUtils.buildPath(
+											newDataSetDir.getAbsolutePath(),
+											newDataConfig.getDatasetConfig()
+													.getDataSet()
+													.getMinorName()));
+							File targetGoldStandardFile = new File(
+									FileUtils.buildPath(newGoldStandardDir
+											.getAbsolutePath(), newDataConfig
+											.getGoldstandardConfig()
+											.getGoldstandard().getMinorName()));
+
+							if (!targetDataSetFile.exists()
+									|| !targetGoldStandardFile.exists()) {
+								newDataConfig.getDatasetConfig().getDataSet()
+										.moveTo(targetDataSetFile);
+								newDataConfig.getGoldstandardConfig()
+										.getGoldstandard()
+										.moveTo(targetGoldStandardFile);
+								newDataConfigs.get(dataConfig).add(
+										newDataConfig);
+							} else {
+								this.log.info("Randomized data config existed; using old data");
+								new File(newDataConfig.getDatasetConfig()
+										.getDataSet().getAbsolutePath())
+										.delete();
+								new File(newDataConfig.getGoldstandardConfig()
+										.getGoldstandard().getAbsolutePath())
+										.delete();
+
+								DataSet ds = this
+										.getRepository()
+										.getParent()
+										.getStaticObjectWithName(
+												DataSet.class,
+												targetDataSetFile
+														.getParentFile()
+														.getName()
+														+ "/"
+														+ targetDataSetFile
+																.getName());
+
+								newDataConfig.getDatasetConfig().setDataSet(ds);
+								// newDataConfig.getDatasetConfig().dumpToFile();
+								newDataConfig
+										.getGoldstandardConfig()
+										.setGoldStandard(
+												GoldStandard
+														.parseFromFile(targetGoldStandardFile));
+								// newDataConfig.getGoldstandardConfig()
+								// .dumpToFile();
+								newDataConfigs
+										.get(dataConfig)
+										.add(this
+												.getRepository()
+												.getParent()
+												.getStaticObjectWithName(
+														DataConfig.class,
+														newDataConfig.getName()));
+							}
+
+						} catch (DataRandomizeException e) {
+							throw new RunInitializationException(e);
+						}
+					}
+				}
+			}
+
+			this.originalDataConfigs = this.dataConfigs;
+			this.dataConfigs = new ArrayList<DataConfig>();
+			for (DataConfig dc : this.originalDataConfigs)
+				this.dataConfigs.addAll(newDataConfigs.get(dc));
 
 			this.log.info("Get dataconfigs corresponding to original data configs");
 
@@ -556,8 +672,8 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 
 		for (String pc : bestParams.keySet()) {
 			for (String dc : bestParams.get(pc).keySet()) {
-				System.out.println(String.format("%s\t%s\t%s\n", pc, dc,
-						bestParams.get(pc).get(dc).getFirst().get(0)));
+				this.log.info(String.format("%s\t%s\t%s\n", pc, dc, bestParams
+						.get(pc).get(dc).getFirst().get(0)));
 			}
 		}
 
@@ -624,6 +740,22 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 				isResume, runParams);
 		run.progress.addSubProgress(r.getProgressPrinter(), 100);
 		return r;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.run.ExecutionRun#createAndScheduleRunnableForResumePair(
+	 * de.clusteval.framework.threading.RunSchedulerThread, int)
+	 */
+	@Override
+	protected RunRunnable createAndScheduleRunnableForResumePair(
+			RunSchedulerThread runScheduler, int p) {
+		this.log.info(String.format("%s\t%s\t%s", this.runPairs.get(p)
+				.getFirst(), this.runPairs.get(p).getSecond(),
+				this.parameterValues.get(p)));
+		return super.createAndScheduleRunnableForResumePair(runScheduler, p);
 	}
 
 	/*

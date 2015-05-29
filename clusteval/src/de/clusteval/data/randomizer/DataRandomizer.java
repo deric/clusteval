@@ -88,6 +88,8 @@ public abstract class DataRandomizer extends RepositoryObject
 
 	protected String uniqueId;
 
+	protected boolean onlySimulate;
+
 	/**
 	 * @param repository
 	 * @param register
@@ -163,6 +165,11 @@ public abstract class DataRandomizer extends RepositoryObject
 	 */
 	protected abstract Options getOptions();
 
+	public DataConfig randomize(final String[] cliArguments)
+			throws DataRandomizeException {
+		return randomize(cliArguments, false);
+	}
+
 	/**
 	 * This method has to be invoked with command line arguments for this
 	 * generator. Valid arguments are defined by the options returned by
@@ -176,9 +183,11 @@ public abstract class DataRandomizer extends RepositoryObject
 	 *             config files fails.
 	 * @throws DataRandomizeException
 	 */
-	public DataConfig randomize(final String[] cliArguments)
-			throws DataRandomizeException {
+	// TODO: remove onlySimulate attribute
+	public DataConfig randomize(final String[] cliArguments,
+			final boolean onlySimulate) throws DataRandomizeException {
 		try {
+			this.onlySimulate = onlySimulate;
 			CommandLineParser parser = new PosixParser();
 
 			Options options = this.getAllOptions();
@@ -242,7 +251,8 @@ public abstract class DataRandomizer extends RepositoryObject
 						.getConversionInputToStandardConfiguration().clone(),
 				this.dataConfig.getDatasetConfig()
 						.getConversionStandardToInputConfiguration().clone());
-		dsConfig.dumpToFile();
+		if (!this.onlySimulate)
+			dsConfig.dumpToFile();
 
 		File gsConfigFile = new File(FileUtils.buildPath(
 				repository.getBasePath(GoldStandardConfig.class), this.uniqueId
@@ -253,7 +263,8 @@ public abstract class DataRandomizer extends RepositoryObject
 		// write goldstandard config file
 		GoldStandardConfig gsConfig = new GoldStandardConfig(this.repository,
 				System.currentTimeMillis(), gsConfigFile, newGoldStandard);
-		gsConfig.dumpToFile();
+		if (!this.onlySimulate)
+			gsConfig.dumpToFile();
 
 		// write data config file
 		File dataConfigFile = new File(FileUtils.buildPath(
@@ -262,7 +273,8 @@ public abstract class DataRandomizer extends RepositoryObject
 						+ getDataSetFileNamePostFix() + ".dataconfig"));
 		DataConfig dataConfig = new DataConfig(this.repository,
 				System.currentTimeMillis(), dataConfigFile, dsConfig, gsConfig);
-		dataConfig.dumpToFile();
+		if (!this.onlySimulate)
+			dataConfig.dumpToFile();
 
 		return dataConfig;
 	}

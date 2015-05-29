@@ -200,6 +200,9 @@ public class StaticRepositoryEntity<T extends RepositoryObject>
 	public <S extends T> boolean unregister(final S object) {
 		synchronized (this.objects) {
 			boolean result = this.objects.remove(object) != null;
+			result &= this.nameToObject.remove(object.toString()) != null;
+			result &= this.repository.pathToRepositoryObject
+					.remove(object.absPath) != null;
 			if (result) {
 				this.unregisterAfterRemove(object);
 			}
