@@ -180,7 +180,7 @@ public class ParameterOptimizationRun extends ExecutionRun {
 			final List<List<ProgramParameter<?>>> optimizationParameters,
 			final List<ParameterOptimizationMethod> optimizationMethods,
 			final List<RunResultPostprocessor> postProcessors,
-			final Map<ProgramConfig, Integer> maxExecutionTimes)
+			final Map<String, Integer> maxExecutionTimes)
 			throws RegisterException {
 		super(repository, context, false, changeDate, absPath, programConfigs,
 				dataConfigs, qualityMeasures, parameterValues, postProcessors,

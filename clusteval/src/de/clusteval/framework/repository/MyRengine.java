@@ -25,7 +25,6 @@ import org.rosuda.REngine.Rserve.RserveException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.RLibraryNotLoadedException;
 
 /**

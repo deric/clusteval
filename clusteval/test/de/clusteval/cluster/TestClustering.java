@@ -65,7 +65,7 @@ public class TestClustering extends AbstractClustEvalTest {
 
 		Clustering clustering = Clustering.parseFromIntArray(
 				this.getRepository(), new File(""), ids, clusterIds);
-		Assert.assertEquals("5:1.0,4:1.0;3:1.0,2:1.0,1:1.0",
+		Assert.assertEquals("1:1.0,2:1.0,3:1.0;4:1.0,5:1.0",
 				clustering.toFormattedString());
 	}
 
@@ -138,13 +138,15 @@ public class TestClustering extends AbstractClustEvalTest {
 	}
 
 	@Test
-	public void testFuzzyClustering() throws IOException {
+	public void testFuzzyClustering() throws IOException,
+			ClusteringParseException {
 		Pair<ParameterSet, Clustering> p = Clustering
 				.parseFromFile(
 						null,
 						new File(
 								"testCaseRepository/results/01_30_2013-21_31_25_tc_vs_DS1/clusters/fuzzyClustering.txt")
 								.getAbsoluteFile(), false);
+		p.getSecond().loadIntoMemory();
 		Set<ClusterItem> clusterItems = new HashSet<ClusterItem>();
 		ClusterItem expectedItem1 = new ClusterItem("id1");
 		ClusterItem expectedItem2 = new ClusterItem("id2");
@@ -193,7 +195,8 @@ public class TestClustering extends AbstractClustEvalTest {
 	}
 
 	@Test
-	public void testFuzzyToHardClustering() throws IOException {
+	public void testFuzzyToHardClustering() throws IOException,
+			ClusteringParseException {
 		Pair<ParameterSet, Clustering> p = Clustering
 				.parseFromFile(
 						null,
@@ -202,6 +205,7 @@ public class TestClustering extends AbstractClustEvalTest {
 								.getAbsoluteFile(), false);
 
 		Clustering hardClustering = p.getSecond().toHardClustering();
+		hardClustering.loadIntoMemory();
 		System.out.println(hardClustering);
 
 		Set<ClusterItem> clusterItems = new HashSet<ClusterItem>();

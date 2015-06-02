@@ -124,7 +124,7 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 			final DataRandomizer randomizer,
 			final List<ParameterSet> randomizerParams,
 			final int numberOfRandomizedDataSets,
-			final Map<ProgramConfig, Integer> maxExecutionTimes)
+			final Map<String, Integer> maxExecutionTimes)
 			throws RegisterException {
 		// the parameter values are just dummies; they will be parsed from the
 		// uniqueRunIdentifiers later and override these values here;

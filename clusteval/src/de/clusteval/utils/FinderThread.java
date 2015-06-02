@@ -52,7 +52,7 @@ public abstract class FinderThread<T extends RepositoryObject>
 	public FinderThread(final SupervisorThread supervisorThread,
 			final Repository repository, final Class<T> classToFind,
 			boolean checkOnce) {
-		this(supervisorThread, repository, classToFind, 30000, checkOnce);
+		this(supervisorThread, repository, classToFind, 60000, checkOnce);
 	}
 
 	/**

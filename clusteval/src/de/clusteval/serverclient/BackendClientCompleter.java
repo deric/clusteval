@@ -182,6 +182,7 @@ public class BackendClientCompleter implements Completer {
 	@Override
 	public int complete(String buffer, int cursor, List<CharSequence> candidates) {
 		SortedSet<String> strings = new TreeSet<String>();
+		// TODO: use options in BackendClient class
 		strings.add("performRun");
 		strings.add("resumeRun");
 		strings.add("terminateRun");

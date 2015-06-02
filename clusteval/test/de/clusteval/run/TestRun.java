@@ -47,7 +47,7 @@ public class TestRun extends AbstractClustEvalTest {
 				new ArrayList<ClusteringQualityMeasure>(),
 				new ArrayList<Map<ProgramParameter<?>, String>>(),
 				new ArrayList<RunResultPostprocessor>(),
-				new HashMap<ProgramConfig, Integer>());
+				new HashMap<String, Integer>());
 		Assert.assertTrue(run == this.getRepository().getRegisteredObject(run));
 	}
 }

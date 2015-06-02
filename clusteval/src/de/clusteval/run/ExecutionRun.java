@@ -103,7 +103,7 @@ public abstract class ExecutionRun extends Run {
 	 */
 	protected List<ProgramConfig> programConfigs;
 
-	protected Map<ProgramConfig, Integer> maxExecutionTimes;
+	protected Map<String, Integer> maxExecutionTimes;
 
 	/**
 	 * A list of data configurations contained in this run.
@@ -167,7 +167,7 @@ public abstract class ExecutionRun extends Run {
 			final List<ClusteringQualityMeasure> qualityMeasures,
 			final List<Map<ProgramParameter<?>, String>> parameterValues,
 			final List<RunResultPostprocessor> postProcessors,
-			final Map<ProgramConfig, Integer> maxExecutionTimes)
+			final Map<String, Integer> maxExecutionTimes)
 			throws RegisterException {
 		super(repository, context, changeDate, absPath);
 
@@ -214,7 +214,7 @@ public abstract class ExecutionRun extends Run {
 		this.qualityMeasures = ClusteringQualityMeasure
 				.cloneQualityMeasures(other.qualityMeasures);
 		this.postProcessors = clonePostProcessors(other.postProcessors);
-		this.maxExecutionTimes = new HashMap<ProgramConfig, Integer>(
+		this.maxExecutionTimes = new HashMap<String, Integer>(
 				other.maxExecutionTimes);
 
 		initRunPairs(
@@ -233,8 +233,6 @@ public abstract class ExecutionRun extends Run {
 	@Override
 	public boolean terminate() {
 		synchronized (this.runnables) {
-			if (this.runnables.isEmpty())
-				return true;
 			for (RunRunnable thread : this.runnables) {
 				thread.terminate();
 			}
@@ -822,10 +820,10 @@ public abstract class ExecutionRun extends Run {
 	}
 
 	public boolean hasMaxExecutionTime(final ProgramConfig pc) {
-		return this.maxExecutionTimes.containsKey(pc);
+		return this.maxExecutionTimes.containsKey(pc.getName());
 	}
 
 	public int getMaxExecutionTime(final ProgramConfig pc) {
-		return this.maxExecutionTimes.get(pc);
+		return this.maxExecutionTimes.get(pc.getName());
 	}
 }

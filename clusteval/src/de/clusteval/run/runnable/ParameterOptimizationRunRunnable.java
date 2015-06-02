@@ -192,7 +192,7 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 			if (isResume) {
 				// in case of resume, we have to update the current percentage
 				int iterationPercent = Math.min(
-						(int) (this.optimizationMethod.getStartedCount()
+						(int) (this.optimizationMethod.getFinishedCount()
 								/ (double) this.optimizationMethod
 										.getTotalIterationCount() * 100), 100);
 				this.progress.update(iterationPercent);
@@ -364,7 +364,7 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 					+ iterationWrapper.getOptId()
 					+ ") The result of this run could not be found. Please consult the log files of the program");
 		}
-		
+
 		super.handleMissingRunResult(iterationWrapper);
 
 		ClusteringQualitySet minimalQualities = new ClusteringQualitySet();

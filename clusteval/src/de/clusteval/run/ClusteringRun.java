@@ -66,7 +66,7 @@ public class ClusteringRun extends ExecutionRun {
 			List<ClusteringQualityMeasure> qualityMeasures,
 			List<Map<ProgramParameter<?>, String>> parameterValues,
 			final List<RunResultPostprocessor> postProcessors,
-			final Map<ProgramConfig, Integer> maxExecutionTimes)
+			final Map<String, Integer> maxExecutionTimes)
 			throws RegisterException {
 		super(repository, context, true, changeDate, absPath, programConfigs,
 				dataConfigs, qualityMeasures, parameterValues, postProcessors,

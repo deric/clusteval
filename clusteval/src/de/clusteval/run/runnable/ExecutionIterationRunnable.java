@@ -14,6 +14,8 @@ public abstract class ExecutionIterationRunnable
 		extends
 			IterationRunnable<ExecutionIterationWrapper> {
 
+	protected Process proc;
+
 	protected NoRunResultFormatParserException noRunResultException;
 
 	/**
@@ -43,6 +45,10 @@ public abstract class ExecutionIterationRunnable
 	@Override
 	public ExecutionRun getRun() {
 		return (ExecutionRun) super.getRun();
+	}
+
+	public Process getProcess() {
+		return this.proc;
 	}
 
 }

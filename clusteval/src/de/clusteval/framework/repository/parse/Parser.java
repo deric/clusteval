@@ -974,7 +974,7 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 	protected List<Map<ProgramParameter<?>, String>> runParamValues;
 	protected Map<ProgramParameter<?>, String> paramMap;
 	protected List<RunResultPostprocessor> postprocessor;
-	protected Map<ProgramConfig, Integer> maxExecutionTimes;
+	protected Map<String, Integer> maxExecutionTimes;
 
 	@Override
 	public void parseFromFile(final File absPath)
@@ -1020,7 +1020,7 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 		 */
 		runParamValues = new ArrayList<Map<ProgramParameter<?>, String>>();
 
-		maxExecutionTimes = new HashMap<ProgramConfig, Integer>();
+		maxExecutionTimes = new HashMap<String, Integer>();
 
 		parseProgramConfigurations();
 
@@ -1195,7 +1195,7 @@ class ExecutionRunParser<T extends ExecutionRun> extends RunParser<T> {
 				String param = itParams.next();
 				if (param.equals("maxExecutionTimeMinutes")) {
 					this.maxExecutionTimes.put(
-							programConfig,
+							programConfig.getName(),
 							Integer.parseInt(getProps().getSection(
 									programConfig.getName()).getString(param)));
 				} else if (isParamConfigurationEntry(param))

@@ -21,7 +21,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -130,6 +132,25 @@ public abstract class RunRunnable<IR extends IterationRunnable, IW extends Itera
 	protected List<Future<?>> futures;
 
 	/**
+	 * This boolean helper indicates, whether this run runnable has been
+	 * terminated. We use this boolean instead of the future of this run
+	 * runnable to signal termination, because the run thread belonging to this
+	 * runnable will immediately terminate if this run runnable future is
+	 * cancelled. However, in some cases the termination of this run runnable's
+	 * iteration runnables takes some time. Then we want to set the future of
+	 * this runnabel to cancalled only after all iteration runnables are
+	 * terminated.
+	 */
+	protected boolean terminated;
+
+	/**
+	 * A map from futures to iteration runnables to be able to handle
+	 * termination of threads and processes started in the respective iteration
+	 * run runnable in {@link #afterRun()}
+	 */
+	protected Map<Future<?>, Runnable> futureToIterationRunnable;
+
+	/**
 	 * Instantiates a new run runnable.
 	 * 
 	 * @param run
@@ -150,6 +171,7 @@ public abstract class RunRunnable<IR extends IterationRunnable, IW extends Itera
 		this.runThreadIdentString = runIdentString;
 		this.iterationRunnables = new ArrayList<IR>();
 		this.futures = new ArrayList<Future<?>>();
+		this.futureToIterationRunnable = new HashMap<Future<?>, Runnable>();
 		this.log = LoggerFactory.getLogger(this.getClass());
 		this.progress = new ProgressPrinter(100, false);
 	}
@@ -174,7 +196,8 @@ public abstract class RunRunnable<IR extends IterationRunnable, IW extends Itera
 	 * @return True, if this thread was interrupted, false otherwise.
 	 */
 	protected final boolean isInterrupted() {
-		return this.future.isCancelled();
+		// return this.future.isCancelled();
+		return this.terminated;
 	}
 
 	/*
@@ -197,16 +220,12 @@ public abstract class RunRunnable<IR extends IterationRunnable, IW extends Itera
 		}
 	}
 
-	// public void terminate() {
-	// this.getFuture().cancel(true);
-	// }
-
 	public void terminate() {
+		this.log.info("Terminating runnable ...");
+		this.terminated = true;
 		// TODO: cancel all the iteration threads
 		for (Future<?> f : this.futures)
 			f.cancel(true);
-
-		this.getFuture().cancel(true);
 	}
 
 	/**
@@ -270,7 +289,14 @@ public abstract class RunRunnable<IR extends IterationRunnable, IW extends Itera
 			try {
 				f.get();
 			} catch (InterruptedException e) {
-				// we don't care about those interrupted exceptions
+				// here we handle termination of all threads or processes , that
+				// have been started by the iteration run runnables.
+				Runnable run = this.futureToIterationRunnable.remove(f);
+				if (run instanceof ExecutionIterationRunnable) {
+					Process p = ((ExecutionIterationRunnable) run).getProcess();
+					if (p != null)
+						p.destroyForcibly();
+				}
 			} catch (ExecutionException e) {
 				e.printStackTrace();
 			}
@@ -306,6 +332,19 @@ public abstract class RunRunnable<IR extends IterationRunnable, IW extends Itera
 	 * @throws ExecutionException
 	 */
 	public final void waitFor() throws InterruptedException, ExecutionException {
+		for (Future<?> f : this.futures) {
+			boolean nullPointerException = true;
+			while (nullPointerException) {
+				try {
+					f.get();
+				} catch (NullPointerException e) {
+					continue;
+				} catch (CancellationException e) {
+				}
+				nullPointerException = false;
+			}
+		}
+
 		boolean nullPointerException = true;
 		while (nullPointerException) {
 			try {
@@ -404,6 +443,10 @@ public abstract class RunRunnable<IR extends IterationRunnable, IW extends Itera
 	}
 
 	protected void submitIterationRunnable(final IR iterationRunnable) {
+		// we do not accept new runnables if this run has been terminated
+		// before.
+		if (this.terminated)
+			return;
 		this.iterationRunnables.add(iterationRunnable);
 
 		final RunSchedulerThread runScheduler;
@@ -413,8 +456,9 @@ public abstract class RunRunnable<IR extends IterationRunnable, IW extends Itera
 		else
 			runScheduler = this.getRun().getRepository().getSupervisorThread()
 					.getRunScheduler();
-		this.futures.add(runScheduler
-				.registerIterationRunnable(iterationRunnable));
+		Future<?> f = runScheduler.registerIterationRunnable(iterationRunnable);
+		this.futures.add(f);
+		this.futureToIterationRunnable.put(f, iterationRunnable);
 	}
 }
 

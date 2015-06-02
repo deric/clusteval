@@ -57,7 +57,6 @@ import de.clusteval.data.goldstandard.IncompleteGoldStandardException;
 import de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.RLibraryNotLoadedException;
-import de.clusteval.framework.RProcess;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RunResultRepository;
@@ -65,6 +64,7 @@ import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
+import de.clusteval.program.r.RProcess;
 import de.clusteval.program.r.RProgram;
 import de.clusteval.run.ExecutionRun;
 import de.clusteval.run.MissingParameterValueException;
@@ -735,13 +735,13 @@ public abstract class ExecutionRunRunnable
 			 * terminate.
 			 */
 			if (checkForInterrupted())
-				return;
+				throw new InterruptedException();
 			/*
 			 * We check from time to time, whether this run got the order to
 			 * terminate.
 			 */
 			if (checkForInterrupted())
-				return;
+				throw new InterruptedException();
 
 			// only create new iteration runnables, if none of the old iteration
 			// runnables threw exceptions
@@ -816,7 +816,6 @@ public abstract class ExecutionRunRunnable
 								new FileWriter(iterationWrapper.getLogfile()));
 
 						this.log = LoggerFactory.getLogger(this.getClass());
-						Process proc = null;
 						try {
 							proc = programConfig.getProgram().exec(dataConfig,
 									programConfig,
@@ -824,12 +823,14 @@ public abstract class ExecutionRunRunnable
 									iterationWrapper.getEffectiveParams(),
 									iterationWrapper.getInternalParams());
 
-							if (proc != null && !(proc instanceof RProcess)) {
-								new StreamGobbler(proc.getInputStream(), bw)
-										.start();
-								new StreamGobbler(proc.getErrorStream(), bw)
-										.start();
-
+							if (proc != null) {
+								if (proc instanceof RProcess) {
+								} else {
+									new StreamGobbler(proc.getInputStream(), bw)
+											.start();
+									new StreamGobbler(proc.getErrorStream(), bw)
+											.start();
+								}
 								try {
 									int maxExecTime = getRun()
 											.hasMaxExecutionTime(programConfig)
@@ -851,20 +852,6 @@ public abstract class ExecutionRunRunnable
 														iterationWrapper
 																.getOptId()));
 										proc.destroyForcibly();
-
-										// Class<?> ProcessImpl =
-										// proc.getClass();
-										// Field field = ProcessImpl
-										// .getDeclaredField("pid");
-										// field.setAccessible(true);
-										// int pid = field.getInt(proc);
-										//
-										// ProcessBuilder pb = new
-										// ProcessBuilder(
-										// "kill -9 " + pid);
-										// Process killProc = pb.start();
-										// killProc.waitFor();
-										//
 										proc.waitFor();
 									}
 								} catch (InterruptedException e) {
@@ -876,7 +863,7 @@ public abstract class ExecutionRunRunnable
 							 * the order to terminate.
 							 */
 							if (checkForInterrupted())
-								return;
+								throw new InterruptedException();
 
 							iterationWrapper
 									.setConvertedClusteringRunResult(convertResult(
@@ -962,7 +949,7 @@ public abstract class ExecutionRunRunnable
 								 * got the order to terminate.
 								 */
 								if (checkForInterrupted())
-									return;
+									throw new InterruptedException();
 
 								List<Pair<ParameterSet, ClusteringQualitySet>> qualities = assessQualities(
 										iterationWrapper
@@ -1448,7 +1435,7 @@ public abstract class ExecutionRunRunnable
 		}
 
 		if (checkForInterrupted())
-			return;
+			throw new InterruptedException();
 
 		try {
 			this.log.debug("Loading the input similarities into memory ...");
@@ -1468,7 +1455,7 @@ public abstract class ExecutionRunRunnable
 			}
 
 			if (checkForInterrupted())
-				return;
+				throw new InterruptedException();
 
 			/*
 			 * Check compatibility of dataset with goldstandard
@@ -1496,7 +1483,7 @@ public abstract class ExecutionRunRunnable
 			// throw e1;
 		}
 		if (checkForInterrupted())
-			return;
+			throw new InterruptedException();
 
 		// 30.06.2014: performing isoMDS calculations in parallel
 		final DataConfig dcMDS = this.dataConfig;
@@ -1535,7 +1522,7 @@ public abstract class ExecutionRunRunnable
 		this.submitIterationRunnable(iterationRunnable);
 
 		if (checkForInterrupted())
-			return;
+			throw new InterruptedException();
 
 		// 30.06.2014: performing isoMDS calculations in parallel
 		final DataConfig dcPCA = this.dataConfig;
