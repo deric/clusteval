@@ -212,7 +212,7 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 	 * @see run.runnable.ExecutionRunRunnable#endRun()
 	 */
 	@Override
-	protected void afterRun() {
+	protected void afterRun() throws InterruptedException {
 		super.afterRun();
 
 		if (this.optimizationMethod != null

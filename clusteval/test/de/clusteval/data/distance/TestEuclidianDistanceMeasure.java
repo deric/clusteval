@@ -22,7 +22,7 @@ public class TestEuclidianDistanceMeasure extends AbstractClustEvalTest {
 
 	@Test
 	public void test() throws UnknownDistanceMeasureException,
-			RNotAvailableException {
+			RNotAvailableException, InterruptedException {
 		DistanceMeasure measure = DistanceMeasure.parseFromString(
 				getRepository(), "EuclidianDistanceMeasure");
 		Assert.assertTrue(measure != null);

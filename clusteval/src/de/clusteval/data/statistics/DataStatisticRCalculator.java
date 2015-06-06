@@ -106,7 +106,7 @@ public abstract class DataStatisticRCalculator<T extends DataStatistic>
 			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
 			IllegalArgumentException, IOException,
 			InvalidDataSetFormatVersionException, RegisterException,
-			REngineException, REXPMismatchException;
+			REngineException, REXPMismatchException, InterruptedException;
 
 	/*
 	 * (non-Javadoc)
@@ -115,7 +115,8 @@ public abstract class DataStatisticRCalculator<T extends DataStatistic>
 	 */
 	@Override
 	public final void writeOutputTo(File absFolderPath)
-			throws REngineException, RNotAvailableException {
+			throws REngineException, RNotAvailableException,
+			InterruptedException {
 		try {
 			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
@@ -139,5 +140,5 @@ public abstract class DataStatisticRCalculator<T extends DataStatistic>
 
 	protected abstract void writeOutputToHelper(File absFolderPath,
 			final MyRengine rEngine) throws REngineException,
-			REXPMismatchException;
+			REXPMismatchException, InterruptedException;
 }

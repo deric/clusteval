@@ -104,13 +104,14 @@ public abstract class ClusteringQualityMeasure extends RepositoryObject
 	 * @throws IOException
 	 * @throws RNotAvailableException
 	 * @throws RCalculationException
+	 * @throws InterruptedException
 	 */
 	public abstract ClusteringQualityMeasureValue getQualityOfClustering(
 			Clustering clustering, Clustering goldStandard,
 			DataConfig dataConfig) throws UnknownGoldStandardFormatException,
 			UnknownDataSetFormatException, IOException,
 			InvalidDataSetFormatVersionException, RNotAvailableException,
-			RCalculationException;
+			RCalculationException, InterruptedException;
 
 	/**
 	 * This method has to be implemented in subclasses to indiciate, whether a

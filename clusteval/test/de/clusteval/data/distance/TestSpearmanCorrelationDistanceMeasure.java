@@ -25,7 +25,7 @@ public class TestSpearmanCorrelationDistanceMeasure
 
 	@Test
 	public void test() throws UnknownDistanceMeasureException,
-			RNotAvailableException {
+			RNotAvailableException, InterruptedException {
 		DistanceMeasure measure = DistanceMeasure.parseFromString(
 				getRepository(), "SpearmanCorrelationRDistanceMeasure");
 		Assert.assertTrue(measure != null);

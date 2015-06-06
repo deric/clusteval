@@ -194,9 +194,10 @@ public abstract class ExecutionRunRunnable
 	 * @return True, if compatible, false otherwise.
 	 * @throws IOException
 	 * @throws RegisterException
+	 * @throws InterruptedException
 	 */
 	protected boolean preprocessAndCheckCompatibleDataSetFormat()
-			throws IOException, RegisterException {
+			throws IOException, RegisterException, InterruptedException {
 
 		ConversionInputToStandardConfiguration configInputToStandard = dataConfig
 				.getDatasetConfig().getConversionInputToStandardConfiguration();
@@ -855,6 +856,7 @@ public abstract class ExecutionRunRunnable
 										proc.waitFor();
 									}
 								} catch (InterruptedException e) {
+									e.printStackTrace();
 								}
 							}
 
@@ -1010,18 +1012,18 @@ public abstract class ExecutionRunRunnable
 						} finally {
 							if (programConfig.getProgram() instanceof RProgram) {
 								synchronized (bw) {
-									// BufferedWriter bw = new
-									// BufferedWriter(new
-									// FileWriter(logFile));
-									bw.append(((RProgram) (programConfig
-											.getProgram())).getRengine()
-											.getLastError());
+									if (((RProgram) (programConfig.getProgram()))
+											.getRengine() != null)
+										bw.append(((RProgram) (programConfig
+												.getProgram())).getRengine()
+												.getLastError());
 									bw.close();
 								}
 							}
 						}
 					} catch (InterruptedException e) {
 						// don't do anything
+						e.printStackTrace();
 					} catch (NoRunResultFormatParserException e) {
 						noRunResultException = e;
 					} catch (IOException e) {
@@ -1625,7 +1627,7 @@ public abstract class ExecutionRunRunnable
 	 * @see run.runnable.RunRunnable#afterRun()
 	 */
 	@Override
-	protected void afterRun() {
+	protected void afterRun() throws InterruptedException {
 		try {
 			super.afterRun();
 		} finally {

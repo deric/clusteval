@@ -61,7 +61,8 @@ public class TestFMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			RNotAvailableException, RCalculationException,
 			UnknownClusteringQualityMeasureException,
 			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
-			InvalidDataSetFormatVersionException, IOException {
+			InvalidDataSetFormatVersionException, IOException,
+			InterruptedException {
 		ClustevalBackendServer.logLevel(Level.WARN);
 		Clustering goldStandard = new Clustering(this.getRepository(),
 				System.currentTimeMillis(), new File(""));
@@ -116,7 +117,8 @@ public class TestFMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			RNotAvailableException, RCalculationException,
 			UnknownClusteringQualityMeasureException,
 			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
-			InvalidDataSetFormatVersionException, IOException {
+			InvalidDataSetFormatVersionException, IOException,
+			InterruptedException {
 		ClustevalBackendServer.logLevel(Level.WARN);
 		Clustering goldStandard = new Clustering(this.getRepository(),
 				System.currentTimeMillis(), new File(""));
@@ -175,7 +177,8 @@ public class TestFMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			RNotAvailableException, RCalculationException,
 			UnknownClusteringQualityMeasureException,
 			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
-			InvalidDataSetFormatVersionException, IOException {
+			InvalidDataSetFormatVersionException, IOException,
+			InterruptedException {
 		ClustevalBackendServer.logLevel(Level.WARN);
 		Clustering goldStandard = new Clustering(this.getRepository(),
 				System.currentTimeMillis(), new File(""));
@@ -238,7 +241,8 @@ public class TestFMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			RNotAvailableException, RCalculationException,
 			UnknownClusteringQualityMeasureException,
 			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
-			InvalidDataSetFormatVersionException, IOException {
+			InvalidDataSetFormatVersionException, IOException,
+			InterruptedException {
 		ClustevalBackendServer.logLevel(Level.WARN);
 		Clustering goldStandard = new Clustering(this.getRepository(),
 				System.currentTimeMillis(), new File(""));
@@ -301,7 +305,7 @@ public class TestFMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			UnknownClusteringQualityMeasureException,
 			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
 			InvalidDataSetFormatVersionException, IOException,
-			ClusteringParseException {
+			ClusteringParseException, InterruptedException {
 		ClustevalBackendServer.logLevel(Level.WARN);
 
 		DataConfig dataConfig = this.getRepository().getStaticObjectWithName(

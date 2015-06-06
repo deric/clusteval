@@ -50,7 +50,7 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
 			RegisterException, NoSuchAlgorithmException,
-			RNotAvailableException, RCalculationException {
+			RNotAvailableException, RCalculationException, InterruptedException {
 		try {
 			Clustering goldStandard = new Clustering(this.getRepository(),
 					System.currentTimeMillis(), new File(""));
@@ -147,7 +147,7 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
 			RegisterException, NoSuchAlgorithmException,
-			RNotAvailableException, RCalculationException {
+			RNotAvailableException, RCalculationException, InterruptedException {
 		try {
 			Clustering goldStandard = new Clustering(this.getRepository(),
 					System.currentTimeMillis(), new File(""));
@@ -248,7 +248,7 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
 			RegisterException, NoSuchAlgorithmException,
-			RNotAvailableException, RCalculationException {
+			RNotAvailableException, RCalculationException, InterruptedException {
 		try {
 			ClustevalBackendServer.logLevel(Level.WARN);
 			Clustering goldStandard = new Clustering(this.getRepository(),
@@ -314,7 +314,7 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
 			RegisterException, NoSuchAlgorithmException,
-			RNotAvailableException, RCalculationException {
+			RNotAvailableException, RCalculationException, InterruptedException {
 		try {
 			ClustevalBackendServer.logLevel(Level.WARN);
 			Clustering goldStandard = new Clustering(this.getRepository(),
@@ -385,7 +385,7 @@ public class TestVMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
 			RegisterException, NoSuchAlgorithmException,
-			RNotAvailableException, RCalculationException {
+			RNotAvailableException, RCalculationException, InterruptedException {
 		try {
 			ClustevalBackendServer.logLevel(Level.WARN);
 			Clustering goldStandard = new Clustering(this.getRepository(),

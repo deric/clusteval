@@ -107,7 +107,7 @@ public abstract class AbsoluteAndRelativeDataRProgram extends RProgram {
 			Map<String, String> effectiveParams,
 			Map<String, String> internalParams)
 			throws RLibraryNotLoadedException, REngineException,
-			RNotAvailableException {
+			RNotAvailableException, InterruptedException {
 		super.beforeExec(dataConfig, programConfig, invocationLine,
 				effectiveParams, internalParams);
 
@@ -124,7 +124,7 @@ public abstract class AbsoluteAndRelativeDataRProgram extends RProgram {
 	}
 
 	protected void convertDistancesToAppropriateDatastructure()
-			throws RserveException {
+			throws RserveException, InterruptedException {
 		rEngine.eval("x <- as.dist(x)");
 	}
 }

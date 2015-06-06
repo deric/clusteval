@@ -40,9 +40,11 @@ public abstract class Plotter {
 
 	/**
 	 * @param result
+	 * @throws InterruptedException
 	 */
 	public static void plotParameterOptimizationResult(
-			final ParameterOptimizationResult result) {
+			final ParameterOptimizationResult result)
+			throws InterruptedException {
 
 		MyRengine rEngine;
 		try {
@@ -94,11 +96,12 @@ public abstract class Plotter {
 	 * @throws IllegalArgumentException
 	 * @throws IOException
 	 * @throws REngineException
+	 * @throws InterruptedException
 	 */
 	public static void assessAndWriteIsoMDSCoordinates(
 			final DataConfig dataConfig) throws UnknownDataSetFormatException,
 			InvalidDataSetFormatVersionException, IllegalArgumentException,
-			IOException, REngineException {
+			IOException, REngineException, InterruptedException {
 
 		try {
 			MyRengine rEngine = dataConfig.getRepository()
@@ -177,11 +180,12 @@ public abstract class Plotter {
 	 * @throws IOException
 	 * @throws REngineException
 	 * @throws UnknownDataSetFormatException
+	 * @throws InterruptedException
 	 */
 	public static void assessAndWritePCACoordinates(final DataConfig dataConfig)
 			throws InvalidDataSetFormatVersionException,
 			IllegalArgumentException, IOException, REngineException,
-			UnknownDataSetFormatException {
+			UnknownDataSetFormatException, InterruptedException {
 
 		try {
 			MyRengine rEngine = dataConfig.getRepository()

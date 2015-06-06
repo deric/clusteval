@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.TimeUnit;
 
-import de.clusteval.framework.repository.MyRengine;
-
 /**
  * @author Christian Wiwie
  * 
@@ -103,9 +101,10 @@ public class RProcess extends Process {
 	@Override
 	public boolean waitFor(long timeout, TimeUnit unit)
 			throws InterruptedException {
-		this.rProgramThread.join(TimeUnit.MILLISECONDS.convert(timeout, unit));
-		// TODO: isAlive right method?
-		return this.rProgramThread.isAlive();
+		long ms = TimeUnit.MILLISECONDS.convert(timeout, unit);
+		if (ms > 0)
+			this.rProgramThread.join(ms);
+		return !this.rProgramThread.isAlive();
 	}
 
 }

@@ -25,7 +25,7 @@ public class TestAbsoluteSpearmanCorrelationDistanceMeasure
 
 	@Test
 	public void test() throws UnknownDistanceMeasureException,
-			RNotAvailableException {
+			RNotAvailableException, InterruptedException {
 		DistanceMeasure measure = DistanceMeasure.parseFromString(
 				getRepository(), "AbsoluteSpearmanCorrelationRDistanceMeasure");
 		Assert.assertTrue(measure != null);
@@ -36,16 +36,15 @@ public class TestAbsoluteSpearmanCorrelationDistanceMeasure
 				new ArrayList<DataPreprocessor>());
 
 		double[][] matrix = new double[][]{new double[]{1, 2, 1},
-				new double[]{4, 5, 6}, new double[]{7, 8, 9}, new double[]{7, 6, 5}};
-		
+				new double[]{4, 5, 6}, new double[]{7, 8, 9},
+				new double[]{7, 6, 5}};
+
 		double[][] result = measure.getDistances(config, matrix).toArray();
 
-		Assert.assertArrayEquals(new double[][]{
-				new double[] {0, 1, 1, 1},
-				new double[] {1, 0, 0, 0},
-				new double[] {1, 0, 0, 0},
-				new double[] {1, 0, 0, 0}}, result);
-		
+		Assert.assertArrayEquals(new double[][]{new double[]{0, 1, 1, 1},
+				new double[]{1, 0, 0, 0}, new double[]{1, 0, 0, 0},
+				new double[]{1, 0, 0, 0}}, result);
+
 		ArraysExt.print(result);
 	}
 }

@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +22,6 @@ import java.util.List;
 import org.slf4j.LoggerFactory;
 
 import utils.SimilarityMatrix.NUMBER_PRECISION;
-
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
@@ -214,11 +214,14 @@ public abstract class DataSetFormat extends RepositoryObject {
 	 * @throws RegisterException
 	 * @throws UnknownDataSetFormatException
 	 * @throws RNotAvailableException
+	 * @throws InterruptedException
+	 * @throws InvalidParameterException
 	 */
 	public final DataSet convertToStandardFormat(DataSet dataSet,
 			ConversionInputToStandardConfiguration config) throws IOException,
 			InvalidDataSetFormatVersionException, RegisterException,
-			UnknownDataSetFormatException, RNotAvailableException {
+			UnknownDataSetFormatException, RNotAvailableException,
+			InvalidParameterException, InterruptedException {
 		final DataSetFormatParser parser = getDataSetFormatParser();
 		if (parser == null)
 			throw new IllegalArgumentException(

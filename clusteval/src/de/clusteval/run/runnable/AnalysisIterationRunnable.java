@@ -100,7 +100,7 @@ public abstract class AnalysisIterationRunnable<S extends Statistic, IW extends 
 	protected abstract String getOutputPath();
 
 	@Override
-	public void doRun() {
+	public void doRun() throws InterruptedException {
 		try {
 			Statistic statistic = iterationWrapper.getStatistic();
 			String output = getOutputPath();

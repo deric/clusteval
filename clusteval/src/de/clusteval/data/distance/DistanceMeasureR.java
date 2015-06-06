@@ -67,7 +67,7 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 	 */
 	@Override
 	public final double getDistance(double[] point1, double[] point2)
-			throws RNotAvailableException {
+			throws RNotAvailableException, InterruptedException {
 		try {
 			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
@@ -98,7 +98,7 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 	@Override
 	public final SimilarityMatrix getDistances(
 			ConversionInputToStandardConfiguration config, double[][] matrix)
-			throws RNotAvailableException {
+			throws RNotAvailableException, InterruptedException {
 		try {
 			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
@@ -123,8 +123,8 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 						for (int x = 0; x < vector.length; x++)
 							for (int y = 0; y < vector[x].length; y++)
 								result.setSimilarity(i + x, y, vector[x][y]);
-//						this.log.info(String.format("%d%%", i
-//								/ rowsPerInvocation + 1));
+						// this.log.info(String.format("%d%%", i
+						// / rowsPerInvocation + 1));
 					}
 					return result;
 				} catch (REXPMismatchException e) {
@@ -144,10 +144,11 @@ public abstract class DistanceMeasureR extends DistanceMeasure {
 
 	protected abstract double getDistanceHelper(double[] point1,
 			double[] point2, final MyRengine rEngine) throws REngineException,
-			REXPMismatchException;
+			REXPMismatchException, InterruptedException;
 
 	protected abstract double[][] getDistancesHelper(
 			ConversionInputToStandardConfiguration config, double[][] matrix,
 			final MyRengine rEngine, int firstRow, int lastRow)
-			throws REngineException, REXPMismatchException;
+			throws REngineException, REXPMismatchException,
+			InterruptedException;
 }

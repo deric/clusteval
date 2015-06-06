@@ -87,7 +87,8 @@ public abstract class ClusteringQualityMeasureR
 			Clustering clustering, Clustering goldStandard,
 			DataConfig dataConfig) throws UnknownGoldStandardFormatException,
 			UnknownDataSetFormatException, IOException,
-			InvalidDataSetFormatVersionException, RNotAvailableException {
+			InvalidDataSetFormatVersionException, RNotAvailableException,
+			InterruptedException {
 		try {
 			MyRengine rEngine = repository.getRengineForCurrentThread();
 			try {
@@ -122,5 +123,6 @@ public abstract class ClusteringQualityMeasureR
 			throws UnknownGoldStandardFormatException,
 			UnknownDataSetFormatException, IOException,
 			InvalidDataSetFormatVersionException, REngineException,
-			IllegalArgumentException, REXPMismatchException;
+			IllegalArgumentException, REXPMismatchException,
+			InterruptedException;
 }

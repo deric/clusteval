@@ -162,6 +162,7 @@ public abstract class DataPreprocessor extends RepositoryObject
 	 * @param dataSet
 	 *            The dataset to be preprocessed.
 	 * @return The preprocessed dataset.
+	 * @throws InterruptedException
 	 */
-	public abstract DataSet preprocess(final DataSet dataSet);
+	public abstract DataSet preprocess(final DataSet dataSet) throws InterruptedException;
 }

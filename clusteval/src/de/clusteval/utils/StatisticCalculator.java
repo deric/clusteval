@@ -199,9 +199,10 @@ public abstract class StatisticCalculator<T extends Statistic>
 	 *            written to.
 	 * @throws REngineException
 	 * @throws RNotAvailableException
+	 * @throws InterruptedException
 	 */
 	public abstract void writeOutputTo(final File absFolderPath)
-			throws REngineException, RNotAvailableException;
+			throws REngineException, RNotAvailableException, InterruptedException;
 
 	/**
 	 * @return The statistic calculated during the last {@link #calculate()}

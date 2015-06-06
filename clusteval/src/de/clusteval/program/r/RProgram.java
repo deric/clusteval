@@ -215,17 +215,15 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 	public final Process exec(final DataConfig dataConfig,
 			final ProgramConfig programConfig, final String[] invocationLine,
 			final Map<String, String> effectiveParams,
-			final Map<String, String> internalParams) throws REngineException,
-			REXPMismatchException, IOException, RLibraryNotLoadedException,
-			RNotAvailableException, InterruptedException {
+			final Map<String, String> internalParams) throws REngineException {
 		try {
 			// 06.07.2014: execute r command in a thread.
 			// then this thread can check for interrupt signal and forward it to
 			// the
 			// rengine.
 
-			RProgramThread t = new RProgramThread(this, dataConfig,
-					programConfig, invocationLine, effectiveParams,
+			RProgramThread t = new RProgramThread(Thread.currentThread(), this,
+					dataConfig, programConfig, invocationLine, effectiveParams,
 					internalParams);
 			t.start();
 			return new RProcess(t);
@@ -245,9 +243,8 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 			ProgramConfig programConfig, String[] invocationLine,
 			Map<String, String> effectiveParams,
 			Map<String, String> internalParams) throws REngineException,
-			RLibraryNotLoadedException, RNotAvailableException {
-
-		rEngine = repository.getRengineForCurrentThread();
+			RLibraryNotLoadedException, RNotAvailableException,
+			InterruptedException {
 
 		// load the required R libraries
 		String[] requiredLibraries;
@@ -259,6 +256,9 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 			requiredLibraries = new String[0];
 		for (String library : requiredLibraries)
 			rEngine.loadLibrary(library, this.getClass().getSimpleName());
+
+		if (Thread.currentThread().isInterrupted())
+			throw new InterruptedException();
 
 		// this will init the ids attribute
 		this.dataSetContent = extractDataSetContent(dataConfig);
@@ -280,7 +280,8 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 	@SuppressWarnings("unused")
 	protected void doExec(DataConfig dataConfig, ProgramConfig programConfig,
 			final String[] invocationLine, Map<String, String> effectiveParams,
-			Map<String, String> internalParams) throws RserveException {
+			Map<String, String> internalParams) throws RserveException,
+			InterruptedException {
 		rEngine.eval("result <- " + StringExt.paste(" ", invocationLine));
 
 		// try {
@@ -300,7 +301,7 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 			ProgramConfig programConfig, String[] invocationLine,
 			Map<String, String> effectiveParams,
 			Map<String, String> internalParams) throws REXPMismatchException,
-			REngineException, IOException {
+			REngineException, IOException, InterruptedException {
 		// try {
 		try {
 			final String resultAsString = execResultToString(dataConfig,
@@ -328,7 +329,7 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 			ProgramConfig programConfig, String[] invocationLine,
 			Map<String, String> effectiveParams,
 			Map<String, String> internalParams) throws RserveException,
-			REXPMismatchException {
+			REXPMismatchException, InterruptedException {
 		Clustering resultClustering = Clustering.parseFromFuzzyCoeffMatrix(
 				dataConfig.getRepository(), new File(internalParams.get("o")),
 				ids, getFuzzyCoeffMatrixFromExecResult());
@@ -363,7 +364,8 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 	 *         {@link #ids}.
 	 * @throws RserveException
 	 * @throws REXPMismatchException
+	 * @throws InterruptedException
 	 */
 	protected abstract float[][] getFuzzyCoeffMatrixFromExecResult()
-			throws RserveException, REXPMismatchException;
+			throws RserveException, REXPMismatchException, InterruptedException;
 }

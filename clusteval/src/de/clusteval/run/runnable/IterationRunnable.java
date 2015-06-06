@@ -82,6 +82,7 @@ public abstract class IterationRunnable<IW extends IterationWrapper>
 		beforeRun();
 		try {
 			doRun();
+		} catch (InterruptedException e) {
 		} finally {
 			afterRun();
 		}
@@ -99,7 +100,7 @@ public abstract class IterationRunnable<IW extends IterationWrapper>
 				.informOnStartedIterationRunnable(Thread.currentThread(), this);
 	}
 
-	protected abstract void doRun();
+	protected abstract void doRun() throws InterruptedException;
 
 	protected void afterRun() {
 		Repository repo = getRun().getRepository();

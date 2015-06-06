@@ -72,7 +72,8 @@ public abstract class AbsoluteDataRProgram extends RProgram {
 			ProgramConfig programConfig, String[] invocationLine,
 			Map<String, String> effectiveParams,
 			Map<String, String> internalParams) throws REngineException,
-			RLibraryNotLoadedException, RNotAvailableException {
+			RLibraryNotLoadedException, RNotAvailableException,
+			InterruptedException {
 		super.beforeExec(dataConfig, programConfig, invocationLine,
 				effectiveParams, internalParams);
 

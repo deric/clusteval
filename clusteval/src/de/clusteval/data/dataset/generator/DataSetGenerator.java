@@ -160,9 +160,11 @@ public abstract class DataSetGenerator extends RepositoryObject
 	 *             valid.
 	 * @throws DataSetGenerationException
 	 * @throws GoldStandardGenerationException
+	 * @throws InterruptedException
 	 */
 	public DataSet generate(final String[] cliArguments) throws ParseException,
-			DataSetGenerationException, GoldStandardGenerationException {
+			DataSetGenerationException, GoldStandardGenerationException,
+			InterruptedException {
 		CommandLineParser parser = new PosixParser();
 
 		Options options = this.getAllOptions();
@@ -273,9 +275,10 @@ public abstract class DataSetGenerator extends RepositoryObject
 	 * @throws DataSetGenerationException
 	 *             If something goes wrong during the generation process, this
 	 *             exception is thrown.
+	 * @throws InterruptedException
 	 */
 	protected abstract DataSet generateDataSet()
-			throws DataSetGenerationException;
+			throws DataSetGenerationException, InterruptedException;
 
 	/**
 	 * This method needs to be implemented in subclasses and is a helper method

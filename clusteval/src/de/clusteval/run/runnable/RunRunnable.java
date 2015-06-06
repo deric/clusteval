@@ -216,7 +216,11 @@ public abstract class RunRunnable<IR extends IterationRunnable, IW extends Itera
 		} catch (Throwable e) {
 			this.exceptions.add(e);
 		} finally {
-			afterRun();
+			try {
+				afterRun();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -282,8 +286,10 @@ public abstract class RunRunnable<IR extends IterationRunnable, IW extends Itera
 	 * This method is invoked by {@link #run()} after {@link #doRun()} has
 	 * finished. It is responsible for cleaning up all files, folders and for
 	 * doing all kinds of postcalculations.
+	 * 
+	 * @throws InterruptedException
 	 */
-	protected void afterRun() {
+	protected void afterRun() throws InterruptedException {
 		// wait for all iteration runnables to finish
 		for (Future<?> f : this.futures)
 			try {
@@ -332,10 +338,11 @@ public abstract class RunRunnable<IR extends IterationRunnable, IW extends Itera
 	 * @throws ExecutionException
 	 */
 	public final void waitFor() throws InterruptedException, ExecutionException {
-		for (Future<?> f : this.futures) {
+		while (!this.futures.isEmpty()) {
 			boolean nullPointerException = true;
 			while (nullPointerException) {
 				try {
+					Future<?> f = this.futures.remove(0);
 					f.get();
 				} catch (NullPointerException e) {
 					continue;

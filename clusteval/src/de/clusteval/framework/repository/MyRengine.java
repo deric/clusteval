@@ -14,6 +14,7 @@
 package de.clusteval.framework.repository;
 
 import java.io.IOException;
+import java.nio.channels.InterruptedByTimeoutException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -85,9 +86,12 @@ public class MyRengine {
 	 * @return True, if the library was loaded successfully or was loaded
 	 *         before.
 	 * @throws RLibraryNotLoadedException
+	 * @throws InterruptedException
 	 */
 	public boolean loadLibrary(final String name, final String requiredByClass)
-			throws RLibraryNotLoadedException {
+			throws RLibraryNotLoadedException, InterruptedException {
+		if (this.interrupted)
+			throw new InterruptedException();
 		try {
 			if (this.loadedLibraries.contains(name))
 				return true;
@@ -107,8 +111,11 @@ public class MyRengine {
 	 * this rengine.
 	 * 
 	 * @throws RserveException
+	 * @throws InterruptedException
 	 */
-	public void clear() throws RserveException {
+	public void clear() throws RserveException, InterruptedException {
+		if (interrupted)
+			throw new InterruptedException();
 		this.eval("rm(list=ls(all=TRUE))");
 	}
 
@@ -121,8 +128,12 @@ public class MyRengine {
 	 *            A two-dimensional double array which is assigned to the new
 	 *            variable.
 	 * @throws REngineException
+	 * @throws InterruptedException
 	 */
-	public void assign(String arg0, double[][] arg1) throws REngineException {
+	public void assign(String arg0, double[][] arg1) throws REngineException,
+			InterruptedException {
+		if (interrupted)
+			throw new InterruptedException();
 		int x = arg1.length;
 		int y = x > 0 ? arg1[0].length : 0;
 		double[] oneDim = new double[x * y];
@@ -146,8 +157,12 @@ public class MyRengine {
 	 *            A two-dimensional integer array which is assigned to the new
 	 *            variable.
 	 * @throws REngineException
+	 * @throws InterruptedException
 	 */
-	public void assign(String arg0, int[][] arg1) throws REngineException {
+	public void assign(String arg0, int[][] arg1) throws REngineException,
+			InterruptedException {
+		if (interrupted)
+			throw new InterruptedException();
 		int x = arg1.length;
 		int y = x > 0 ? arg1[0].length : 0;
 		int[] oneDim = new int[x * y];
@@ -167,7 +182,9 @@ public class MyRengine {
 	 * 
 	 * @see org.rosuda.REngine.Rserve.RConnection#eval(java.lang.String)
 	 */
-	public REXP eval(String cmd) throws RserveException {
+	public REXP eval(String cmd) throws RserveException, InterruptedException {
+		if (interrupted)
+			throw new InterruptedException();
 		this.connection.assign(".tmp.", cmd);
 		REXP r;
 		try {
@@ -195,20 +212,33 @@ public class MyRengine {
 	/**
 	 * TODO: use this instead of printStackTrace() This method logs the last
 	 * error.
+	 * 
+	 * @throws InterruptedException
 	 */
-	public void printLastError() {
+	public void printLastError() throws InterruptedException {
+		if (this.interrupted)
+			throw new InterruptedException();
 		log.error("R error: " + this.connection.getLastError());
 	}
 
-	public void assign(String arg0, int[] arg1) throws REngineException {
+	public void assign(String arg0, int[] arg1) throws REngineException,
+			InterruptedException {
+		if (interrupted)
+			throw new InterruptedException();
+
 		this.connection.assign(arg0, arg1);
 	}
 
-	public void assign(String arg0, double[] arg1) throws REngineException {
+	public void assign(String arg0, double[] arg1) throws REngineException,
+			InterruptedException {
+		if (interrupted)
+			throw new InterruptedException();
 		this.connection.assign(arg0, arg1);
 	}
 
-	public String getLastError() {
+	public String getLastError() throws InterruptedException {
+		if (this.interrupted)
+			throw new InterruptedException();
 		return this.connection.getLastError();
 	}
 
@@ -222,11 +252,20 @@ public class MyRengine {
 	public boolean interrupt() {
 		try {
 			interrupted = true;
-			Runtime.getRuntime().exec("kill -9 " + this.pid);
+			this.connection.close();
+			Runtime.getRuntime().exec(("kill -9 " + this.pid).split(" "));
 		} catch (IOException e) {
 			return false;
 		}
 		return true;
+	}
+
+	public void detach() {
+		try {
+			this.connection.detach();
+		} catch (RserveException e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected boolean shutdown() {
@@ -238,7 +277,10 @@ public class MyRengine {
 		}
 	}
 
-	public void assign(String arg0, String[] arg1) throws REngineException {
+	public void assign(String arg0, String[] arg1) throws REngineException,
+			InterruptedException {
+		if (interrupted)
+			throw new InterruptedException();
 		this.connection.assign(arg0, arg1);
 	}
 }

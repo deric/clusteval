@@ -77,7 +77,8 @@ public class RProgramRepositoryEntity extends DynamicRepositoryEntity<RProgram> 
 	 * (java.lang.Class)
 	 */
 	@Override
-	protected <S extends RProgram> boolean ensureLibraries(Class<S> classObject) {
+	protected <S extends RProgram> boolean ensureLibraries(Class<S> classObject)
+			throws InterruptedException {
 		boolean result;
 		try {
 			// check whether we have R available

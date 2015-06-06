@@ -68,7 +68,7 @@ public class TestDunnIndexRClusteringQualityMeasure
 			RegisterException, NoSuchAlgorithmException,
 			FormatConversionException, UnknownDistanceMeasureException,
 			UnknownContextException, RNotAvailableException,
-			RCalculationException {
+			RCalculationException, InterruptedException {
 		try {
 
 			Context context = Context.parseFromString(getRepository(),

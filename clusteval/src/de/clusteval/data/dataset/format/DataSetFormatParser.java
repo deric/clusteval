@@ -17,12 +17,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import utils.SimilarityMatrix.NUMBER_PRECISION;
-
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.utils.RNotAvailableException;
@@ -84,11 +84,14 @@ public abstract class DataSetFormatParser {
 	 * @throws RegisterException
 	 * @throws UnknownDataSetFormatException
 	 * @throws RNotAvailableException
+	 * @throws InterruptedException
+	 * @throws InvalidParameterException
 	 */
 	protected abstract DataSet convertToStandardFormat(DataSet dataSet,
 			ConversionInputToStandardConfiguration config) throws IOException,
 			InvalidDataSetFormatVersionException, RegisterException,
-			UnknownDataSetFormatException, RNotAvailableException;
+			UnknownDataSetFormatException, RNotAvailableException,
+			InvalidParameterException, InterruptedException;
 
 	/**
 	 * Convert the given dataset to the given dataset format (this format) using

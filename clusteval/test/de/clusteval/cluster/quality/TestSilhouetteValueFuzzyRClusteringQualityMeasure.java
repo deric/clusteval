@@ -72,7 +72,7 @@ public class TestSilhouetteValueFuzzyRClusteringQualityMeasure
 			RepositoryConfigurationException, NoRepositoryFoundException,
 			RegisterException, NoSuchAlgorithmException,
 			RNotAvailableException, RCalculationException,
-			UnknownClusteringQualityMeasureException {
+			UnknownClusteringQualityMeasureException, InterruptedException {
 		try {
 			Clustering clustering = new Clustering(this.getRepository(),
 					System.currentTimeMillis(), new File(""));
@@ -122,7 +122,7 @@ public class TestSilhouetteValueFuzzyRClusteringQualityMeasure
 			RNotAvailableException, RCalculationException,
 			UnknownClusteringQualityMeasureException,
 			FormatConversionException, UnknownDistanceMeasureException,
-			UnknownContextException {
+			UnknownContextException, InterruptedException {
 		try {
 
 			Context context = Context.parseFromString(getRepository(),
@@ -197,7 +197,7 @@ public class TestSilhouetteValueFuzzyRClusteringQualityMeasure
 			RNotAvailableException, RCalculationException,
 			UnknownClusteringQualityMeasureException,
 			FormatConversionException, UnknownDistanceMeasureException,
-			UnknownContextException {
+			UnknownContextException, InterruptedException {
 		try {
 
 			Context context = Context.parseFromString(getRepository(),
@@ -269,7 +269,7 @@ public class TestSilhouetteValueFuzzyRClusteringQualityMeasure
 			RNotAvailableException, RCalculationException,
 			UnknownClusteringQualityMeasureException,
 			FormatConversionException, UnknownDistanceMeasureException,
-			UnknownContextException {
+			UnknownContextException, InterruptedException {
 		try {
 
 			Context context = Context.parseFromString(getRepository(),

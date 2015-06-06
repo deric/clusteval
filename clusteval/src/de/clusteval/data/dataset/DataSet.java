@@ -440,6 +440,7 @@ public abstract class DataSet extends RepositoryObject {
 	 * @throws InvalidDataSetFormatVersionException
 	 * @throws RegisterException
 	 * @throws RNotAvailableException
+	 * @throws InterruptedException
 	 */
 	public DataSet preprocessAndConvertTo(final Context context,
 			final DataSetFormat targetFormat,
@@ -447,7 +448,7 @@ public abstract class DataSet extends RepositoryObject {
 			final ConversionStandardToInputConfiguration configStandardToInput)
 			throws FormatConversionException, IOException,
 			InvalidDataSetFormatVersionException, RegisterException,
-			RNotAvailableException {
+			RNotAvailableException, InterruptedException {
 
 		// only one conversion process at a time
 		File sourceFile = ClustevalBackendServer.getCommonFile(new File(this
@@ -636,12 +637,14 @@ public abstract class DataSet extends RepositoryObject {
 	 * @throws UnknownDataSetFormatException
 	 * @throws RNotAvailableException
 	 * @throws InvalidParameterException
+	 * @throws InterruptedException
 	 */
 	protected DataSet convertToStandardDirectly(final Context context,
 			final ConversionInputToStandardConfiguration configInputToStandard)
 			throws IOException, InvalidDataSetFormatVersionException,
 			RegisterException, UnknownDataSetFormatException,
-			InvalidParameterException, RNotAvailableException {
+			InvalidParameterException, RNotAvailableException,
+			InterruptedException {
 		DataSet result = null;
 
 		// if the source format is equal to the standard format, we simply

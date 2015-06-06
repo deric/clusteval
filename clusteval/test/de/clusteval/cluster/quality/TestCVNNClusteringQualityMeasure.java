@@ -71,7 +71,8 @@ public class TestCVNNClusteringQualityMeasure extends AbstractClustEvalTest {
 			RegisterException, NoSuchAlgorithmException,
 			RNotAvailableException, RCalculationException,
 			UnknownClusteringQualityMeasureException,
-			FormatConversionException, UnknownDistanceMeasureException {
+			FormatConversionException, UnknownDistanceMeasureException,
+			InterruptedException {
 		try {
 			Clustering clustering = new Clustering(this.getRepository(),
 					System.currentTimeMillis(), new File(""));
@@ -139,7 +140,7 @@ public class TestCVNNClusteringQualityMeasure extends AbstractClustEvalTest {
 			RNotAvailableException, RCalculationException,
 			UnknownClusteringQualityMeasureException,
 			FormatConversionException, UnknownDistanceMeasureException,
-			UnknownContextException {
+			UnknownContextException, InterruptedException {
 		try {
 
 			Context context = Context.parseFromString(getRepository(),

@@ -132,9 +132,10 @@ public abstract class DistanceMeasure extends RepositoryObject
 	 *            A point with double valued coordinates.
 	 * @return Distance between point1 and point2.
 	 * @throws RNotAvailableException
+	 * @throws InterruptedException
 	 */
 	public abstract double getDistance(double[] point1, double[] point2)
-			throws RNotAvailableException;
+			throws RNotAvailableException, InterruptedException;
 
 	/**
 	 * This method indicates, whether a distance measure supports the bulk
@@ -165,10 +166,11 @@ public abstract class DistanceMeasure extends RepositoryObject
 	 *            columns.
 	 * @return Matrix containing all pairwise distances of rows of the matrix
 	 * @throws RNotAvailableException
+	 * @throws InterruptedException
 	 */
 	public abstract SimilarityMatrix getDistances(
 			ConversionInputToStandardConfiguration config, double[][] matrix)
-			throws RNotAvailableException;
+			throws RNotAvailableException, InterruptedException;
 
 	/*
 	 * (non-Javadoc)

@@ -622,8 +622,9 @@ public class RunSchedulerThread extends ClustevalThread {
 	}
 
 	public synchronized void updateThreadPoolSize(final int numberThreads) {
+		this.threadPool.setCorePoolSize(numberThreads);
+		this.threadPool.setMaximumPoolSize(numberThreads);
 		this.iterationThreadPool.setCorePoolSize(numberThreads);
-		this.iterationThreadPool.setMaximumPoolSize(this.iterationThreadPool
-				.getCorePoolSize());
+		this.iterationThreadPool.setMaximumPoolSize(numberThreads);
 	}
 }

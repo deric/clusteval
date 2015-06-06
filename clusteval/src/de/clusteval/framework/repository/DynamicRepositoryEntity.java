@@ -123,8 +123,12 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 			this.objects.put(object.getSimpleName(),
 					Collections.synchronizedList(new ArrayList<T>()));
 
-			if (!ensureLibraries(object))
+			try {
+				if (!ensureLibraries(object))
+					return false;
+			} catch (InterruptedException e) {
 				return false;
+			}
 
 			DynamicRepositoryEntity.loadedClasses.put(object.getName(), object);
 
@@ -279,9 +283,11 @@ public class DynamicRepositoryEntity<T extends RepositoryObject>
 	 * @param classObject
 	 *            The class for which we want to ensure R library dependencies.
 	 * @return True, if all R library dependencies are fulfilled.
+	 * @throws InterruptedException
 	 * @throws UnsatisfiedRLibraryException
 	 */
-	protected <S extends T> boolean ensureLibraries(final Class<S> classObject) {
+	protected <S extends T> boolean ensureLibraries(final Class<S> classObject)
+			throws InterruptedException {
 		if (classObject.isAnnotationPresent(RLibraryRequirement.class)) {
 			String[] requiredLibraries = classObject.getAnnotation(
 					RLibraryRequirement.class).requiredRLibraries();

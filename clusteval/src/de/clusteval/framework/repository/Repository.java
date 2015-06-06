@@ -1823,11 +1823,26 @@ public class Repository {
 		}
 	}
 
+	public MyRengine getRengine(final Thread thread) throws RserveException {
+		synchronized (this.rEngines) {
+			if (!this.rEngines.containsKey(thread))
+				this.rEngines.put(thread, new MyRengine(""));
+			return this.rEngines.get(thread);
+		}
+	}
+
 	public void clearRengineForCurrentThread() {
 		Thread currentThread = Thread.currentThread();
 		synchronized (this.rEngines) {
 			if (this.rEngines.containsKey(currentThread))
 				this.rEngines.remove(currentThread);
+		}
+	}
+
+	public void clearRengine(final Thread thread) {
+		synchronized (this.rEngines) {
+			if (this.rEngines.containsKey(thread))
+				this.rEngines.remove(thread);
 		}
 	}
 

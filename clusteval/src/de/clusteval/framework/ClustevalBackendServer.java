@@ -917,10 +917,8 @@ public class ClustevalBackendServer implements IBackendServer {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (UnknownRunResultPostprocessorException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnknownDataRandomizerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -1032,6 +1030,8 @@ public class ClustevalBackendServer implements IBackendServer {
 		} catch (DataSetGenerationException e) {
 			e.printStackTrace();
 		} catch (GoldStandardGenerationException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		return false;

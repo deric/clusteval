@@ -328,11 +328,14 @@ public abstract class DataRandomizer extends RepositoryObject
 	 * generator by generating the dataset file and creating a {@link DataSet}
 	 * wrapper object for it.
 	 * 
+	 * @throws InterruptedException
+	 * 
 	 * @throws DataSetGenerationException
 	 *             If something goes wrong during the generation process, this
 	 *             exception is thrown.
 	 */
-	protected abstract Pair<DataSet, GoldStandard> randomizeDataConfig();
+	protected abstract Pair<DataSet, GoldStandard> randomizeDataConfig()
+			throws InterruptedException;
 
 	/**
 	 * Parses a dataconfig randomizer from string.

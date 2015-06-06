@@ -56,7 +56,7 @@ public class TestRandIndexClusteringQualityMeasure
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
 			RegisterException, NoSuchAlgorithmException,
-			RNotAvailableException, RCalculationException {
+			RNotAvailableException, RCalculationException, InterruptedException {
 		try {
 			ClustevalBackendServer.logLevel(Level.WARN);
 			Clustering goldStandard = new Clustering(this.getRepository(),
@@ -122,7 +122,7 @@ public class TestRandIndexClusteringQualityMeasure
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
 			RegisterException, NoSuchAlgorithmException,
-			RNotAvailableException, RCalculationException {
+			RNotAvailableException, RCalculationException, InterruptedException {
 		try {
 			ClustevalBackendServer.logLevel(Level.WARN);
 			Clustering goldStandard = new Clustering(this.getRepository(),
