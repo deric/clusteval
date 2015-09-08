@@ -1,5 +1,5 @@
 FROM andreptb/oracle-java
-RUN apt-get -y install git r-base
+RUN apt-get update && apt-get -y install git r-base
 RUN mkdir /clustevalBackend
 WORKDIR /clustevalBackend
 ADD ./clusteval/packages /clustevalBackend
