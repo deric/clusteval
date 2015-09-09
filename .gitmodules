@@ -1,0 +1,3 @@
+[submodule "clusteval/repositoryDocker"]
+	path = clusteval/repositoryDocker
+	url = https://github.com/wiwie/clustevalDockerRepository

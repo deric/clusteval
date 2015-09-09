@@ -23,13 +23,13 @@
 	<classpathentry kind="lib" path="lib/rJava/REngine.jar" sourcepath="lib/rJava"/>
 	<classpathentry kind="lib" path="lib/jansi-1.9.jar"/>
 	<classpathentry kind="lib" path="lib/apacheCommons/commons-io-2.3.jar"/>
-	<classpathentry kind="lib" path="lib/apacheCommons/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/apacheCommons/commons-logging-adapters-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/apacheCommons/commons-logging-api-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/org.hamcrest.core_1.1.0.v20090501071000.jar"/>
 	<classpathentry kind="lib" path="lib/apacheCommons/commons-lang-2.6.jar"/>
 	<classpathentry kind="lib" path="lib/pcolt/parallelcolt-0.9.4.jar"/>
 	<classpathentry kind="lib" path="lib/postgresql-9.3-1103.jdbc41.jar"/>
+	<classpathentry kind="lib" path="lib/apacheCommons/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/apacheCommons/commons-logging-adapters-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/apacheCommons/commons-logging-api-1.1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-8-oracle"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

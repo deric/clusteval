@@ -332,4 +332,62 @@ public class TestFMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 		System.out.println(measure.getAlias() + " " + quality);
 	}
 
+	@Test
+	public void testTwoClusters() throws InstantiationException,
+			IllegalAccessException, RepositoryAlreadyExistsException,
+			InvalidRepositoryException, RepositoryConfigNotFoundException,
+			RepositoryConfigurationException, NoRepositoryFoundException,
+			RegisterException, NoSuchAlgorithmException,
+			RNotAvailableException, RCalculationException,
+			UnknownClusteringQualityMeasureException,
+			UnknownGoldStandardFormatException, UnknownDataSetFormatException,
+			InvalidDataSetFormatVersionException, IOException,
+			InterruptedException {
+		ClustevalBackendServer.logLevel(Level.WARN);
+		Clustering goldStandard = new Clustering(this.getRepository(),
+				System.currentTimeMillis(), new File(""));
+		Cluster gsCluster1 = new Cluster("1");
+		gsCluster1.add(new ClusterItem("square1"), 1.0f);
+		gsCluster1.add(new ClusterItem("star1"), 1.0f);
+		gsCluster1.add(new ClusterItem("star2"), 1.0f);
+		goldStandard.addCluster(gsCluster1);
+	
+		Cluster gsCluster2 = new Cluster("2");
+		gsCluster2.add(new ClusterItem("star3"), 1.0f);
+		gsCluster2.add(new ClusterItem("star4"), 1.0f);
+		gsCluster2.add(new ClusterItem("star5"), 1.0f);
+		gsCluster2.add(new ClusterItem("star6"), 1.0f);
+		gsCluster2.add(new ClusterItem("star7"), 1.0f);
+		goldStandard.addCluster(gsCluster2);
+	
+		Clustering clustering = new Clustering(this.getRepository(),
+				System.currentTimeMillis(), new File(""));
+		Cluster cluster1 = new Cluster("1");
+		cluster1.add(new ClusterItem("square1"), 1.0f);
+		cluster1.add(new ClusterItem("star1"), 1.0f);
+		cluster1.add(new ClusterItem("star2"), 1.0f);
+		cluster1.add(new ClusterItem("star3"), 1.0f);
+		cluster1.add(new ClusterItem("star4"), 1.0f);
+		cluster1.add(new ClusterItem("star5"), 1.0f);
+		cluster1.add(new ClusterItem("star6"), 1.0f);
+		cluster1.add(new ClusterItem("star7"), 1.0f);
+		clustering.addCluster(cluster1);
+	
+		ClusteringQualityMeasure measure = ClusteringQualityMeasure
+				.parseFromString(getRepository(),
+						"TransClustFClusteringQualityMeasure",
+						new ClusteringQualityMeasureParameters());
+		double quality = measure.getQualityOfClustering(clustering,
+				goldStandard, null).getValue();
+		System.out.println(measure.getAlias() + " " + quality);
+	
+		measure = ClusteringQualityMeasure.parseFromString(getRepository(),
+				"TransClustF2ClusteringQualityMeasure",
+				new ClusteringQualityMeasureParameters());
+		quality = measure
+				.getQualityOfClustering(clustering, goldStandard, null)
+				.getValue();
+		System.out.println(measure.getAlias() + " " + quality);
+	}
+
 }
