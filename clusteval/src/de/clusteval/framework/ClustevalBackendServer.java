@@ -234,6 +234,21 @@ public class ClustevalBackendServer implements IBackendServer {
 				.withDescription("Indicates, whether this server should connect to a database.");
 		Option noDatabase = OptionBuilder.create("noDatabase");
 		serverCLIOptions.addOption(noDatabase);
+
+		OptionBuilder.withArgName("rServeHost");
+		OptionBuilder.hasArg();
+		OptionBuilder
+				.withDescription("The address on which Rserve is listening.");
+		OptionBuilder.withType(String.class);
+		Option rServeHost = OptionBuilder.create("rServeHost");
+		serverCLIOptions.addOption(rServeHost);
+
+		OptionBuilder.withArgName("rServePort");
+		OptionBuilder.hasArg();
+		OptionBuilder.withDescription("The port on which Rserve is listening.");
+		OptionBuilder.withType(Integer.class);
+		Option rServePort = OptionBuilder.create("rServePort");
+		serverCLIOptions.addOption(rServePort);
 	}
 
 	/**
@@ -446,6 +461,13 @@ public class ClustevalBackendServer implements IBackendServer {
 
 			if (cmd.hasOption("noDatabase"))
 				config.setNoDatabase(true);
+
+			if (cmd.hasOption("rRserveHost"))
+				config.rServeHost = cmd.getOptionValue("rRserveHost");
+
+			if (cmd.hasOption("rRservePort"))
+				config.rServePort = Integer.parseInt(cmd
+						.getOptionValue("rRservePort"));
 
 			Logger log = LoggerFactory.getLogger(ClustevalBackendServer.class);
 

@@ -25,6 +25,10 @@ public class BackendServerConfig {
 
 	protected boolean noDatabase;
 
+	protected String rServeHost;
+
+	protected int rServePort;
+
 	/**
 	 * 
 	 */
@@ -36,6 +40,8 @@ public class BackendServerConfig {
 				.availableProcessors() / 2.0), 1);
 		this.checkForRunResults = true;
 		this.noDatabase = false;
+		this.rServeHost = "127.0.0.1";
+		this.rServePort = 6311;
 	}
 
 	/**
@@ -73,5 +79,21 @@ public class BackendServerConfig {
 
 	public boolean getNoDatabase() {
 		return this.noDatabase;
+	}
+
+	public String getRserveHost() {
+		return this.rServeHost;
+	}
+
+	public void setRserveHost(final String host) {
+		this.rServeHost = host;
+	}
+
+	public int getRservePort() {
+		return this.rServePort;
+	}
+
+	public void setRservePort(final int port) {
+		this.rServePort = port;
 	}
 }
