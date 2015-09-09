@@ -462,12 +462,12 @@ public class ClustevalBackendServer implements IBackendServer {
 			if (cmd.hasOption("noDatabase"))
 				config.setNoDatabase(true);
 
-			if (cmd.hasOption("rRserveHost"))
-				config.rServeHost = cmd.getOptionValue("rRserveHost");
+			if (cmd.hasOption("rServeHost"))
+				config.rServeHost = cmd.getOptionValue("rServeHost");
 
-			if (cmd.hasOption("rRservePort"))
+			if (cmd.hasOption("rServePort"))
 				config.rServePort = Integer.parseInt(cmd
-						.getOptionValue("rRservePort"));
+						.getOptionValue("rServePort"));
 
 			Logger log = LoggerFactory.getLogger(ClustevalBackendServer.class);
 
@@ -477,8 +477,11 @@ public class ClustevalBackendServer implements IBackendServer {
 
 			try {
 				// try to establish a connection to R
+				log.info("Attempting connection to Rserve on "
+						+ config.rServeHost + ":" + config.rServePort);
 				@SuppressWarnings("unused")
 				MyRengine myRengine = new MyRengine("");
+				log.info("Success");
 				isRAvailable = true;
 			} catch (RserveException e) {
 				log.error("Connection to Rserve could not be established, "

@@ -26,6 +26,7 @@ import org.rosuda.REngine.Rserve.RserveException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.RLibraryNotLoadedException;
 
 /**
@@ -59,7 +60,10 @@ public class MyRengine {
 	public MyRengine(String string) throws RserveException {
 		super();
 
-		this.connection = new RConnection(string);
+		this.connection = new RConnection(ClustevalBackendServer
+				.getBackendServerConfiguration().getRserveHost(),
+				ClustevalBackendServer.getBackendServerConfiguration()
+						.getRservePort());
 		try {
 			this.pid = this.connection.eval("Sys.getpid()").asInteger();
 		} catch (REXPMismatchException e) {
