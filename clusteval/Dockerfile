@@ -5,4 +5,5 @@ WORKDIR /clustevalBackend
 ADD ./packages /clustevalBackend
 WORKDIR /
 RUN git clone https://github.com/wiwie/clustevalPackages
-RUN rsync -a /clustevalPackages/clustevalPackages/repository/* /clustevalRepository
+RUN rsync -a /clustevalPackages/clustevalPackages/repository/supp /clustevalRepository/
+RUN rsync -a /clustevalPackages/clustevalPackages/repository/programs /clustevalRepository/
