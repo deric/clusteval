@@ -68,6 +68,7 @@ import de.clusteval.run.result.format.RunResultFormat;
 import de.clusteval.run.statistics.RunDataStatistic;
 import de.clusteval.run.statistics.RunStatistic;
 import de.clusteval.utils.Statistic;
+import file.FileUtils;
 
 /**
  * A default sql communicator is the standard implementation of the abstract
@@ -2630,6 +2631,11 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 
 		String identifier = object.getIdentifier();
 		String dateString = identifier.substring(0, 19);
+		String logPath = FileUtils.buildPath(object.getAbsolutePath(), "logs",
+				object.getIdentifier() + ".log");
+		String logText = "";
+		if (new File(logPath).exists())
+			logText = FileUtils.readStringFromFile(logPath);
 		try {
 			dateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 					.format(new SimpleDateFormat("MM_dd_yyyy-HH_mm_ss")
@@ -2645,11 +2651,13 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 			// parameter optimization runs may already been inserted before,
 			// thus the corresponding run result also.
 			// because of this we use tryInsert instead of insert
-			tryInsert(this.getTableRunResults(), new String[]{"repository_id",
-					"unique_run_identifier", "run_type_id", "run_id", "date",
-					"abs_path"}, new String[]{"" + this.updateRepositoryId(),
-					"" + object.getIdentifier(), "" + run_type_id, "" + run_id,
-					"" + dateString, resultsPath});
+			tryInsert(
+					this.getTableRunResults(),
+					new String[]{"repository_id", "unique_run_identifier",
+							"run_type_id", "run_id", "date", "abs_path", "log"},
+					new String[]{"" + this.updateRepositoryId(),
+							"" + object.getIdentifier(), "" + run_type_id,
+							"" + run_id, "" + dateString, resultsPath, logText});
 		} catch (SQLException e) {
 			this.exceptionHandler.handleException(e);
 			e.printStackTrace();
