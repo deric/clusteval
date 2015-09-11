@@ -15,7 +15,9 @@ package de.clusteval.framework.repository.db;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -3488,6 +3490,37 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	protected boolean unregisterContextClass(Class<? extends Context> object) {
 		// TODO think about how to integrate contexts into the website &
 		// database
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.db.SQLCommunicator#refreshMaterializedViews
+	 * ()
+	 */
+	@Override
+	public boolean refreshMaterializedViews() {
+		try {
+			this.refreshMaterializedView("dataset_statistics");
+			this.refreshMaterializedView("datasets_recent_statistics");
+			this.refreshMaterializedView("parameter_optimization_iterations");
+			this.refreshMaterializedView("parameter_optimization_iterations_woParam");
+			this.refreshMaterializedView("parameter_optimization_iterations_exts");
+			this.refreshMaterializedView("parameter_optimization_max_quals");
+			this.refreshMaterializedView("parameter_optimization_max_qual_rows");
+			this.refreshMaterializedView("parameter_optimization_min_quals");
+			this.refreshMaterializedView("parameter_optimization_min_qual_rows");
+			this.refreshMaterializedView("run_results_data_configs_rankings");
+			this.refreshMaterializedView("run_results_program_configs_rankings");
+			this.refreshMaterializedView("run_result_data_analysis_data_configs_statistics");
+			this.refreshMaterializedView("parameter_optimization_iterations_exts_configs");
+			return true;
+		} catch (SQLException e) {
+			this.exceptionHandler.handleException(e);
+			e.printStackTrace();
+		}
 		return false;
 	}
 }

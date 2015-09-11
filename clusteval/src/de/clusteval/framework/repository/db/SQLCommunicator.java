@@ -1060,4 +1060,27 @@ public abstract class SQLCommunicator {
 	protected abstract int getRepositoryTypeId(final String repositoryType)
 			throws SQLException;
 
+	/**
+	 * This method is only useful with postgreSQL, since mySQL does not support
+	 * materialized views.
+	 */
+	protected void refreshMaterializedView(final String view)
+			throws SQLException {
+		String query = this.queryBuilder.refreshMaterializedView(view);
+		Statement prepStmt = this.queryBuilder.createStatement(conn);
+		try {
+			prepStmt.execute(query);
+		} finally {
+			prepStmt.close();
+		}
+	}
+
+	/**
+	 * This method is only useful with postgreSQL, since mySQL does not support
+	 * materialized views.
+	 * 
+	 * @return
+	 */
+	public abstract boolean refreshMaterializedViews();
+
 }

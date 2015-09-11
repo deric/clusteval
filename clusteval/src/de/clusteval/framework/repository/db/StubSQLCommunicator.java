@@ -1647,4 +1647,16 @@ public class StubSQLCommunicator extends SQLCommunicator {
 	protected int unregister(Clustering object) {
 		return -1;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.db.SQLCommunicator#refreshMaterializedViews
+	 * ()
+	 */
+	@Override
+	public boolean refreshMaterializedViews() {
+		return false;
+	}
 }

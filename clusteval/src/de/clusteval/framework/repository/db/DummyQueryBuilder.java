@@ -197,4 +197,16 @@ public class DummyQueryBuilder extends SQLQueryBuilder {
 			String columnName) {
 		return null;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.db.SQLQueryBuilder#refreshMaterializedView
+	 * (java.lang.String)
+	 */
+	@Override
+	protected String refreshMaterializedView(String view) {
+		return null;
+	}
 }

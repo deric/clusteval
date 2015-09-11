@@ -15,6 +15,7 @@ package de.clusteval.run.result;
 
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
+import de.clusteval.framework.repository.db.SQLConfig.DB_TYPE;
 import de.clusteval.framework.threading.SupervisorThread;
 import de.clusteval.utils.Finder;
 import de.clusteval.utils.FinderThread;
@@ -68,6 +69,23 @@ public class RunResultFinderThread extends FinderThread<RunResult> {
 			this.interrupt();
 		}
 		super.beforeFind();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.utils.FinderThread#afterFind()
+	 */
+	@Override
+	protected void afterFind() {
+		super.afterFind();
+		// we refresh materialized views in case we found new stuff and we are
+		// using postgresql
+		if (this.currentFinder.foundInLastRun()
+				&& this.repository.getRepositoryConfig().getMysqlConfig()
+						.getDatabaseType().equals(DB_TYPE.POSTGRESQL)) {
+			this.repository.getSqlCommunicator().refreshMaterializedViews();
+		}
 	}
 
 	/*

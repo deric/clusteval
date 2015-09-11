@@ -68,4 +68,6 @@ public abstract class SQLQueryBuilder {
 			final String newTableName);
 
 	protected abstract String dropTable(final String table);
+
+	protected abstract String refreshMaterializedView(final String view);
 }

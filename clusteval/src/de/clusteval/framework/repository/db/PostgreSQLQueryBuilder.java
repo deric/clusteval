@@ -300,4 +300,16 @@ public class PostgreSQLQueryBuilder extends SQLQueryBuilder {
 		return conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 				ResultSet.CONCUR_READ_ONLY);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.db.SQLQueryBuilder#refreshMaterializedView
+	 * (java.lang.String)
+	 */
+	@Override
+	protected String refreshMaterializedView(String view) {
+		return String.format("REFRESH MATERIALIZED VIEW %s;", view);
+	}
 }

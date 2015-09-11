@@ -323,4 +323,16 @@ public class MySQLQueryBuilder extends SQLQueryBuilder {
 	protected Statement createStatement(Connection conn) throws SQLException {
 		return conn.createStatement();
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.clusteval.framework.repository.db.SQLQueryBuilder#refreshMaterializedView
+	 * (java.lang.String)
+	 */
+	@Override
+	protected String refreshMaterializedView(String view) {
+		return "";
+	}
 }

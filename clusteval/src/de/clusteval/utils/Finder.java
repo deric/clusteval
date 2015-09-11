@@ -39,6 +39,8 @@ public abstract class Finder<T extends RepositoryObject>
 
 	protected Map<String, List<Throwable>> knownExceptions;
 
+	protected boolean foundInLastRun;
+
 	/**
 	 * @param repository
 	 * @param classToFind
@@ -114,6 +116,7 @@ public abstract class Finder<T extends RepositoryObject>
 			File programDir = fileIt.next();
 
 			if (checkFile(programDir)) {
+				foundInLastRun = true;
 				try {
 					doOnFileFound(programDir);
 				} catch (InterruptedException e) {
@@ -180,5 +183,9 @@ public abstract class Finder<T extends RepositoryObject>
 	@Override
 	public int hashCode() {
 		return this.repository.hashCode();
+	}
+
+	public boolean foundInLastRun() {
+		return this.foundInLastRun;
 	}
 }
