@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>FinderThread &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="finderthread">
+<h1>FinderThread<a class="headerlink" href="#finderthread" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.utils.FinderThread">
+public abstract class <code class="descname">FinderThread</code>&lt;T extends RepositoryObject&gt; extends <a class="reference internal" href="../framework/threading/ClustevalThread.html#de.clusteval.framework.threading.ClustevalThread" title="de.clusteval.framework.threading.ClustevalThread">ClustevalThread</a><a class="headerlink" href="#de.clusteval.utils.FinderThread" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="checkonce">
+<h3>checkOnce<a class="headerlink" href="#checkonce" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.utils.FinderThread.checkOnce">
+protected boolean <code class="descname">checkOnce</code><a class="headerlink" href="#de.clusteval.utils.FinderThread.checkOnce" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="classtofind">
+<h3>classToFind<a class="headerlink" href="#classtofind" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.utils.FinderThread.classToFind">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;T&gt; <code class="descname">classToFind</code><a class="headerlink" href="#de.clusteval.utils.FinderThread.classToFind" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="currentfinder">
+<h3>currentFinder<a class="headerlink" href="#currentfinder" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.utils.FinderThread.currentFinder">
+protected <a class="reference internal" href="Finder.html#de.clusteval.utils.Finder" title="de.clusteval.utils.Finder">Finder</a>&lt;T&gt; <code class="descname">currentFinder</code><a class="headerlink" href="#de.clusteval.utils.FinderThread.currentFinder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="log">
+<h3>log<a class="headerlink" href="#log" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.utils.FinderThread.log">
+protected Logger <code class="descname">log</code><a class="headerlink" href="#de.clusteval.utils.FinderThread.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="repository">
+<h3>repository<a class="headerlink" href="#repository" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.utils.FinderThread.repository">
+protected <a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a> <code class="descname">repository</code><a class="headerlink" href="#de.clusteval.utils.FinderThread.repository" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="sleeptime">
+<h3>sleepTime<a class="headerlink" href="#sleeptime" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.utils.FinderThread.sleepTime">
+protected long <code class="descname">sleepTime</code><a class="headerlink" href="#de.clusteval.utils.FinderThread.sleepTime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>FinderThread<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.utils.FinderThread.FinderThread(SupervisorThread, Repository, Class, boolean)">
+public <code class="descname">FinderThread</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/threading/SupervisorThread.html#de.clusteval.framework.threading.SupervisorThread" title="de.clusteval.framework.threading.SupervisorThread">SupervisorThread</a><em> supervisorThread</em>, <a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;T&gt;<em> classToFind</em>, boolean<em> checkOnce</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.FinderThread.FinderThread(SupervisorThread, Repository, Class, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>supervisorThread</strong> &#8211; </li>
+<li><strong>repository</strong> &#8211; </li>
+<li><strong>classToFind</strong> &#8211; </li>
+<li><strong>checkOnce</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>FinderThread<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.utils.FinderThread.FinderThread(SupervisorThread, Repository, Class, long, boolean)">
+public <code class="descname">FinderThread</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/threading/SupervisorThread.html#de.clusteval.framework.threading.SupervisorThread" title="de.clusteval.framework.threading.SupervisorThread">SupervisorThread</a><em> supervisorThread</em>, <a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;T&gt;<em> classToFind</em>, long<em> sleepTime</em>, boolean<em> checkOnce</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.FinderThread.FinderThread(SupervisorThread, Repository, Class, long, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>supervisorThread</strong> &#8211; </li>
+<li><strong>repository</strong> &#8211; </li>
+<li><strong>classToFind</strong> &#8211; </li>
+<li><strong>sleepTime</strong> &#8211; </li>
+<li><strong>checkOnce</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="afterfind">
+<h3>afterFind<a class="headerlink" href="#afterfind" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.FinderThread.afterFind()">
+protected void <code class="descname">afterFind</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.FinderThread.afterFind()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="beforefind">
+<h3>beforeFind<a class="headerlink" href="#beforefind" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.FinderThread.beforeFind()">
+protected void <code class="descname">beforeFind</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.FinderThread.beforeFind()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getfinder">
+<h3>getFinder<a class="headerlink" href="#getfinder" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.FinderThread.getFinder()">
+protected abstract <a class="reference internal" href="Finder.html#de.clusteval.utils.Finder" title="de.clusteval.utils.Finder">Finder</a>&lt;T&gt; <code class="descname">getFinder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.FinderThread.getFinder()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="run">
+<h3>run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.FinderThread.run()">
+public void <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.FinderThread.run()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">FinderThread</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#checkonce">checkOnce</a></li>
+<li><a class="reference internal" href="#classtofind">classToFind</a></li>
+<li><a class="reference internal" href="#currentfinder">currentFinder</a></li>
+<li><a class="reference internal" href="#log">log</a></li>
+<li><a class="reference internal" href="#repository">repository</a></li>
+<li><a class="reference internal" href="#sleeptime">sleepTime</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">FinderThread</a></li>
+<li><a class="reference internal" href="#id2">FinderThread</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#afterfind">afterFind</a></li>
+<li><a class="reference internal" href="#beforefind">beforeFind</a></li>
+<li><a class="reference internal" href="#getfinder">getFinder</a></li>
+<li><a class="reference internal" href="#run">run</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/de/clusteval/utils/FinderThread.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

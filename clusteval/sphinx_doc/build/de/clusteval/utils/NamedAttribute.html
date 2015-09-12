@@ -1,0 +1,289 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>NamedAttribute &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="namedattribute">
+<h1>NamedAttribute<a class="headerlink" href="#namedattribute" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.utils.NamedAttribute">
+public abstract class <code class="descname">NamedAttribute</code>&lt;T&gt; extends <a class="reference internal" href="../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a><a class="headerlink" href="#de.clusteval.utils.NamedAttribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is a wrapper for variables that should be shared throughout the whole framework and should be unambigiously identifiable by their name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body"><p class="first">Christian Wiwie</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>&lt;T&gt;</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="name">
+<h3>name<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.utils.NamedAttribute.name">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">name</code><a class="headerlink" href="#de.clusteval.utils.NamedAttribute.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="value">
+<h3>value<a class="headerlink" href="#value" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.utils.NamedAttribute.value">
+protected T <code class="descname">value</code><a class="headerlink" href="#de.clusteval.utils.NamedAttribute.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>NamedAttribute<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.utils.NamedAttribute.NamedAttribute(Repository, String, T)">
+public <code class="descname">NamedAttribute</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> name</em>, T<em> value</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.NamedAttribute.NamedAttribute(Repository, String, T)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; </li>
+<li><strong>name</strong> &#8211; </li>
+<li><strong>value</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>NamedAttribute<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.utils.NamedAttribute.NamedAttribute(NamedAttribute)">
+public <code class="descname">NamedAttribute</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.utils.NamedAttribute" title="de.clusteval.utils.NamedAttribute">NamedAttribute</a>&lt;T&gt;<em> other</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.NamedAttribute.NamedAttribute(NamedAttribute)" title="Permalink to this definition">¶</a></dt>
+<dd><p>The copy constructor of named attributes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>other</strong> &#8211; The object to clone.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clonevalue">
+<h3>cloneValue<a class="headerlink" href="#clonevalue" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.NamedAttribute.cloneValue(T)">
+protected abstract T <code class="descname">cloneValue</code><span class="sig-paren">(</span>T<em> value</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.NamedAttribute.cloneValue(T)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="equals">
+<h3>equals<a class="headerlink" href="#equals" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.NamedAttribute.equals(Object)">
+public boolean <code class="descname">equals</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html" title="java.lang.Object">Object</a><em> obj</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.NamedAttribute.equals(Object)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getname">
+<h3>getName<a class="headerlink" href="#getname" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.NamedAttribute.getName()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.NamedAttribute.getName()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The name of this attribute.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getvalue">
+<h3>getValue<a class="headerlink" href="#getvalue" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.NamedAttribute.getValue()">
+public T <code class="descname">getValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.NamedAttribute.getValue()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The value of this attribute.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="setvalue">
+<h3>setValue<a class="headerlink" href="#setvalue" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.NamedAttribute.setValue(T)">
+public void <code class="descname">setValue</code><span class="sig-paren">(</span>T<em> value</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.NamedAttribute.setValue(T)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value</strong> &#8211; The new value of this attribute.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="tostring">
+<h3>toString<a class="headerlink" href="#tostring" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.NamedAttribute.toString()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">toString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.NamedAttribute.toString()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">NamedAttribute</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#name">name</a></li>
+<li><a class="reference internal" href="#value">value</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">NamedAttribute</a></li>
+<li><a class="reference internal" href="#id2">NamedAttribute</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#clonevalue">cloneValue</a></li>
+<li><a class="reference internal" href="#equals">equals</a></li>
+<li><a class="reference internal" href="#getname">getName</a></li>
+<li><a class="reference internal" href="#getvalue">getValue</a></li>
+<li><a class="reference internal" href="#setvalue">setValue</a></li>
+<li><a class="reference internal" href="#tostring">toString</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/de/clusteval/utils/NamedAttribute.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

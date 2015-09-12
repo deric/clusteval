@@ -1,0 +1,325 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>IterationRunnable &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="iterationrunnable">
+<h1>IterationRunnable<a class="headerlink" href="#iterationrunnable" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.run.runnable.IterationRunnable">
+public abstract class <code class="descname">IterationRunnable</code>&lt;IW extends IterationWrapper&gt; implements <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Runnable.html" title="java.lang.Runnable">Runnable</a><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="interruptedexception">
+<h3>interruptedException<a class="headerlink" href="#interruptedexception" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.runnable.IterationRunnable.interruptedException">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException">InterruptedException</a> <code class="descname">interruptedException</code><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.interruptedException" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="ioexception">
+<h3>ioException<a class="headerlink" href="#ioexception" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.runnable.IterationRunnable.ioException">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/IOException.html" title="java.io.IOException">IOException</a> <code class="descname">ioException</code><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.ioException" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="iterationwrapper">
+<h3>iterationWrapper<a class="headerlink" href="#iterationwrapper" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.runnable.IterationRunnable.iterationWrapper">
+protected IW <code class="descname">iterationWrapper</code><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.iterationWrapper" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="log">
+<h3>log<a class="headerlink" href="#log" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.runnable.IterationRunnable.log">
+protected Logger <code class="descname">log</code><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="rlibraryexception">
+<h3>rLibraryException<a class="headerlink" href="#rlibraryexception" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.runnable.IterationRunnable.rLibraryException">
+protected <a class="reference internal" href="../../framework/RLibraryNotLoadedException.html#de.clusteval.framework.RLibraryNotLoadedException" title="de.clusteval.framework.RLibraryNotLoadedException">RLibraryNotLoadedException</a> <code class="descname">rLibraryException</code><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.rLibraryException" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="rnotavailableexception">
+<h3>rNotAvailableException<a class="headerlink" href="#rnotavailableexception" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.runnable.IterationRunnable.rNotAvailableException">
+protected <a class="reference internal" href="../../utils/RNotAvailableException.html#de.clusteval.utils.RNotAvailableException" title="de.clusteval.utils.RNotAvailableException">RNotAvailableException</a> <code class="descname">rNotAvailableException</code><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.rNotAvailableException" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="starttime">
+<h3>startTime<a class="headerlink" href="#starttime" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.runnable.IterationRunnable.startTime">
+protected long <code class="descname">startTime</code><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.startTime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>IterationRunnable<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.run.runnable.IterationRunnable.IterationRunnable(IW)">
+public <code class="descname">IterationRunnable</code><span class="sig-paren">(</span>IW<em> iterationWrapper</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.IterationRunnable(IW)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="afterrun">
+<h3>afterRun<a class="headerlink" href="#afterrun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.IterationRunnable.afterRun()">
+protected void <code class="descname">afterRun</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.afterRun()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="beforerun">
+<h3>beforeRun<a class="headerlink" href="#beforerun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.IterationRunnable.beforeRun()">
+protected void <code class="descname">beforeRun</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.beforeRun()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="dorun">
+<h3>doRun<a class="headerlink" href="#dorun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.IterationRunnable.doRun()">
+protected abstract void <code class="descname">doRun</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.doRun()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getinterruptedexception">
+<h3>getInterruptedException<a class="headerlink" href="#getinterruptedexception" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.IterationRunnable.getInterruptedException()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException">InterruptedException</a> <code class="descname">getInterruptedException</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.getInterruptedException()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getioexception">
+<h3>getIoException<a class="headerlink" href="#getioexception" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.IterationRunnable.getIoException()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/IOException.html" title="java.io.IOException">IOException</a> <code class="descname">getIoException</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.getIoException()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the ioException</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getparentrunnable">
+<h3>getParentRunnable<a class="headerlink" href="#getparentrunnable" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.IterationRunnable.getParentRunnable()">
+public <a class="reference internal" href="RunRunnable.html#de.clusteval.run.runnable.RunRunnable" title="de.clusteval.run.runnable.RunRunnable">RunRunnable</a> <code class="descname">getParentRunnable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.getParentRunnable()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrun">
+<h3>getRun<a class="headerlink" href="#getrun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.IterationRunnable.getRun()">
+public <a class="reference internal" href="../Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run">Run</a> <code class="descname">getRun</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.getRun()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getstarttime">
+<h3>getStartTime<a class="headerlink" href="#getstarttime" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.IterationRunnable.getStartTime()">
+public long <code class="descname">getStartTime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.getStartTime()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrlibraryexception">
+<h3>getrLibraryException<a class="headerlink" href="#getrlibraryexception" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.IterationRunnable.getrLibraryException()">
+public <a class="reference internal" href="../../framework/RLibraryNotLoadedException.html#de.clusteval.framework.RLibraryNotLoadedException" title="de.clusteval.framework.RLibraryNotLoadedException">RLibraryNotLoadedException</a> <code class="descname">getrLibraryException</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.getrLibraryException()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the rLibraryException</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getrnotavailableexception">
+<h3>getrNotAvailableException<a class="headerlink" href="#getrnotavailableexception" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.IterationRunnable.getrNotAvailableException()">
+public <a class="reference internal" href="../../utils/RNotAvailableException.html#de.clusteval.utils.RNotAvailableException" title="de.clusteval.utils.RNotAvailableException">RNotAvailableException</a> <code class="descname">getrNotAvailableException</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.getrNotAvailableException()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the rNotAvailableException</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="run">
+<h3>run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.IterationRunnable.run()">
+public final void <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.IterationRunnable.run()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">IterationRunnable</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#interruptedexception">interruptedException</a></li>
+<li><a class="reference internal" href="#ioexception">ioException</a></li>
+<li><a class="reference internal" href="#iterationwrapper">iterationWrapper</a></li>
+<li><a class="reference internal" href="#log">log</a></li>
+<li><a class="reference internal" href="#rlibraryexception">rLibraryException</a></li>
+<li><a class="reference internal" href="#rnotavailableexception">rNotAvailableException</a></li>
+<li><a class="reference internal" href="#starttime">startTime</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">IterationRunnable</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#afterrun">afterRun</a></li>
+<li><a class="reference internal" href="#beforerun">beforeRun</a></li>
+<li><a class="reference internal" href="#dorun">doRun</a></li>
+<li><a class="reference internal" href="#getinterruptedexception">getInterruptedException</a></li>
+<li><a class="reference internal" href="#getioexception">getIoException</a></li>
+<li><a class="reference internal" href="#getparentrunnable">getParentRunnable</a></li>
+<li><a class="reference internal" href="#getrun">getRun</a></li>
+<li><a class="reference internal" href="#getstarttime">getStartTime</a></li>
+<li><a class="reference internal" href="#getrlibraryexception">getrLibraryException</a></li>
+<li><a class="reference internal" href="#getrnotavailableexception">getrNotAvailableException</a></li>
+<li><a class="reference internal" href="#run">run</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/run/runnable/IterationRunnable.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

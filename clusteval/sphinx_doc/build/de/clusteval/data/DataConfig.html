@@ -1,0 +1,349 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>DataConfig &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dataconfig">
+<h1>DataConfig<a class="headerlink" href="#dataconfig" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.data.DataConfig">
+public class <code class="descname">DataConfig</code> extends <a class="reference internal" href="../framework/repository/DumpableRepositoryObject.html#de.clusteval.framework.repository.DumpableRepositoryObject" title="de.clusteval.framework.repository.DumpableRepositoryObject">DumpableRepositoryObject</a><a class="headerlink" href="#de.clusteval.data.DataConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data configuration encapsulates options and settings for all kinds of data (dataset and goldstandard). During the execution of a run, when programs are applied to datasets and goldstandards, settings are required that control the behaviour of how this data has to be handled.</p>
+<p>A data configuration corresponds to and is parsed from a file on the filesystem in the corresponding folder of the repository (see <code class="xref java java-ref docutils literal"><span class="pre">Repository.dataConfigBasePath</span></code> and <a class="reference internal" href="DataConfigFinder.html#de.clusteval.data.DataConfigFinder" title="de.clusteval.data.DataConfigFinder"><code class="xref java java-ref docutils literal"><span class="pre">DataConfigFinder</span></code></a>).</p>
+<p>There are several options, that can be specified in the data configuration file (see <a class="reference internal" href="../framework/repository/parse/ParameterOptimizationRunParser.html#de.clusteval.framework.repository.parse.ParameterOptimizationRunParser.parseFromFile(File)" title="de.clusteval.framework.repository.parse.ParameterOptimizationRunParser.parseFromFile(File)"><code class="xref java java-ref docutils literal"><span class="pre">parseFromFile(File)</span></code></a>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="datasetconfig">
+<h3>dataSetConfig<a class="headerlink" href="#datasetconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.data.DataConfig.dataSetConfig">
+protected <a class="reference internal" href="dataset/DataSetConfig.html#de.clusteval.data.dataset.DataSetConfig" title="de.clusteval.data.dataset.DataSetConfig">DataSetConfig</a> <code class="descname">dataSetConfig</code><a class="headerlink" href="#de.clusteval.data.DataConfig.dataSetConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data configuration encapsulates a dataset configuration. This dataset configuration contains options and settings how to handle the encapsulated dataset.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="goldstandardconfig">
+<h3>goldstandardConfig<a class="headerlink" href="#goldstandardconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.data.DataConfig.goldstandardConfig">
+protected <a class="reference internal" href="goldstandard/GoldStandardConfig.html#de.clusteval.data.goldstandard.GoldStandardConfig" title="de.clusteval.data.goldstandard.GoldStandardConfig">GoldStandardConfig</a> <code class="descname">goldstandardConfig</code><a class="headerlink" href="#de.clusteval.data.DataConfig.goldstandardConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data configuration encapsulates a goldstandard configuration. This goldstandard configuration contains options and settings how to handle the encapsulated goldstandard.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="standarddatasetconfig">
+<h3>standardDataSetConfig<a class="headerlink" href="#standarddatasetconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.data.DataConfig.standardDataSetConfig">
+protected <a class="reference internal" href="dataset/DataSetConfig.html#de.clusteval.data.dataset.DataSetConfig" title="de.clusteval.data.dataset.DataSetConfig">DataSetConfig</a> <code class="descname">standardDataSetConfig</code><a class="headerlink" href="#de.clusteval.data.DataConfig.standardDataSetConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>The original dataset config. is only != null, if the corresponding dataset was converted into a different format</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>DataConfig<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.data.DataConfig.DataConfig(Repository, long, File, DataSetConfig, GoldStandardConfig)">
+public <code class="descname">DataConfig</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, long<em> changeDate</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em>, <a class="reference internal" href="dataset/DataSetConfig.html#de.clusteval.data.dataset.DataSetConfig" title="de.clusteval.data.dataset.DataSetConfig">DataSetConfig</a><em> datasetConfig</em>, <a class="reference internal" href="goldstandard/GoldStandardConfig.html#de.clusteval.data.goldstandard.GoldStandardConfig" title="de.clusteval.data.goldstandard.GoldStandardConfig">GoldStandardConfig</a><em> gsConfig</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.DataConfig.DataConfig(Repository, long, File, DataSetConfig, GoldStandardConfig)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiates a new data configuration.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; The repository this data configuration should be registered at.</li>
+<li><strong>changeDate</strong> &#8211; The change date of this data configuration is used for equality checks.</li>
+<li><strong>absPath</strong> &#8211; The absolute path of this data configuration.</li>
+<li><strong>datasetConfig</strong> &#8211; The dataset configuration encapsulated by this data configuration.</li>
+<li><strong>gsConfig</strong> &#8211; The goldstandard configuration encapsulated by this data configuration.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>DataConfig<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.data.DataConfig.DataConfig(DataConfig)">
+public <code class="descname">DataConfig</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a><em> dataConfig</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.DataConfig.DataConfig(DataConfig)" title="Permalink to this definition">¶</a></dt>
+<dd><p>The copy constructor for data configurations. This copy constructor creates a deep copy by not only copying the references of attribute variables, but also cloning those.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataConfig</strong> &#8211; the data config</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clone">
+<h3>clone<a class="headerlink" href="#clone" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.DataConfig.clone()">
+public <a class="reference internal" href="#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a> <code class="descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.DataConfig.clone()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="clonedataconfigurations">
+<h3>cloneDataConfigurations<a class="headerlink" href="#clonedataconfigurations" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.DataConfig.cloneDataConfigurations(List)">
+public static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt; <code class="descname">cloneDataConfigurations</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt;<em> dataConfigs</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.DataConfig.cloneDataConfigurations(List)" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper method for cloning a list of data configurations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataConfigs</strong> &#8211; The list of data configurations to clone.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The list containing the cloned objects of the input list.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="dumptofilehelper">
+<h3>dumpToFileHelper<a class="headerlink" href="#dumptofilehelper" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.DataConfig.dumpToFileHelper()">
+protected void <code class="descname">dumpToFileHelper</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.DataConfig.dumpToFileHelper()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getdatasetconfig">
+<h3>getDatasetConfig<a class="headerlink" href="#getdatasetconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.DataConfig.getDatasetConfig()">
+public <a class="reference internal" href="dataset/DataSetConfig.html#de.clusteval.data.dataset.DataSetConfig" title="de.clusteval.data.dataset.DataSetConfig">DataSetConfig</a> <code class="descname">getDatasetConfig</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.DataConfig.getDatasetConfig()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">If during the execution of a run the dataset has been converted to a different format, this method returns the converted dataset configuration. If no conversion has been performed, this method returns the original dataset configuration.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getgoldstandardconfig">
+<h3>getGoldstandardConfig<a class="headerlink" href="#getgoldstandardconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.DataConfig.getGoldstandardConfig()">
+public <a class="reference internal" href="goldstandard/GoldStandardConfig.html#de.clusteval.data.goldstandard.GoldStandardConfig" title="de.clusteval.data.goldstandard.GoldStandardConfig">GoldStandardConfig</a> <code class="descname">getGoldstandardConfig</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.DataConfig.getGoldstandardConfig()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The goldstandard configuration of this data configuration. Is null, if there is no goldstandard configuration.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getname">
+<h3>getName<a class="headerlink" href="#getname" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.DataConfig.getName()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.DataConfig.getName()" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of a data configuration is the filename of the corresponding file on the filesystem, without the file extension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The name of this data configuration.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="hasgoldstandardconfig">
+<h3>hasGoldStandardConfig<a class="headerlink" href="#hasgoldstandardconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.DataConfig.hasGoldStandardConfig()">
+public boolean <code class="descname">hasGoldStandardConfig</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.DataConfig.hasGoldStandardConfig()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use this method to check, whether this DataConfig has a goldstandard configuration or not. Some clustering quality measures do not require a goldstandard to evaluate a clustering (see <a class="reference internal" href="../cluster/quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure.requiresGoldstandard()" title="de.clusteval.cluster.quality.ClusteringQualityMeasure.requiresGoldstandard()"><code class="xref java java-ref docutils literal"><span class="pre">ClusteringQualityMeasure.requiresGoldstandard()</span></code></a>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True, if this data configuration has a goldstandard, false otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="notify">
+<h3>notify<a class="headerlink" href="#notify" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.DataConfig.notify(RepositoryEvent)">
+public void <code class="descname">notify</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/RepositoryEvent.html#de.clusteval.framework.repository.RepositoryEvent" title="de.clusteval.framework.repository.RepositoryEvent">RepositoryEvent</a><em> e</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.DataConfig.notify(RepositoryEvent)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="tostring">
+<h3>toString<a class="headerlink" href="#tostring" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.DataConfig.toString()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">toString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.DataConfig.toString()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">DataConfig</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#datasetconfig">dataSetConfig</a></li>
+<li><a class="reference internal" href="#goldstandardconfig">goldstandardConfig</a></li>
+<li><a class="reference internal" href="#standarddatasetconfig">standardDataSetConfig</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">DataConfig</a></li>
+<li><a class="reference internal" href="#id2">DataConfig</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#clone">clone</a></li>
+<li><a class="reference internal" href="#clonedataconfigurations">cloneDataConfigurations</a></li>
+<li><a class="reference internal" href="#dumptofilehelper">dumpToFileHelper</a></li>
+<li><a class="reference internal" href="#getdatasetconfig">getDatasetConfig</a></li>
+<li><a class="reference internal" href="#getgoldstandardconfig">getGoldstandardConfig</a></li>
+<li><a class="reference internal" href="#getname">getName</a></li>
+<li><a class="reference internal" href="#hasgoldstandardconfig">hasGoldStandardConfig</a></li>
+<li><a class="reference internal" href="#notify">notify</a></li>
+<li><a class="reference internal" href="#tostring">toString</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/de/clusteval/data/DataConfig.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

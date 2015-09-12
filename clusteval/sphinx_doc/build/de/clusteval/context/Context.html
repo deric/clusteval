@@ -1,0 +1,311 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Context &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="context">
+<h1>Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.context.Context">
+public abstract class <code class="descname">Context</code> extends <a class="reference internal" href="../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a><a class="headerlink" href="#de.clusteval.context.Context" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Context<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.context.Context.Context(Repository, boolean, long, File)">
+public <code class="descname">Context</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, boolean<em> register</em>, long<em> changeDate</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.context.Context.Context(Repository, boolean, long, File)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; </li>
+<li><strong>register</strong> &#8211; </li>
+<li><strong>changeDate</strong> &#8211; </li>
+<li><strong>absPath</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>Context<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.context.Context.Context(Context)">
+public <code class="descname">Context</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.context.Context" title="de.clusteval.context.Context">Context</a><em> other</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.context.Context.Context(Context)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>other</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clone">
+<h3>clone<a class="headerlink" href="#clone" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.context.Context.clone()">
+public final <a class="reference internal" href="../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a> <code class="descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.context.Context.clone()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="equals">
+<h3>equals<a class="headerlink" href="#equals" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.context.Context.equals(Object)">
+public boolean <code class="descname">equals</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html" title="java.lang.Object">Object</a><em> obj</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.context.Context.equals(Object)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getname">
+<h3>getName<a class="headerlink" href="#getname" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.context.Context.getName()">
+public abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.context.Context.getName()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contexts have a unique name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The name of this context</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getrequiredjavaclassfullnames">
+<h3>getRequiredJavaClassFullNames<a class="headerlink" href="#getrequiredjavaclassfullnames" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.context.Context.getRequiredJavaClassFullNames()">
+public abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html" title="java.util.Set">Set</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getRequiredJavaClassFullNames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.context.Context.getRequiredJavaClassFullNames()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A set with all simple names of classes this context requires.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getstandardinputformat">
+<h3>getStandardInputFormat<a class="headerlink" href="#getstandardinputformat" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.context.Context.getStandardInputFormat()">
+public abstract <a class="reference internal" href="../data/dataset/format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat">DataSetFormat</a> <code class="descname">getStandardInputFormat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.context.Context.getStandardInputFormat()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The standard input format connected to this context. Every context has its own standard format, which is used during execution of runs.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getstandardoutputformat">
+<h3>getStandardOutputFormat<a class="headerlink" href="#getstandardoutputformat" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.context.Context.getStandardOutputFormat()">
+public abstract <a class="reference internal" href="../run/result/format/RunResultFormat.html#de.clusteval.run.result.format.RunResultFormat" title="de.clusteval.run.result.format.RunResultFormat">RunResultFormat</a> <code class="descname">getStandardOutputFormat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.context.Context.getStandardOutputFormat()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The standard output format connected to this context. Every context has its own standard format, which is used during execution of runs.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="hashcode">
+<h3>hashCode<a class="headerlink" href="#hashcode" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.context.Context.hashCode()">
+public int <code class="descname">hashCode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.context.Context.hashCode()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="parsefromstring">
+<h3>parseFromString<a class="headerlink" href="#parsefromstring" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.context.Context.parseFromString(Repository, String)">
+public static <a class="reference internal" href="#de.clusteval.context.Context" title="de.clusteval.context.Context">Context</a> <code class="descname">parseFromString</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> contextName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.context.Context.parseFromString(Repository, String)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; </li>
+<li><strong>contextName</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="UnknownContextException.html#de.clusteval.context.UnknownContextException" title="de.clusteval.context.UnknownContextException"><strong>UnknownContextException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A context object of the class with the given simple name</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="tostring">
+<h3>toString<a class="headerlink" href="#tostring" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.context.Context.toString()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">toString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.context.Context.toString()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Context</a><ul>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">Context</a></li>
+<li><a class="reference internal" href="#id2">Context</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#clone">clone</a></li>
+<li><a class="reference internal" href="#equals">equals</a></li>
+<li><a class="reference internal" href="#getname">getName</a></li>
+<li><a class="reference internal" href="#getrequiredjavaclassfullnames">getRequiredJavaClassFullNames</a></li>
+<li><a class="reference internal" href="#getstandardinputformat">getStandardInputFormat</a></li>
+<li><a class="reference internal" href="#getstandardoutputformat">getStandardOutputFormat</a></li>
+<li><a class="reference internal" href="#hashcode">hashCode</a></li>
+<li><a class="reference internal" href="#parsefromstring">parseFromString</a></li>
+<li><a class="reference internal" href="#tostring">toString</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/de/clusteval/context/Context.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

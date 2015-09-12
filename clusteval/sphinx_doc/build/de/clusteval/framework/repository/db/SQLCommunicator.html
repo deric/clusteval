@@ -1,0 +1,1920 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SQLCommunicator &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="sqlcommunicator">
+<h1>SQLCommunicator<a class="headerlink" href="#sqlcommunicator" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator">
+public abstract class <code class="descname">SQLCommunicator</code><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sql communicator is responsible for the communication between <a class="reference internal" href="../Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository"><code class="xref java java-ref docutils literal"><span class="pre">Repository</span></code></a> and mysql database.</p>
+<p>Therefore a sql communicator has a connection <a class="reference internal" href="#de.clusteval.framework.repository.db.SQLCommunicator.conn" title="de.clusteval.framework.repository.db.SQLCommunicator.conn"><code class="xref java java-ref docutils literal"><span class="pre">conn</span></code></a> and a <a class="reference internal" href="#de.clusteval.framework.repository.db.SQLCommunicator.repository" title="de.clusteval.framework.repository.db.SQLCommunicator.repository"><code class="xref java java-ref docutils literal"><span class="pre">repository</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="conn">
+<h3>conn<a class="headerlink" href="#conn" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.conn">
+protected static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/sql/Connection.html" title="java.sql.Connection">Connection</a> <code class="descname">conn</code><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.conn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="exceptionhandler">
+<h3>exceptionHandler<a class="headerlink" href="#exceptionhandler" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.exceptionHandler">
+protected <a class="reference internal" href="SQLExceptionHandler.html#de.clusteval.framework.repository.db.SQLExceptionHandler" title="de.clusteval.framework.repository.db.SQLExceptionHandler">SQLExceptionHandler</a> <code class="descname">exceptionHandler</code><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.exceptionHandler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="log">
+<h3>log<a class="headerlink" href="#log" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.log">
+protected Logger <code class="descname">log</code><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="objectids">
+<h3>objectIds<a class="headerlink" href="#objectids" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.objectIds">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html" title="java.lang.Integer">Integer</a>&gt; <code class="descname">objectIds</code><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.objectIds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="querybuilder">
+<h3>queryBuilder<a class="headerlink" href="#querybuilder" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.queryBuilder">
+protected <a class="reference internal" href="SQLQueryBuilder.html#de.clusteval.framework.repository.db.SQLQueryBuilder" title="de.clusteval.framework.repository.db.SQLQueryBuilder">SQLQueryBuilder</a> <code class="descname">queryBuilder</code><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.queryBuilder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="repository">
+<h3>repository<a class="headerlink" href="#repository" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.repository">
+protected <a class="reference internal" href="../Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a> <code class="descname">repository</code><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.repository" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="sqlconfig">
+<h3>sqlConfig<a class="headerlink" href="#sqlconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.sqlConfig">
+protected <a class="reference internal" href="SQLConfig.html#de.clusteval.framework.repository.db.SQLConfig" title="de.clusteval.framework.repository.db.SQLConfig">SQLConfig</a> <code class="descname">sqlConfig</code><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.sqlConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>A sql communicator needs a mysql configuration to know, how to connect to the database server.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>SQLCommunicator<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.SQLCommunicator(Repository, SQLConfig)">
+public <code class="descname">SQLCommunicator</code><span class="sig-paren">(</span><a class="reference internal" href="../Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference internal" href="SQLConfig.html#de.clusteval.framework.repository.db.SQLConfig" title="de.clusteval.framework.repository.db.SQLConfig">SQLConfig</a><em> sqlConfig</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.SQLCommunicator(Repository, SQLConfig)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>repository</strong> &#8211; </li>
+<li><strong>sqlConfig</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="checkifpresent">
+<h3>checkIfPresent<a class="headerlink" href="#checkifpresent" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.checkIfPresent(String, String, String)">
+protected boolean <code class="descname">checkIfPresent</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> table</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> column</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> value</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.checkIfPresent(String, String, String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="commitdb">
+<h3>commitDB<a class="headerlink" href="#commitdb" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.commitDB()">
+public void <code class="descname">commitDB</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.commitDB()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="createexceptionhandler">
+<h3>createExceptionHandler<a class="headerlink" href="#createexceptionhandler" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.createExceptionHandler()">
+protected <a class="reference internal" href="SQLExceptionHandler.html#de.clusteval.framework.repository.db.SQLExceptionHandler" title="de.clusteval.framework.repository.db.SQLExceptionHandler">SQLExceptionHandler</a> <code class="descname">createExceptionHandler</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.createExceptionHandler()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="createquerybuilder">
+<h3>createQueryBuilder<a class="headerlink" href="#createquerybuilder" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.createQueryBuilder()">
+protected <a class="reference internal" href="SQLQueryBuilder.html#de.clusteval.framework.repository.db.SQLQueryBuilder" title="de.clusteval.framework.repository.db.SQLQueryBuilder">SQLQueryBuilder</a> <code class="descname">createQueryBuilder</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.createQueryBuilder()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="delete">
+<h3>delete<a class="headerlink" href="#delete" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.delete(String, String, String)">
+protected boolean <code class="descname">delete</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> tableName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> value</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> columnName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.delete(String, String, String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>delete<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.delete(String, String[], String[])">
+protected boolean <code class="descname">delete</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> tableName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> value</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> columnName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.delete(String, String[], String[])" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h3>delete<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.delete(String, String)">
+protected boolean <code class="descname">delete</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> tableName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> value</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.delete(String, String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default we delete rows where <a href="#id4"><span class="problematic" id="id5">`</span></a>id`=rowId</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tableName</strong> &#8211; </li>
+<li><strong>rowId</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>SQLException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="deletefromtable">
+<h3>deleteFromTable<a class="headerlink" href="#deletefromtable" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.deleteFromTable(String, String, String[])">
+protected void <code class="descname">deleteFromTable</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> tableName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> columnName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> value</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.deleteFromTable(String, String, String[])" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>SQLException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getclusterid">
+<h3>getClusterId<a class="headerlink" href="#getclusterid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getClusterId(int, String)">
+protected abstract int <code class="descname">getClusterId</code><span class="sig-paren">(</span>int<em> clusteringId</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> name</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getClusterId(int, String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getclusterobjectid">
+<h3>getClusterObjectId<a class="headerlink" href="#getclusterobjectid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getClusterObjectId(int, String)">
+protected abstract int <code class="descname">getClusterObjectId</code><span class="sig-paren">(</span>int<em> clusterId</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> name</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getClusterObjectId(int, String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getclusteringid">
+<h3>getClusteringId<a class="headerlink" href="#getclusteringid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getClusteringId(String)">
+protected abstract int <code class="descname">getClusteringId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> name</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getClusteringId(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getdbpassword">
+<h3>getDBPassword<a class="headerlink" href="#getdbpassword" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getDBPassword()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getDBPassword</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getDBPassword()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getdbusername">
+<h3>getDBUsername<a class="headerlink" href="#getdbusername" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getDBUsername()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getDBUsername</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getDBUsername()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getdatasetformatid">
+<h3>getDataSetFormatId<a class="headerlink" href="#getdatasetformatid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getDataSetFormatId(String)">
+protected abstract int <code class="descname">getDataSetFormatId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> dataSetFormatClassSimpleName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getDataSetFormatId(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getdatasettypeid">
+<h3>getDataSetTypeId<a class="headerlink" href="#getdatasettypeid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getDataSetTypeId(String)">
+protected abstract int <code class="descname">getDataSetTypeId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> dataSetTypeClassSimpleName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getDataSetTypeId(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getdatabase">
+<h3>getDatabase<a class="headerlink" href="#getdatabase" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getDatabase()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getDatabase</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getDatabase()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getobjectid">
+<h3>getObjectId<a class="headerlink" href="#getobjectid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getObjectId(RepositoryObject)">
+protected int <code class="descname">getObjectId</code><span class="sig-paren">(</span><a class="reference internal" href="../RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getObjectId(RepositoryObject)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getobjectids">
+<h3>getObjectIds<a class="headerlink" href="#getobjectids" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getObjectIds()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html" title="java.lang.Integer">Integer</a>&gt; <code class="descname">getObjectIds</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getObjectIds()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getparameteroptimizationmethodid">
+<h3>getParameterOptimizationMethodId<a class="headerlink" href="#getparameteroptimizationmethodid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getParameterOptimizationMethodId(String)">
+protected abstract int <code class="descname">getParameterOptimizationMethodId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> name</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getParameterOptimizationMethodId(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getparametersetid">
+<h3>getParameterSetId<a class="headerlink" href="#getparametersetid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getParameterSetId(int)">
+protected abstract int <code class="descname">getParameterSetId</code><span class="sig-paren">(</span>int<em> runResultParamOptId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getParameterSetId(int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getparametersetparameterid">
+<h3>getParameterSetParameterId<a class="headerlink" href="#getparametersetparameterid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getParameterSetParameterId(int, int)">
+protected abstract int <code class="descname">getParameterSetParameterId</code><span class="sig-paren">(</span>int<em> parameterSetId</em>, int<em> parameterId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getParameterSetParameterId(int, int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getparametersetparametervaluesid">
+<h3>getParameterSetParameterValuesId<a class="headerlink" href="#getparametersetparametervaluesid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getParameterSetParameterValuesId(int, int, int)">
+protected abstract int <code class="descname">getParameterSetParameterValuesId</code><span class="sig-paren">(</span>int<em> parameterSetId</em>, int<em> parameterId</em>, int<em> iteration</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getParameterSetParameterValuesId(int, int, int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getprogramparametertypeid">
+<h3>getProgramParameterTypeId<a class="headerlink" href="#getprogramparametertypeid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getProgramParameterTypeId(String)">
+protected abstract int <code class="descname">getProgramParameterTypeId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> typeName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getProgramParameterTypeId(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrepositoryid">
+<h3>getRepositoryId<a class="headerlink" href="#getrepositoryid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getRepositoryId(String)">
+protected abstract int <code class="descname">getRepositoryId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> absPath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getRepositoryId(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrepositorytypeid">
+<h3>getRepositoryTypeId<a class="headerlink" href="#getrepositorytypeid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getRepositoryTypeId(String)">
+protected abstract int <code class="descname">getRepositoryTypeId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> repositoryType</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getRepositoryTypeId(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrunanalysisid">
+<h3>getRunAnalysisId<a class="headerlink" href="#getrunanalysisid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getRunAnalysisId(int)">
+protected abstract int <code class="descname">getRunAnalysisId</code><span class="sig-paren">(</span>int<em> runId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getRunAnalysisId(int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrunexecutionid">
+<h3>getRunExecutionId<a class="headerlink" href="#getrunexecutionid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getRunExecutionId(int)">
+protected abstract int <code class="descname">getRunExecutionId</code><span class="sig-paren">(</span>int<em> runId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getRunExecutionId(int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrunid">
+<h3>getRunId<a class="headerlink" href="#getrunid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getRunId(Run)">
+protected abstract int <code class="descname">getRunId</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run">Run</a><em> run</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getRunId(Run)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrunresultanalysisid">
+<h3>getRunResultAnalysisId<a class="headerlink" href="#getrunresultanalysisid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getRunResultAnalysisId(int)">
+protected abstract int <code class="descname">getRunResultAnalysisId</code><span class="sig-paren">(</span>int<em> runResultId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getRunResultAnalysisId(int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrunresultexecutionid">
+<h3>getRunResultExecutionId<a class="headerlink" href="#getrunresultexecutionid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getRunResultExecutionId(int)">
+protected abstract int <code class="descname">getRunResultExecutionId</code><span class="sig-paren">(</span>int<em> runResultId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getRunResultExecutionId(int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrunresultformatid">
+<h3>getRunResultFormatId<a class="headerlink" href="#getrunresultformatid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getRunResultFormatId(String)">
+protected abstract int <code class="descname">getRunResultFormatId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runResultFormatSimpleName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getRunResultFormatId(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrunresultid">
+<h3>getRunResultId<a class="headerlink" href="#getrunresultid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getRunResultId(String)">
+protected abstract int <code class="descname">getRunResultId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> uniqueRunIdentifier</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getRunResultId(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrunresultrunanalysisid">
+<h3>getRunResultRunAnalysisId<a class="headerlink" href="#getrunresultrunanalysisid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getRunResultRunAnalysisId(int)">
+protected abstract int <code class="descname">getRunResultRunAnalysisId</code><span class="sig-paren">(</span>int<em> runResultAnalysisId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getRunResultRunAnalysisId(int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getruntypeid">
+<h3>getRunTypeId<a class="headerlink" href="#getruntypeid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getRunTypeId(String)">
+protected abstract int <code class="descname">getRunTypeId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> name</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getRunTypeId(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getserver">
+<h3>getServer<a class="headerlink" href="#getserver" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getServer()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getServer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getServer()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getstatisticid">
+<h3>getStatisticId<a class="headerlink" href="#getstatisticid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getStatisticId(String)">
+protected abstract int <code class="descname">getStatisticId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> statisticsName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getStatisticId(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableclusterobjects">
+<h3>getTableClusterObjects<a class="headerlink" href="#gettableclusterobjects" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableClusterObjects()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableClusterObjects</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableClusterObjects()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableclusteringqualitymeasures">
+<h3>getTableClusteringQualityMeasures<a class="headerlink" href="#gettableclusteringqualitymeasures" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableClusteringQualityMeasures()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableClusteringQualityMeasures</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableClusteringQualityMeasures()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableclusterings">
+<h3>getTableClusterings<a class="headerlink" href="#gettableclusterings" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableClusterings()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableClusterings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableClusterings()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableclusters">
+<h3>getTableClusters<a class="headerlink" href="#gettableclusters" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableClusters()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableClusters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableClusters()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettabledataconfigs">
+<h3>getTableDataConfigs<a class="headerlink" href="#gettabledataconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableDataConfigs()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableDataConfigs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableDataConfigs()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettabledatasetconfigs">
+<h3>getTableDataSetConfigs<a class="headerlink" href="#gettabledatasetconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableDataSetConfigs()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableDataSetConfigs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableDataSetConfigs()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettabledatasetformats">
+<h3>getTableDataSetFormats<a class="headerlink" href="#gettabledatasetformats" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableDataSetFormats()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableDataSetFormats</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableDataSetFormats()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettabledatasettypes">
+<h3>getTableDataSetTypes<a class="headerlink" href="#gettabledatasettypes" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableDataSetTypes()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableDataSetTypes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableDataSetTypes()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettabledatasets">
+<h3>getTableDatasets<a class="headerlink" href="#gettabledatasets" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableDatasets()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableDatasets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableDatasets()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablegoldstandardconfigs">
+<h3>getTableGoldStandardConfigs<a class="headerlink" href="#gettablegoldstandardconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableGoldStandardConfigs()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableGoldStandardConfigs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableGoldStandardConfigs()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablegoldstandards">
+<h3>getTableGoldStandards<a class="headerlink" href="#gettablegoldstandards" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableGoldStandards()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableGoldStandards</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableGoldStandards()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableoptimizableprogramparameters">
+<h3>getTableOptimizableProgramParameters<a class="headerlink" href="#gettableoptimizableprogramparameters" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableOptimizableProgramParameters()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableOptimizableProgramParameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableOptimizableProgramParameters()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableparameteroptimizationmethods">
+<h3>getTableParameterOptimizationMethods<a class="headerlink" href="#gettableparameteroptimizationmethods" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableParameterOptimizationMethods()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableParameterOptimizationMethods</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableParameterOptimizationMethods()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableparameteroptimizationqualities">
+<h3>getTableParameterOptimizationQualities<a class="headerlink" href="#gettableparameteroptimizationqualities" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableParameterOptimizationQualities()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableParameterOptimizationQualities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableParameterOptimizationQualities()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableparametersetiterations">
+<h3>getTableParameterSetIterations<a class="headerlink" href="#gettableparametersetiterations" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableParameterSetIterations()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableParameterSetIterations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableParameterSetIterations()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableparametersetparametervalues">
+<h3>getTableParameterSetParameterValues<a class="headerlink" href="#gettableparametersetparametervalues" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableParameterSetParameterValues()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableParameterSetParameterValues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableParameterSetParameterValues()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableparametersetparameters">
+<h3>getTableParameterSetParameters<a class="headerlink" href="#gettableparametersetparameters" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableParameterSetParameters()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableParameterSetParameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableParameterSetParameters()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableparametersets">
+<h3>getTableParameterSets<a class="headerlink" href="#gettableparametersets" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableParameterSets()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableParameterSets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableParameterSets()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableprogramconfigs">
+<h3>getTableProgramConfigs<a class="headerlink" href="#gettableprogramconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableProgramConfigs()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableProgramConfigs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableProgramConfigs()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableprogramconfigscompatibledatasetformats">
+<h3>getTableProgramConfigsCompatibleDataSetFormats<a class="headerlink" href="#gettableprogramconfigscompatibledatasetformats" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableProgramConfigsCompatibleDataSetFormats()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableProgramConfigsCompatibleDataSetFormats</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableProgramConfigsCompatibleDataSetFormats()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableprogramparameter">
+<h3>getTableProgramParameter<a class="headerlink" href="#gettableprogramparameter" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableProgramParameter()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableProgramParameter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableProgramParameter()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableprogramparametertype">
+<h3>getTableProgramParameterType<a class="headerlink" href="#gettableprogramparametertype" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableProgramParameterType()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableProgramParameterType</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableProgramParameterType()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableprograms">
+<h3>getTablePrograms<a class="headerlink" href="#gettableprograms" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTablePrograms()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTablePrograms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTablePrograms()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerepositories">
+<h3>getTableRepositories<a class="headerlink" href="#gettablerepositories" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRepositories()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRepositories</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRepositories()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerepositorytypes">
+<h3>getTableRepositoryTypes<a class="headerlink" href="#gettablerepositorytypes" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRepositoryTypes()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRepositoryTypes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRepositoryTypes()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunresultformats">
+<h3>getTableRunResultFormats<a class="headerlink" href="#gettablerunresultformats" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultFormats()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunResultFormats</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultFormats()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunresults">
+<h3>getTableRunResults<a class="headerlink" href="#gettablerunresults" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResults()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunResults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResults()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunresultsanalysis">
+<h3>getTableRunResultsAnalysis<a class="headerlink" href="#gettablerunresultsanalysis" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsAnalysis()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunResultsAnalysis</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsAnalysis()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunresultsclustering">
+<h3>getTableRunResultsClustering<a class="headerlink" href="#gettablerunresultsclustering" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsClustering()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunResultsClustering</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsClustering()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunresultsclusteringsquality">
+<h3>getTableRunResultsClusteringsQuality<a class="headerlink" href="#gettablerunresultsclusteringsquality" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsClusteringsQuality()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunResultsClusteringsQuality</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsClusteringsQuality()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunresultsdataanalysis">
+<h3>getTableRunResultsDataAnalysis<a class="headerlink" href="#gettablerunresultsdataanalysis" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsDataAnalysis()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunResultsDataAnalysis</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsDataAnalysis()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunresultsexecution">
+<h3>getTableRunResultsExecution<a class="headerlink" href="#gettablerunresultsexecution" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsExecution()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunResultsExecution</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsExecution()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunresultsparameteroptimization">
+<h3>getTableRunResultsParameterOptimization<a class="headerlink" href="#gettablerunresultsparameteroptimization" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsParameterOptimization()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunResultsParameterOptimization</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsParameterOptimization()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunresultsrunanalysis">
+<h3>getTableRunResultsRunAnalysis<a class="headerlink" href="#gettablerunresultsrunanalysis" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsRunAnalysis()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunResultsRunAnalysis</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsRunAnalysis()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunresultsrundataanalysis">
+<h3>getTableRunResultsRunDataAnalysis<a class="headerlink" href="#gettablerunresultsrundataanalysis" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsRunDataAnalysis()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunResultsRunDataAnalysis</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunResultsRunDataAnalysis()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableruntypes">
+<h3>getTableRunTypes<a class="headerlink" href="#gettableruntypes" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunTypes()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunTypes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunTypes()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettableruns">
+<h3>getTableRuns<a class="headerlink" href="#gettableruns" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRuns()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRuns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRuns()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsanalysis">
+<h3>getTableRunsAnalysis<a class="headerlink" href="#gettablerunsanalysis" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysis()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsAnalysis</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysis()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsanalysisdata">
+<h3>getTableRunsAnalysisData<a class="headerlink" href="#gettablerunsanalysisdata" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisData()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsAnalysisData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisData()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsanalysisdatadataidentifiers">
+<h3>getTableRunsAnalysisDataDataIdentifiers<a class="headerlink" href="#gettablerunsanalysisdatadataidentifiers" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisDataDataIdentifiers()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsAnalysisDataDataIdentifiers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisDataDataIdentifiers()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsanalysisrun">
+<h3>getTableRunsAnalysisRun<a class="headerlink" href="#gettablerunsanalysisrun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisRun()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsAnalysisRun</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisRun()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsanalysisrundata">
+<h3>getTableRunsAnalysisRunData<a class="headerlink" href="#gettablerunsanalysisrundata" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisRunData()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsAnalysisRunData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisRunData()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsanalysisrundatadataidentifiers">
+<h3>getTableRunsAnalysisRunDataDataIdentifiers<a class="headerlink" href="#gettablerunsanalysisrundatadataidentifiers" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisRunDataDataIdentifiers()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsAnalysisRunDataDataIdentifiers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisRunDataDataIdentifiers()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsanalysisrundatarunidentifiers">
+<h3>getTableRunsAnalysisRunDataRunIdentifiers<a class="headerlink" href="#gettablerunsanalysisrundatarunidentifiers" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisRunDataRunIdentifiers()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsAnalysisRunDataRunIdentifiers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisRunDataRunIdentifiers()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsanalysisrunrunidentifiers">
+<h3>getTableRunsAnalysisRunRunIdentifiers<a class="headerlink" href="#gettablerunsanalysisrunrunidentifiers" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisRunRunIdentifiers()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsAnalysisRunRunIdentifiers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisRunRunIdentifiers()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsanalysisstatistics">
+<h3>getTableRunsAnalysisStatistics<a class="headerlink" href="#gettablerunsanalysisstatistics" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisStatistics()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsAnalysisStatistics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsAnalysisStatistics()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsclustering">
+<h3>getTableRunsClustering<a class="headerlink" href="#gettablerunsclustering" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsClustering()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsClustering</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsClustering()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsexecution">
+<h3>getTableRunsExecution<a class="headerlink" href="#gettablerunsexecution" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsExecution()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsExecution</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsExecution()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsexecutiondataconfigs">
+<h3>getTableRunsExecutionDataConfigs<a class="headerlink" href="#gettablerunsexecutiondataconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsExecutionDataConfigs()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsExecutionDataConfigs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsExecutionDataConfigs()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsexecutionparametervalues">
+<h3>getTableRunsExecutionParameterValues<a class="headerlink" href="#gettablerunsexecutionparametervalues" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsExecutionParameterValues()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsExecutionParameterValues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsExecutionParameterValues()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsexecutionprogramconfigs">
+<h3>getTableRunsExecutionProgramConfigs<a class="headerlink" href="#gettablerunsexecutionprogramconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsExecutionProgramConfigs()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsExecutionProgramConfigs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsExecutionProgramConfigs()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsexecutionqualitymeasures">
+<h3>getTableRunsExecutionQualityMeasures<a class="headerlink" href="#gettablerunsexecutionqualitymeasures" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsExecutionQualityMeasures()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsExecutionQualityMeasures</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsExecutionQualityMeasures()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsinternalparameteroptimization">
+<h3>getTableRunsInternalParameterOptimization<a class="headerlink" href="#gettablerunsinternalparameteroptimization" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsInternalParameterOptimization()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsInternalParameterOptimization</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsInternalParameterOptimization()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsparameteroptimization">
+<h3>getTableRunsParameterOptimization<a class="headerlink" href="#gettablerunsparameteroptimization" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsParameterOptimization()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsParameterOptimization</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsParameterOptimization()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsparameteroptimizationmethods">
+<h3>getTableRunsParameterOptimizationMethods<a class="headerlink" href="#gettablerunsparameteroptimizationmethods" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsParameterOptimizationMethods()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsParameterOptimizationMethods</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsParameterOptimizationMethods()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsparameteroptimizationparameters">
+<h3>getTableRunsParameterOptimizationParameters<a class="headerlink" href="#gettablerunsparameteroptimizationparameters" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsParameterOptimizationParameters()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsParameterOptimizationParameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsParameterOptimizationParameters()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablerunsparameteroptimizationqualitymeasures">
+<h3>getTableRunsParameterOptimizationQualityMeasures<a class="headerlink" href="#gettablerunsparameteroptimizationqualitymeasures" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsParameterOptimizationQualityMeasures()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableRunsParameterOptimizationQualityMeasures</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableRunsParameterOptimizationQualityMeasures()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablestatistics">
+<h3>getTableStatistics<a class="headerlink" href="#gettablestatistics" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableStatistics()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableStatistics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableStatistics()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablestatisticsdata">
+<h3>getTableStatisticsData<a class="headerlink" href="#gettablestatisticsdata" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableStatisticsData()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableStatisticsData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableStatisticsData()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablestatisticsrun">
+<h3>getTableStatisticsRun<a class="headerlink" href="#gettablestatisticsrun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableStatisticsRun()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableStatisticsRun</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableStatisticsRun()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="gettablestatisticsrundata">
+<h3>getTableStatisticsRunData<a class="headerlink" href="#gettablestatisticsrundata" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.getTableStatisticsRunData()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getTableStatisticsRunData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.getTableStatisticsRunData()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="initdb">
+<h3>initDB<a class="headerlink" href="#initdb" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.initDB()">
+public void <code class="descname">initDB</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.initDB()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes the database: 1) establishes a connection 2) tells the database to delete this repository and all corresponding entries (cascading) and recreate a new and empty repository</p>
+</dd></dl>
+
+</div>
+<div class="section" id="insert">
+<h3>insert<a class="headerlink" href="#insert" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.insert(String, String[], List)">
+protected int <code class="descname">insert</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> tableName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> columnNames</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]&gt;<em> values</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.insert(String, String[], List)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id6">
+<h3>insert<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.insert(String, String[], String[])">
+protected int <code class="descname">insert</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> tableName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> columnNames</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> values</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.insert(String, String[], String[])" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="refreshmaterializedview">
+<h3>refreshMaterializedView<a class="headerlink" href="#refreshmaterializedview" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.refreshMaterializedView(String)">
+protected void <code class="descname">refreshMaterializedView</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> view</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.refreshMaterializedView(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is only useful with postgreSQL, since mySQL does not support materialized views.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="refreshmaterializedviews">
+<h3>refreshMaterializedViews<a class="headerlink" href="#refreshmaterializedviews" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.refreshMaterializedViews()">
+public abstract boolean <code class="descname">refreshMaterializedViews</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.refreshMaterializedViews()" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is only useful with postgreSQL, since mySQL does not support materialized views.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="register">
+<h3>register<a class="headerlink" href="#register" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(Run, boolean)">
+protected abstract boolean <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run">Run</a><em> run</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(Run, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id7">
+<h3>register<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(AnalysisRun, boolean)">
+protected abstract boolean <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/AnalysisRun.html#de.clusteval.run.AnalysisRun" title="de.clusteval.run.AnalysisRun">AnalysisRun</a>&lt;<a class="reference internal" href="../../../utils/Statistic.html#de.clusteval.utils.Statistic" title="de.clusteval.utils.Statistic">Statistic</a>&gt;<em> run</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(AnalysisRun, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id8">
+<h3>register<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(DataAnalysisRun, boolean)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/DataAnalysisRun.html#de.clusteval.run.DataAnalysisRun" title="de.clusteval.run.DataAnalysisRun">DataAnalysisRun</a><em> run</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(DataAnalysisRun, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id9">
+<h3>register<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(RunAnalysisRun, boolean)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/RunAnalysisRun.html#de.clusteval.run.RunAnalysisRun" title="de.clusteval.run.RunAnalysisRun">RunAnalysisRun</a><em> run</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(RunAnalysisRun, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id10">
+<h3>register<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(RunDataAnalysisRun, boolean)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/RunDataAnalysisRun.html#de.clusteval.run.RunDataAnalysisRun" title="de.clusteval.run.RunDataAnalysisRun">RunDataAnalysisRun</a><em> run</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(RunDataAnalysisRun, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id11">
+<h3>register<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(ExecutionRun, boolean)">
+protected abstract boolean <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/ExecutionRun.html#de.clusteval.run.ExecutionRun" title="de.clusteval.run.ExecutionRun">ExecutionRun</a><em> run</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(ExecutionRun, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id12">
+<h3>register<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(ClusteringRun, boolean)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/ClusteringRun.html#de.clusteval.run.ClusteringRun" title="de.clusteval.run.ClusteringRun">ClusteringRun</a><em> run</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(ClusteringRun, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id13">
+<h3>register<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(ParameterOptimizationRun, boolean)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/ParameterOptimizationRun.html#de.clusteval.run.ParameterOptimizationRun" title="de.clusteval.run.ParameterOptimizationRun">ParameterOptimizationRun</a><em> run</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(ParameterOptimizationRun, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id14">
+<h3>register<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(InternalParameterOptimizationRun, boolean)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/InternalParameterOptimizationRun.html#de.clusteval.run.InternalParameterOptimizationRun" title="de.clusteval.run.InternalParameterOptimizationRun">InternalParameterOptimizationRun</a><em> run</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(InternalParameterOptimizationRun, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id15">
+<h3>register<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(ProgramConfig, boolean)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a><em> object</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(ProgramConfig, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id16">
+<h3>register<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(Program, boolean)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../program/Program.html#de.clusteval.program.Program" title="de.clusteval.program.Program">Program</a><em> object</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(Program, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id17">
+<h3>register<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(RepositoryObject, boolean)">
+public boolean <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a><em> object</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(RepositoryObject, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id18">
+<h3>register<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(Class)">
+public boolean <code class="descname">register</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a>&gt;<em> c</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id19">
+<h3>register<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(GoldStandardConfig, boolean)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../data/goldstandard/GoldStandardConfig.html#de.clusteval.data.goldstandard.GoldStandardConfig" title="de.clusteval.data.goldstandard.GoldStandardConfig">GoldStandardConfig</a><em> object</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(GoldStandardConfig, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id20">
+<h3>register<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(GoldStandard, boolean)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../data/goldstandard/GoldStandard.html#de.clusteval.data.goldstandard.GoldStandard" title="de.clusteval.data.goldstandard.GoldStandard">GoldStandard</a><em> object</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(GoldStandard, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id21">
+<h3>register<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(DoubleProgramParameter)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../program/DoubleProgramParameter.html#de.clusteval.program.DoubleProgramParameter" title="de.clusteval.program.DoubleProgramParameter">DoubleProgramParameter</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(DoubleProgramParameter)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id22">
+<h3>register<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(IntegerProgramParameter)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../program/IntegerProgramParameter.html#de.clusteval.program.IntegerProgramParameter" title="de.clusteval.program.IntegerProgramParameter">IntegerProgramParameter</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(IntegerProgramParameter)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id23">
+<h3>register<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(StringProgramParameter)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../program/StringProgramParameter.html#de.clusteval.program.StringProgramParameter" title="de.clusteval.program.StringProgramParameter">StringProgramParameter</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(StringProgramParameter)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id24">
+<h3>register<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(DataSet, boolean)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../data/dataset/DataSet.html#de.clusteval.data.dataset.DataSet" title="de.clusteval.data.dataset.DataSet">DataSet</a><em> object</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(DataSet, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id25">
+<h3>register<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(DataConfig, boolean)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a><em> object</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(DataConfig, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id26">
+<h3>register<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(DataSetConfig, boolean)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../data/dataset/DataSetConfig.html#de.clusteval.data.dataset.DataSetConfig" title="de.clusteval.data.dataset.DataSetConfig">DataSetConfig</a><em> object</em>, boolean<em> updateOnly</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(DataSetConfig, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id27">
+<h3>register<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(Clustering)">
+protected abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../cluster/Clustering.html#de.clusteval.cluster.Clustering" title="de.clusteval.cluster.Clustering">Clustering</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(Clustering)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id28">
+<h3>register<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(RunResult)">
+public int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/result/RunResult.html#de.clusteval.run.result.RunResult" title="de.clusteval.run.result.RunResult">RunResult</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(RunResult)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>object</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the runresult was registered successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id29">
+<h3>register<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(ExecutionRunResult)">
+public abstract boolean <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/result/ExecutionRunResult.html#de.clusteval.run.result.ExecutionRunResult" title="de.clusteval.run.result.ExecutionRunResult">ExecutionRunResult</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(ExecutionRunResult)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>object</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the object was registered successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id30">
+<h3>register<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(ClusteringRunResult)">
+public abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/result/ClusteringRunResult.html#de.clusteval.run.result.ClusteringRunResult" title="de.clusteval.run.result.ClusteringRunResult">ClusteringRunResult</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(ClusteringRunResult)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>object</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the object was registered successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id31">
+<h3>register<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(ParameterOptimizationResult)">
+public abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/result/ParameterOptimizationResult.html#de.clusteval.run.result.ParameterOptimizationResult" title="de.clusteval.run.result.ParameterOptimizationResult">ParameterOptimizationResult</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(ParameterOptimizationResult)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>object</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the object was registered successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id32">
+<h3>register<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(AnalysisRunResult)">
+public abstract boolean <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/result/AnalysisRunResult.html#de.clusteval.run.result.AnalysisRunResult" title="de.clusteval.run.result.AnalysisRunResult">AnalysisRunResult</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(AnalysisRunResult)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>object</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the object was registered successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id33">
+<h3>register<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(RunAnalysisRunResult)">
+public abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/result/RunAnalysisRunResult.html#de.clusteval.run.result.RunAnalysisRunResult" title="de.clusteval.run.result.RunAnalysisRunResult">RunAnalysisRunResult</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(RunAnalysisRunResult)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>object</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the object was registered successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id34">
+<h3>register<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(RunDataAnalysisRunResult)">
+public abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/result/RunDataAnalysisRunResult.html#de.clusteval.run.result.RunDataAnalysisRunResult" title="de.clusteval.run.result.RunDataAnalysisRunResult">RunDataAnalysisRunResult</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(RunDataAnalysisRunResult)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>object</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the object was registered successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id35">
+<h3>register<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.register(DataAnalysisRunResult)">
+public abstract int <code class="descname">register</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/result/DataAnalysisRunResult.html#de.clusteval.run.result.DataAnalysisRunResult" title="de.clusteval.run.result.DataAnalysisRunResult">DataAnalysisRunResult</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.register(DataAnalysisRunResult)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>object</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the object was registered successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="registerclusteringqualitymeasureclass">
+<h3>registerClusteringQualityMeasureClass<a class="headerlink" href="#registerclusteringqualitymeasureclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.registerClusteringQualityMeasureClass(Class)">
+protected abstract boolean <code class="descname">registerClusteringQualityMeasureClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../cluster/quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure">ClusteringQualityMeasure</a>&gt;<em> clusteringQualityMeasure</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.registerClusteringQualityMeasureClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="registercontextclass">
+<h3>registerContextClass<a class="headerlink" href="#registercontextclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.registerContextClass(Class)">
+protected abstract boolean <code class="descname">registerContextClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../context/Context.html#de.clusteval.context.Context" title="de.clusteval.context.Context">Context</a>&gt;<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.registerContextClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="registerdatasetformatclass">
+<h3>registerDataSetFormatClass<a class="headerlink" href="#registerdatasetformatclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.registerDataSetFormatClass(Class)">
+protected abstract boolean <code class="descname">registerDataSetFormatClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../data/dataset/format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat">DataSetFormat</a>&gt;<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.registerDataSetFormatClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="registerdatasettypeclass">
+<h3>registerDataSetTypeClass<a class="headerlink" href="#registerdatasettypeclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.registerDataSetTypeClass(Class)">
+protected abstract boolean <code class="descname">registerDataSetTypeClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../data/dataset/type/DataSetType.html#de.clusteval.data.dataset.type.DataSetType" title="de.clusteval.data.dataset.type.DataSetType">DataSetType</a>&gt;<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.registerDataSetTypeClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="registerdatastatisticclass">
+<h3>registerDataStatisticClass<a class="headerlink" href="#registerdatastatisticclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.registerDataStatisticClass(Class)">
+protected abstract boolean <code class="descname">registerDataStatisticClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../data/statistics/DataStatistic.html#de.clusteval.data.statistics.DataStatistic" title="de.clusteval.data.statistics.DataStatistic">DataStatistic</a>&gt;<em> dataStatistic</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.registerDataStatisticClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="registerparameteroptimizationmethodclass">
+<h3>registerParameterOptimizationMethodClass<a class="headerlink" href="#registerparameteroptimizationmethodclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.registerParameterOptimizationMethodClass(Class)">
+protected abstract boolean <code class="descname">registerParameterOptimizationMethodClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../cluster/paramOptimization/ParameterOptimizationMethod.html#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod">ParameterOptimizationMethod</a>&gt;<em> paramOptMethod</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.registerParameterOptimizationMethodClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="registerrundatastatisticclass">
+<h3>registerRunDataStatisticClass<a class="headerlink" href="#registerrundatastatisticclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.registerRunDataStatisticClass(Class)">
+protected abstract boolean <code class="descname">registerRunDataStatisticClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../run/statistics/RunDataStatistic.html#de.clusteval.run.statistics.RunDataStatistic" title="de.clusteval.run.statistics.RunDataStatistic">RunDataStatistic</a>&gt;<em> runDataStatistic</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.registerRunDataStatisticClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="registerrunresultformatclass">
+<h3>registerRunResultFormatClass<a class="headerlink" href="#registerrunresultformatclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.registerRunResultFormatClass(Class)">
+protected abstract boolean <code class="descname">registerRunResultFormatClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../run/result/format/RunResultFormat.html#de.clusteval.run.result.format.RunResultFormat" title="de.clusteval.run.result.format.RunResultFormat">RunResultFormat</a>&gt;<em> runResultFormat</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.registerRunResultFormatClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="registerrunstatisticclass">
+<h3>registerRunStatisticClass<a class="headerlink" href="#registerrunstatisticclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.registerRunStatisticClass(Class)">
+protected abstract boolean <code class="descname">registerRunStatisticClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../run/statistics/RunStatistic.html#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic">RunStatistic</a>&gt;<em> runStatistic</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.registerRunStatisticClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="replacenull">
+<h3>replaceNull<a class="headerlink" href="#replacenull" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.replaceNull(String, String)">
+protected static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">replaceNull</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> text</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> replace</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.replaceNull(String, String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="select">
+<h3>select<a class="headerlink" href="#select" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.select(String, String, String[], String[])">
+protected int <code class="descname">select</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> tableName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> columnName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> columnNames</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> values</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.select(String, String, String[], String[])" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="setrepositoryid">
+<h3>setRepositoryId<a class="headerlink" href="#setrepositoryid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.setRepositoryId(int)">
+protected void <code class="descname">setRepositoryId</code><span class="sig-paren">(</span>int<em> repositoryId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.setRepositoryId(int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="tryinsert">
+<h3>tryInsert<a class="headerlink" href="#tryinsert" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.tryInsert(String, String[], String[])">
+protected int <code class="descname">tryInsert</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> tableName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> columnNames</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> values</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.tryInsert(String, String[], String[])" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unregister">
+<h3>unregister<a class="headerlink" href="#unregister" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregister(RepositoryObject)">
+public boolean <code class="descname">unregister</code><span class="sig-paren">(</span><a class="reference internal" href="../RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregister(RepositoryObject)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id36">
+<h3>unregister<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregister(Class)">
+public boolean <code class="descname">unregister</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a>&gt;<em> c</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregister(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id37">
+<h3>unregister<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregister(ProgramConfig)">
+protected abstract int <code class="descname">unregister</code><span class="sig-paren">(</span><a class="reference internal" href="../../../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregister(ProgramConfig)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id38">
+<h3>unregister<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregister(ProgramParameter)">
+protected abstract int <code class="descname">unregister</code><span class="sig-paren">(</span><a class="reference internal" href="../../../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;<em> programParameter</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregister(ProgramParameter)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id39">
+<h3>unregister<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregister(Program)">
+protected abstract int <code class="descname">unregister</code><span class="sig-paren">(</span><a class="reference internal" href="../../../program/Program.html#de.clusteval.program.Program" title="de.clusteval.program.Program">Program</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregister(Program)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id40">
+<h3>unregister<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregister(GoldStandardConfig)">
+protected abstract int <code class="descname">unregister</code><span class="sig-paren">(</span><a class="reference internal" href="../../../data/goldstandard/GoldStandardConfig.html#de.clusteval.data.goldstandard.GoldStandardConfig" title="de.clusteval.data.goldstandard.GoldStandardConfig">GoldStandardConfig</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregister(GoldStandardConfig)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id41">
+<h3>unregister<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregister(GoldStandard)">
+protected abstract int <code class="descname">unregister</code><span class="sig-paren">(</span><a class="reference internal" href="../../../data/goldstandard/GoldStandard.html#de.clusteval.data.goldstandard.GoldStandard" title="de.clusteval.data.goldstandard.GoldStandard">GoldStandard</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregister(GoldStandard)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id42">
+<h3>unregister<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregister(Clustering)">
+protected abstract int <code class="descname">unregister</code><span class="sig-paren">(</span><a class="reference internal" href="../../../cluster/Clustering.html#de.clusteval.cluster.Clustering" title="de.clusteval.cluster.Clustering">Clustering</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregister(Clustering)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id43">
+<h3>unregister<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregister(DataSet)">
+protected abstract int <code class="descname">unregister</code><span class="sig-paren">(</span><a class="reference internal" href="../../../data/dataset/DataSet.html#de.clusteval.data.dataset.DataSet" title="de.clusteval.data.dataset.DataSet">DataSet</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregister(DataSet)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id44">
+<h3>unregister<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregister(Run)">
+protected abstract int <code class="descname">unregister</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run">Run</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregister(Run)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id45">
+<h3>unregister<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregister(RunResult)">
+protected abstract int <code class="descname">unregister</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/result/RunResult.html#de.clusteval.run.result.RunResult" title="de.clusteval.run.result.RunResult">RunResult</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregister(RunResult)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id46">
+<h3>unregister<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregister(ParameterOptimizationResult)">
+protected abstract int <code class="descname">unregister</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/result/ParameterOptimizationResult.html#de.clusteval.run.result.ParameterOptimizationResult" title="de.clusteval.run.result.ParameterOptimizationResult">ParameterOptimizationResult</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregister(ParameterOptimizationResult)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id47">
+<h3>unregister<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregister(DataConfig)">
+protected abstract int <code class="descname">unregister</code><span class="sig-paren">(</span><a class="reference internal" href="../../../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregister(DataConfig)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id48">
+<h3>unregister<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregister(DataSetConfig)">
+protected abstract int <code class="descname">unregister</code><span class="sig-paren">(</span><a class="reference internal" href="../../../data/dataset/DataSetConfig.html#de.clusteval.data.dataset.DataSetConfig" title="de.clusteval.data.dataset.DataSetConfig">DataSetConfig</a><em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregister(DataSetConfig)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unregisterclusteringqualitymeasureclass">
+<h3>unregisterClusteringQualityMeasureClass<a class="headerlink" href="#unregisterclusteringqualitymeasureclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregisterClusteringQualityMeasureClass(Class)">
+protected abstract boolean <code class="descname">unregisterClusteringQualityMeasureClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../cluster/quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure">ClusteringQualityMeasure</a>&gt;<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregisterClusteringQualityMeasureClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unregistercontextclass">
+<h3>unregisterContextClass<a class="headerlink" href="#unregistercontextclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregisterContextClass(Class)">
+protected abstract boolean <code class="descname">unregisterContextClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../context/Context.html#de.clusteval.context.Context" title="de.clusteval.context.Context">Context</a>&gt;<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregisterContextClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unregisterdatasetformatclass">
+<h3>unregisterDataSetFormatClass<a class="headerlink" href="#unregisterdatasetformatclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregisterDataSetFormatClass(Class)">
+protected abstract boolean <code class="descname">unregisterDataSetFormatClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../data/dataset/format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat">DataSetFormat</a>&gt;<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregisterDataSetFormatClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unregisterdatasettypeclass">
+<h3>unregisterDataSetTypeClass<a class="headerlink" href="#unregisterdatasettypeclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregisterDataSetTypeClass(Class)">
+protected abstract boolean <code class="descname">unregisterDataSetTypeClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../data/dataset/type/DataSetType.html#de.clusteval.data.dataset.type.DataSetType" title="de.clusteval.data.dataset.type.DataSetType">DataSetType</a>&gt;<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregisterDataSetTypeClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unregisterdatastatisticclass">
+<h3>unregisterDataStatisticClass<a class="headerlink" href="#unregisterdatastatisticclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregisterDataStatisticClass(Class)">
+protected abstract boolean <code class="descname">unregisterDataStatisticClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../data/statistics/DataStatistic.html#de.clusteval.data.statistics.DataStatistic" title="de.clusteval.data.statistics.DataStatistic">DataStatistic</a>&gt;<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregisterDataStatisticClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unregisterparameteroptimizationmethodclass">
+<h3>unregisterParameterOptimizationMethodClass<a class="headerlink" href="#unregisterparameteroptimizationmethodclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregisterParameterOptimizationMethodClass(Class)">
+protected abstract boolean <code class="descname">unregisterParameterOptimizationMethodClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../cluster/paramOptimization/ParameterOptimizationMethod.html#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod">ParameterOptimizationMethod</a>&gt;<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregisterParameterOptimizationMethodClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unregisterrundatastatisticclass">
+<h3>unregisterRunDataStatisticClass<a class="headerlink" href="#unregisterrundatastatisticclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregisterRunDataStatisticClass(Class)">
+protected abstract boolean <code class="descname">unregisterRunDataStatisticClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../run/statistics/RunDataStatistic.html#de.clusteval.run.statistics.RunDataStatistic" title="de.clusteval.run.statistics.RunDataStatistic">RunDataStatistic</a>&gt;<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregisterRunDataStatisticClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unregisterrunresultformat">
+<h3>unregisterRunResultFormat<a class="headerlink" href="#unregisterrunresultformat" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregisterRunResultFormat(Class)">
+protected abstract boolean <code class="descname">unregisterRunResultFormat</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../run/result/format/RunResultFormat.html#de.clusteval.run.result.format.RunResultFormat" title="de.clusteval.run.result.format.RunResultFormat">RunResultFormat</a>&gt;<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregisterRunResultFormat(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unregisterrunstatisticclass">
+<h3>unregisterRunStatisticClass<a class="headerlink" href="#unregisterrunstatisticclass" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.unregisterRunStatisticClass(Class)">
+protected abstract boolean <code class="descname">unregisterRunStatisticClass</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../../run/statistics/RunStatistic.html#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic">RunStatistic</a>&gt;<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.unregisterRunStatisticClass(Class)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="update">
+<h3>update<a class="headerlink" href="#update" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.update(String, String[], String[], int)">
+protected boolean <code class="descname">update</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> tableName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> columnNames</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> values</em>, int<em> rowId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.update(String, String[], String[], int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="updaterepositoryid">
+<h3>updateRepositoryId<a class="headerlink" href="#updaterepositoryid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.updateRepositoryId()">
+protected int <code class="descname">updateRepositoryId</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.updateRepositoryId()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="updatestatusofrun">
+<h3>updateStatusOfRun<a class="headerlink" href="#updatestatusofrun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLCommunicator.updateStatusOfRun(Run, String)">
+public abstract boolean <code class="descname">updateStatusOfRun</code><span class="sig-paren">(</span><a class="reference internal" href="../../../run/Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run">Run</a><em> run</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runStatus</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLCommunicator.updateStatusOfRun(Run, String)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>run</strong> &#8211; The run which changed its status.</li>
+<li><strong>runStatus</strong> &#8211; The new run status.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the status of the run was updated successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SQLCommunicator</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#conn">conn</a></li>
+<li><a class="reference internal" href="#exceptionhandler">exceptionHandler</a></li>
+<li><a class="reference internal" href="#log">log</a></li>
+<li><a class="reference internal" href="#objectids">objectIds</a></li>
+<li><a class="reference internal" href="#querybuilder">queryBuilder</a></li>
+<li><a class="reference internal" href="#repository">repository</a></li>
+<li><a class="reference internal" href="#sqlconfig">sqlConfig</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">SQLCommunicator</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#checkifpresent">checkIfPresent</a></li>
+<li><a class="reference internal" href="#commitdb">commitDB</a></li>
+<li><a class="reference internal" href="#createexceptionhandler">createExceptionHandler</a></li>
+<li><a class="reference internal" href="#createquerybuilder">createQueryBuilder</a></li>
+<li><a class="reference internal" href="#delete">delete</a></li>
+<li><a class="reference internal" href="#id2">delete</a></li>
+<li><a class="reference internal" href="#id3">delete</a></li>
+<li><a class="reference internal" href="#deletefromtable">deleteFromTable</a></li>
+<li><a class="reference internal" href="#getclusterid">getClusterId</a></li>
+<li><a class="reference internal" href="#getclusterobjectid">getClusterObjectId</a></li>
+<li><a class="reference internal" href="#getclusteringid">getClusteringId</a></li>
+<li><a class="reference internal" href="#getdbpassword">getDBPassword</a></li>
+<li><a class="reference internal" href="#getdbusername">getDBUsername</a></li>
+<li><a class="reference internal" href="#getdatasetformatid">getDataSetFormatId</a></li>
+<li><a class="reference internal" href="#getdatasettypeid">getDataSetTypeId</a></li>
+<li><a class="reference internal" href="#getdatabase">getDatabase</a></li>
+<li><a class="reference internal" href="#getobjectid">getObjectId</a></li>
+<li><a class="reference internal" href="#getobjectids">getObjectIds</a></li>
+<li><a class="reference internal" href="#getparameteroptimizationmethodid">getParameterOptimizationMethodId</a></li>
+<li><a class="reference internal" href="#getparametersetid">getParameterSetId</a></li>
+<li><a class="reference internal" href="#getparametersetparameterid">getParameterSetParameterId</a></li>
+<li><a class="reference internal" href="#getparametersetparametervaluesid">getParameterSetParameterValuesId</a></li>
+<li><a class="reference internal" href="#getprogramparametertypeid">getProgramParameterTypeId</a></li>
+<li><a class="reference internal" href="#getrepositoryid">getRepositoryId</a></li>
+<li><a class="reference internal" href="#getrepositorytypeid">getRepositoryTypeId</a></li>
+<li><a class="reference internal" href="#getrunanalysisid">getRunAnalysisId</a></li>
+<li><a class="reference internal" href="#getrunexecutionid">getRunExecutionId</a></li>
+<li><a class="reference internal" href="#getrunid">getRunId</a></li>
+<li><a class="reference internal" href="#getrunresultanalysisid">getRunResultAnalysisId</a></li>
+<li><a class="reference internal" href="#getrunresultexecutionid">getRunResultExecutionId</a></li>
+<li><a class="reference internal" href="#getrunresultformatid">getRunResultFormatId</a></li>
+<li><a class="reference internal" href="#getrunresultid">getRunResultId</a></li>
+<li><a class="reference internal" href="#getrunresultrunanalysisid">getRunResultRunAnalysisId</a></li>
+<li><a class="reference internal" href="#getruntypeid">getRunTypeId</a></li>
+<li><a class="reference internal" href="#getserver">getServer</a></li>
+<li><a class="reference internal" href="#getstatisticid">getStatisticId</a></li>
+<li><a class="reference internal" href="#gettableclusterobjects">getTableClusterObjects</a></li>
+<li><a class="reference internal" href="#gettableclusteringqualitymeasures">getTableClusteringQualityMeasures</a></li>
+<li><a class="reference internal" href="#gettableclusterings">getTableClusterings</a></li>
+<li><a class="reference internal" href="#gettableclusters">getTableClusters</a></li>
+<li><a class="reference internal" href="#gettabledataconfigs">getTableDataConfigs</a></li>
+<li><a class="reference internal" href="#gettabledatasetconfigs">getTableDataSetConfigs</a></li>
+<li><a class="reference internal" href="#gettabledatasetformats">getTableDataSetFormats</a></li>
+<li><a class="reference internal" href="#gettabledatasettypes">getTableDataSetTypes</a></li>
+<li><a class="reference internal" href="#gettabledatasets">getTableDatasets</a></li>
+<li><a class="reference internal" href="#gettablegoldstandardconfigs">getTableGoldStandardConfigs</a></li>
+<li><a class="reference internal" href="#gettablegoldstandards">getTableGoldStandards</a></li>
+<li><a class="reference internal" href="#gettableoptimizableprogramparameters">getTableOptimizableProgramParameters</a></li>
+<li><a class="reference internal" href="#gettableparameteroptimizationmethods">getTableParameterOptimizationMethods</a></li>
+<li><a class="reference internal" href="#gettableparameteroptimizationqualities">getTableParameterOptimizationQualities</a></li>
+<li><a class="reference internal" href="#gettableparametersetiterations">getTableParameterSetIterations</a></li>
+<li><a class="reference internal" href="#gettableparametersetparametervalues">getTableParameterSetParameterValues</a></li>
+<li><a class="reference internal" href="#gettableparametersetparameters">getTableParameterSetParameters</a></li>
+<li><a class="reference internal" href="#gettableparametersets">getTableParameterSets</a></li>
+<li><a class="reference internal" href="#gettableprogramconfigs">getTableProgramConfigs</a></li>
+<li><a class="reference internal" href="#gettableprogramconfigscompatibledatasetformats">getTableProgramConfigsCompatibleDataSetFormats</a></li>
+<li><a class="reference internal" href="#gettableprogramparameter">getTableProgramParameter</a></li>
+<li><a class="reference internal" href="#gettableprogramparametertype">getTableProgramParameterType</a></li>
+<li><a class="reference internal" href="#gettableprograms">getTablePrograms</a></li>
+<li><a class="reference internal" href="#gettablerepositories">getTableRepositories</a></li>
+<li><a class="reference internal" href="#gettablerepositorytypes">getTableRepositoryTypes</a></li>
+<li><a class="reference internal" href="#gettablerunresultformats">getTableRunResultFormats</a></li>
+<li><a class="reference internal" href="#gettablerunresults">getTableRunResults</a></li>
+<li><a class="reference internal" href="#gettablerunresultsanalysis">getTableRunResultsAnalysis</a></li>
+<li><a class="reference internal" href="#gettablerunresultsclustering">getTableRunResultsClustering</a></li>
+<li><a class="reference internal" href="#gettablerunresultsclusteringsquality">getTableRunResultsClusteringsQuality</a></li>
+<li><a class="reference internal" href="#gettablerunresultsdataanalysis">getTableRunResultsDataAnalysis</a></li>
+<li><a class="reference internal" href="#gettablerunresultsexecution">getTableRunResultsExecution</a></li>
+<li><a class="reference internal" href="#gettablerunresultsparameteroptimization">getTableRunResultsParameterOptimization</a></li>
+<li><a class="reference internal" href="#gettablerunresultsrunanalysis">getTableRunResultsRunAnalysis</a></li>
+<li><a class="reference internal" href="#gettablerunresultsrundataanalysis">getTableRunResultsRunDataAnalysis</a></li>
+<li><a class="reference internal" href="#gettableruntypes">getTableRunTypes</a></li>
+<li><a class="reference internal" href="#gettableruns">getTableRuns</a></li>
+<li><a class="reference internal" href="#gettablerunsanalysis">getTableRunsAnalysis</a></li>
+<li><a class="reference internal" href="#gettablerunsanalysisdata">getTableRunsAnalysisData</a></li>
+<li><a class="reference internal" href="#gettablerunsanalysisdatadataidentifiers">getTableRunsAnalysisDataDataIdentifiers</a></li>
+<li><a class="reference internal" href="#gettablerunsanalysisrun">getTableRunsAnalysisRun</a></li>
+<li><a class="reference internal" href="#gettablerunsanalysisrundata">getTableRunsAnalysisRunData</a></li>
+<li><a class="reference internal" href="#gettablerunsanalysisrundatadataidentifiers">getTableRunsAnalysisRunDataDataIdentifiers</a></li>
+<li><a class="reference internal" href="#gettablerunsanalysisrundatarunidentifiers">getTableRunsAnalysisRunDataRunIdentifiers</a></li>
+<li><a class="reference internal" href="#gettablerunsanalysisrunrunidentifiers">getTableRunsAnalysisRunRunIdentifiers</a></li>
+<li><a class="reference internal" href="#gettablerunsanalysisstatistics">getTableRunsAnalysisStatistics</a></li>
+<li><a class="reference internal" href="#gettablerunsclustering">getTableRunsClustering</a></li>
+<li><a class="reference internal" href="#gettablerunsexecution">getTableRunsExecution</a></li>
+<li><a class="reference internal" href="#gettablerunsexecutiondataconfigs">getTableRunsExecutionDataConfigs</a></li>
+<li><a class="reference internal" href="#gettablerunsexecutionparametervalues">getTableRunsExecutionParameterValues</a></li>
+<li><a class="reference internal" href="#gettablerunsexecutionprogramconfigs">getTableRunsExecutionProgramConfigs</a></li>
+<li><a class="reference internal" href="#gettablerunsexecutionqualitymeasures">getTableRunsExecutionQualityMeasures</a></li>
+<li><a class="reference internal" href="#gettablerunsinternalparameteroptimization">getTableRunsInternalParameterOptimization</a></li>
+<li><a class="reference internal" href="#gettablerunsparameteroptimization">getTableRunsParameterOptimization</a></li>
+<li><a class="reference internal" href="#gettablerunsparameteroptimizationmethods">getTableRunsParameterOptimizationMethods</a></li>
+<li><a class="reference internal" href="#gettablerunsparameteroptimizationparameters">getTableRunsParameterOptimizationParameters</a></li>
+<li><a class="reference internal" href="#gettablerunsparameteroptimizationqualitymeasures">getTableRunsParameterOptimizationQualityMeasures</a></li>
+<li><a class="reference internal" href="#gettablestatistics">getTableStatistics</a></li>
+<li><a class="reference internal" href="#gettablestatisticsdata">getTableStatisticsData</a></li>
+<li><a class="reference internal" href="#gettablestatisticsrun">getTableStatisticsRun</a></li>
+<li><a class="reference internal" href="#gettablestatisticsrundata">getTableStatisticsRunData</a></li>
+<li><a class="reference internal" href="#initdb">initDB</a></li>
+<li><a class="reference internal" href="#insert">insert</a></li>
+<li><a class="reference internal" href="#id6">insert</a></li>
+<li><a class="reference internal" href="#refreshmaterializedview">refreshMaterializedView</a></li>
+<li><a class="reference internal" href="#refreshmaterializedviews">refreshMaterializedViews</a></li>
+<li><a class="reference internal" href="#register">register</a></li>
+<li><a class="reference internal" href="#id7">register</a></li>
+<li><a class="reference internal" href="#id8">register</a></li>
+<li><a class="reference internal" href="#id9">register</a></li>
+<li><a class="reference internal" href="#id10">register</a></li>
+<li><a class="reference internal" href="#id11">register</a></li>
+<li><a class="reference internal" href="#id12">register</a></li>
+<li><a class="reference internal" href="#id13">register</a></li>
+<li><a class="reference internal" href="#id14">register</a></li>
+<li><a class="reference internal" href="#id15">register</a></li>
+<li><a class="reference internal" href="#id16">register</a></li>
+<li><a class="reference internal" href="#id17">register</a></li>
+<li><a class="reference internal" href="#id18">register</a></li>
+<li><a class="reference internal" href="#id19">register</a></li>
+<li><a class="reference internal" href="#id20">register</a></li>
+<li><a class="reference internal" href="#id21">register</a></li>
+<li><a class="reference internal" href="#id22">register</a></li>
+<li><a class="reference internal" href="#id23">register</a></li>
+<li><a class="reference internal" href="#id24">register</a></li>
+<li><a class="reference internal" href="#id25">register</a></li>
+<li><a class="reference internal" href="#id26">register</a></li>
+<li><a class="reference internal" href="#id27">register</a></li>
+<li><a class="reference internal" href="#id28">register</a></li>
+<li><a class="reference internal" href="#id29">register</a></li>
+<li><a class="reference internal" href="#id30">register</a></li>
+<li><a class="reference internal" href="#id31">register</a></li>
+<li><a class="reference internal" href="#id32">register</a></li>
+<li><a class="reference internal" href="#id33">register</a></li>
+<li><a class="reference internal" href="#id34">register</a></li>
+<li><a class="reference internal" href="#id35">register</a></li>
+<li><a class="reference internal" href="#registerclusteringqualitymeasureclass">registerClusteringQualityMeasureClass</a></li>
+<li><a class="reference internal" href="#registercontextclass">registerContextClass</a></li>
+<li><a class="reference internal" href="#registerdatasetformatclass">registerDataSetFormatClass</a></li>
+<li><a class="reference internal" href="#registerdatasettypeclass">registerDataSetTypeClass</a></li>
+<li><a class="reference internal" href="#registerdatastatisticclass">registerDataStatisticClass</a></li>
+<li><a class="reference internal" href="#registerparameteroptimizationmethodclass">registerParameterOptimizationMethodClass</a></li>
+<li><a class="reference internal" href="#registerrundatastatisticclass">registerRunDataStatisticClass</a></li>
+<li><a class="reference internal" href="#registerrunresultformatclass">registerRunResultFormatClass</a></li>
+<li><a class="reference internal" href="#registerrunstatisticclass">registerRunStatisticClass</a></li>
+<li><a class="reference internal" href="#replacenull">replaceNull</a></li>
+<li><a class="reference internal" href="#select">select</a></li>
+<li><a class="reference internal" href="#setrepositoryid">setRepositoryId</a></li>
+<li><a class="reference internal" href="#tryinsert">tryInsert</a></li>
+<li><a class="reference internal" href="#unregister">unregister</a></li>
+<li><a class="reference internal" href="#id36">unregister</a></li>
+<li><a class="reference internal" href="#id37">unregister</a></li>
+<li><a class="reference internal" href="#id38">unregister</a></li>
+<li><a class="reference internal" href="#id39">unregister</a></li>
+<li><a class="reference internal" href="#id40">unregister</a></li>
+<li><a class="reference internal" href="#id41">unregister</a></li>
+<li><a class="reference internal" href="#id42">unregister</a></li>
+<li><a class="reference internal" href="#id43">unregister</a></li>
+<li><a class="reference internal" href="#id44">unregister</a></li>
+<li><a class="reference internal" href="#id45">unregister</a></li>
+<li><a class="reference internal" href="#id46">unregister</a></li>
+<li><a class="reference internal" href="#id47">unregister</a></li>
+<li><a class="reference internal" href="#id48">unregister</a></li>
+<li><a class="reference internal" href="#unregisterclusteringqualitymeasureclass">unregisterClusteringQualityMeasureClass</a></li>
+<li><a class="reference internal" href="#unregistercontextclass">unregisterContextClass</a></li>
+<li><a class="reference internal" href="#unregisterdatasetformatclass">unregisterDataSetFormatClass</a></li>
+<li><a class="reference internal" href="#unregisterdatasettypeclass">unregisterDataSetTypeClass</a></li>
+<li><a class="reference internal" href="#unregisterdatastatisticclass">unregisterDataStatisticClass</a></li>
+<li><a class="reference internal" href="#unregisterparameteroptimizationmethodclass">unregisterParameterOptimizationMethodClass</a></li>
+<li><a class="reference internal" href="#unregisterrundatastatisticclass">unregisterRunDataStatisticClass</a></li>
+<li><a class="reference internal" href="#unregisterrunresultformat">unregisterRunResultFormat</a></li>
+<li><a class="reference internal" href="#unregisterrunstatisticclass">unregisterRunStatisticClass</a></li>
+<li><a class="reference internal" href="#update">update</a></li>
+<li><a class="reference internal" href="#updaterepositoryid">updateRepositoryId</a></li>
+<li><a class="reference internal" href="#updatestatusofrun">updateStatusOfRun</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../../_sources/de/clusteval/framework/repository/db/SQLCommunicator.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

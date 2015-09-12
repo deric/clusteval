@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>DataAnalysisRun &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dataanalysisrun">
+<h1>DataAnalysisRun<a class="headerlink" href="#dataanalysisrun" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.run.DataAnalysisRun">
+public class <code class="descname">DataAnalysisRun</code> extends <a class="reference internal" href="AnalysisRun.html#de.clusteval.run.AnalysisRun" title="de.clusteval.run.AnalysisRun">AnalysisRun</a>&lt;<a class="reference internal" href="../data/statistics/DataStatistic.html#de.clusteval.data.statistics.DataStatistic" title="de.clusteval.data.statistics.DataStatistic">DataStatistic</a>&gt;<a class="headerlink" href="#de.clusteval.run.DataAnalysisRun" title="Permalink to this definition">¶</a></dt>
+<dd><p>A type of analysis run that conducts analyses of data inputs encapsulated by data configurations.</p>
+<p>A data analysis run has a list of data configurations in <a class="reference internal" href="#de.clusteval.run.DataAnalysisRun.dataConfigs" title="de.clusteval.run.DataAnalysisRun.dataConfigs"><code class="xref java java-ref docutils literal"><span class="pre">dataConfigs</span></code></a> , that should be assessed during execution of the run. Additionally they inherit a list of data statistics in <a class="reference internal" href="AnalysisRun.html#de.clusteval.run.AnalysisRun.statistics" title="de.clusteval.run.AnalysisRun.statistics"><code class="xref java java-ref docutils literal"><span class="pre">AnalysisRun.statistics</span></code></a> that should be assessed for every data configuration.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dataconfigs">
+<h3>dataConfigs<a class="headerlink" href="#dataconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.DataAnalysisRun.dataConfigs">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt; <code class="descname">dataConfigs</code><a class="headerlink" href="#de.clusteval.run.DataAnalysisRun.dataConfigs" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of data configurations, that should be assessed during execution of the run.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>DataAnalysisRun<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.run.DataAnalysisRun.DataAnalysisRun(Repository, Context, long, File, List, List)">
+public <code class="descname">DataAnalysisRun</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference internal" href="../context/Context.html#de.clusteval.context.Context" title="de.clusteval.context.Context">Context</a><em> context</em>, long<em> changeDate</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt;<em> dataConfigs</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/statistics/DataStatistic.html#de.clusteval.data.statistics.DataStatistic" title="de.clusteval.data.statistics.DataStatistic">DataStatistic</a>&gt;<em> statistics</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.DataAnalysisRun.DataAnalysisRun(Repository, Context, long, File, List, List)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; The repository this run should be registered at.</li>
+<li><strong>context</strong> &#8211; </li>
+<li><strong>changeDate</strong> &#8211; The date this run was performed.</li>
+<li><strong>absPath</strong> &#8211; The absolute path to the file on the filesystem that corresponds to this run.</li>
+<li><strong>dataConfigs</strong> &#8211; The list of data configurations, that should be assessed during execution of the run.</li>
+<li><strong>statistics</strong> &#8211; The statistics that should be assessed for the objects of analysis.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>DataAnalysisRun<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.run.DataAnalysisRun.DataAnalysisRun(DataAnalysisRun)">
+protected <code class="descname">DataAnalysisRun</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.run.DataAnalysisRun" title="de.clusteval.run.DataAnalysisRun">DataAnalysisRun</a><em> other</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.DataAnalysisRun.DataAnalysisRun(DataAnalysisRun)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy constructor of data analysis runs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>other</strong> &#8211; The data analysis run to be cloned.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clone">
+<h3>clone<a class="headerlink" href="#clone" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.DataAnalysisRun.clone()">
+public <a class="reference internal" href="#de.clusteval.run.DataAnalysisRun" title="de.clusteval.run.DataAnalysisRun">DataAnalysisRun</a> <code class="descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.DataAnalysisRun.clone()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="clonestatistics">
+<h3>cloneStatistics<a class="headerlink" href="#clonestatistics" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.DataAnalysisRun.cloneStatistics(List)">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/statistics/DataStatistic.html#de.clusteval.data.statistics.DataStatistic" title="de.clusteval.data.statistics.DataStatistic">DataStatistic</a>&gt; <code class="descname">cloneStatistics</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/statistics/DataStatistic.html#de.clusteval.data.statistics.DataStatistic" title="de.clusteval.data.statistics.DataStatistic">DataStatistic</a>&gt;<em> statistics</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.DataAnalysisRun.cloneStatistics(List)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="createandschedulerunnableforresumepair">
+<h3>createAndScheduleRunnableForResumePair<a class="headerlink" href="#createandschedulerunnableforresumepair" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.DataAnalysisRun.createAndScheduleRunnableForResumePair(RunSchedulerThread, int)">
+protected <a class="reference internal" href="runnable/RunRunnable.html#de.clusteval.run.runnable.RunRunnable" title="de.clusteval.run.runnable.RunRunnable">RunRunnable</a> <code class="descname">createAndScheduleRunnableForResumePair</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/threading/RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread" title="de.clusteval.framework.threading.RunSchedulerThread">RunSchedulerThread</a><em> runScheduler</em>, int<em> p</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.DataAnalysisRun.createAndScheduleRunnableForResumePair(RunSchedulerThread, int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="createandschedulerunnableforrunpair">
+<h3>createAndScheduleRunnableForRunPair<a class="headerlink" href="#createandschedulerunnableforrunpair" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.DataAnalysisRun.createAndScheduleRunnableForRunPair(RunSchedulerThread, int)">
+protected <a class="reference internal" href="runnable/RunRunnable.html#de.clusteval.run.runnable.RunRunnable" title="de.clusteval.run.runnable.RunRunnable">RunRunnable</a> <code class="descname">createAndScheduleRunnableForRunPair</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/threading/RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread" title="de.clusteval.framework.threading.RunSchedulerThread">RunSchedulerThread</a><em> runScheduler</em>, int<em> p</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.DataAnalysisRun.createAndScheduleRunnableForRunPair(RunSchedulerThread, int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getdataconfigs">
+<h3>getDataConfigs<a class="headerlink" href="#getdataconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.DataAnalysisRun.getDataConfigs()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt; <code class="descname">getDataConfigs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.DataAnalysisRun.getDataConfigs()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list containing all data configurations to be assessed by this run.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getnumberofrunrunnables">
+<h3>getNumberOfRunRunnables<a class="headerlink" href="#getnumberofrunrunnables" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.DataAnalysisRun.getNumberOfRunRunnables()">
+protected int <code class="descname">getNumberOfRunRunnables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.DataAnalysisRun.getNumberOfRunRunnables()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getupperlimitprogress">
+<h3>getUpperLimitProgress<a class="headerlink" href="#getupperlimitprogress" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.DataAnalysisRun.getUpperLimitProgress()">
+protected long <code class="descname">getUpperLimitProgress</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.DataAnalysisRun.getUpperLimitProgress()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="terminate">
+<h3>terminate<a class="headerlink" href="#terminate" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.DataAnalysisRun.terminate()">
+public boolean <code class="descname">terminate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.DataAnalysisRun.terminate()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">DataAnalysisRun</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#dataconfigs">dataConfigs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">DataAnalysisRun</a></li>
+<li><a class="reference internal" href="#id2">DataAnalysisRun</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#clone">clone</a></li>
+<li><a class="reference internal" href="#clonestatistics">cloneStatistics</a></li>
+<li><a class="reference internal" href="#createandschedulerunnableforresumepair">createAndScheduleRunnableForResumePair</a></li>
+<li><a class="reference internal" href="#createandschedulerunnableforrunpair">createAndScheduleRunnableForRunPair</a></li>
+<li><a class="reference internal" href="#getdataconfigs">getDataConfigs</a></li>
+<li><a class="reference internal" href="#getnumberofrunrunnables">getNumberOfRunRunnables</a></li>
+<li><a class="reference internal" href="#getupperlimitprogress">getUpperLimitProgress</a></li>
+<li><a class="reference internal" href="#terminate">terminate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/de/clusteval/run/DataAnalysisRun.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

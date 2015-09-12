@@ -1,0 +1,421 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>GoldStandard &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="goldstandard">
+<h1>GoldStandard<a class="headerlink" href="#goldstandard" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.data.goldstandard.GoldStandard">
+public class <code class="descname">GoldStandard</code> extends <a class="reference internal" href="../../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper class for a goldstandard on the filesystem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clustering">
+<h3>clustering<a class="headerlink" href="#clustering" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.clustering">
+protected <a class="reference internal" href="../../cluster/Clustering.html#de.clusteval.cluster.Clustering" title="de.clusteval.cluster.Clustering">Clustering</a> <code class="descname">clustering</code><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.clustering" title="Permalink to this definition">¶</a></dt>
+<dd><p>This attribute holds the clustering that corresponds to the goldstandard. Every goldstandard can be interpreted as a clustering: A partition of the data objects into several groups.</p>
+<p><strong>See also:</strong> <code class="xref java java-ref docutils literal"><span class="pre">{&#64;linkClustering}</span></code></p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>GoldStandard<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.GoldStandard(Repository, long, File)">
+public <code class="descname">GoldStandard</code><span class="sig-paren">(</span><a class="reference internal" href="../../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, long<em> changeDate</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absGoldStandardPath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.GoldStandard(Repository, long, File)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiates a new goldstandard object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; the repository this goldstandard should be registered at.</li>
+<li><strong>changeDate</strong> &#8211; The change date of this goldstandard is used for equality checks.</li>
+<li><strong>absGoldStandardPath</strong> &#8211; The absolute path of this goldstandard.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>GoldStandard<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.GoldStandard(GoldStandard)">
+public <code class="descname">GoldStandard</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.data.goldstandard.GoldStandard" title="de.clusteval.data.goldstandard.GoldStandard">GoldStandard</a><em> goldStandard</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.GoldStandard(GoldStandard)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy constructor for the GoldStandard class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>goldStandard</strong> &#8211; The goldstandard to be cloned.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clone">
+<h3>clone<a class="headerlink" href="#clone" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.clone()">
+public <a class="reference internal" href="#de.clusteval.data.goldstandard.GoldStandard" title="de.clusteval.data.goldstandard.GoldStandard">GoldStandard</a> <code class="descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.clone()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="fuzzysize">
+<h3>fuzzySize<a class="headerlink" href="#fuzzysize" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.fuzzySize()">
+public float <code class="descname">fuzzySize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.fuzzySize()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fuzzy size.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getclustering">
+<h3>getClustering<a class="headerlink" href="#getclustering" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.getClustering()">
+public <a class="reference internal" href="../../cluster/Clustering.html#de.clusteval.cluster.Clustering" title="de.clusteval.cluster.Clustering">Clustering</a> <code class="descname">getClustering</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.getClustering()" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method returns a reference to the clustering object representing the contents of the goldstandard file.</p>
+<p>If this is not already the case, the contents of the file are parsed by invoking <a class="reference internal" href="../../run/result/RunAnalysisRunResult.html#de.clusteval.run.result.RunAnalysisRunResult.loadIntoMemory()" title="de.clusteval.run.result.RunAnalysisRunResult.loadIntoMemory()"><code class="xref java java-ref docutils literal"><span class="pre">loadIntoMemory()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="format/UnknownGoldStandardFormatException.html#de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException" title="de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException"><strong>UnknownGoldStandardFormatException</strong></a> &#8211; the unknown gold standard format exception</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The clustering object representing the goldstandard.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getfullname">
+<h3>getFullName<a class="headerlink" href="#getfullname" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.getFullName()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getFullName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.getFullName()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the full name of this goldstandard. The full name consists of the minor and the major name, separated by a slash: MAJOR/MINOR</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The full name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getmajorname">
+<h3>getMajorName<a class="headerlink" href="#getmajorname" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.getMajorName()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getMajorName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.getMajorName()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the major name of this goldstandard. The major name corresponds to the folder the goldstandard resides in in the filesystem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The major name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getminorname">
+<h3>getMinorName<a class="headerlink" href="#getminorname" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.getMinorName()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getMinorName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.getMinorName()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the minor name of this goldstandard. The minor name corresponds to the name of the file of this goldstandard.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The minor name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="isinmemory">
+<h3>isInMemory<a class="headerlink" href="#isinmemory" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.isInMemory()">
+public boolean <code class="descname">isInMemory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.isInMemory()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether this goldstandard is loaded into the memory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">true, if is in memory</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="loadintomemory">
+<h3>loadIntoMemory<a class="headerlink" href="#loadintomemory" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.loadIntoMemory()">
+public boolean <code class="descname">loadIntoMemory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.loadIntoMemory()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load this goldstandard into memory. When this method is invoked, it parses the goldstandard file on the filesystem</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="format/UnknownGoldStandardFormatException.html#de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException" title="de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException"><strong>UnknownGoldStandardFormatException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">true, if successful</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="parsefromfile">
+<h3>parseFromFile<a class="headerlink" href="#parsefromfile" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.parseFromFile(File)">
+public static <a class="reference internal" href="#de.clusteval.data.goldstandard.GoldStandard" title="de.clusteval.data.goldstandard.GoldStandard">GoldStandard</a> <code class="descname">parseFromFile</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absGoldStandardPath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.parseFromFile(File)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method parses a goldstandard from a file. Since goldstandard files do not require a header, this method simply creates a wrapper object for the file on the filesystem.</p>
+<p>The actual parsing of the clustering contained in the goldstandard file happens later in the <a class="reference internal" href="../../run/result/RunAnalysisRunResult.html#de.clusteval.run.result.RunAnalysisRunResult.loadIntoMemory()" title="de.clusteval.run.result.RunAnalysisRunResult.loadIntoMemory()"><code class="xref java java-ref docutils literal"><span class="pre">loadIntoMemory()</span></code></a> method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>absGoldStandardPath</strong> &#8211; The absolute path to the goldstandard file that should be parsed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="../../framework/repository/NoRepositoryFoundException.html#de.clusteval.framework.repository.NoRepositoryFoundException" title="de.clusteval.framework.repository.NoRepositoryFoundException"><strong>NoRepositoryFoundException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="GoldStandardNotFoundException.html#de.clusteval.data.goldstandard.GoldStandardNotFoundException" title="de.clusteval.data.goldstandard.GoldStandardNotFoundException"><strong>GoldStandardNotFoundException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../framework/repository/RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The goldstandard object.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="size">
+<h3>size<a class="headerlink" href="#size" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.size()">
+public int <code class="descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.size()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Size.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="tostring">
+<h3>toString<a class="headerlink" href="#tostring" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.toString()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">toString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.toString()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unloadfrommemory">
+<h3>unloadFromMemory<a class="headerlink" href="#unloadfrommemory" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.goldstandard.GoldStandard.unloadFromMemory()">
+public boolean <code class="descname">unloadFromMemory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.goldstandard.GoldStandard.unloadFromMemory()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unload the contents of this dataset from memory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">true, if successful</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">GoldStandard</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#clustering">clustering</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">GoldStandard</a></li>
+<li><a class="reference internal" href="#id2">GoldStandard</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#clone">clone</a></li>
+<li><a class="reference internal" href="#fuzzysize">fuzzySize</a></li>
+<li><a class="reference internal" href="#getclustering">getClustering</a></li>
+<li><a class="reference internal" href="#getfullname">getFullName</a></li>
+<li><a class="reference internal" href="#getmajorname">getMajorName</a></li>
+<li><a class="reference internal" href="#getminorname">getMinorName</a></li>
+<li><a class="reference internal" href="#isinmemory">isInMemory</a></li>
+<li><a class="reference internal" href="#loadintomemory">loadIntoMemory</a></li>
+<li><a class="reference internal" href="#parsefromfile">parseFromFile</a></li>
+<li><a class="reference internal" href="#size">size</a></li>
+<li><a class="reference internal" href="#tostring">toString</a></li>
+<li><a class="reference internal" href="#unloadfrommemory">unloadFromMemory</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/data/goldstandard/GoldStandard.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

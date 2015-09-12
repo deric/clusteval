@@ -30,6 +30,38 @@ import de.clusteval.utils.Statistic;
  * <p>
  * Run statistics correspond to {@link RunAnalysisRun} in the class hierarchy.
  * 
+ * {@code
+ * 
+ * 
+ * A run statistic MyRunStatistic can be added to ClustEval by
+ * 
+ * * extending the class :java:ref:`RunStatistic` with your own class MyRunStatistic. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.
+ * 
+ *   * public MyRunStatistic(Repository, boolean, long, File) : The constructor for your run statistic. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.
+ *   * public MyRunStatistic(MyRunStatistic) : The copy constructor for your run statistic. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.
+ *   * :java:ref:`Statistic.getAlias()` : This method returns a readable alias for this run statistic which is used e.g. on the website.
+ *   * :java:ref:`RunStatistic.parseFromString(String)` : This method interprets the string and fills this statistic object with its parsed contents.
+ *   * TODO: needed?: public Set getRequiredRlibraries() : Returns a set of names of all R libraries, this run statistic requires.
+ *   
+ * * extending the class :java:ref:`RunStatisticCalculator` with your own class MyRunStatisticCalculator . You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.
+ *
+ *   * public MyRunStatisticCalculator(Repository, long, File, DataConfig) : The constructor for your run statistic calculator. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.
+ *   * public MyRunStatisticCalculator(MyRunStatisticCalculator) : The copy constructor for your run statistic calculator. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.
+ *   * protected MyRunStatistic calculateResult() : This method is the core of your run statistic calculator. It analysis the given runresults and returns a wrapper object for the results.
+ *   * public void writeOutputTo(File) : After calculateResult() has been invoked, this method writes the assessed results into the given file.
+ *   
+ * * Creating a jar file named MyRunStatisticCalculator.jar containing the MyRunStatistic.class and MyRunStatisticCalculator.class compiled on your machine in the correct folder structure corresponding to the packages:
+ * 
+ *   * de/clusteval/run/statistics/MyRunStatistic.class
+ *   * de/clusteval/run/statistics/MyRunStatisticCalculator.class
+ *   
+ * * Putting the MyRunStatistic.jar into the run statistics folder of the repository:
+ * 
+ *   * <REPOSITORY ROOT>/supp/statistics/run
+ *   * The backend server will recognize and try to load the new run statistics automatically the next time, the RunStatisticFinderThread checks the filesystem.
+ * 
+ * }
+ * 
  * @author Christian Wiwie
  * 
  */

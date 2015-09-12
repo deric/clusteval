@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RepositorySupervisorThread &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="repositorysupervisorthread">
+<h1>RepositorySupervisorThread<a class="headerlink" href="#repositorysupervisorthread" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.framework.threading.RepositorySupervisorThread">
+public class <code class="descname">RepositorySupervisorThread</code> extends <a class="reference internal" href="SupervisorThread.html#de.clusteval.framework.threading.SupervisorThread" title="de.clusteval.framework.threading.SupervisorThread">SupervisorThread</a><a class="headerlink" href="#de.clusteval.framework.threading.RepositorySupervisorThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>A type of supervisor thread which creates the standard set of threads responsible for the initialization of a standard <a class="reference internal" href="../repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository"><code class="xref java java-ref docutils literal"><span class="pre">Repository</span></code></a>. In detail threads of the following type are created, started and kept alive:</p>
+<ul class="simple">
+<li><strong>DataSetFormatFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.dataSetFormatBasePath</span></code> for new dataset formats (see <a class="reference internal" href="../../data/dataset/format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat"><code class="xref java java-ref docutils literal"><span class="pre">DataSetFormat</span></code></a>).</li>
+<li><strong>DataSetTypeFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.dataSetTypeBasePath</span></code> for new dataset types (see <a class="reference internal" href="../../data/dataset/type/DataSetType.html#de.clusteval.data.dataset.type.DataSetType" title="de.clusteval.data.dataset.type.DataSetType"><code class="xref java java-ref docutils literal"><span class="pre">DataSetType</span></code></a>).</li>
+<li><strong>DataSetFinderThread</strong>: A thread which checks <a class="reference internal" href="../repository/Repository.html#de.clusteval.framework.repository.Repository.basePath" title="de.clusteval.framework.repository.Repository.basePath"><code class="xref java java-ref docutils literal"><span class="pre">Repository.basePath</span></code></a> for new datasets (see <a class="reference internal" href="../../data/dataset/DataSet.html#de.clusteval.data.dataset.DataSet" title="de.clusteval.data.dataset.DataSet"><code class="xref java java-ref docutils literal"><span class="pre">DataSet</span></code></a>).</li>
+<li><strong>DistanceMeasureFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.distanceMeasureBasePath</span></code> for new distance measures (see <a class="reference internal" href="../../data/distance/DistanceMeasure.html#de.clusteval.data.distance.DistanceMeasure" title="de.clusteval.data.distance.DistanceMeasure"><code class="xref java java-ref docutils literal"><span class="pre">DistanceMeasure</span></code></a>).</li>
+<li><strong>DataStatisticFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.dataStatisticBasePath</span></code> for new data statistics (see <a class="reference internal" href="../../data/statistics/DataStatistic.html#de.clusteval.data.statistics.DataStatistic" title="de.clusteval.data.statistics.DataStatistic"><code class="xref java java-ref docutils literal"><span class="pre">DataStatistic</span></code></a>).</li>
+<li><strong>RunStatisticFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.runStatisticBasePath</span></code> for new run statistics (see <a class="reference internal" href="../../run/statistics/RunStatistic.html#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic</span></code></a>).</li>
+<li><strong>RunDataStatisticFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.runDataStatisticBasePath</span></code> for new run data statistics (see <a class="reference internal" href="../../run/statistics/RunDataStatistic.html#de.clusteval.run.statistics.RunDataStatistic" title="de.clusteval.run.statistics.RunDataStatistic"><code class="xref java java-ref docutils literal"><span class="pre">RunDataStatistic</span></code></a>).</li>
+<li><strong>RunResultFormatFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.runResultFormatBasePath</span></code> for new runresult formats (see <a class="reference internal" href="../../run/result/format/RunResultFormat.html#de.clusteval.run.result.format.RunResultFormat" title="de.clusteval.run.result.format.RunResultFormat"><code class="xref java java-ref docutils literal"><span class="pre">RunResultFormat</span></code></a>).</li>
+<li><strong>ClusteringQualityMeasureFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.clusteringQualityMeasureBasePath</span></code> for new clustering quality measures (see <a class="reference internal" href="../../cluster/quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure"><code class="xref java java-ref docutils literal"><span class="pre">ClusteringQualityMeasure</span></code></a>).</li>
+<li><strong>ParameterOptimizationMethodFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.parameterOptimizationMethodBasePath</span></code> for new parameter optimization methods (see <a class="reference internal" href="../../data/dataset/format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat"><code class="xref java java-ref docutils literal"><span class="pre">DataSetFormat</span></code></a>).</li>
+<li><strong>DataSetConfigFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.dataSetConfigBasePath</span></code> for new dataset configurations (see <a class="reference internal" href="../../data/dataset/DataSetConfig.html#de.clusteval.data.dataset.DataSetConfig" title="de.clusteval.data.dataset.DataSetConfig"><code class="xref java java-ref docutils literal"><span class="pre">DataSetConfig</span></code></a>).</li>
+<li><strong>GoldStandardConfigFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.goldStandardConfigBasePath</span></code> for new goldstandard configurations (see <a class="reference internal" href="../../data/goldstandard/GoldStandardConfig.html#de.clusteval.data.goldstandard.GoldStandardConfig" title="de.clusteval.data.goldstandard.GoldStandardConfig"><code class="xref java java-ref docutils literal"><span class="pre">GoldStandardConfig</span></code></a>).</li>
+<li><strong>DataConfigFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.dataConfigBasePath</span></code> for new data configurations (see <a class="reference internal" href="../../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig"><code class="xref java java-ref docutils literal"><span class="pre">DataConfig</span></code></a>).</li>
+<li><strong>RProgramFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.programBasePath</span></code> for new RPrograms (see <a class="reference internal" href="../../program/r/RProgram.html#de.clusteval.program.r.RProgram" title="de.clusteval.program.r.RProgram"><code class="xref java java-ref docutils literal"><span class="pre">RProgram</span></code></a>).</li>
+<li><strong>ProgramConfigFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.programConfigBasePath</span></code> for new program configurations (see <a class="reference internal" href="../../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig"><code class="xref java java-ref docutils literal"><span class="pre">ProgramConfig</span></code></a>).</li>
+<li><strong>DataSetGeneratorFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.dataSetGeneratorBasePath</span></code> for new dataset generators (see <a class="reference internal" href="../../data/dataset/generator/DataSetGenerator.html#de.clusteval.data.dataset.generator.DataSetGenerator" title="de.clusteval.data.dataset.generator.DataSetGenerator"><code class="xref java java-ref docutils literal"><span class="pre">DataSetGenerator</span></code></a>).</li>
+<li><strong>RunFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.runBasePath</span></code> for new runs (see <a class="reference internal" href="../../run/Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run"><code class="xref java java-ref docutils literal"><span class="pre">Run</span></code></a>).</li>
+<li><strong>RunSchedulerThread</strong>: A thread which is responsible for scheduling, starting and terminating runs. It can be controlled with its <a class="reference internal" href="RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread.schedule(String, String)" title="de.clusteval.framework.threading.RunSchedulerThread.schedule(String, String)"><code class="xref java java-ref docutils literal"><span class="pre">RunSchedulerThread.schedule(String,String)</span></code></a>, <a class="reference internal" href="RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread.scheduleResume(String, String)" title="de.clusteval.framework.threading.RunSchedulerThread.scheduleResume(String, String)"><code class="xref java java-ref docutils literal"><span class="pre">RunSchedulerThread.scheduleResume(String,String)</span></code></a> and <a class="reference internal" href="RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread.terminate(String, String)" title="de.clusteval.framework.threading.RunSchedulerThread.terminate(String, String)"><code class="xref java java-ref docutils literal"><span class="pre">RunSchedulerThread.terminate(String,String)</span></code></a> methods.</li>
+</ul>
+<p>If the boolean parameter <strong>checkForRunResults</strong> is true, additionally the following threads are started and kept alive:</p>
+<ul class="simple">
+<li><strong>RunResultFinderThread</strong>: A thread which checks <code class="xref java java-ref docutils literal"><span class="pre">Repository.runResultBasePath</span></code> for new run results (see <a class="reference internal" href="../../run/result/RunResult.html#de.clusteval.run.result.RunResult" title="de.clusteval.run.result.RunResult"><code class="xref java java-ref docutils literal"><span class="pre">RunResult</span></code></a>).</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>RepositorySupervisorThread<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.framework.threading.RepositorySupervisorThread.RepositorySupervisorThread(Repository, Map, boolean, boolean)">
+public <code class="descname">RepositorySupervisorThread</code><span class="sig-paren">(</span><a class="reference internal" href="../repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Long.html" title="java.lang.Long">Long</a>&gt;<em> threadSleepTimes</em>, boolean<em> checkOnce</em>, boolean<em> checkForRunResults</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RepositorySupervisorThread.RepositorySupervisorThread(Repository, Map, boolean, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>repository</strong> &#8211; The repository this thread belongs to.</li>
+<li><strong>threadSleepTimes</strong> &#8211; The sleep times of the created threads.</li>
+<li><strong>checkOnce</strong> &#8211; A boolean indicating, whether this thread should only check once and terminate afterwards.</li>
+<li><strong>checkForRunResults</strong> &#8211; Whether this thread should check for run results in the repository.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">RepositorySupervisorThread</a><ul>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">RepositorySupervisorThread</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/framework/threading/RepositorySupervisorThread.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

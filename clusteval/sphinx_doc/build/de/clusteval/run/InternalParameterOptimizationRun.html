@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>InternalParameterOptimizationRun &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="internalparameteroptimizationrun">
+<h1>InternalParameterOptimizationRun<a class="headerlink" href="#internalparameteroptimizationrun" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.run.InternalParameterOptimizationRun">
+public class <code class="descname">InternalParameterOptimizationRun</code> extends <a class="reference internal" href="ExecutionRun.html#de.clusteval.run.ExecutionRun" title="de.clusteval.run.ExecutionRun">ExecutionRun</a><a class="headerlink" href="#de.clusteval.run.InternalParameterOptimizationRun" title="Permalink to this definition">¶</a></dt>
+<dd><p>A type of execution run that does the same as <a class="reference internal" href="ParameterOptimizationRun.html#de.clusteval.run.ParameterOptimizationRun" title="de.clusteval.run.ParameterOptimizationRun"><code class="xref java java-ref docutils literal"><span class="pre">ParameterOptimizationRun</span></code></a>, by using a programs internal parameter optimization mode instead of doing the parameter optimization itself within the framework.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>InternalParameterOptimizationRun<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.run.InternalParameterOptimizationRun.InternalParameterOptimizationRun(Repository, Context, long, File, List, List, List, List, List, Map)">
+public <code class="descname">InternalParameterOptimizationRun</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference internal" href="../context/Context.html#de.clusteval.context.Context" title="de.clusteval.context.Context">Context</a><em> context</em>, long<em> changeDate</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a>&gt;<em> programConfigs</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt;<em> dataConfigs</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../cluster/quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure">ClusteringQualityMeasure</a>&gt;<em> qualityMeasures</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;&gt;<em> parameterValues</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="result/postprocessing/RunResultPostprocessor.html#de.clusteval.run.result.postprocessing.RunResultPostprocessor" title="de.clusteval.run.result.postprocessing.RunResultPostprocessor">RunResultPostprocessor</a>&gt;<em> postProcessors</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html" title="java.lang.Integer">Integer</a>&gt;<em> maxExecutionTimes</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.InternalParameterOptimizationRun.InternalParameterOptimizationRun(Repository, Context, long, File, List, List, List, List, List, Map)" title="Permalink to this definition">¶</a></dt>
+<dd><p>New objects of this type are automatically registered at the repository.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; the repository</li>
+<li><strong>context</strong> &#8211; </li>
+<li><strong>changeDate</strong> &#8211; The date this run was performed.</li>
+<li><strong>absPath</strong> &#8211; The absolute path to the file on the filesystem that corresponds to this run.</li>
+<li><strong>programConfigs</strong> &#8211; The program configurations of the new run.</li>
+<li><strong>dataConfigs</strong> &#8211; The data configurations of the new run.</li>
+<li><strong>qualityMeasures</strong> &#8211; The clustering quality measures of the new run.</li>
+<li><strong>parameterValues</strong> &#8211; The parameter values of this run.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>InternalParameterOptimizationRun<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.run.InternalParameterOptimizationRun.InternalParameterOptimizationRun(InternalParameterOptimizationRun)">
+protected <code class="descname">InternalParameterOptimizationRun</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.run.InternalParameterOptimizationRun" title="de.clusteval.run.InternalParameterOptimizationRun">InternalParameterOptimizationRun</a><em> other</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.InternalParameterOptimizationRun.InternalParameterOptimizationRun(InternalParameterOptimizationRun)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy constructor of internal parameter optimization runs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>otherRun</strong> &#8211; The internal parameter optimization run to be cloned.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clone">
+<h3>clone<a class="headerlink" href="#clone" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.InternalParameterOptimizationRun.clone()">
+public <a class="reference internal" href="#de.clusteval.run.InternalParameterOptimizationRun" title="de.clusteval.run.InternalParameterOptimizationRun">InternalParameterOptimizationRun</a> <code class="descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.InternalParameterOptimizationRun.clone()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="createrunrunnablefor">
+<h3>createRunRunnableFor<a class="headerlink" href="#createrunrunnablefor" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.InternalParameterOptimizationRun.createRunRunnableFor(RunSchedulerThread, Run, ProgramConfig, DataConfig, String, boolean, Map)">
+protected <a class="reference internal" href="runnable/ExecutionRunRunnable.html#de.clusteval.run.runnable.ExecutionRunRunnable" title="de.clusteval.run.runnable.ExecutionRunRunnable">ExecutionRunRunnable</a> <code class="descname">createRunRunnableFor</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/threading/RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread" title="de.clusteval.framework.threading.RunSchedulerThread">RunSchedulerThread</a><em> runScheduler</em>, <a class="reference internal" href="Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run">Run</a><em> run</em>, <a class="reference internal" href="../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a><em> programConfig</em>, <a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a><em> dataConfig</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runIdentString</em>, boolean<em> isResume</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> runParams</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.InternalParameterOptimizationRun.createRunRunnableFor(RunSchedulerThread, Run, ProgramConfig, DataConfig, String, boolean, Map)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">InternalParameterOptimizationRun</a><ul>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">InternalParameterOptimizationRun</a></li>
+<li><a class="reference internal" href="#id2">InternalParameterOptimizationRun</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#clone">clone</a></li>
+<li><a class="reference internal" href="#createrunrunnablefor">createRunRunnableFor</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/de/clusteval/run/InternalParameterOptimizationRun.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

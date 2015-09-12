@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ExecutionRunParser &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="executionrunparser">
+<h1>ExecutionRunParser<a class="headerlink" href="#executionrunparser" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser">
+ class <code class="descname">ExecutionRunParser</code>&lt;T extends ExecutionRun&gt; extends <a class="reference internal" href="RunParser.html#de.clusteval.framework.repository.parse.RunParser" title="de.clusteval.framework.repository.parse.RunParser">RunParser</a>&lt;T&gt;<a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dataconfigs">
+<h3>dataConfigs<a class="headerlink" href="#dataconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.dataConfigs">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../../../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt; <code class="descname">dataConfigs</code><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.dataConfigs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="maxexecutiontimes">
+<h3>maxExecutionTimes<a class="headerlink" href="#maxexecutiontimes" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.maxExecutionTimes">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html" title="java.lang.Integer">Integer</a>&gt; <code class="descname">maxExecutionTimes</code><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.maxExecutionTimes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="parammap">
+<h3>paramMap<a class="headerlink" href="#parammap" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.paramMap">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../../../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">paramMap</code><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.paramMap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="postprocessor">
+<h3>postprocessor<a class="headerlink" href="#postprocessor" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.postprocessor">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../../../run/result/postprocessing/RunResultPostprocessor.html#de.clusteval.run.result.postprocessing.RunResultPostprocessor" title="de.clusteval.run.result.postprocessing.RunResultPostprocessor">RunResultPostprocessor</a>&gt; <code class="descname">postprocessor</code><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.postprocessor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="programconfigs">
+<h3>programConfigs<a class="headerlink" href="#programconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.programConfigs">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../../../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a>&gt; <code class="descname">programConfigs</code><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.programConfigs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="qualitymeasures">
+<h3>qualityMeasures<a class="headerlink" href="#qualitymeasures" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.qualityMeasures">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../../../cluster/quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure">ClusteringQualityMeasure</a>&gt; <code class="descname">qualityMeasures</code><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.qualityMeasures" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="runparamvalues">
+<h3>runParamValues<a class="headerlink" href="#runparamvalues" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.runParamValues">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../../../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;&gt; <code class="descname">runParamValues</code><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.runParamValues" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="checkparamvaluetomap">
+<h3>checkParamValueToMap<a class="headerlink" href="#checkparamvaluetomap" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.checkParamValueToMap(String)">
+protected boolean <code class="descname">checkParamValueToMap</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> param</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.checkParamValueToMap(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="isparamconfigurationentry">
+<h3>isParamConfigurationEntry<a class="headerlink" href="#isparamconfigurationentry" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.isParamConfigurationEntry(String)">
+protected boolean <code class="descname">isParamConfigurationEntry</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> name</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.isParamConfigurationEntry(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="parsedataconfigurations">
+<h3>parseDataConfigurations<a class="headerlink" href="#parsedataconfigurations" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.parseDataConfigurations()">
+protected void <code class="descname">parseDataConfigurations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.parseDataConfigurations()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="parsefromfile">
+<h3>parseFromFile<a class="headerlink" href="#parsefromfile" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.parseFromFile(File)">
+public void <code class="descname">parseFromFile</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.parseFromFile(File)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="parsepostprocessor">
+<h3>parsePostprocessor<a class="headerlink" href="#parsepostprocessor" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.parsePostprocessor()">
+protected void <code class="descname">parsePostprocessor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.parsePostprocessor()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="parseprogramconfigparams">
+<h3>parseProgramConfigParams<a class="headerlink" href="#parseprogramconfigparams" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.parseProgramConfigParams(ProgramConfig)">
+protected void <code class="descname">parseProgramConfigParams</code><span class="sig-paren">(</span><a class="reference internal" href="../../../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a><em> programConfig</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.parseProgramConfigParams(ProgramConfig)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="parseprogramconfigurations">
+<h3>parseProgramConfigurations<a class="headerlink" href="#parseprogramconfigurations" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.parseProgramConfigurations()">
+protected void <code class="descname">parseProgramConfigurations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.parseProgramConfigurations()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="parsequalitymeasures">
+<h3>parseQualityMeasures<a class="headerlink" href="#parsequalitymeasures" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.parse.ExecutionRunParser.parseQualityMeasures()">
+protected void <code class="descname">parseQualityMeasures</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.parse.ExecutionRunParser.parseQualityMeasures()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ExecutionRunParser</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#dataconfigs">dataConfigs</a></li>
+<li><a class="reference internal" href="#maxexecutiontimes">maxExecutionTimes</a></li>
+<li><a class="reference internal" href="#parammap">paramMap</a></li>
+<li><a class="reference internal" href="#postprocessor">postprocessor</a></li>
+<li><a class="reference internal" href="#programconfigs">programConfigs</a></li>
+<li><a class="reference internal" href="#qualitymeasures">qualityMeasures</a></li>
+<li><a class="reference internal" href="#runparamvalues">runParamValues</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#checkparamvaluetomap">checkParamValueToMap</a></li>
+<li><a class="reference internal" href="#isparamconfigurationentry">isParamConfigurationEntry</a></li>
+<li><a class="reference internal" href="#parsedataconfigurations">parseDataConfigurations</a></li>
+<li><a class="reference internal" href="#parsefromfile">parseFromFile</a></li>
+<li><a class="reference internal" href="#parsepostprocessor">parsePostprocessor</a></li>
+<li><a class="reference internal" href="#parseprogramconfigparams">parseProgramConfigParams</a></li>
+<li><a class="reference internal" href="#parseprogramconfigurations">parseProgramConfigurations</a></li>
+<li><a class="reference internal" href="#parsequalitymeasures">parseQualityMeasures</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../../_sources/de/clusteval/framework/repository/parse/ExecutionRunParser.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

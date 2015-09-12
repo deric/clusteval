@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RunStatistic &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="runstatistic">
+<h1>RunStatistic<a class="headerlink" href="#runstatistic" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.run.statistics.RunStatistic">
+public abstract class <code class="descname">RunStatistic</code> extends <a class="reference internal" href="../../utils/Statistic.html#de.clusteval.utils.Statistic" title="de.clusteval.utils.Statistic">Statistic</a><a class="headerlink" href="#de.clusteval.run.statistics.RunStatistic" title="Permalink to this definition">¶</a></dt>
+<dd><p>A run statistic is a type of <a class="reference internal" href="../../utils/Statistic.html#de.clusteval.utils.Statistic" title="de.clusteval.utils.Statistic"><code class="xref java java-ref docutils literal"><span class="pre">Statistic</span></code></a>, which corresponds to properties of run results.</p>
+<p>Run statistics correspond to <a class="reference internal" href="../RunAnalysisRun.html#de.clusteval.run.RunAnalysisRun" title="de.clusteval.run.RunAnalysisRun"><code class="xref java java-ref docutils literal"><span class="pre">RunAnalysisRun</span></code></a> in the class hierarchy. A run statistic MyRunStatistic can be added to ClustEval by</p>
+<ul class="simple">
+<li>extending the class <a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic</span></code></a> with your own class MyRunStatistic. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.<ul>
+<li>public MyRunStatistic(Repository, boolean, long, File) : The constructor for your run statistic. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.</li>
+<li>public MyRunStatistic(MyRunStatistic) : The copy constructor for your run statistic. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.</li>
+<li><a class="reference internal" href="../../utils/Statistic.html#de.clusteval.utils.Statistic.getAlias()" title="de.clusteval.utils.Statistic.getAlias()"><code class="xref java java-ref docutils literal"><span class="pre">Statistic.getAlias</span></code></a> : This method returns a readable alias for this run statistic which is used e.g. on the website.</li>
+<li><a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic.parseFromString(Repository, String[])" title="de.clusteval.run.statistics.RunStatistic.parseFromString(Repository, String[])"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic.parseFromString(String)</span></code></a> : This method interprets the string and fills this statistic object with its parsed contents.</li>
+<li>TODO: needed?: public Set getRequiredRlibraries() : Returns a set of names of all R libraries, this run statistic requires.</li>
+</ul>
+</li>
+<li>extending the class <a class="reference internal" href="RunStatisticCalculator.html#de.clusteval.run.statistics.RunStatisticCalculator" title="de.clusteval.run.statistics.RunStatisticCalculator"><code class="xref java java-ref docutils literal"><span class="pre">RunStatisticCalculator</span></code></a> with your own class MyRunStatisticCalculator . You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.<ul>
+<li>public MyRunStatisticCalculator(Repository, long, File, DataConfig) : The constructor for your run statistic calculator. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.</li>
+<li>public MyRunStatisticCalculator(MyRunStatisticCalculator) : The copy constructor for your run statistic calculator. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.</li>
+<li>protected MyRunStatistic calculateResult() : This method is the core of your run statistic calculator. It analysis the given runresults and returns a wrapper object for the results.</li>
+<li>public void writeOutputTo(File) : After calculateResult() has been invoked, this method writes the assessed results into the given file.</li>
+</ul>
+</li>
+<li>Creating a jar file named MyRunStatisticCalculator.jar containing the MyRunStatistic.class and MyRunStatisticCalculator.class compiled on your machine in the correct folder structure corresponding to the packages:<ul>
+<li>de/clusteval/run/statistics/MyRunStatistic.class</li>
+<li>de/clusteval/run/statistics/MyRunStatisticCalculator.class</li>
+</ul>
+</li>
+<li>Putting the MyRunStatistic.jar into the run statistics folder of the repository:<ul>
+<li>&lt;REPOSITORY ROOT&gt;/supp/statistics/run</li>
+<li>The backend server will recognize and try to load the new run statistics automatically the next time, the RunStatisticFinderThread checks the filesystem.</li>
+</ul>
+</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>RunStatistic<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.run.statistics.RunStatistic.RunStatistic(Repository, boolean, long, File)">
+public <code class="descname">RunStatistic</code><span class="sig-paren">(</span><a class="reference internal" href="../../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, boolean<em> register</em>, long<em> changeDate</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.statistics.RunStatistic.RunStatistic(Repository, boolean, long, File)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; </li>
+<li><strong>register</strong> &#8211; </li>
+<li><strong>changeDate</strong> &#8211; </li>
+<li><strong>absPath</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>RunStatistic<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.run.statistics.RunStatistic.RunStatistic(RunStatistic)">
+public <code class="descname">RunStatistic</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic">RunStatistic</a><em> other</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.statistics.RunStatistic.RunStatistic(RunStatistic)" title="Permalink to this definition">¶</a></dt>
+<dd><p>The copy constructor of run statistics.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>other</strong> &#8211; The object to clone.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clone">
+<h3>clone<a class="headerlink" href="#clone" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.statistics.RunStatistic.clone()">
+public final <a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic">RunStatistic</a> <code class="descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.statistics.RunStatistic.clone()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="parsefromstring">
+<h3>parseFromString<a class="headerlink" href="#parsefromstring" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.statistics.RunStatistic.parseFromString(Repository, String)">
+public static <a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic">RunStatistic</a> <code class="descname">parseFromString</code><span class="sig-paren">(</span><a class="reference internal" href="../../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runStatistic</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.statistics.RunStatistic.parseFromString(Repository, String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method parses a string and maps it to a subclass of <a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic</span></code></a> looking it up in the given repository.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; The repository to look for the classes.</li>
+<li><strong>runStatistic</strong> &#8211; The string representation of a run statistic subclass.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="UnknownRunStatisticException.html#de.clusteval.run.statistics.UnknownRunStatisticException" title="de.clusteval.run.statistics.UnknownRunStatisticException"><strong>UnknownRunStatisticException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A subclass of <a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic</span></code></a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h3>parseFromString<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.statistics.RunStatistic.parseFromString(Repository, String[])">
+public static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic">RunStatistic</a>&gt; <code class="descname">parseFromString</code><span class="sig-paren">(</span><a class="reference internal" href="../../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repo</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> runStatistics</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.statistics.RunStatistic.parseFromString(Repository, String[])" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method parses several strings and maps them to subclasses of <a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic</span></code></a> looking them up in the given repository.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repo</strong> &#8211; The repository to look for the classes.</li>
+<li><strong>runStatistics</strong> &#8211; The string representation of a run statistic subclass.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="UnknownRunStatisticException.html#de.clusteval.run.statistics.UnknownRunStatisticException" title="de.clusteval.run.statistics.UnknownRunStatisticException"><strong>UnknownRunStatisticException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A subclass of <a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic</span></code></a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">RunStatistic</a><ul>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">RunStatistic</a></li>
+<li><a class="reference internal" href="#id2">RunStatistic</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#clone">clone</a></li>
+<li><a class="reference internal" href="#parsefromstring">parseFromString</a></li>
+<li><a class="reference internal" href="#id3">parseFromString</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/run/statistics/RunStatistic.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

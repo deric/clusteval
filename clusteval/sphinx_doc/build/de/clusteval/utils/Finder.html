@@ -1,0 +1,327 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Finder &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="finder">
+<h1>Finder<a class="headerlink" href="#finder" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.utils.Finder">
+public abstract class <code class="descname">Finder</code>&lt;T extends RepositoryObject&gt; extends <a class="reference internal" href="../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a><a class="headerlink" href="#de.clusteval.utils.Finder" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body"><p class="first">Christian Wiwie</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>&lt;T&gt;</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="classtofind">
+<h3>classToFind<a class="headerlink" href="#classtofind" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.utils.Finder.classToFind">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;T&gt; <code class="descname">classToFind</code><a class="headerlink" href="#de.clusteval.utils.Finder.classToFind" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="foundinlastrun">
+<h3>foundInLastRun<a class="headerlink" href="#foundinlastrun" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.utils.Finder.foundInLastRun">
+protected boolean <code class="descname">foundInLastRun</code><a class="headerlink" href="#de.clusteval.utils.Finder.foundInLastRun" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="knownexceptions">
+<h3>knownExceptions<a class="headerlink" href="#knownexceptions" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.utils.Finder.knownExceptions">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Throwable.html" title="java.lang.Throwable">Throwable</a>&gt;&gt; <code class="descname">knownExceptions</code><a class="headerlink" href="#de.clusteval.utils.Finder.knownExceptions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Finder<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.utils.Finder.Finder(Repository, Class)">
+public <code class="descname">Finder</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;T&gt;<em> classToFind</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.Finder.Finder(Repository, Class)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; </li>
+<li><strong>classToFind</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>Finder<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.utils.Finder.Finder(Finder)">
+public <code class="descname">Finder</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.utils.Finder" title="de.clusteval.utils.Finder">Finder</a>&lt;T&gt;<em> other</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.Finder.Finder(Finder)" title="Permalink to this definition">¶</a></dt>
+<dd><p>The copy constructor of finder.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>other</strong> &#8211; The object to clone.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="checkfile">
+<h3>checkFile<a class="headerlink" href="#checkfile" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.Finder.checkFile(File)">
+protected abstract boolean <code class="descname">checkFile</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> file</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.Finder.checkFile(File)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="clone">
+<h3>clone<a class="headerlink" href="#clone" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.Finder.clone()">
+public <a class="reference internal" href="#de.clusteval.utils.Finder" title="de.clusteval.utils.Finder">Finder</a>&lt;T&gt; <code class="descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.Finder.clone()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="doonfilefound">
+<h3>doOnFileFound<a class="headerlink" href="#doonfilefound" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.Finder.doOnFileFound(File)">
+protected abstract void <code class="descname">doOnFileFound</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> file</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.Finder.doOnFileFound(File)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="equals">
+<h3>equals<a class="headerlink" href="#equals" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.Finder.equals(Object)">
+public boolean <code class="descname">equals</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html" title="java.lang.Object">Object</a><em> obj</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.Finder.equals(Object)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="findandregisterobjects">
+<h3>findAndRegisterObjects<a class="headerlink" href="#findandregisterobjects" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.Finder.findAndRegisterObjects()">
+public void <code class="descname">findAndRegisterObjects</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.Finder.findAndRegisterObjects()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find files and try to parse them. If the parsing process is successful it will implicitely register the new object at the repository. if the object was known before it will updated, if and only if the changeDate of the found object is newer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../framework/repository/RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h3>foundInLastRun<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.Finder.foundInLastRun()">
+public boolean <code class="descname">foundInLastRun</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.Finder.foundInLastRun()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getbasedir">
+<h3>getBaseDir<a class="headerlink" href="#getbasedir" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.Finder.getBaseDir()">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a> <code class="descname">getBaseDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.Finder.getBaseDir()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getclasstofind">
+<h3>getClassToFind<a class="headerlink" href="#getclasstofind" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.Finder.getClassToFind()">
+protected final <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;T&gt; <code class="descname">getClassToFind</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.Finder.getClassToFind()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getiterator">
+<h3>getIterator<a class="headerlink" href="#getiterator" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.Finder.getIterator()">
+protected abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html" title="java.util.Iterator">Iterator</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a>&gt; <code class="descname">getIterator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.Finder.getIterator()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="hashcode">
+<h3>hashCode<a class="headerlink" href="#hashcode" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.Finder.hashCode()">
+public int <code class="descname">hashCode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.Finder.hashCode()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="notify">
+<h3>notify<a class="headerlink" href="#notify" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.utils.Finder.notify(RepositoryEvent)">
+public void <code class="descname">notify</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/RepositoryEvent.html#de.clusteval.framework.repository.RepositoryEvent" title="de.clusteval.framework.repository.RepositoryEvent">RepositoryEvent</a><em> e</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.Finder.notify(RepositoryEvent)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Finder</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#classtofind">classToFind</a></li>
+<li><a class="reference internal" href="#foundinlastrun">foundInLastRun</a></li>
+<li><a class="reference internal" href="#knownexceptions">knownExceptions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">Finder</a></li>
+<li><a class="reference internal" href="#id2">Finder</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#checkfile">checkFile</a></li>
+<li><a class="reference internal" href="#clone">clone</a></li>
+<li><a class="reference internal" href="#doonfilefound">doOnFileFound</a></li>
+<li><a class="reference internal" href="#equals">equals</a></li>
+<li><a class="reference internal" href="#findandregisterobjects">findAndRegisterObjects</a></li>
+<li><a class="reference internal" href="#id3">foundInLastRun</a></li>
+<li><a class="reference internal" href="#getbasedir">getBaseDir</a></li>
+<li><a class="reference internal" href="#getclasstofind">getClassToFind</a></li>
+<li><a class="reference internal" href="#getiterator">getIterator</a></li>
+<li><a class="reference internal" href="#hashcode">hashCode</a></li>
+<li><a class="reference internal" href="#notify">notify</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/de/clusteval/utils/Finder.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

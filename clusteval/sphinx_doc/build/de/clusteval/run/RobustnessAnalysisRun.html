@@ -1,0 +1,386 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RobustnessAnalysisRun &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="robustnessanalysisrun">
+<h1>RobustnessAnalysisRun<a class="headerlink" href="#robustnessanalysisrun" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.run.RobustnessAnalysisRun">
+public class <code class="descname">RobustnessAnalysisRun</code> extends <a class="reference internal" href="ClusteringRun.html#de.clusteval.run.ClusteringRun" title="de.clusteval.run.ClusteringRun">ClusteringRun</a><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="distortionparams">
+<h3>distortionParams<a class="headerlink" href="#distortionparams" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.distortionParams">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../program/ParameterSet.html#de.clusteval.program.ParameterSet" title="de.clusteval.program.ParameterSet">ParameterSet</a>&gt; <code class="descname">distortionParams</code><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.distortionParams" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="numberofdistorteddatasets">
+<h3>numberOfDistortedDataSets<a class="headerlink" href="#numberofdistorteddatasets" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.numberOfDistortedDataSets">
+protected int <code class="descname">numberOfDistortedDataSets</code><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.numberOfDistortedDataSets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="originaldataconfigs">
+<h3>originalDataConfigs<a class="headerlink" href="#originaldataconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.originalDataConfigs">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt; <code class="descname">originalDataConfigs</code><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.originalDataConfigs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="randomizer">
+<h3>randomizer<a class="headerlink" href="#randomizer" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.randomizer">
+protected <a class="reference internal" href="../data/randomizer/DataRandomizer.html#de.clusteval.data.randomizer.DataRandomizer" title="de.clusteval.data.randomizer.DataRandomizer">DataRandomizer</a> <code class="descname">randomizer</code><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.randomizer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="uniquerunanalysisrunidentifiers">
+<h3>uniqueRunAnalysisRunIdentifiers<a class="headerlink" href="#uniquerunanalysisrunidentifiers" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.uniqueRunAnalysisRunIdentifiers">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">uniqueRunAnalysisRunIdentifiers</code><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.uniqueRunAnalysisRunIdentifiers" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of unique run identifiers, that should be assessed during execution of the run</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>RobustnessAnalysisRun<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.RobustnessAnalysisRun(Repository, Context, long, File, List, List, List, List, List, List, List, DataRandomizer, List, int, Map)">
+public <code class="descname">RobustnessAnalysisRun</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference internal" href="../context/Context.html#de.clusteval.context.Context" title="de.clusteval.context.Context">Context</a><em> context</em>, long<em> changeDate</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> uniqueRunIdentifiers</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a>&gt;<em> programConfigs</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt;<em> dataConfigs</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt;<em> originalDataConfigs</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../cluster/quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure">ClusteringQualityMeasure</a>&gt;<em> qualityMeasures</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;&gt;<em> parameterValues</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="result/postprocessing/RunResultPostprocessor.html#de.clusteval.run.result.postprocessing.RunResultPostprocessor" title="de.clusteval.run.result.postprocessing.RunResultPostprocessor">RunResultPostprocessor</a>&gt;<em> postProcessors</em>, <a class="reference internal" href="../data/randomizer/DataRandomizer.html#de.clusteval.data.randomizer.DataRandomizer" title="de.clusteval.data.randomizer.DataRandomizer">DataRandomizer</a><em> randomizer</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../program/ParameterSet.html#de.clusteval.program.ParameterSet" title="de.clusteval.program.ParameterSet">ParameterSet</a>&gt;<em> randomizerParams</em>, int<em> numberOfRandomizedDataSets</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html" title="java.lang.Integer">Integer</a>&gt;<em> maxExecutionTimes</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.RobustnessAnalysisRun(Repository, Context, long, File, List, List, List, List, List, List, List, DataRandomizer, List, int, Map)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; The repository this run should be registered at.</li>
+<li><strong>context</strong> &#8211; </li>
+<li><strong>changeDate</strong> &#8211; The date this run was performed.</li>
+<li><strong>absPath</strong> &#8211; The absolute path to the file on the filesystem that corresponds to this run.</li>
+<li><strong>uniqueRunIdentifiers</strong> &#8211; The list of unique run identifiers, that should be assessed during execution of the run.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>RobustnessAnalysisRun<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.RobustnessAnalysisRun(RobustnessAnalysisRun)">
+protected <code class="descname">RobustnessAnalysisRun</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.run.RobustnessAnalysisRun" title="de.clusteval.run.RobustnessAnalysisRun">RobustnessAnalysisRun</a><em> other</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.RobustnessAnalysisRun(RobustnessAnalysisRun)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy constructor of run analysis runs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>other</strong> &#8211; The run analysis run to be cloned.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="afterperform">
+<h3>afterPerform<a class="headerlink" href="#afterperform" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.afterPerform()">
+protected void <code class="descname">afterPerform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.afterPerform()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="afterresume">
+<h3>afterResume<a class="headerlink" href="#afterresume" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.afterResume(String)">
+protected void <code class="descname">afterResume</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runIdentString</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.afterResume(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="beforeperform">
+<h3>beforePerform<a class="headerlink" href="#beforeperform" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.beforePerform()">
+protected void <code class="descname">beforePerform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.beforePerform()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="beforeresume">
+<h3>beforeResume<a class="headerlink" href="#beforeresume" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.beforeResume(String)">
+protected void <code class="descname">beforeResume</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runIdentString</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.beforeResume(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="clone">
+<h3>clone<a class="headerlink" href="#clone" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.clone()">
+public <a class="reference internal" href="#de.clusteval.run.RobustnessAnalysisRun" title="de.clusteval.run.RobustnessAnalysisRun">RobustnessAnalysisRun</a> <code class="descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.clone()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="createanalysesdirectory">
+<h3>createAnalysesDirectory<a class="headerlink" href="#createanalysesdirectory" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.createAnalysesDirectory()">
+protected void <code class="descname">createAnalysesDirectory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.createAnalysesDirectory()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="createandschedulerunnableforresumepair">
+<h3>createAndScheduleRunnableForResumePair<a class="headerlink" href="#createandschedulerunnableforresumepair" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.createAndScheduleRunnableForResumePair(RunSchedulerThread, int)">
+protected <a class="reference internal" href="runnable/RunRunnable.html#de.clusteval.run.runnable.RunRunnable" title="de.clusteval.run.runnable.RunRunnable">RunRunnable</a> <code class="descname">createAndScheduleRunnableForResumePair</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/threading/RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread" title="de.clusteval.framework.threading.RunSchedulerThread">RunSchedulerThread</a><em> runScheduler</em>, int<em> p</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.createAndScheduleRunnableForResumePair(RunSchedulerThread, int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="createrunrunnablefor">
+<h3>createRunRunnableFor<a class="headerlink" href="#createrunrunnablefor" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.createRunRunnableFor(RunSchedulerThread, Run, ProgramConfig, DataConfig, String, boolean, Map)">
+protected <a class="reference internal" href="runnable/ExecutionRunRunnable.html#de.clusteval.run.runnable.ExecutionRunRunnable" title="de.clusteval.run.runnable.ExecutionRunRunnable">ExecutionRunRunnable</a> <code class="descname">createRunRunnableFor</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/threading/RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread" title="de.clusteval.framework.threading.RunSchedulerThread">RunSchedulerThread</a><em> runScheduler</em>, <a class="reference internal" href="Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run">Run</a><em> run</em>, <a class="reference internal" href="../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a><em> programConfig</em>, <a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a><em> dataConfig</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runIdentString</em>, boolean<em> isResume</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> runParams</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.createRunRunnableFor(RunSchedulerThread, Run, ProgramConfig, DataConfig, String, boolean, Map)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="findbestparamsandinitparametervalues">
+<h3>findBestParamsAndInitParameterValues<a class="headerlink" href="#findbestparamsandinitparametervalues" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.findBestParamsAndInitParameterValues(Repository)">
+protected void <code class="descname">findBestParamsAndInitParameterValues</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.findBestParamsAndInitParameterValues(Repository)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../data/statistics/UnknownDataStatisticException.html#de.clusteval.data.statistics.UnknownDataStatisticException" title="de.clusteval.data.statistics.UnknownDataStatisticException"><strong>UnknownDataStatisticException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../program/UnknownParameterType.html#de.clusteval.program.UnknownParameterType" title="de.clusteval.program.UnknownParameterType"><strong>UnknownParameterType</strong></a> &#8211; </li>
+<li><a class="reference internal" href="statistics/UnknownRunStatisticException.html#de.clusteval.run.statistics.UnknownRunStatisticException" title="de.clusteval.run.statistics.UnknownRunStatisticException"><strong>UnknownRunStatisticException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../framework/repository/InvalidRepositoryException.html#de.clusteval.framework.repository.InvalidRepositoryException" title="de.clusteval.framework.repository.InvalidRepositoryException"><strong>InvalidRepositoryException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../framework/repository/config/RepositoryConfigurationException.html#de.clusteval.framework.repository.config.RepositoryConfigurationException" title="de.clusteval.framework.repository.config.RepositoryConfigurationException"><strong>RepositoryConfigurationException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/goldstandard/format/UnknownGoldStandardFormatException.html#de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException" title="de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException"><strong>UnknownGoldStandardFormatException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../context/UnknownContextException.html#de.clusteval.context.UnknownContextException" title="de.clusteval.context.UnknownContextException"><strong>UnknownContextException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../program/NoOptimizableProgramParameterException.html#de.clusteval.program.NoOptimizableProgramParameterException" title="de.clusteval.program.NoOptimizableProgramParameterException"><strong>NoOptimizableProgramParameterException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="result/postprocessing/UnknownRunResultPostprocessorException.html#de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException" title="de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException"><strong>UnknownRunResultPostprocessorException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../context/IncompatibleContextException.html#de.clusteval.context.IncompatibleContextException" title="de.clusteval.context.IncompatibleContextException"><strong>IncompatibleContextException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="result/RunResultParseException.html#de.clusteval.run.result.RunResultParseException" title="de.clusteval.run.result.RunResultParseException"><strong>RunResultParseException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../cluster/paramOptimization/IncompatibleParameterOptimizationMethodException.html#de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException" title="de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException"><strong>IncompatibleParameterOptimizationMethodException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../framework/repository/RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../program/UnknownProgramParameterException.html#de.clusteval.program.UnknownProgramParameterException" title="de.clusteval.program.UnknownProgramParameterException"><strong>UnknownProgramParameterException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="statistics/UnknownRunDataStatisticException.html#de.clusteval.run.statistics.UnknownRunDataStatisticException" title="de.clusteval.run.statistics.UnknownRunDataStatisticException"><strong>UnknownRunDataStatisticException</strong></a> &#8211; </li>
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../program/r/UnknownRProgramException.html#de.clusteval.program.r.UnknownRProgramException" title="de.clusteval.program.r.UnknownRProgramException"><strong>UnknownRProgramException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/preprocessing/UnknownDataPreprocessorException.html#de.clusteval.data.preprocessing.UnknownDataPreprocessorException" title="de.clusteval.data.preprocessing.UnknownDataPreprocessorException"><strong>UnknownDataPreprocessorException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/dataset/format/UnknownDataSetFormatException.html#de.clusteval.data.dataset.format.UnknownDataSetFormatException" title="de.clusteval.data.dataset.format.UnknownDataSetFormatException"><strong>UnknownDataSetFormatException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/randomizer/UnknownDataRandomizerException.html#de.clusteval.data.randomizer.UnknownDataRandomizerException" title="de.clusteval.data.randomizer.UnknownDataRandomizerException"><strong>UnknownDataRandomizerException</strong></a> &#8211; </li>
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/NumberFormatException.html" title="java.lang.NumberFormatException"><strong>NumberFormatException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="result/format/UnknownRunResultFormatException.html#de.clusteval.run.result.format.UnknownRunResultFormatException" title="de.clusteval.run.result.format.UnknownRunResultFormatException"><strong>UnknownRunResultFormatException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/dataset/IncompatibleDataSetConfigPreprocessorException.html#de.clusteval.data.dataset.IncompatibleDataSetConfigPreprocessorException" title="de.clusteval.data.dataset.IncompatibleDataSetConfigPreprocessorException"><strong>IncompatibleDataSetConfigPreprocessorException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/dataset/DataSetNotFoundException.html#de.clusteval.data.dataset.DataSetNotFoundException" title="de.clusteval.data.dataset.DataSetNotFoundException"><strong>DataSetNotFoundException</strong></a> &#8211; </li>
+<li><strong>ConfigurationException</strong> &#8211; </li>
+<li><a class="reference internal" href="../data/DataConfigurationException.html#de.clusteval.data.DataConfigurationException" title="de.clusteval.data.DataConfigurationException"><strong>DataConfigurationException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/goldstandard/GoldStandardConfigNotFoundException.html#de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException" title="de.clusteval.data.goldstandard.GoldStandardConfigNotFoundException"><strong>GoldStandardConfigNotFoundException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../framework/repository/NoRepositoryFoundException.html#de.clusteval.framework.repository.NoRepositoryFoundException" title="de.clusteval.framework.repository.NoRepositoryFoundException"><strong>NoRepositoryFoundException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../cluster/paramOptimization/UnknownParameterOptimizationMethodException.html#de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException" title="de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException"><strong>UnknownParameterOptimizationMethodException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/dataset/type/UnknownDataSetTypeException.html#de.clusteval.data.dataset.type.UnknownDataSetTypeException" title="de.clusteval.data.dataset.type.UnknownDataSetTypeException"><strong>UnknownDataSetTypeException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../framework/repository/RepositoryAlreadyExistsException.html#de.clusteval.framework.repository.RepositoryAlreadyExistsException" title="de.clusteval.framework.repository.RepositoryAlreadyExistsException"><strong>RepositoryAlreadyExistsException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../cluster/paramOptimization/InvalidOptimizationParameterException.html#de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException" title="de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException"><strong>InvalidOptimizationParameterException</strong></a> &#8211; </li>
+<li><strong>IOException</strong> &#8211; </li>
+<li><a class="reference internal" href="../data/dataset/DataSetConfigurationException.html#de.clusteval.data.dataset.DataSetConfigurationException" title="de.clusteval.data.dataset.DataSetConfigurationException"><strong>DataSetConfigurationException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/DataConfigNotFoundException.html#de.clusteval.data.DataConfigNotFoundException" title="de.clusteval.data.DataConfigNotFoundException"><strong>DataConfigNotFoundException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../cluster/quality/UnknownClusteringQualityMeasureException.html#de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException" title="de.clusteval.cluster.quality.UnknownClusteringQualityMeasureException"><strong>UnknownClusteringQualityMeasureException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../program/UnknownProgramTypeException.html#de.clusteval.program.UnknownProgramTypeException" title="de.clusteval.program.UnknownProgramTypeException"><strong>UnknownProgramTypeException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/distance/UnknownDistanceMeasureException.html#de.clusteval.data.distance.UnknownDistanceMeasureException" title="de.clusteval.data.distance.UnknownDistanceMeasureException"><strong>UnknownDistanceMeasureException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="InvalidRunModeException.html#de.clusteval.run.InvalidRunModeException" title="de.clusteval.run.InvalidRunModeException"><strong>InvalidRunModeException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/goldstandard/GoldStandardConfigurationException.html#de.clusteval.data.goldstandard.GoldStandardConfigurationException" title="de.clusteval.data.goldstandard.GoldStandardConfigurationException"><strong>GoldStandardConfigurationException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../framework/repository/config/RepositoryConfigNotFoundException.html#de.clusteval.framework.repository.config.RepositoryConfigNotFoundException" title="de.clusteval.framework.repository.config.RepositoryConfigNotFoundException"><strong>RepositoryConfigNotFoundException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/dataset/NoDataSetException.html#de.clusteval.data.dataset.NoDataSetException" title="de.clusteval.data.dataset.NoDataSetException"><strong>NoDataSetException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../utils/InvalidConfigurationFileException.html#de.clusteval.utils.InvalidConfigurationFileException" title="de.clusteval.utils.InvalidConfigurationFileException"><strong>InvalidConfigurationFileException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/dataset/DataSetConfigNotFoundException.html#de.clusteval.data.dataset.DataSetConfigNotFoundException" title="de.clusteval.data.dataset.DataSetConfigNotFoundException"><strong>DataSetConfigNotFoundException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="RunException.html#de.clusteval.run.RunException" title="de.clusteval.run.RunException"><strong>RunException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/goldstandard/GoldStandardNotFoundException.html#de.clusteval.data.goldstandard.GoldStandardNotFoundException" title="de.clusteval.data.goldstandard.GoldStandardNotFoundException"><strong>GoldStandardNotFoundException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getrunparameterforrunpair">
+<h3>getRunParameterForRunPair<a class="headerlink" href="#getrunparameterforrunpair" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.getRunParameterForRunPair(int)">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;? extends <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html" title="java.lang.Object">Object</a>&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getRunParameterForRunPair</code><span class="sig-paren">(</span>int<em> p</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.getRunParameterForRunPair(int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="setoriginaldataconfigurations">
+<h3>setOriginalDataConfigurations<a class="headerlink" href="#setoriginaldataconfigurations" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.RobustnessAnalysisRun.setOriginalDataConfigurations(List)">
+public void <code class="descname">setOriginalDataConfigurations</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt;<em> dataConfigs</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.RobustnessAnalysisRun.setOriginalDataConfigurations(List)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">RobustnessAnalysisRun</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#distortionparams">distortionParams</a></li>
+<li><a class="reference internal" href="#numberofdistorteddatasets">numberOfDistortedDataSets</a></li>
+<li><a class="reference internal" href="#originaldataconfigs">originalDataConfigs</a></li>
+<li><a class="reference internal" href="#randomizer">randomizer</a></li>
+<li><a class="reference internal" href="#uniquerunanalysisrunidentifiers">uniqueRunAnalysisRunIdentifiers</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">RobustnessAnalysisRun</a></li>
+<li><a class="reference internal" href="#id2">RobustnessAnalysisRun</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#afterperform">afterPerform</a></li>
+<li><a class="reference internal" href="#afterresume">afterResume</a></li>
+<li><a class="reference internal" href="#beforeperform">beforePerform</a></li>
+<li><a class="reference internal" href="#beforeresume">beforeResume</a></li>
+<li><a class="reference internal" href="#clone">clone</a></li>
+<li><a class="reference internal" href="#createanalysesdirectory">createAnalysesDirectory</a></li>
+<li><a class="reference internal" href="#createandschedulerunnableforresumepair">createAndScheduleRunnableForResumePair</a></li>
+<li><a class="reference internal" href="#createrunrunnablefor">createRunRunnableFor</a></li>
+<li><a class="reference internal" href="#findbestparamsandinitparametervalues">findBestParamsAndInitParameterValues</a></li>
+<li><a class="reference internal" href="#getrunparameterforrunpair">getRunParameterForRunPair</a></li>
+<li><a class="reference internal" href="#setoriginaldataconfigurations">setOriginalDataConfigurations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/de/clusteval/run/RobustnessAnalysisRun.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

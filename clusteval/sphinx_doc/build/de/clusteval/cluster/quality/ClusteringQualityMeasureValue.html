@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClusteringQualityMeasureValue &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="clusteringqualitymeasurevalue">
+<h1>ClusteringQualityMeasureValue<a class="headerlink" href="#clusteringqualitymeasurevalue" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.cluster.quality.ClusteringQualityMeasureValue">
+public class <code class="descname">ClusteringQualityMeasureValue</code><a class="headerlink" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a wrapper class for double values calculated by clustering quality measures.</p>
+<p>This wrapper class allows for the fact, that iterations of parameter optimizations might not terminate. In this case <a class="reference internal" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue.toString()" title="de.clusteval.cluster.quality.ClusteringQualityMeasureValue.toString()"><code class="xref java java-ref docutils literal"><span class="pre">toString()</span></code></a> returns <strong>&#8220;NT&#8221;</strong>, where &#8220;NT&#8221; means <strong>&#8220;Not Terminated&#8221;</strong>. The factory method <a class="reference internal" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue.getForNotTerminated()" title="de.clusteval.cluster.quality.ClusteringQualityMeasureValue.getForNotTerminated()"><code class="xref java java-ref docutils literal"><span class="pre">getForNotTerminated()</span></code></a> returns such objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="isterminated">
+<h3>isTerminated<a class="headerlink" href="#isterminated" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.quality.ClusteringQualityMeasureValue.isTerminated">
+protected boolean <code class="descname">isTerminated</code><a class="headerlink" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue.isTerminated" title="Permalink to this definition">¶</a></dt>
+<dd><p>A boolean indicating, whether the iteration belonging to this object terminated.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getfordouble">
+<h3>getForDouble<a class="headerlink" href="#getfordouble" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.quality.ClusteringQualityMeasureValue.getForDouble(double)">
+public static <a class="reference internal" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue" title="de.clusteval.cluster.quality.ClusteringQualityMeasureValue">ClusteringQualityMeasureValue</a> <code class="descname">getForDouble</code><span class="sig-paren">(</span>double<em> value</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue.getForDouble(double)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>value</strong> &#8211; The quality of the clustering as a double value.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A wrapper object for a clustering quality given as a double value.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getfornotterminated">
+<h3>getForNotTerminated<a class="headerlink" href="#getfornotterminated" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.quality.ClusteringQualityMeasureValue.getForNotTerminated()">
+public static <a class="reference internal" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue" title="de.clusteval.cluster.quality.ClusteringQualityMeasureValue">ClusteringQualityMeasureValue</a> <code class="descname">getForNotTerminated</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue.getForNotTerminated()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A wrapper object for an optimization iteration that did not terminate.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getvalue">
+<h3>getValue<a class="headerlink" href="#getvalue" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.quality.ClusteringQualityMeasureValue.getValue()">
+public double <code class="descname">getValue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue.getValue()" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method returns the quality of the clustering.</p>
+<p>It should only be invoked, if the corresponding iteration terminated and thus <a class="reference internal" href="../../data/statistics/DoubleValueDataStatistic.html#de.clusteval.data.statistics.DoubleValueDataStatistic.value" title="de.clusteval.data.statistics.DoubleValueDataStatistic.value"><code class="xref java java-ref docutils literal"><span class="pre">value</span></code></a> is != null.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The quality of the corresponding clustering.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id1">
+<h3>isTerminated<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.quality.ClusteringQualityMeasureValue.isTerminated()">
+public boolean <code class="descname">isTerminated</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue.isTerminated()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A boolean indicating whether the iteration belonging to this value terminated.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="parsefromstring">
+<h3>parseFromString<a class="headerlink" href="#parsefromstring" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.quality.ClusteringQualityMeasureValue.parseFromString(String)">
+public static <a class="reference internal" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue" title="de.clusteval.cluster.quality.ClusteringQualityMeasureValue">ClusteringQualityMeasureValue</a> <code class="descname">parseFromString</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> stringValue</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue.parseFromString(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method returns a clustering quality measure value wrapper object corresponding to the given string.</p>
+<p>If the string equals <strong>NT</strong>, a wrapper object for a not terminated iteration is returned by invoking <a class="reference internal" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue.getForNotTerminated()" title="de.clusteval.cluster.quality.ClusteringQualityMeasureValue.getForNotTerminated()"><code class="xref java java-ref docutils literal"><span class="pre">getForNotTerminated()</span></code></a>.</p>
+<p>Otherwise the string is parsed as a double value and the result of <a class="reference internal" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue.getForDouble(double)" title="de.clusteval.cluster.quality.ClusteringQualityMeasureValue.getForDouble(double)"><code class="xref java java-ref docutils literal"><span class="pre">getForDouble(double)</span></code></a> is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>stringValue</strong> &#8211; A string representation of the clustering quality.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A clustering quality value wrapper object corresponding to the given string.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="tostring">
+<h3>toString<a class="headerlink" href="#tostring" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.quality.ClusteringQualityMeasureValue.toString()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">toString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.quality.ClusteringQualityMeasureValue.toString()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ClusteringQualityMeasureValue</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#isterminated">isTerminated</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#getfordouble">getForDouble</a></li>
+<li><a class="reference internal" href="#getfornotterminated">getForNotTerminated</a></li>
+<li><a class="reference internal" href="#getvalue">getValue</a></li>
+<li><a class="reference internal" href="#id1">isTerminated</a></li>
+<li><a class="reference internal" href="#parsefromstring">parseFromString</a></li>
+<li><a class="reference internal" href="#tostring">toString</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/cluster/quality/ClusteringQualityMeasureValue.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

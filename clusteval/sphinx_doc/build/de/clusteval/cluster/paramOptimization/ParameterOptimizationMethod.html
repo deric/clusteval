@@ -1,0 +1,888 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ParameterOptimizationMethod &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="parameteroptimizationmethod">
+<h1>ParameterOptimizationMethod<a class="headerlink" href="#parameteroptimizationmethod" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod">
+public abstract class <code class="descname">ParameterOptimizationMethod</code> extends <a class="reference internal" href="../../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod" title="Permalink to this definition">¶</a></dt>
+<dd><p>A parameter optimization method determines how a parameter optimization run is executed.</p>
+<p>One parameter optimization method is created for every pair of program and data configuration of the run in <a class="reference internal" href="../../framework/repository/parse/Parser.html#de.clusteval.framework.repository.parse.Parser.parseFromFile(File)" title="de.clusteval.framework.repository.parse.Parser.parseFromFile(File)"><code class="xref java java-ref docutils literal"><span class="pre">Parser.parseFromFile(File)</span></code></a>, that means for every run runnable one method. The method objects are instantiated as soon as the run is parsed from the filesystem. That means, when the same run is executed several times, the same method object is used.</p>
+<p>The method determines the following aspects:</p>
+<ul class="simple">
+<li><strong>the number of iterations of the optimization process</strong></li>
+<li><strong>the parameter sets evaluated</strong></li>
+<li><strong>the handling of diverging iterations</strong></li>
+<li><strong>the storage of the iteration results</strong></li>
+</ul>
+<p>The <strong>basic usage</strong> of this class is as follows:</p>
+<ul class="simple">
+<li>Instantiate an object of the parameter optimization method</li>
+<li>Invoke <a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.reset(File)" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.reset(File)"><code class="xref java java-ref docutils literal"><span class="pre">reset(File)</span></code></a> and tell the method to initialize itself. Results will be written to the passed file.</li>
+<li>As long as <a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.hasNext()" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.hasNext()"><code class="xref java java-ref docutils literal"><span class="pre">hasNext()</span></code></a> returns true, there are more iterations to evaluate</li>
+<li>Use <a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.next()" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.next()"><code class="xref java java-ref docutils literal"><span class="pre">next()</span></code></a> to get the next parameter set.</li>
+<li>Pass the assessed qualities of <code class="xref java java-ref docutils literal"><span class="pre">ExecutionRunRunnable.assessQualities(ClusteringRunResult)</span></code> to <a class="reference internal" href="APParameterOptimizationMethod.html#de.clusteval.cluster.paramOptimization.APParameterOptimizationMethod.giveQualityFeedback(ParameterSet, ClusteringQualitySet)" title="de.clusteval.cluster.paramOptimization.APParameterOptimizationMethod.giveQualityFeedback(ParameterSet, ClusteringQualitySet)"><code class="xref java java-ref docutils literal"><span class="pre">giveQualityFeedback(ClusteringQualitySet)</span></code></a>.</li>
+<li>At the end use <a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getResult()" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getResult()"><code class="xref java java-ref docutils literal"><span class="pre">getResult()</span></code></a> to get the results of the iterations</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="currentcount">
+<h3>currentCount<a class="headerlink" href="#currentcount" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.currentCount">
+protected int <code class="descname">currentCount</code><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.currentCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of iterations that has been performed so far.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="dataconfig">
+<h3>dataConfig<a class="headerlink" href="#dataconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.dataConfig">
+protected <a class="reference internal" href="../../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a> <code class="descname">dataConfig</code><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.dataConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>The data configuration this method was created for.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="finishedcount">
+<h3>finishedCount<a class="headerlink" href="#finishedcount" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.finishedCount">
+protected int <code class="descname">finishedCount</code><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.finishedCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of iterations for which qualities have been returned.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="isresume">
+<h3>isResume<a class="headerlink" href="#isresume" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.isResume">
+protected boolean <code class="descname">isResume</code><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.isResume" title="Permalink to this definition">¶</a></dt>
+<dd><p>This boolean indicates, whether the run is a resumption of a previous run execution or a completely new execution.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="optimizationcriterion">
+<h3>optimizationCriterion<a class="headerlink" href="#optimizationcriterion" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.optimizationCriterion">
+protected <a class="reference internal" href="../quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure">ClusteringQualityMeasure</a> <code class="descname">optimizationCriterion</code><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.optimizationCriterion" title="Permalink to this definition">¶</a></dt>
+<dd><p>During a parameter optimization run for each calcuated clustering several quality measures are assessed. One of these quality measures is used, to rate the clusterings and to decide, which clusterings performed best. This quality measure is called the optimization criterion and is stored in this attribute.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="params">
+<h3>params<a class="headerlink" href="#params" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.params">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;&gt; <code class="descname">params</code><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>The parameters of the program encapsulated by the program configuration that are to be optimized.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="programconfig">
+<h3>programConfig<a class="headerlink" href="#programconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.programConfig">
+protected <a class="reference internal" href="../../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a> <code class="descname">programConfig</code><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.programConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>The program configuration this method was created for.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="run">
+<h3>run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.run">
+protected <a class="reference internal" href="../../run/ParameterOptimizationRun.html#de.clusteval.run.ParameterOptimizationRun" title="de.clusteval.run.ParameterOptimizationRun">ParameterOptimizationRun</a> <code class="descname">run</code><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>The run this method belongs to.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="totaliterationcount">
+<h3>totalIterationCount<a class="headerlink" href="#totaliterationcount" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.totalIterationCount">
+protected int <code class="descname">totalIterationCount</code><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.totalIterationCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>This array holds the number of iterations that should be performed for each optimization parameter.</p>
+<p>However, this might not be exactly the number that is performed by the method and these numbers might be readjusted by the method after the constructor call. This is due to the fact, that every method handles the distribution of the iterations itself.</p>
+<p>The ordering of this list is assumed to be the same as the ordering of <a class="reference internal" href="../../program/ProgramConfig.html#de.clusteval.program.ProgramConfig.params" title="de.clusteval.program.ProgramConfig.params"><code class="xref java java-ref docutils literal"><span class="pre">params</span></code></a>.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>ParameterOptimizationMethod<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.ParameterOptimizationMethod(Repository, boolean, long, File, ParameterOptimizationRun, ProgramConfig, DataConfig, List, ClusteringQualityMeasure, int, boolean)">
+public <code class="descname">ParameterOptimizationMethod</code><span class="sig-paren">(</span><a class="reference internal" href="../../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, boolean<em> register</em>, long<em> changeDate</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em>, <a class="reference internal" href="../../run/ParameterOptimizationRun.html#de.clusteval.run.ParameterOptimizationRun" title="de.clusteval.run.ParameterOptimizationRun">ParameterOptimizationRun</a><em> run</em>, <a class="reference internal" href="../../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a><em> programConfig</em>, <a class="reference internal" href="../../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a><em> dataConfig</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;&gt;<em> params</em>, <a class="reference internal" href="../quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure">ClusteringQualityMeasure</a><em> optimizationCriterion</em>, int<em> totalIterationCount</em>, boolean<em> isResume</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.ParameterOptimizationMethod(Repository, boolean, long, File, ParameterOptimizationRun, ProgramConfig, DataConfig, List, ClusteringQualityMeasure, int, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; The repository this object is registered in.</li>
+<li><strong>register</strong> &#8211; Whether this object should be registered implicitely in the repository or if the user wants to register manually later.</li>
+<li><strong>changeDate</strong> &#8211; The changedate of this object can be used for identification and equality checks of objects.</li>
+<li><strong>absPath</strong> &#8211; The absolute path of this object is used for identification and equality checks of objects.</li>
+<li><strong>run</strong> &#8211; The run this method belongs to.</li>
+<li><strong>programConfig</strong> &#8211; The program configuration this method was created for.</li>
+<li><strong>dataConfig</strong> &#8211; The data configuration this method was created for.</li>
+<li><strong>params</strong> &#8211; This list holds the program parameters that are to be optimized by the parameter optimization run.</li>
+<li><strong>optimizationCriterion</strong> &#8211; The quality measure used as the optimization criterion (see <a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.optimizationCriterion" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.optimizationCriterion"><code class="xref java java-ref docutils literal"><span class="pre">optimizationCriterion</span></code></a>).</li>
+<li><strong>totalIterationCount</strong> &#8211; The total number of iterations to be performed by this parameter optimization.</li>
+<li><strong>isResume</strong> &#8211; This boolean indiciates, whether the run is a resumption of a previous run execution or a completely new execution.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>ParameterOptimizationMethod<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.ParameterOptimizationMethod(ParameterOptimizationMethod)">
+public <code class="descname">ParameterOptimizationMethod</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod">ParameterOptimizationMethod</a><em> method</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.ParameterOptimizationMethod(ParameterOptimizationMethod)" title="Permalink to this definition">¶</a></dt>
+<dd><p>The copy constructor of parameter optimization methods</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>method</strong> &#8211; The method to clone.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clone">
+<h3>clone<a class="headerlink" href="#clone" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.clone()">
+public <a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod">ParameterOptimizationMethod</a> <code class="descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.clone()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="cloneoptimizationmethods">
+<h3>cloneOptimizationMethods<a class="headerlink" href="#cloneoptimizationmethods" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.cloneOptimizationMethods(List)">
+public static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod">ParameterOptimizationMethod</a>&gt; <code class="descname">cloneOptimizationMethods</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod">ParameterOptimizationMethod</a>&gt;<em> optimizationMethods</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.cloneOptimizationMethods(List)" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper method for cloning a list of optimization methods.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>optimizationMethods</strong> &#8211; The optimization methods to clone.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The list of cloned optimization methods.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="equals">
+<h3>equals<a class="headerlink" href="#equals" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.equals(Object)">
+public boolean <code class="descname">equals</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html" title="java.lang.Object">Object</a><em> obj</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.equals(Object)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getcompatibledatasetformatbaseclasses">
+<h3>getCompatibleDataSetFormatBaseClasses<a class="headerlink" href="#getcompatibledatasetformatbaseclasses" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getCompatibleDataSetFormatBaseClasses()">
+public abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../data/dataset/format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat">DataSetFormat</a>&gt;&gt; <code class="descname">getCompatibleDataSetFormatBaseClasses</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getCompatibleDataSetFormatBaseClasses()" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method returns a list with the classes of all dataset formats this parameter optimization method supports. If the list is empty, all dataset formats are assumed to be compatible.</p>
+<p>Some methods only support certain input formats. If this is the case for your method, override this method and return the compatible formats.</p>
+<p>This compatibility is checked as soon as a parameter optimization run is parsed in <a class="reference internal" href="../../run/ParameterOptimizationRun.html#de.clusteval.run.ParameterOptimizationRun.checkCompatibilityParameterOptimizationMethod(List, List, List)" title="de.clusteval.run.ParameterOptimizationRun.checkCompatibilityParameterOptimizationMethod(List, List, List)"><code class="xref java java-ref docutils literal"><span class="pre">ParameterOptimizationRun.checkCompatibilityParameterOptimizationMethod</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list with all dataset format classes that are compatible to this parameter optimization method.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getcompatibleprogramnames">
+<h3>getCompatibleProgramNames<a class="headerlink" href="#getcompatibleprogramnames" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getCompatibleProgramNames()">
+public abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getCompatibleProgramNames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getCompatibleProgramNames()" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method returns a list with all programs this parameter optimization method supports. If the list is empty, all programs are assumed to be compatible.</p>
+<p>Some methods only support certain programs. If this is the case for your method, override this method and return the compatible programs.</p>
+<p>This compatibility is checked as soon as a parameter optimization run is parsed in <a class="reference internal" href="../../run/ParameterOptimizationRun.html#de.clusteval.run.ParameterOptimizationRun.checkCompatibilityParameterOptimizationMethod(List, List, List)" title="de.clusteval.run.ParameterOptimizationRun.checkCompatibilityParameterOptimizationMethod(List, List, List)"><code class="xref java java-ref docutils literal"><span class="pre">ParameterOptimizationRun.checkCompatibilityParameterOptimizationMethod</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list with all programs that are compatible to this parameter optimization method.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getdataconfig">
+<h3>getDataConfig<a class="headerlink" href="#getdataconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getDataConfig()">
+public <a class="reference internal" href="../../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a> <code class="descname">getDataConfig</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getDataConfig()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The data configuration this method was created for.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getfinishedcount">
+<h3>getFinishedCount<a class="headerlink" href="#getfinishedcount" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getFinishedCount()">
+public int <code class="descname">getFinishedCount</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getFinishedCount()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of finished iterations, for which we have received qualities.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getiterationperparameter">
+<h3>getIterationPerParameter<a class="headerlink" href="#getiterationperparameter" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getIterationPerParameter()">
+public int <code class="descname">getIterationPerParameter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getIterationPerParameter()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An array holding the number of iterations that should be performed for each optimization parameter. Keep in mind the hints in <a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.totalIterationCount" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.totalIterationCount"><code class="xref java java-ref docutils literal"><span class="pre">totalIterationCount</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>See also:</strong> <code class="xref java java-ref docutils literal"><span class="pre">.totalIterationCount</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="getnextparameterset">
+<h3>getNextParameterSet<a class="headerlink" href="#getnextparameterset" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getNextParameterSet()">
+protected <a class="reference internal" href="../../program/ParameterSet.html#de.clusteval.program.ParameterSet" title="de.clusteval.program.ParameterSet">ParameterSet</a> <code class="descname">getNextParameterSet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getNextParameterSet()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h3>getNextParameterSet<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getNextParameterSet(ParameterSet)">
+protected abstract <a class="reference internal" href="../../program/ParameterSet.html#de.clusteval.program.ParameterSet" title="de.clusteval.program.ParameterSet">ParameterSet</a> <code class="descname">getNextParameterSet</code><span class="sig-paren">(</span><a class="reference internal" href="../../program/ParameterSet.html#de.clusteval.program.ParameterSet" title="de.clusteval.program.ParameterSet">ParameterSet</a><em> forcedParameterSet</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getNextParameterSet(ParameterSet)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method purely determines and calculates the next parameter set that follows from the current state of the method.</p>
+<p>If the force parameter set is given != null, this parameter set is forced to be evaluated. This scenario is used during resumption of an older run, where the parameter sets are already fixed and we want to feed them to this method together with their results exactly as they were performed last time.</p>
+<p>This is a helper-method for <a class="reference internal" href="../../run/result/ParameterOptimizationResultIterator.html#de.clusteval.run.result.ParameterOptimizationResultIterator.next()" title="de.clusteval.run.result.ParameterOptimizationResultIterator.next()"><code class="xref java java-ref docutils literal"><span class="pre">next()</span></code></a> and <a class="reference internal" href="../../utils/SubSubDirectoryIterator.html#de.clusteval.utils.SubSubDirectoryIterator.next()" title="de.clusteval.utils.SubSubDirectoryIterator.next()"><code class="xref java java-ref docutils literal"><span class="pre">next(ParameterSet)</span></code></a>.</p>
+<p>It might happen that this method puts the calling thread to sleep, in case the next parameter set requires older parameter sets to finish first.</p>
+<p>It might happen that this method puts the calling thread to sleep, in case the next parameter set requires older parameter sets to finish first.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>forcedParameterSet</strong> &#8211; If this parameter is set != null, this parameter set is forced to be evaluated in the next iteration.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="ParameterSetAlreadyEvaluatedException.html#de.clusteval.cluster.paramOptimization.ParameterSetAlreadyEvaluatedException" title="de.clusteval.cluster.paramOptimization.ParameterSetAlreadyEvaluatedException"><strong>ParameterSetAlreadyEvaluatedException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="NoParameterSetFoundException.html#de.clusteval.cluster.paramOptimization.NoParameterSetFoundException" title="de.clusteval.cluster.paramOptimization.NoParameterSetFoundException"><strong>NoParameterSetFoundException</strong></a> &#8211; This exception is thrown, if no parameter set was found that was not already evaluated before.</li>
+<li><a class="reference internal" href="../../utils/InternalAttributeException.html#de.clusteval.utils.InternalAttributeException" title="de.clusteval.utils.InternalAttributeException"><strong>InternalAttributeException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../framework/repository/RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The next parameter set.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getoptimizationcriterion">
+<h3>getOptimizationCriterion<a class="headerlink" href="#getoptimizationcriterion" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getOptimizationCriterion()">
+public final <a class="reference internal" href="../quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure">ClusteringQualityMeasure</a> <code class="descname">getOptimizationCriterion</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getOptimizationCriterion()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The quality measure used as the optimization criterion (see <a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.optimizationCriterion" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.optimizationCriterion"><code class="xref java java-ref docutils literal"><span class="pre">optimizationCriterion</span></code></a>).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getoptimizationparameter">
+<h3>getOptimizationParameter<a class="headerlink" href="#getoptimizationparameter" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getOptimizationParameter()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;&gt; <code class="descname">getOptimizationParameter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getOptimizationParameter()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">This list holds the program parameters that are to be optimized by the parameter optimization run.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getplotdensityparameter">
+<h3>getPlotDensityParameter<a class="headerlink" href="#getplotdensityparameter" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getPlotDensityParameter()">
+public <a class="reference internal" href="../../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt; <code class="descname">getPlotDensityParameter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getPlotDensityParameter()" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default, we take the first parameter as density parameter for plots</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The optimization parameter, that should be used as the axis variable to plot the results.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getprogramconfig">
+<h3>getProgramConfig<a class="headerlink" href="#getprogramconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getProgramConfig()">
+public <a class="reference internal" href="../../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a> <code class="descname">getProgramConfig</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getProgramConfig()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The program configuration this method was created for.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getresult">
+<h3>getResult<a class="headerlink" href="#getresult" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getResult()">
+public <a class="reference internal" href="../../run/result/ParameterOptimizationResult.html#de.clusteval.run.result.ParameterOptimizationResult" title="de.clusteval.run.result.ParameterOptimizationResult">ParameterOptimizationResult</a> <code class="descname">getResult</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getResult()" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method returns the results of this parameter optimization run. Keep in mind, that this method returns an incomplete object, before the run is finished.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">An wrapper object holding all the results that are calculated throughout execution of the parameter optimization run.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getstartedcount">
+<h3>getStartedCount<a class="headerlink" href="#getstartedcount" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getStartedCount()">
+public int <code class="descname">getStartedCount</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getStartedCount()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of iterations that has been performed so far.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="gettotaliterationcount">
+<h3>getTotalIterationCount<a class="headerlink" href="#gettotaliterationcount" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getTotalIterationCount()">
+public abstract int <code class="descname">getTotalIterationCount</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getTotalIterationCount()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The total iteration count this method should perform.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="givequalityfeedback">
+<h3>giveQualityFeedback<a class="headerlink" href="#givequalityfeedback" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.giveQualityFeedback(ParameterSet, ClusteringQualitySet)">
+public synchronized void <code class="descname">giveQualityFeedback</code><span class="sig-paren">(</span><a class="reference internal" href="../../program/ParameterSet.html#de.clusteval.program.ParameterSet" title="de.clusteval.program.ParameterSet">ParameterSet</a><em> parameterSet</em>, <a class="reference internal" href="../quality/ClusteringQualitySet.html#de.clusteval.cluster.quality.ClusteringQualitySet" title="de.clusteval.cluster.quality.ClusteringQualitySet">ClusteringQualitySet</a><em> qualities</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.giveQualityFeedback(ParameterSet, ClusteringQualitySet)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method has to be invoked after every iteration and invocation of <a class="reference internal" href="../../run/result/ParameterOptimizationResultIterator.html#de.clusteval.run.result.ParameterOptimizationResultIterator.next()" title="de.clusteval.run.result.ParameterOptimizationResultIterator.next()"><code class="xref java java-ref docutils literal"><span class="pre">next()</span></code></a>, to pass the qualities of the last clustering to this parameter optimization method.</p>
+<p>If this method is not invoked after <a class="reference internal" href="../../run/result/ParameterOptimizationResultIterator.html#de.clusteval.run.result.ParameterOptimizationResultIterator.next()" title="de.clusteval.run.result.ParameterOptimizationResultIterator.next()"><code class="xref java java-ref docutils literal"><span class="pre">next()</span></code></a>, before <a class="reference internal" href="../../run/result/ParameterOptimizationResultIterator.html#de.clusteval.run.result.ParameterOptimizationResultIterator.next()" title="de.clusteval.run.result.ParameterOptimizationResultIterator.next()"><code class="xref java java-ref docutils literal"><span class="pre">next()</span></code></a> is invoked again, an <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/IllegalStateException.html" title="java.lang.IllegalStateException"><code class="xref java java-ref docutils literal"><span class="pre">IllegalStateException</span></code></a> will be thrown.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>qualities</strong> &#8211; The clustering qualities for the clustering of the last iteration.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="hasnext">
+<h3>hasNext<a class="headerlink" href="#hasnext" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.hasNext()">
+public abstract boolean <code class="descname">hasNext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.hasNext()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True, if there are more iterations together with parameter sets that have to be evaluated.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="hashcode">
+<h3>hashCode<a class="headerlink" href="#hashcode" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.hashCode()">
+public int <code class="descname">hashCode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.hashCode()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="initparametervalues">
+<h3>initParameterValues<a class="headerlink" href="#initparametervalues" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.initParameterValues()">
+protected void <code class="descname">initParameterValues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.initParameterValues()" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method initializes the parameter values of each optimization parameter that should be assessed during the process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../utils/InternalAttributeException.html#de.clusteval.utils.InternalAttributeException" title="de.clusteval.utils.InternalAttributeException"><strong>InternalAttributeException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="next">
+<h3>next<a class="headerlink" href="#next" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.next()">
+public final <a class="reference internal" href="../../program/ParameterSet.html#de.clusteval.program.ParameterSet" title="de.clusteval.program.ParameterSet">ParameterSet</a> <code class="descname">next</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.next()" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method tells the method that the next parameter set should be determined and that the invoker wants to start the evaluation of the next iteration.</p>
+<p>This is a convenience method of <a class="reference internal" href="../../utils/SubSubDirectoryIterator.html#de.clusteval.utils.SubSubDirectoryIterator.next()" title="de.clusteval.utils.SubSubDirectoryIterator.next()"><code class="xref java java-ref docutils literal"><span class="pre">next(ParameterSet,long)</span></code></a>, without enforcement of a passed parameter set.</p>
+<p>It might happen that this method puts the calling thread to sleep, in case the next parameter set requires older parameter sets to finish first.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="ParameterSetAlreadyEvaluatedException.html#de.clusteval.cluster.paramOptimization.ParameterSetAlreadyEvaluatedException" title="de.clusteval.cluster.paramOptimization.ParameterSetAlreadyEvaluatedException"><strong>ParameterSetAlreadyEvaluatedException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="NoParameterSetFoundException.html#de.clusteval.cluster.paramOptimization.NoParameterSetFoundException" title="de.clusteval.cluster.paramOptimization.NoParameterSetFoundException"><strong>NoParameterSetFoundException</strong></a> &#8211; This exception is thrown, if no parameter set was found that was not already evaluated before.</li>
+<li><a class="reference internal" href="../../utils/InternalAttributeException.html#de.clusteval.utils.InternalAttributeException" title="de.clusteval.utils.InternalAttributeException"><strong>InternalAttributeException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../framework/repository/RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The parameter set that is being evaluated in the next iteration.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id4">
+<h3>next<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.next(ParameterSet, long)">
+public final <a class="reference internal" href="../../program/ParameterSet.html#de.clusteval.program.ParameterSet" title="de.clusteval.program.ParameterSet">ParameterSet</a> <code class="descname">next</code><span class="sig-paren">(</span><a class="reference internal" href="../../program/ParameterSet.html#de.clusteval.program.ParameterSet" title="de.clusteval.program.ParameterSet">ParameterSet</a><em> forcedParameterSet</em>, long<em> iterationNumber</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.next(ParameterSet, long)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method tells the method that the next parameter set should be determined and that the invoker wants to start the evaluation of the next iteration.</p>
+<p>If the force parameter set is given != null, this parameter set is forced to be evaluated. This scenario is used during resumption of an older run, where the parameter sets are already fixed and we want to feed them to this method together with their results exactly as they were performed last time.</p>
+<p>If this method is invoked twice, without <a class="reference internal" href="APParameterOptimizationMethod.html#de.clusteval.cluster.paramOptimization.APParameterOptimizationMethod.giveQualityFeedback(ParameterSet, ClusteringQualitySet)" title="de.clusteval.cluster.paramOptimization.APParameterOptimizationMethod.giveQualityFeedback(ParameterSet, ClusteringQualitySet)"><code class="xref java java-ref docutils literal"><span class="pre">giveQualityFeedback(ClusteringQualitySet)</span></code></a> being invoked in between, a <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/IllegalStateException.html" title="java.lang.IllegalStateException"><code class="xref java java-ref docutils literal"><span class="pre">IllegalStateException</span></code></a> is thrown.</p>
+<p>It might happen that this method puts the calling thread to sleep, in case the next parameter set requires older parameter sets to finish first.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>forcedParameterSet</strong> &#8211; If this parameter is set != null, this parameter set is forced to be evaluated in the next iteration.</li>
+<li><strong>iterationNumber</strong> &#8211; The original number of the iteration when it was previously performed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="ParameterSetAlreadyEvaluatedException.html#de.clusteval.cluster.paramOptimization.ParameterSetAlreadyEvaluatedException" title="de.clusteval.cluster.paramOptimization.ParameterSetAlreadyEvaluatedException"><strong>ParameterSetAlreadyEvaluatedException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="NoParameterSetFoundException.html#de.clusteval.cluster.paramOptimization.NoParameterSetFoundException" title="de.clusteval.cluster.paramOptimization.NoParameterSetFoundException"><strong>NoParameterSetFoundException</strong></a> &#8211; This exception is thrown, if no parameter set was found that was not already evaluated before.</li>
+<li><a class="reference internal" href="../../utils/InternalAttributeException.html#de.clusteval.utils.InternalAttributeException" title="de.clusteval.utils.InternalAttributeException"><strong>InternalAttributeException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../framework/repository/RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The parameter set that is being evaluated in the next iteration.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="parsefromstring">
+<h3>parseFromString<a class="headerlink" href="#parsefromstring" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.parseFromString(Repository, String, Run, ProgramConfig, DataConfig, List, ClusteringQualityMeasure, int, boolean)">
+public static <a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod">ParameterOptimizationMethod</a> <code class="descname">parseFromString</code><span class="sig-paren">(</span><a class="reference internal" href="../../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> parameterOptimizationMethod</em>, <a class="reference internal" href="../../run/Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run">Run</a><em> run</em>, <a class="reference internal" href="../../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a><em> programConfig</em>, <a class="reference internal" href="../../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a><em> dataConfig</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;&gt;<em> params</em>, <a class="reference internal" href="../quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure">ClusteringQualityMeasure</a><em> optimizationCriterion</em>, int<em> totalIterationCount</em>, boolean<em> isResume</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.parseFromString(Repository, String, Run, ProgramConfig, DataConfig, List, ClusteringQualityMeasure, int, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method takes a string and some additional parameters and parses from it a parameter optimization method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; The repository in which the method should look up the parameter optimization method class and where the new object should be registered.</li>
+<li><strong>parameterOptimizationMethod</strong> &#8211; The name of the parameter optimization method class.</li>
+<li><strong>run</strong> &#8211; The run the new parameter optimization method belongs to.</li>
+<li><strong>programConfig</strong> &#8211; The program configuration the new parameter optimization method belongs to.</li>
+<li><strong>dataConfig</strong> &#8211; The data configuration the new parameter optimization method belongs to.</li>
+<li><strong>params</strong> &#8211; The parameters of the program encapsulated by the program configuration that are to be optimized.</li>
+<li><strong>optimizationCriterion</strong> &#8211; The quality measure used as the optimization criterion (see <a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.optimizationCriterion" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.optimizationCriterion"><code class="xref java java-ref docutils literal"><span class="pre">optimizationCriterion</span></code></a>).</li>
+<li><strong>totalIterationCount</strong> &#8211; This array holds the number of iterations that are to be performed for each optimization parameter.</li>
+<li><strong>isResume</strong> &#8211; This boolean indiciates, whether the run is a resumption of a previous run execution or a completely new execution.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="UnknownParameterOptimizationMethodException.html#de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException" title="de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException"><strong>UnknownParameterOptimizationMethodException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The parsed parameter optimization method.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="reset">
+<h3>reset<a class="headerlink" href="#reset" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.reset(File)">
+public void <code class="descname">reset</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absResultPath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.reset(File)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method initializes this method by setting the parameter values to be evaluated during the process (<a class="reference internal" href="TransClustQuantileParameterOptimizationMethod.html#de.clusteval.cluster.paramOptimization.TransClustQuantileParameterOptimizationMethod.initParameterValues()" title="de.clusteval.cluster.paramOptimization.TransClustQuantileParameterOptimizationMethod.initParameterValues()"><code class="xref java java-ref docutils literal"><span class="pre">initParameterValues()</span></code></a>) and by creating a wrapper object for the <a class="reference internal" href="../../framework/repository/parse/Parser.html#de.clusteval.framework.repository.parse.Parser.result" title="de.clusteval.framework.repository.parse.Parser.result"><code class="xref java java-ref docutils literal"><span class="pre">result</span></code></a>.</p>
+<p>Furthermore if the run is a resumption of an old run execution, this method also reperforms all iterations that have been executed during the last execution of the run.</p>
+<p>This method has to be invoked before anything else is done ( <a class="reference internal" href="MCODEDivisiveParameterOptimizationMethod.html#de.clusteval.cluster.paramOptimization.MCODEDivisiveParameterOptimizationMethod.hasNext()" title="de.clusteval.cluster.paramOptimization.MCODEDivisiveParameterOptimizationMethod.hasNext()"><code class="xref java java-ref docutils literal"><span class="pre">hasNext()</span></code></a> or <a class="reference internal" href="../../run/result/ParameterOptimizationResultIterator.html#de.clusteval.run.result.ParameterOptimizationResultIterator.next()" title="de.clusteval.run.result.ParameterOptimizationResultIterator.next()"><code class="xref java java-ref docutils literal"><span class="pre">next()</span></code></a>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>absResultPath</strong> &#8211; The absolute path pointing to the result file.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../run/result/RunResultParseException.html#de.clusteval.run.result.RunResultParseException" title="de.clusteval.run.result.RunResultParseException"><strong>RunResultParseException</strong></a> &#8211; </li>
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../utils/InternalAttributeException.html#de.clusteval.utils.InternalAttributeException" title="de.clusteval.utils.InternalAttributeException"><strong>InternalAttributeException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../framework/repository/RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="setdataconfig">
+<h3>setDataConfig<a class="headerlink" href="#setdataconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.setDataConfig(DataConfig)">
+public void <code class="descname">setDataConfig</code><span class="sig-paren">(</span><a class="reference internal" href="../../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a><em> dataConfig</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.setDataConfig(DataConfig)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is used to set the data configuration of this run to another object. This is needed for example after cloning and conversion of the old data configuration during the run process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dataConfig</strong> &#8211; The new data configuration of this run.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="setprogramconfig">
+<h3>setProgramConfig<a class="headerlink" href="#setprogramconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.setProgramConfig(ProgramConfig)">
+public void <code class="descname">setProgramConfig</code><span class="sig-paren">(</span><a class="reference internal" href="../../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a><em> programConfig</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.setProgramConfig(ProgramConfig)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is used to set the program configuration of this run to another object. This is needed for example after cloning and conversion of the old program configuration during the run process.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>programConfig</strong> &#8211; The new program configuration of this run.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="setresume">
+<h3>setResume<a class="headerlink" href="#setresume" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.setResume(boolean)">
+public void <code class="descname">setResume</code><span class="sig-paren">(</span>boolean<em> isResume</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.setResume(boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>isResume</strong> &#8211; A boolean indicating, whether the run is a resumption of a previous run execution or a completely new execution.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="setrun">
+<h3>setRun<a class="headerlink" href="#setrun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.setRun(ParameterOptimizationRun)">
+public void <code class="descname">setRun</code><span class="sig-paren">(</span><a class="reference internal" href="../../run/ParameterOptimizationRun.html#de.clusteval.run.ParameterOptimizationRun" title="de.clusteval.run.ParameterOptimizationRun">ParameterOptimizationRun</a><em> run</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.setRun(ParameterOptimizationRun)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>run</strong> &#8211; The new run of this method.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ParameterOptimizationMethod</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#currentcount">currentCount</a></li>
+<li><a class="reference internal" href="#dataconfig">dataConfig</a></li>
+<li><a class="reference internal" href="#finishedcount">finishedCount</a></li>
+<li><a class="reference internal" href="#isresume">isResume</a></li>
+<li><a class="reference internal" href="#optimizationcriterion">optimizationCriterion</a></li>
+<li><a class="reference internal" href="#params">params</a></li>
+<li><a class="reference internal" href="#programconfig">programConfig</a></li>
+<li><a class="reference internal" href="#run">run</a></li>
+<li><a class="reference internal" href="#totaliterationcount">totalIterationCount</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">ParameterOptimizationMethod</a></li>
+<li><a class="reference internal" href="#id2">ParameterOptimizationMethod</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#clone">clone</a></li>
+<li><a class="reference internal" href="#cloneoptimizationmethods">cloneOptimizationMethods</a></li>
+<li><a class="reference internal" href="#equals">equals</a></li>
+<li><a class="reference internal" href="#getcompatibledatasetformatbaseclasses">getCompatibleDataSetFormatBaseClasses</a></li>
+<li><a class="reference internal" href="#getcompatibleprogramnames">getCompatibleProgramNames</a></li>
+<li><a class="reference internal" href="#getdataconfig">getDataConfig</a></li>
+<li><a class="reference internal" href="#getfinishedcount">getFinishedCount</a></li>
+<li><a class="reference internal" href="#getiterationperparameter">getIterationPerParameter</a></li>
+<li><a class="reference internal" href="#getnextparameterset">getNextParameterSet</a></li>
+<li><a class="reference internal" href="#id3">getNextParameterSet</a></li>
+<li><a class="reference internal" href="#getoptimizationcriterion">getOptimizationCriterion</a></li>
+<li><a class="reference internal" href="#getoptimizationparameter">getOptimizationParameter</a></li>
+<li><a class="reference internal" href="#getplotdensityparameter">getPlotDensityParameter</a></li>
+<li><a class="reference internal" href="#getprogramconfig">getProgramConfig</a></li>
+<li><a class="reference internal" href="#getresult">getResult</a></li>
+<li><a class="reference internal" href="#getstartedcount">getStartedCount</a></li>
+<li><a class="reference internal" href="#gettotaliterationcount">getTotalIterationCount</a></li>
+<li><a class="reference internal" href="#givequalityfeedback">giveQualityFeedback</a></li>
+<li><a class="reference internal" href="#hasnext">hasNext</a></li>
+<li><a class="reference internal" href="#hashcode">hashCode</a></li>
+<li><a class="reference internal" href="#initparametervalues">initParameterValues</a></li>
+<li><a class="reference internal" href="#next">next</a></li>
+<li><a class="reference internal" href="#id4">next</a></li>
+<li><a class="reference internal" href="#parsefromstring">parseFromString</a></li>
+<li><a class="reference internal" href="#reset">reset</a></li>
+<li><a class="reference internal" href="#setdataconfig">setDataConfig</a></li>
+<li><a class="reference internal" href="#setprogramconfig">setProgramConfig</a></li>
+<li><a class="reference internal" href="#setresume">setResume</a></li>
+<li><a class="reference internal" href="#setrun">setRun</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/cluster/paramOptimization/ParameterOptimizationMethod.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

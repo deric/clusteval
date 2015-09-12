@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>StaticRepositoryEntity &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="staticrepositoryentity">
+<h1>StaticRepositoryEntity<a class="headerlink" href="#staticrepositoryentity" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.framework.repository.StaticRepositoryEntity">
+public class <code class="descname">StaticRepositoryEntity</code>&lt;T extends RepositoryObject&gt; extends <a class="reference internal" href="RepositoryEntity.html#de.clusteval.framework.repository.RepositoryEntity" title="de.clusteval.framework.repository.RepositoryEntity">RepositoryEntity</a>&lt;T&gt;<a class="headerlink" href="#de.clusteval.framework.repository.StaticRepositoryEntity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="nametoobject">
+<h3>nameToObject<a class="headerlink" href="#nametoobject" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.StaticRepositoryEntity.nameToObject">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, T&gt; <code class="descname">nameToObject</code><a class="headerlink" href="#de.clusteval.framework.repository.StaticRepositoryEntity.nameToObject" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="objects">
+<h3>objects<a class="headerlink" href="#objects" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.StaticRepositoryEntity.objects">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;T, T&gt; <code class="descname">objects</code><a class="headerlink" href="#de.clusteval.framework.repository.StaticRepositoryEntity.objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>A map containing all datasets registered in this repository.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="parent">
+<h3>parent<a class="headerlink" href="#parent" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.StaticRepositoryEntity.parent">
+protected <a class="reference internal" href="#de.clusteval.framework.repository.StaticRepositoryEntity" title="de.clusteval.framework.repository.StaticRepositoryEntity">StaticRepositoryEntity</a>&lt;T&gt; <code class="descname">parent</code><a class="headerlink" href="#de.clusteval.framework.repository.StaticRepositoryEntity.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>StaticRepositoryEntity<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.framework.repository.StaticRepositoryEntity.StaticRepositoryEntity(Repository, StaticRepositoryEntity, String)">
+public <code class="descname">StaticRepositoryEntity</code><span class="sig-paren">(</span><a class="reference internal" href="Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference internal" href="#de.clusteval.framework.repository.StaticRepositoryEntity" title="de.clusteval.framework.repository.StaticRepositoryEntity">StaticRepositoryEntity</a>&lt;T&gt;<em> parent</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> basePath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.StaticRepositoryEntity.StaticRepositoryEntity(Repository, StaticRepositoryEntity, String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ascollection">
+<h3>asCollection<a class="headerlink" href="#ascollection" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.StaticRepositoryEntity.asCollection()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;T&gt; <code class="descname">asCollection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.StaticRepositoryEntity.asCollection()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="findbystring">
+<h3>findByString<a class="headerlink" href="#findbystring" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.StaticRepositoryEntity.findByString(String)">
+public T <code class="descname">findByString</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> search</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.StaticRepositoryEntity.findByString(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method looks up and returns (if it exists) the data configuration with the given name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>search</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getregisteredobject">
+<h3>getRegisteredObject<a class="headerlink" href="#getregisteredobject" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.StaticRepositoryEntity.getRegisteredObject(S)">
+public &lt;S extends T&gt; S <code class="descname">getRegisteredObject</code><span class="sig-paren">(</span>S<em> obj</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.StaticRepositoryEntity.getRegisteredObject(S)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method checks, whether there is an object registered, that is equal to the passed object and returns it.</p>
+<p>Equality is checked in terms of</p>
+<ul class="simple">
+<li><strong>object.hashCode == other.hashCode</strong></li>
+<li><strong>object.equals(other)</strong></li>
+</ul>
+<p>since internally the repository uses hash datastructures.</p>
+<p>By default the <a class="reference internal" href="RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject.equals(Object)" title="de.clusteval.framework.repository.RepositoryObject.equals(Object)"><code class="xref java java-ref docutils literal"><span class="pre">RepositoryObject.equals(Object)</span></code></a> method is only based on the absolute path of the repository object and the repositories of the two objects, this means two repository objects are considered the same if they are stored in the same repository and they have the same absolute path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>obj</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>getRegisteredObject<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.StaticRepositoryEntity.getRegisteredObject(S, boolean)">
+public &lt;S extends T&gt; S <code class="descname">getRegisteredObject</code><span class="sig-paren">(</span>S<em> object</em>, boolean<em> ignoreChangeDate</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.StaticRepositoryEntity.getRegisteredObject(S, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="register">
+<h3>register<a class="headerlink" href="#register" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.StaticRepositoryEntity.register(S)">
+public &lt;S extends T&gt; boolean <code class="descname">register</code><span class="sig-paren">(</span>S<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.StaticRepositoryEntity.register(S)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method registers a new object.</p>
+<p>First by invoking <a class="reference internal" href="Repository.html#de.clusteval.framework.repository.Repository.getRegisteredObject(NamedStringAttribute)" title="de.clusteval.framework.repository.Repository.getRegisteredObject(NamedStringAttribute)"><code class="xref java java-ref docutils literal"><span class="pre">getRegisteredObject(RepositoryObject)</span></code></a> the method checks, whether another object equalling the new object has been registered before.</p>
+<p>If there is no old equalling object, the new object is simply registered at the repository.</p>
+<p>If there is an old equalling object, their <strong>changedates</strong> are compared. The new object is only registered, if the changedate of the new object is newer than the changedate of the old object. If the changedate is newer, the new object is registered at the repository and a <a class="reference internal" href="RepositoryReplaceEvent.html#de.clusteval.framework.repository.RepositoryReplaceEvent" title="de.clusteval.framework.repository.RepositoryReplaceEvent"><code class="xref java java-ref docutils literal"><span class="pre">RepositoryReplaceEvent</span></code></a> is being thrown. This event tells the old object and all its listeners in <a class="reference internal" href="RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject.listener" title="de.clusteval.framework.repository.RepositoryObject.listener"><code class="xref java java-ref docutils literal"><span class="pre">RepositoryObject.listener</span></code></a>, that it has been replaced by the new object. This allows all objects to update their references to the old object to the new object.</p>
+<p>The method also tells the <code class="xref java java-ref docutils literal"><span class="pre">repository.sqlCommunicator</span></code> of the repository, that a new object has been registered and causes him, to handle the new object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>object</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="registerwhenexisting">
+<h3>registerWhenExisting<a class="headerlink" href="#registerwhenexisting" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.StaticRepositoryEntity.registerWhenExisting(S, S)">
+protected &lt;S extends T&gt; boolean <code class="descname">registerWhenExisting</code><span class="sig-paren">(</span>S<em> old</em>, S<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.StaticRepositoryEntity.registerWhenExisting(S, S)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="registerwithoutexisting">
+<h3>registerWithoutExisting<a class="headerlink" href="#registerwithoutexisting" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.StaticRepositoryEntity.registerWithoutExisting(S)">
+protected &lt;S extends T&gt; boolean <code class="descname">registerWithoutExisting</code><span class="sig-paren">(</span>S<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.StaticRepositoryEntity.registerWithoutExisting(S)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unregister">
+<h3>unregister<a class="headerlink" href="#unregister" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.StaticRepositoryEntity.unregister(S)">
+public &lt;S extends T&gt; boolean <code class="descname">unregister</code><span class="sig-paren">(</span>S<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.StaticRepositoryEntity.unregister(S)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method unregisters the passed object.</p>
+<p>If the object has been registered before and was unregistered now, this method tells the sql communicator such that he can also handle the removal of the object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>object</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="unregisterafterremove">
+<h3>unregisterAfterRemove<a class="headerlink" href="#unregisterafterremove" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.StaticRepositoryEntity.unregisterAfterRemove(S)">
+protected &lt;S extends T&gt; void <code class="descname">unregisterAfterRemove</code><span class="sig-paren">(</span>S<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.StaticRepositoryEntity.unregisterAfterRemove(S)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">StaticRepositoryEntity</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#nametoobject">nameToObject</a></li>
+<li><a class="reference internal" href="#objects">objects</a></li>
+<li><a class="reference internal" href="#parent">parent</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">StaticRepositoryEntity</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#ascollection">asCollection</a></li>
+<li><a class="reference internal" href="#findbystring">findByString</a></li>
+<li><a class="reference internal" href="#getregisteredobject">getRegisteredObject</a></li>
+<li><a class="reference internal" href="#id2">getRegisteredObject</a></li>
+<li><a class="reference internal" href="#register">register</a></li>
+<li><a class="reference internal" href="#registerwhenexisting">registerWhenExisting</a></li>
+<li><a class="reference internal" href="#registerwithoutexisting">registerWithoutExisting</a></li>
+<li><a class="reference internal" href="#unregister">unregister</a></li>
+<li><a class="reference internal" href="#unregisterafterremove">unregisterAfterRemove</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/framework/repository/StaticRepositoryEntity.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

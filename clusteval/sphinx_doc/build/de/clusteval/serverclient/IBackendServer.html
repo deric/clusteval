@@ -1,0 +1,725 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>IBackendServer &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="ibackendserver">
+<h1>IBackendServer<a class="headerlink" href="#ibackendserver" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.serverclient.IBackendServer">
+public interface <code class="descname">IBackendServer</code> extends <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/rmi/Remote.html" title="java.rmi.Remote">Remote</a><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>An interface for the backend server. This interface contains all command a server can take from a client, e.g. starting, stopping, resuming of runs or shutting down the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="generatedataset">
+<h3>generateDataSet<a class="headerlink" href="#generatedataset" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.generateDataSet(String, String[])">
+public boolean <code class="descname">generateDataSet</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> generatorName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> args</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.generateDataSet(String, String[])" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>generatorName</strong> &#8211; The simple name of the class of the dataset generator to use to generate the new dataset.</li>
+<li><strong>args</strong> &#8211; The arguments to pass on to the dataset generator.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the dataset (and goldstandard) has been generated successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getactivethreads">
+<h3>getActiveThreads<a class="headerlink" href="#getactivethreads" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getActiveThreads()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, Triple&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Long.html" title="java.lang.Long">Long</a>&gt;&gt; <code class="descname">getActiveThreads</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getActiveThreads()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a map containing active threads and the corresponding runs/iterations/starttime that they perform</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getclientid">
+<h3>getClientId<a class="headerlink" href="#getclientid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getClientId()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getClientId</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getClientId()" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a factory method which returns the next free unused client id. Client ids are needed for the clients to communicate with the server and give certain commands.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The next free client id.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getdatarandomizers">
+<h3>getDataRandomizers<a class="headerlink" href="#getdatarandomizers" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getDataRandomizers()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getDataRandomizers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getDataRandomizers()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A collection with the names of all data randomizers registered at the repository of this server.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getdatasetgenerators">
+<h3>getDataSetGenerators<a class="headerlink" href="#getdatasetgenerators" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getDataSetGenerators()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getDataSetGenerators</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getDataSetGenerators()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A collection with the names of all dataset generators registered at the repository of this server.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getdatasets">
+<h3>getDataSets<a class="headerlink" href="#getdatasets" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getDataSets()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getDataSets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getDataSets()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; the remote exception</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A collection with the names of all datasets contained in the repository of this server.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getoptimizationrunstatusforclientid">
+<h3>getOptimizationRunStatusForClientId<a class="headerlink" href="#getoptimizationrunstatusforclientid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getOptimizationRunStatusForClientId(String)">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, Pair&lt;Pair&lt;<a class="reference internal" href="../run/RUN_STATUS.html#de.clusteval.run.RUN_STATUS" title="de.clusteval.run.RUN_STATUS">RUN_STATUS</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Float.html" title="java.lang.Float">Float</a>&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;Pair&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;, Pair&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Double.html" title="java.lang.Double">Double</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, Pair&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;&gt;&gt;&gt;&gt;&gt; <code class="descname">getOptimizationRunStatusForClientId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getOptimizationRunStatusForClientId(String)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>clientId</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getoptionsfordatarandomizer">
+<h3>getOptionsForDataRandomizer<a class="headerlink" href="#getoptionsfordatarandomizer" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getOptionsForDataRandomizer(String)">
+public Options <code class="descname">getOptionsForDataRandomizer</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> randomizerName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getOptionsForDataRandomizer(String)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>randomizerName</strong> &#8211; The simple name of the class of the data randomizer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A wrapper objects keeping all the options of the specified data randomizer.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getoptionsfordatasetgenerator">
+<h3>getOptionsForDataSetGenerator<a class="headerlink" href="#getoptionsfordatasetgenerator" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getOptionsForDataSetGenerator(String)">
+public Options <code class="descname">getOptionsForDataSetGenerator</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> generatorName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getOptionsForDataSetGenerator(String)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>generatorName</strong> &#8211; The simple name of the class of the dataset generator.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A wrapper objects keeping all the options of the specified dataset generator.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getprograms">
+<h3>getPrograms<a class="headerlink" href="#getprograms" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getPrograms()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getPrograms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getPrograms()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A collection with the names of all programs contained in the repository of this server.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getqueue">
+<h3>getQueue<a class="headerlink" href="#getqueue" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getQueue()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getQueue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getQueue()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A collection with the names of all runs and run results that are currently enqueued but not yet running.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getrunresults">
+<h3>getRunResults<a class="headerlink" href="#getrunresults" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getRunResults(String)">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;Pair&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Double.html" title="java.lang.Double">Double</a>&gt;&gt; <code class="descname">getRunResults</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> uniqueRunIdentifier</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getRunResults(String)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>uniqueRunIdentifier</strong> &#8211; The unique run identifier of a run result stored in the corresponding directory of the repository.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The run results for the given unique run identifier.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id1">
+<h3>getRunResults<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getRunResults()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getRunResults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getRunResults()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A collection with the names of those run result directories contained in the repository of this server, that contain a clusters subfolder and at least one <a href="#id2"><span class="problematic" id="id3">*</span></a>.complete file containing results (can be slow if many run result folders are present).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getrunresumes">
+<h3>getRunResumes<a class="headerlink" href="#getrunresumes" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getRunResumes()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getRunResumes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getRunResumes()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A collection with the names of all run result directories contained in the repository of this server. Those run result directories can be resumed, if they were terminated before.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getrunstatusforclientid">
+<h3>getRunStatusForClientId<a class="headerlink" href="#getrunstatusforclientid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getRunStatusForClientId(String)">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, Pair&lt;<a class="reference internal" href="../run/RUN_STATUS.html#de.clusteval.run.RUN_STATUS" title="de.clusteval.run.RUN_STATUS">RUN_STATUS</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Float.html" title="java.lang.Float">Float</a>&gt;&gt; <code class="descname">getRunStatusForClientId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getRunStatusForClientId(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method returns the status and percentage of any run performed by the client with the given id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>clientId</strong> &#8211; The client id for which this method returns the status of its runs.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The status and percentage of all runs of this client.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getruns">
+<h3>getRuns<a class="headerlink" href="#getruns" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.getRuns()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getRuns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.getRuns()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A collection with the names of all runs contained in the repository of this server.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="performrun">
+<h3>performRun<a class="headerlink" href="#performrun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.performRun(String, String)">
+public boolean <code class="descname">performRun</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.performRun(String, String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method tells the framework that a certain client wants to perform the run with the given name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>clientId</strong> &#8211; The id of the client, that wants to perform the run.</li>
+<li><strong>runId</strong> &#8211; The name of the run that should be performed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">true, if successful</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="randomizedataconfig">
+<h3>randomizeDataConfig<a class="headerlink" href="#randomizedataconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.randomizeDataConfig(String, String[])">
+public boolean <code class="descname">randomizeDataConfig</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> randomizerName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> args</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.randomizeDataConfig(String, String[])" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>randomizerName</strong> &#8211; The simple name of the class of the data randomizer to use to randomize the new dataset.</li>
+<li><strong>args</strong> &#8211; The arguments to pass on to the data randomizer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the data config has been randomized successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="resumerun">
+<h3>resumeRun<a class="headerlink" href="#resumerun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.resumeRun(String, String)">
+public boolean <code class="descname">resumeRun</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> uniqueRunIdentifier</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.resumeRun(String, String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method tells the framework that a certain client wants to resume the run result with the given unique identifier.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>clientId</strong> &#8211; The id of the client, that wants to perform the run.</li>
+<li><strong>uniqueRunIdentifier</strong> &#8211; The unique identifier of the run result that should be resumed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">true, if successful</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="setloglevel">
+<h3>setLogLevel<a class="headerlink" href="#setloglevel" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.setLogLevel(Level)">
+public void <code class="descname">setLogLevel</code><span class="sig-paren">(</span>Level<em> logLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.setLogLevel(Level)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method allows to set the log level of this server.</p>
+<p>Possible values are</p>
+<ul class="simple">
+<li><strong>0</strong>: ALL</li>
+<li><strong>1</strong>: TRACE</li>
+<li><strong>2</strong>: DEBUG</li>
+<li><strong>3</strong>: INFO</li>
+<li><strong>4</strong>: WARN</li>
+<li><strong>5</strong>: ERROR</li>
+<li><strong>6</strong>: OFF</li>
+</ul>
+<p>See <code class="xref java java-ref docutils literal"><span class="pre">Level</span></code> for explanations of the log levels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>logLevel</strong> &#8211; The new log level of this server as an integer value.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="setthreadnumber">
+<h3>setThreadNumber<a class="headerlink" href="#setthreadnumber" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.setThreadNumber(int)">
+public void <code class="descname">setThreadNumber</code><span class="sig-paren">(</span>int<em> threadNumber</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.setThreadNumber(int)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the maximal number of parallel iteration threads.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>threadNumber</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="shutdown">
+<h3>shutdown<a class="headerlink" href="#shutdown" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.shutdown(String, long)">
+public void <code class="descname">shutdown</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em>, long<em> timeOut</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.shutdown(String, long)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method tells the framework to shutdown. The framework will terminate the supervisor thread, which then in turn terminates all other threads he is oversees.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>clientId</strong> &#8211; The id of the client, that wants to shutdown the framework.</li>
+<li><strong>timeOut</strong> &#8211; The timeout how long the server will wait for threads until forcing the shutdown.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="terminaterun">
+<h3>terminateRun<a class="headerlink" href="#terminaterun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.serverclient.IBackendServer.terminateRun(String, String)">
+public boolean <code class="descname">terminateRun</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.serverclient.IBackendServer.terminateRun(String, String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method tells the framework that a certain client wants to terminate the run with the given name.</p>
+<p>This operation is only allowed if the client id is the same, as the one that performed the run before.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>clientId</strong> &#8211; The id of the client, that wants to perform the run.</li>
+<li><strong>runId</strong> &#8211; The name of the run that should be terminated.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>RemoteException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">true, if successful</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">IBackendServer</a><ul>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#generatedataset">generateDataSet</a></li>
+<li><a class="reference internal" href="#getactivethreads">getActiveThreads</a></li>
+<li><a class="reference internal" href="#getclientid">getClientId</a></li>
+<li><a class="reference internal" href="#getdatarandomizers">getDataRandomizers</a></li>
+<li><a class="reference internal" href="#getdatasetgenerators">getDataSetGenerators</a></li>
+<li><a class="reference internal" href="#getdatasets">getDataSets</a></li>
+<li><a class="reference internal" href="#getoptimizationrunstatusforclientid">getOptimizationRunStatusForClientId</a></li>
+<li><a class="reference internal" href="#getoptionsfordatarandomizer">getOptionsForDataRandomizer</a></li>
+<li><a class="reference internal" href="#getoptionsfordatasetgenerator">getOptionsForDataSetGenerator</a></li>
+<li><a class="reference internal" href="#getprograms">getPrograms</a></li>
+<li><a class="reference internal" href="#getqueue">getQueue</a></li>
+<li><a class="reference internal" href="#getrunresults">getRunResults</a></li>
+<li><a class="reference internal" href="#id1">getRunResults</a></li>
+<li><a class="reference internal" href="#getrunresumes">getRunResumes</a></li>
+<li><a class="reference internal" href="#getrunstatusforclientid">getRunStatusForClientId</a></li>
+<li><a class="reference internal" href="#getruns">getRuns</a></li>
+<li><a class="reference internal" href="#performrun">performRun</a></li>
+<li><a class="reference internal" href="#randomizedataconfig">randomizeDataConfig</a></li>
+<li><a class="reference internal" href="#resumerun">resumeRun</a></li>
+<li><a class="reference internal" href="#setloglevel">setLogLevel</a></li>
+<li><a class="reference internal" href="#setthreadnumber">setThreadNumber</a></li>
+<li><a class="reference internal" href="#shutdown">shutdown</a></li>
+<li><a class="reference internal" href="#terminaterun">terminateRun</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/de/clusteval/serverclient/IBackendServer.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

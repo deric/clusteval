@@ -1,0 +1,832 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>DataSet &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dataset">
+<h1>DataSet<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.data.dataset.DataSet">
+public abstract class <code class="descname">DataSet</code> extends <a class="reference internal" href="../../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a><a class="headerlink" href="#de.clusteval.data.dataset.DataSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper class for a dataset on the filesystem.</p>
+<p>A dataset corresponds to and is parsed from a file on the filesystem in the corresponding folder of the repository (see <a class="reference internal" href="../../framework/repository/Repository.html#de.clusteval.framework.repository.Repository.basePath" title="de.clusteval.framework.repository.Repository.basePath"><code class="xref java java-ref docutils literal"><span class="pre">Repository.basePath</span></code></a> and <a class="reference internal" href="DataSetFinder.html#de.clusteval.data.dataset.DataSetFinder" title="de.clusteval.data.dataset.DataSetFinder"><code class="xref java java-ref docutils literal"><span class="pre">DataSetFinder</span></code></a>).</p>
+<p>When a program should be applied to a certain dataset during a run, the dataset is not directly used by the run but instead a <a class="reference internal" href="DataSetConfig.html#de.clusteval.data.dataset.DataSetConfig" title="de.clusteval.data.dataset.DataSetConfig"><code class="xref java java-ref docutils literal"><span class="pre">DataSetConfig</span></code></a> is referenced, which encapsulates a dataset together with some settings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="alias">
+<h3>alias<a class="headerlink" href="#alias" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.data.dataset.DataSet.alias">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">alias</code><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.alias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Every data set needs an alias, that is used to represent the data set as a short string, for example on the website.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="checksum">
+<h3>checksum<a class="headerlink" href="#checksum" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.data.dataset.DataSet.checksum">
+protected long <code class="descname">checksum</code><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.checksum" title="Permalink to this definition">¶</a></dt>
+<dd><p>The checksum of a dataset is used to check a dataset for changes and to check two datasets for equality.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="datasetformat">
+<h3>datasetFormat<a class="headerlink" href="#datasetformat" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.data.dataset.DataSet.datasetFormat">
+protected <a class="reference internal" href="format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat">DataSetFormat</a> <code class="descname">datasetFormat</code><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.datasetFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>The format of this dataset. The format for a dataset is required by the framework in order for it to be able to convert it to the internal standard format.</p>
+<p>When a dataset is used during a run, it is first converted from its original dataset format to the internal standard format. Then it is converted to the input format required by the clustering method.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="datasettype">
+<h3>datasetType<a class="headerlink" href="#datasettype" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.data.dataset.DataSet.datasetType">
+protected <a class="reference internal" href="type/DataSetType.html#de.clusteval.data.dataset.type.DataSetType" title="de.clusteval.data.dataset.type.DataSetType">DataSetType</a> <code class="descname">datasetType</code><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.datasetType" title="Permalink to this definition">¶</a></dt>
+<dd><p>The type of the dataset is used to categorize the datasets.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="originaldataset">
+<h3>originalDataSet<a class="headerlink" href="#originaldataset" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.data.dataset.DataSet.originalDataSet">
+protected <a class="reference internal" href="#de.clusteval.data.dataset.DataSet" title="de.clusteval.data.dataset.DataSet">DataSet</a> <code class="descname">originalDataSet</code><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.originalDataSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a dataset is used during a run, it first is converted to the internal standard format and afterwards into the format required by the clustering method. This attribute holds the original unconverted dataset.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="thisinstandardformat">
+<h3>thisInStandardFormat<a class="headerlink" href="#thisinstandardformat" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.data.dataset.DataSet.thisInStandardFormat">
+protected <a class="reference internal" href="#de.clusteval.data.dataset.DataSet" title="de.clusteval.data.dataset.DataSet">DataSet</a> <code class="descname">thisInStandardFormat</code><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.thisInStandardFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a dataset is used during a run, it first is converted to the internal standard format and afterwards into the format required by the clustering method. This attribute holds the version of this dataset in the standard format.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="websitevisibility">
+<h3>websiteVisibility<a class="headerlink" href="#websitevisibility" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.data.dataset.DataSet.websiteVisibility">
+protected <a class="reference internal" href="DataSet-WEBSITE_VISIBILITY.html#de.clusteval.data.dataset.DataSet.WEBSITE_VISIBILITY" title="de.clusteval.data.dataset.DataSet.WEBSITE_VISIBILITY">WEBSITE_VISIBILITY</a> <code class="descname">websiteVisibility</code><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.websiteVisibility" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>DataSet<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.data.dataset.DataSet.DataSet(Repository, boolean, long, File, String, DataSetFormat, DataSetType, WEBSITE_VISIBILITY)">
+public <code class="descname">DataSet</code><span class="sig-paren">(</span><a class="reference internal" href="../../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, boolean<em> register</em>, long<em> changeDate</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> alias</em>, <a class="reference internal" href="format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat">DataSetFormat</a><em> dsFormat</em>, <a class="reference internal" href="type/DataSetType.html#de.clusteval.data.dataset.type.DataSetType" title="de.clusteval.data.dataset.type.DataSetType">DataSetType</a><em> dsType</em>, <a class="reference internal" href="DataSet-WEBSITE_VISIBILITY.html#de.clusteval.data.dataset.DataSet.WEBSITE_VISIBILITY" title="de.clusteval.data.dataset.DataSet.WEBSITE_VISIBILITY">WEBSITE_VISIBILITY</a><em> websiteVisibility</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.DataSet(Repository, boolean, long, File, String, DataSetFormat, DataSetType, WEBSITE_VISIBILITY)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiates a new dataset object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; The repository this dataset should be registered at.</li>
+<li><strong>register</strong> &#8211; Whether this dataset should be registered in the repository.</li>
+<li><strong>changeDate</strong> &#8211; The change date of this dataset is used for equality checks.</li>
+<li><strong>absPath</strong> &#8211; The absolute path of this dataset.</li>
+<li><strong>alias</strong> &#8211; A short alias name for this data set.</li>
+<li><strong>dsFormat</strong> &#8211; The format of this dataset.</li>
+<li><strong>dsType</strong> &#8211; The type of this dataset</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>DataSet<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.data.dataset.DataSet.DataSet(DataSet)">
+public <code class="descname">DataSet</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.data.dataset.DataSet" title="de.clusteval.data.dataset.DataSet">DataSet</a><em> dataset</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.DataSet(DataSet)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy constructor for the DataSet class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataset</strong> &#8211; the dataset to be cloned</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clone">
+<h3>clone<a class="headerlink" href="#clone" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.clone()">
+public abstract <a class="reference internal" href="#de.clusteval.data.dataset.DataSet" title="de.clusteval.data.dataset.DataSet">DataSet</a> <code class="descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.clone()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="convertstandardtodirectly">
+<h3>convertStandardToDirectly<a class="headerlink" href="#convertstandardtodirectly" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.convertStandardToDirectly(Context, DataSetFormat, ConversionStandardToInputConfiguration)">
+protected <a class="reference internal" href="#de.clusteval.data.dataset.DataSet" title="de.clusteval.data.dataset.DataSet">DataSet</a> <code class="descname">convertStandardToDirectly</code><span class="sig-paren">(</span><a class="reference internal" href="../../context/Context.html#de.clusteval.context.Context" title="de.clusteval.context.Context">Context</a><em> context</em>, <a class="reference internal" href="format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat">DataSetFormat</a><em> targetFormat</em>, <a class="reference internal" href="format/ConversionStandardToInputConfiguration.html#de.clusteval.data.dataset.format.ConversionStandardToInputConfiguration" title="de.clusteval.data.dataset.format.ConversionStandardToInputConfiguration">ConversionStandardToInputConfiguration</a><em> configStandardToInput</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.convertStandardToDirectly(Context, DataSetFormat, ConversionStandardToInputConfiguration)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is a helper method to convert a dataset in a internal standard format to a target format directly, that means using one conversion step.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>targetFormat</strong> &#8211; This is the format, the dataset is expected to be in after the conversion process. After the dataset is converted to the internal format, it is converted to the target format.</li>
+<li><strong>configStandardToInput</strong> &#8211; This is the configuration that is used during the conversion from the internal standard format to the target format.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="format/UnknownDataSetFormatException.html#de.clusteval.data.dataset.format.UnknownDataSetFormatException" title="de.clusteval.data.dataset.format.UnknownDataSetFormatException"><strong>UnknownDataSetFormatException</strong></a> &#8211; </li>
+<li><strong>IOException</strong> &#8211; Signals that an I/O exception has occurred.</li>
+<li><a class="reference internal" href="format/InvalidDataSetFormatVersionException.html#de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException" title="de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException"><strong>InvalidDataSetFormatVersionException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../utils/FormatConversionException.html#de.clusteval.utils.FormatConversionException" title="de.clusteval.utils.FormatConversionException"><strong>FormatConversionException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../framework/repository/RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The dataset in the target format.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="converttostandarddirectly">
+<h3>convertToStandardDirectly<a class="headerlink" href="#converttostandarddirectly" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.convertToStandardDirectly(Context, ConversionInputToStandardConfiguration)">
+protected <a class="reference internal" href="#de.clusteval.data.dataset.DataSet" title="de.clusteval.data.dataset.DataSet">DataSet</a> <code class="descname">convertToStandardDirectly</code><span class="sig-paren">(</span><a class="reference internal" href="../../context/Context.html#de.clusteval.context.Context" title="de.clusteval.context.Context">Context</a><em> context</em>, <a class="reference internal" href="format/ConversionInputToStandardConfiguration.html#de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration" title="de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration">ConversionInputToStandardConfiguration</a><em> configInputToStandard</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.convertToStandardDirectly(Context, ConversionInputToStandardConfiguration)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is a helper method to convert a dataset in its original format to a internal standard format directly, that means using one conversion step.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dsFormat</strong> &#8211; This is the format, the dataset is expected to be in after the conversion process. After the dataset is converted to the internal format, it is converted to the target format.</li>
+<li><strong>configInputToStandard</strong> &#8211; This is the configuration that is used during the conversion from the original format to the internal standard format.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+<li><strong>InvalidParameterException</strong> &#8211; </li>
+<li><a class="reference internal" href="format/UnknownDataSetFormatException.html#de.clusteval.data.dataset.format.UnknownDataSetFormatException" title="de.clusteval.data.dataset.format.UnknownDataSetFormatException"><strong>UnknownDataSetFormatException</strong></a> &#8211; </li>
+<li><strong>IOException</strong> &#8211; Signals that an I/O exception has occurred.</li>
+<li><a class="reference internal" href="../../utils/RNotAvailableException.html#de.clusteval.utils.RNotAvailableException" title="de.clusteval.utils.RNotAvailableException"><strong>RNotAvailableException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="format/InvalidDataSetFormatVersionException.html#de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException" title="de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException"><strong>InvalidDataSetFormatVersionException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../framework/repository/RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The dataset in the target format.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="copyto">
+<h3>copyTo<a class="headerlink" href="#copyto" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.copyTo(File, boolean)">
+public boolean <code class="descname">copyTo</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> copyDestination</em>, boolean<em> overwrite</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.copyTo(File, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h3>copyTo<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.copyTo(File, boolean, boolean)">
+public boolean <code class="descname">copyTo</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> copyDestination</em>, boolean<em> overwrite</em>, boolean<em> updateAbsolutePath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.copyTo(File, boolean, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="copytofolder">
+<h3>copyToFolder<a class="headerlink" href="#copytofolder" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.copyToFolder(File, boolean)">
+public boolean <code class="descname">copyToFolder</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> copyFolderDestination</em>, boolean<em> overwrite</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.copyToFolder(File, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="extractdatasetattributes">
+<h3>extractDataSetAttributes<a class="headerlink" href="#extractdatasetattributes" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.extractDataSetAttributes(File)">
+protected static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">extractDataSetAttributes</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.extractDataSetAttributes(File)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method parses the header of a dataset file. A header is required for a dataset file to be recognized by the framework as a valid dataset file. If the file does not contain any header lines, it is ignored by the framework. A header line is of the form &#8216;// attribute = value&#8217;. The header should contain several lines:</p>
+<p>The type of the dataset, e.g. &#8216;// dataSetType = GeneExpressionDataSetType&#8217;</p>
+<p>The format of the dataset, e.g. &#8216;// dataSetFormat = RowSimDataSetFormat&#8217;</p>
+<p>The version of the dataset format, e.g. &#8216;// dataSetFormatVersion = 1&#8217;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>absPath</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>IOException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getalias">
+<h3>getAlias<a class="headerlink" href="#getalias" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.getAlias()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getAlias</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.getAlias()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The alias of this data set.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>See also:</strong> <code class="xref java java-ref docutils literal"><span class="pre">.alias</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="getchecksum">
+<h3>getChecksum<a class="headerlink" href="#getchecksum" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.getChecksum()">
+public long <code class="descname">getChecksum</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.getChecksum()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Checksum of this dataset</td>
+</tr>
+</tbody>
+</table>
+<p><strong>See also:</strong> <code class="xref java java-ref docutils literal"><span class="pre">.checksum</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="getdatasetcontent">
+<h3>getDataSetContent<a class="headerlink" href="#getdatasetcontent" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.getDataSetContent()">
+public abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html" title="java.lang.Object">Object</a> <code class="descname">getDataSetContent</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.getDataSetContent()" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method does not load the content of the dataset into memory, it just assumes that it has been loaded before and returns the reference.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The content of this dataset.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getdatasetformat">
+<h3>getDataSetFormat<a class="headerlink" href="#getdatasetformat" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.getDataSetFormat()">
+public <a class="reference internal" href="format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat">DataSetFormat</a> <code class="descname">getDataSetFormat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.getDataSetFormat()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the dataset format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The dataset format</td>
+</tr>
+</tbody>
+</table>
+<p><strong>See also:</strong> <a class="reference internal" href="#de.clusteval.data.dataset.DataSet.datasetFormat" title="de.clusteval.data.dataset.DataSet.datasetFormat"><code class="xref java java-ref docutils literal"><span class="pre">DataSet.datasetFormat</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="getdatasettype">
+<h3>getDataSetType<a class="headerlink" href="#getdatasettype" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.getDataSetType()">
+public <a class="reference internal" href="type/DataSetType.html#de.clusteval.data.dataset.type.DataSetType" title="de.clusteval.data.dataset.type.DataSetType">DataSetType</a> <code class="descname">getDataSetType</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.getDataSetType()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The type of this dataset.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>See also:</strong> <code class="xref java java-ref docutils literal"><span class="pre">.datasetType</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="getfullname">
+<h3>getFullName<a class="headerlink" href="#getfullname" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.getFullName()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getFullName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.getFullName()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the full name of this dataset. The full name consists of the minor and the major name, separated by a slash: MAJOR/MINOR</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The full name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getids">
+<h3>getIds<a class="headerlink" href="#getids" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.getIds()">
+public abstract <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getIds</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.getIds()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The object ids contained in the dataset.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getinstandardformat">
+<h3>getInStandardFormat<a class="headerlink" href="#getinstandardformat" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.getInStandardFormat()">
+public <a class="reference internal" href="#de.clusteval.data.dataset.DataSet" title="de.clusteval.data.dataset.DataSet">DataSet</a> <code class="descname">getInStandardFormat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.getInStandardFormat()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">This dataset in the internal standard format.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>See also:</strong> <code class="xref java java-ref docutils literal"><span class="pre">.thisInStandardFormat</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="getmajorname">
+<h3>getMajorName<a class="headerlink" href="#getmajorname" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.getMajorName()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getMajorName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.getMajorName()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the major name of this dataset. The major name corresponds to the folder the dataset resides in in the filesystem.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The major name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getminorname">
+<h3>getMinorName<a class="headerlink" href="#getminorname" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.getMinorName()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getMinorName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.getMinorName()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the minor name of this dataset. The minor name corresponds to the name of the file of this dataset.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The minor name</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getoriginaldataset">
+<h3>getOriginalDataSet<a class="headerlink" href="#getoriginaldataset" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.getOriginalDataSet()">
+public <a class="reference internal" href="#de.clusteval.data.dataset.DataSet" title="de.clusteval.data.dataset.DataSet">DataSet</a> <code class="descname">getOriginalDataSet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.getOriginalDataSet()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">This dataset in its original format.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>See also:</strong> <code class="xref java java-ref docutils literal"><span class="pre">.originalDataSet</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="getwebsitevisibility">
+<h3>getWebsiteVisibility<a class="headerlink" href="#getwebsitevisibility" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.getWebsiteVisibility()">
+public <a class="reference internal" href="DataSet-WEBSITE_VISIBILITY.html#de.clusteval.data.dataset.DataSet.WEBSITE_VISIBILITY" title="de.clusteval.data.dataset.DataSet.WEBSITE_VISIBILITY">WEBSITE_VISIBILITY</a> <code class="descname">getWebsiteVisibility</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.getWebsiteVisibility()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="isinmemory">
+<h3>isInMemory<a class="headerlink" href="#isinmemory" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.isInMemory()">
+public abstract boolean <code class="descname">isInMemory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.isInMemory()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether this dataset is loaded into the memory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">true, if is in memory</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="loadintomemory">
+<h3>loadIntoMemory<a class="headerlink" href="#loadintomemory" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.loadIntoMemory()">
+public boolean <code class="descname">loadIntoMemory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.loadIntoMemory()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load this dataset into memory. When this method is invoked, it parses the dataset file on the filesystem using the <a class="reference internal" href="format/DataSetFormatParser.html#de.clusteval.data.dataset.format.DataSetFormatParser.parse(DataSet, NUMBER_PRECISION)" title="de.clusteval.data.dataset.format.DataSetFormatParser.parse(DataSet, NUMBER_PRECISION)"><code class="xref java java-ref docutils literal"><span class="pre">DataSetFormatParser.parse(DataSet)</span></code></a> method corresponding to the dataset format of this dataset. Then the contents of the dataset is stored in a member variable. Depending on whether this dataset is relative or absolute, this member variable varies: For absolute datasets the data is stored in <code class="xref java java-ref docutils literal"><span class="pre">AbsoluteDataSet.dataMatrix</span></code>, for relative datasets in <code class="xref java java-ref docutils literal"><span class="pre">RelativeDataSet.similarities</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/IllegalArgumentException.html" title="java.lang.IllegalArgumentException"><strong>IllegalArgumentException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="format/UnknownDataSetFormatException.html#de.clusteval.data.dataset.format.UnknownDataSetFormatException" title="de.clusteval.data.dataset.format.UnknownDataSetFormatException"><strong>UnknownDataSetFormatException</strong></a> &#8211; </li>
+<li><strong>IOException</strong> &#8211; </li>
+<li><a class="reference internal" href="format/InvalidDataSetFormatVersionException.html#de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException" title="de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException"><strong>InvalidDataSetFormatVersionException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">true, if successful</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id4">
+<h3>loadIntoMemory<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.loadIntoMemory(NUMBER_PRECISION)">
+public abstract boolean <code class="descname">loadIntoMemory</code><span class="sig-paren">(</span>NUMBER_PRECISION<em> precision</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.loadIntoMemory(NUMBER_PRECISION)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load this dataset into memory. When this method is invoked, it parses the dataset file on the filesystem using the <a class="reference internal" href="format/DataSetFormatParser.html#de.clusteval.data.dataset.format.DataSetFormatParser.parse(DataSet, NUMBER_PRECISION)" title="de.clusteval.data.dataset.format.DataSetFormatParser.parse(DataSet, NUMBER_PRECISION)"><code class="xref java java-ref docutils literal"><span class="pre">DataSetFormatParser.parse(DataSet)</span></code></a> method corresponding to the dataset format of this dataset. Then the contents of the dataset is stored in a member variable. Depending on whether this dataset is relative or absolute, this member variable varies: For absolute datasets the data is stored in <code class="xref java java-ref docutils literal"><span class="pre">AbsoluteDataSet.dataMatrix</span></code>, for relative datasets in <code class="xref java java-ref docutils literal"><span class="pre">RelativeDataSet.similarities</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/IllegalArgumentException.html" title="java.lang.IllegalArgumentException"><strong>IllegalArgumentException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="format/UnknownDataSetFormatException.html#de.clusteval.data.dataset.format.UnknownDataSetFormatException" title="de.clusteval.data.dataset.format.UnknownDataSetFormatException"><strong>UnknownDataSetFormatException</strong></a> &#8211; </li>
+<li><strong>IOException</strong> &#8211; </li>
+<li><a class="reference internal" href="format/InvalidDataSetFormatVersionException.html#de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException" title="de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException"><strong>InvalidDataSetFormatVersionException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">true, if successful</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="moveto">
+<h3>moveTo<a class="headerlink" href="#moveto" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.moveTo(File, boolean)">
+public boolean <code class="descname">moveTo</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> targetFile</em>, boolean<em> overwrite</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.moveTo(File, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move this dataset to a new location.</p>
+<p>If the overwrite parameter is true and the target file exists already, it is overwritten.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>targetFile</strong> &#8211; A file object wrapping the absolute path of the destination this dataset should be moved to.</li>
+<li><strong>overwrite</strong> &#8211; A boolean indicating, whether to overwrite a possibly existing target file.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if this dataset has been moved successfully.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="notify">
+<h3>notify<a class="headerlink" href="#notify" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.notify(RepositoryEvent)">
+public void <code class="descname">notify</code><span class="sig-paren">(</span><a class="reference internal" href="../../framework/repository/RepositoryEvent.html#de.clusteval.framework.repository.RepositoryEvent" title="de.clusteval.framework.repository.RepositoryEvent">RepositoryEvent</a><em> e</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.notify(RepositoryEvent)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="preprocessandconvertto">
+<h3>preprocessAndConvertTo<a class="headerlink" href="#preprocessandconvertto" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.preprocessAndConvertTo(Context, DataSetFormat, ConversionInputToStandardConfiguration, ConversionStandardToInputConfiguration)">
+public <a class="reference internal" href="#de.clusteval.data.dataset.DataSet" title="de.clusteval.data.dataset.DataSet">DataSet</a> <code class="descname">preprocessAndConvertTo</code><span class="sig-paren">(</span><a class="reference internal" href="../../context/Context.html#de.clusteval.context.Context" title="de.clusteval.context.Context">Context</a><em> context</em>, <a class="reference internal" href="format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat">DataSetFormat</a><em> targetFormat</em>, <a class="reference internal" href="format/ConversionInputToStandardConfiguration.html#de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration" title="de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration">ConversionInputToStandardConfiguration</a><em> configInputToStandard</em>, <a class="reference internal" href="format/ConversionStandardToInputConfiguration.html#de.clusteval.data.dataset.format.ConversionStandardToInputConfiguration" title="de.clusteval.data.dataset.format.ConversionStandardToInputConfiguration">ConversionStandardToInputConfiguration</a><em> configStandardToInput</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.preprocessAndConvertTo(Context, DataSetFormat, ConversionInputToStandardConfiguration, ConversionStandardToInputConfiguration)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method converts this dataset to a target format:</p>
+<p>First this dataset is converted to a internal standard format (depending on the type of the Run). Then it is converted to the target format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>context</strong> &#8211; </li>
+<li><strong>targetFormat</strong> &#8211; This is the format, the dataset is expected to be in after the conversion process. After the dataset is converted to the internal format, it is converted to the target format.</li>
+<li><strong>configInputToStandard</strong> &#8211; This is the configuration that is used during the conversion from the original format to the internal standard format.</li>
+<li><strong>configStandardToInput</strong> &#8211; This is the configuration that is used during the conversion from the internal standard format to the target format.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="format/InvalidDataSetFormatVersionException.html#de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException" title="de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException"><strong>InvalidDataSetFormatVersionException</strong></a> &#8211; </li>
+<li><strong>IOException</strong> &#8211; </li>
+<li><a class="reference internal" href="../../utils/RNotAvailableException.html#de.clusteval.utils.RNotAvailableException" title="de.clusteval.utils.RNotAvailableException"><strong>RNotAvailableException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../utils/FormatConversionException.html#de.clusteval.utils.FormatConversionException" title="de.clusteval.utils.FormatConversionException"><strong>FormatConversionException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../framework/repository/RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The dataset in the target format.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="setabsolutepath">
+<h3>setAbsolutePath<a class="headerlink" href="#setabsolutepath" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.setAbsolutePath(File)">
+public void <code class="descname">setAbsolutePath</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absFilePath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.setAbsolutePath(File)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="setdatasetcontent">
+<h3>setDataSetContent<a class="headerlink" href="#setdatasetcontent" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.setDataSetContent(Object)">
+public abstract boolean <code class="descname">setDataSetContent</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html" title="java.lang.Object">Object</a><em> newContent</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.setDataSetContent(Object)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method sets the content of this dataset in memory to a new object. Contents on file system are not refreshed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>newContent</strong> &#8211; The new content of this dataset.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the content of this dataset has been updated to the new object.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="tostring">
+<h3>toString<a class="headerlink" href="#tostring" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.toString()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">toString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.toString()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unloadfrommemory">
+<h3>unloadFromMemory<a class="headerlink" href="#unloadfrommemory" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.unloadFromMemory()">
+public abstract boolean <code class="descname">unloadFromMemory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.unloadFromMemory()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unload the contents of this dataset from memory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">true, if successful</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="writetofile">
+<h3>writeToFile<a class="headerlink" href="#writetofile" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.DataSet.writeToFile(boolean)">
+public boolean <code class="descname">writeToFile</code><span class="sig-paren">(</span>boolean<em> withHeader</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.DataSet.writeToFile(boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method writes the contents of this dataset to the file denoted by the <a class="reference internal" href="../../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject.getAbsolutePath()" title="de.clusteval.framework.repository.RepositoryObject.getAbsolutePath()"><code class="xref java java-ref docutils literal"><span class="pre">getAbsolutePath()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>withHeader</strong> &#8211; Whether to write a header into the dataset file.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the writing was succesfull</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">DataSet</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#alias">alias</a></li>
+<li><a class="reference internal" href="#checksum">checksum</a></li>
+<li><a class="reference internal" href="#datasetformat">datasetFormat</a></li>
+<li><a class="reference internal" href="#datasettype">datasetType</a></li>
+<li><a class="reference internal" href="#originaldataset">originalDataSet</a></li>
+<li><a class="reference internal" href="#thisinstandardformat">thisInStandardFormat</a></li>
+<li><a class="reference internal" href="#websitevisibility">websiteVisibility</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">DataSet</a></li>
+<li><a class="reference internal" href="#id2">DataSet</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#clone">clone</a></li>
+<li><a class="reference internal" href="#convertstandardtodirectly">convertStandardToDirectly</a></li>
+<li><a class="reference internal" href="#converttostandarddirectly">convertToStandardDirectly</a></li>
+<li><a class="reference internal" href="#copyto">copyTo</a></li>
+<li><a class="reference internal" href="#id3">copyTo</a></li>
+<li><a class="reference internal" href="#copytofolder">copyToFolder</a></li>
+<li><a class="reference internal" href="#extractdatasetattributes">extractDataSetAttributes</a></li>
+<li><a class="reference internal" href="#getalias">getAlias</a></li>
+<li><a class="reference internal" href="#getchecksum">getChecksum</a></li>
+<li><a class="reference internal" href="#getdatasetcontent">getDataSetContent</a></li>
+<li><a class="reference internal" href="#getdatasetformat">getDataSetFormat</a></li>
+<li><a class="reference internal" href="#getdatasettype">getDataSetType</a></li>
+<li><a class="reference internal" href="#getfullname">getFullName</a></li>
+<li><a class="reference internal" href="#getids">getIds</a></li>
+<li><a class="reference internal" href="#getinstandardformat">getInStandardFormat</a></li>
+<li><a class="reference internal" href="#getmajorname">getMajorName</a></li>
+<li><a class="reference internal" href="#getminorname">getMinorName</a></li>
+<li><a class="reference internal" href="#getoriginaldataset">getOriginalDataSet</a></li>
+<li><a class="reference internal" href="#getwebsitevisibility">getWebsiteVisibility</a></li>
+<li><a class="reference internal" href="#isinmemory">isInMemory</a></li>
+<li><a class="reference internal" href="#loadintomemory">loadIntoMemory</a></li>
+<li><a class="reference internal" href="#id4">loadIntoMemory</a></li>
+<li><a class="reference internal" href="#moveto">moveTo</a></li>
+<li><a class="reference internal" href="#notify">notify</a></li>
+<li><a class="reference internal" href="#preprocessandconvertto">preprocessAndConvertTo</a></li>
+<li><a class="reference internal" href="#setabsolutepath">setAbsolutePath</a></li>
+<li><a class="reference internal" href="#setdatasetcontent">setDataSetContent</a></li>
+<li><a class="reference internal" href="#tostring">toString</a></li>
+<li><a class="reference internal" href="#unloadfrommemory">unloadFromMemory</a></li>
+<li><a class="reference internal" href="#writetofile">writeToFile</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/data/dataset/DataSet.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

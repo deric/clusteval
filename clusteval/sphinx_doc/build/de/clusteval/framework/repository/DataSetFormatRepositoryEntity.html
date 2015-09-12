@@ -1,0 +1,294 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>DataSetFormatRepositoryEntity &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="datasetformatrepositoryentity">
+<h1>DataSetFormatRepositoryEntity<a class="headerlink" href="#datasetformatrepositoryentity" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.framework.repository.DataSetFormatRepositoryEntity">
+public class <code class="descname">DataSetFormatRepositoryEntity</code> extends <a class="reference internal" href="DynamicRepositoryEntity.html#de.clusteval.framework.repository.DynamicRepositoryEntity" title="de.clusteval.framework.repository.DynamicRepositoryEntity">DynamicRepositoryEntity</a>&lt;<a class="reference internal" href="../../data/dataset/format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat">DataSetFormat</a>&gt;<a class="headerlink" href="#de.clusteval.framework.repository.DataSetFormatRepositoryEntity" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="datasetformatcurrentversions">
+<h3>dataSetFormatCurrentVersions<a class="headerlink" href="#datasetformatcurrentversions" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.DataSetFormatRepositoryEntity.dataSetFormatCurrentVersions">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html" title="java.lang.Integer">Integer</a>&gt; <code class="descname">dataSetFormatCurrentVersions</code><a class="headerlink" href="#de.clusteval.framework.repository.DataSetFormatRepositoryEntity.dataSetFormatCurrentVersions" title="Permalink to this definition">¶</a></dt>
+<dd><p>This map holds the current versions of the available dataset formats.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="datasetformatparser">
+<h3>dataSetFormatParser<a class="headerlink" href="#datasetformatparser" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.DataSetFormatRepositoryEntity.dataSetFormatParser">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../data/dataset/format/DataSetFormatParser.html#de.clusteval.data.dataset.format.DataSetFormatParser" title="de.clusteval.data.dataset.format.DataSetFormatParser">DataSetFormatParser</a>&gt;&gt; <code class="descname">dataSetFormatParser</code><a class="headerlink" href="#de.clusteval.framework.repository.DataSetFormatRepositoryEntity.dataSetFormatParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>A map containing all classes of dataset format parsers registered in this repository.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>DataSetFormatRepositoryEntity<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.framework.repository.DataSetFormatRepositoryEntity.DataSetFormatRepositoryEntity(Repository, DynamicRepositoryEntity, String)">
+public <code class="descname">DataSetFormatRepositoryEntity</code><span class="sig-paren">(</span><a class="reference internal" href="Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference internal" href="DynamicRepositoryEntity.html#de.clusteval.framework.repository.DynamicRepositoryEntity" title="de.clusteval.framework.repository.DynamicRepositoryEntity">DynamicRepositoryEntity</a>&lt;<a class="reference internal" href="../../data/dataset/format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat">DataSetFormat</a>&gt;<em> parent</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> basePath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.DataSetFormatRepositoryEntity.DataSetFormatRepositoryEntity(Repository, DynamicRepositoryEntity, String)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>repository</strong> &#8211; </li>
+<li><strong>parent</strong> &#8211; </li>
+<li><strong>basePath</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getcurrentdatasetformatversion">
+<h3>getCurrentDataSetFormatVersion<a class="headerlink" href="#getcurrentdatasetformatversion" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.DataSetFormatRepositoryEntity.getCurrentDataSetFormatVersion(String)">
+public int <code class="descname">getCurrentDataSetFormatVersion</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> formatClass</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.DataSetFormatRepositoryEntity.getCurrentDataSetFormatVersion(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method returns the latest and current version of the given format. It is used by default, if no other version for a format is specified. If the current version of a format changes, add a static block to that formats class and overwrite the format version.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>formatClass</strong> &#8211; The dataset format class for which we want to know the current version.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="../../data/dataset/format/UnknownDataSetFormatException.html#de.clusteval.data.dataset.format.UnknownDataSetFormatException" title="de.clusteval.data.dataset.format.UnknownDataSetFormatException"><strong>UnknownDataSetFormatException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The current version for the given dataset format class.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getdatasetformatparser">
+<h3>getDataSetFormatParser<a class="headerlink" href="#getdatasetformatparser" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.DataSetFormatRepositoryEntity.getDataSetFormatParser(String)">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../data/dataset/format/DataSetFormatParser.html#de.clusteval.data.dataset.format.DataSetFormatParser" title="de.clusteval.data.dataset.format.DataSetFormatParser">DataSetFormatParser</a>&gt; <code class="descname">getDataSetFormatParser</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> dataSetFormatName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.DataSetFormatRepositoryEntity.getDataSetFormatParser(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method looks up and returns (if it exists) the class of the parser corresponding to the dataset format with the given name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataSetFormatName</strong> &#8211; The name of the class of the dataset format.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The class of the dataset format parser with the given name or null, if it does not exist.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="isregisteredfordatasetformat">
+<h3>isRegisteredForDataSetFormat<a class="headerlink" href="#isregisteredfordatasetformat" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.DataSetFormatRepositoryEntity.isRegisteredForDataSetFormat(Class)">
+public boolean <code class="descname">isRegisteredForDataSetFormat</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../data/dataset/format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat">DataSetFormat</a>&gt;<em> dsFormat</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.DataSetFormatRepositoryEntity.isRegisteredForDataSetFormat(Class)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method checks whether a parser has been registered for the given dataset format class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dsFormat</strong> &#8211; The class for which we want to know whether a parser has been registered.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the parser has been registered.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="putcurrentdatasetformatversion">
+<h3>putCurrentDataSetFormatVersion<a class="headerlink" href="#putcurrentdatasetformatversion" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.DataSetFormatRepositoryEntity.putCurrentDataSetFormatVersion(String, int)">
+public void <code class="descname">putCurrentDataSetFormatVersion</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> formatClass</em>, int<em> version</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.DataSetFormatRepositoryEntity.putCurrentDataSetFormatVersion(String, int)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>formatClass</strong> &#8211; The dataset format class for which we want to set the current version.</li>
+<li><strong>version</strong> &#8211; The new version of the dataset format class.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="registerdatasetformatparser">
+<h3>registerDataSetFormatParser<a class="headerlink" href="#registerdatasetformatparser" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.DataSetFormatRepositoryEntity.registerDataSetFormatParser(Class)">
+public boolean <code class="descname">registerDataSetFormatParser</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../data/dataset/format/DataSetFormatParser.html#de.clusteval.data.dataset.format.DataSetFormatParser" title="de.clusteval.data.dataset.format.DataSetFormatParser">DataSetFormatParser</a>&gt;<em> dsFormatParser</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.DataSetFormatRepositoryEntity.registerDataSetFormatParser(Class)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method registers a dataset format parser.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dsFormatParser</strong> &#8211; The dataset format parser to register.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the dataset format parser replaced an old object.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">DataSetFormatRepositoryEntity</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#datasetformatcurrentversions">dataSetFormatCurrentVersions</a></li>
+<li><a class="reference internal" href="#datasetformatparser">dataSetFormatParser</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">DataSetFormatRepositoryEntity</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#getcurrentdatasetformatversion">getCurrentDataSetFormatVersion</a></li>
+<li><a class="reference internal" href="#getdatasetformatparser">getDataSetFormatParser</a></li>
+<li><a class="reference internal" href="#isregisteredfordatasetformat">isRegisteredForDataSetFormat</a></li>
+<li><a class="reference internal" href="#putcurrentdatasetformatversion">putCurrentDataSetFormatVersion</a></li>
+<li><a class="reference internal" href="#registerdatasetformatparser">registerDataSetFormatParser</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/framework/repository/DataSetFormatRepositoryEntity.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

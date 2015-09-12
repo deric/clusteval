@@ -1,0 +1,431 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SupervisorThread &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="supervisorthread">
+<h1>SupervisorThread<a class="headerlink" href="#supervisorthread" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.framework.threading.SupervisorThread">
+public abstract class <code class="descname">SupervisorThread</code> extends <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Thread.html" title="java.lang.Thread">Thread</a><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>This supervisor thread is responsible for starting and keeping alive all other threads of the framework. He continuously checks whether the other threads are still alive as they should. In case any of those threads terminates in an uncontrolled way, the supervisor thread restarts a new thread of the corresponding class of threads that was terminated unexpectedly.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="checkonce">
+<h3>checkOnce<a class="headerlink" href="#checkonce" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.threading.SupervisorThread.checkOnce">
+protected boolean <code class="descname">checkOnce</code><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.checkOnce" title="Permalink to this definition">¶</a></dt>
+<dd><p>A boolean indicating, whether this thread only should check once and then terminate. This can be useful in some subclasses of this class (e.g. <a class="reference internal" href="RunResultRepositorySupervisorThread.html#de.clusteval.framework.threading.RunResultRepositorySupervisorThread" title="de.clusteval.framework.threading.RunResultRepositorySupervisorThread"><code class="xref java java-ref docutils literal"><span class="pre">RunResultRepositorySupervisorThread</span></code></a>).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="interrupted">
+<h3>interrupted<a class="headerlink" href="#interrupted" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.threading.SupervisorThread.interrupted">
+protected boolean <code class="descname">interrupted</code><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.interrupted" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="log">
+<h3>log<a class="headerlink" href="#log" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.threading.SupervisorThread.log">
+protected Logger <code class="descname">log</code><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="repository">
+<h3>repository<a class="headerlink" href="#repository" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.threading.SupervisorThread.repository">
+protected <a class="reference internal" href="../repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a> <code class="descname">repository</code><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.repository" title="Permalink to this definition">¶</a></dt>
+<dd><p>The repository this supervisor belongs to and for which all threads should be supervised.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="supervisorsleeptime">
+<h3>supervisorSleepTime<a class="headerlink" href="#supervisorsleeptime" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.threading.SupervisorThread.supervisorSleepTime">
+protected long <code class="descname">supervisorSleepTime</code><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.supervisorSleepTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>The time between two checks of this thread.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="threads">
+<h3>threads<a class="headerlink" href="#threads" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.threading.SupervisorThread.threads">
+protected final <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="ClustevalThread.html#de.clusteval.framework.threading.ClustevalThread" title="de.clusteval.framework.threading.ClustevalThread">ClustevalThread</a>&gt;, <a class="reference internal" href="ClustevalThread.html#de.clusteval.framework.threading.ClustevalThread" title="de.clusteval.framework.threading.ClustevalThread">ClustevalThread</a>&gt; <code class="descname">threads</code><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.threads" title="Permalink to this definition">¶</a></dt>
+<dd><p>A map containing all threads that were started by this supervisor together with their thread class.</p>
+<p>This map is used by the supervisor to iterate through the existing threads and checking whether they are still alive. If the supervisor thread finds a thread in this map that terminated unexpectedly, he creates a new thread of this class.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>SupervisorThread<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.framework.threading.SupervisorThread.SupervisorThread(Repository, List, Map, boolean)">
+public <code class="descname">SupervisorThread</code><span class="sig-paren">(</span><a class="reference internal" href="../repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="ClustevalThread.html#de.clusteval.framework.threading.ClustevalThread" title="de.clusteval.framework.threading.ClustevalThread">ClustevalThread</a>&gt;&gt;<em> threads</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Long.html" title="java.lang.Long">Long</a>&gt;<em> threadSleepTimes</em>, boolean<em> checkOnce</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.SupervisorThread(Repository, List, Map, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor of abstract supervisor threads.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>repository</strong> &#8211; The repository this supervisor belongs to and for which all threads should be supervised.</li>
+<li><strong>threads</strong> &#8211; A list containing all threads this supervisor thread should start and keep alive.</li>
+<li><strong>threadSleepTimes</strong> &#8211; A map containing sleep times for threads (must not be complete).</li>
+<li><strong>checkOnce</strong> &#8211; A boolean indicating, whether this thread only should check once and then terminate. This can be useful in some subclasses of this class (e.g. <a class="reference internal" href="RunResultRepositorySupervisorThread.html#de.clusteval.framework.threading.RunResultRepositorySupervisorThread" title="de.clusteval.framework.threading.RunResultRepositorySupervisorThread"><code class="xref java java-ref docutils literal"><span class="pre">RunResultRepositorySupervisorThread</span></code></a>).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="createlist">
+<h3>createList<a class="headerlink" href="#createlist" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.SupervisorThread.createList(Class)">
+public static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="ClustevalThread.html#de.clusteval.framework.threading.ClustevalThread" title="de.clusteval.framework.threading.ClustevalThread">ClustevalThread</a>&gt;&gt; <code class="descname">createList</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="ClustevalThread.html#de.clusteval.framework.threading.ClustevalThread" title="de.clusteval.framework.threading.ClustevalThread">ClustevalThread</a>&gt;...<em> classes</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.createList(Class)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>classes</strong> &#8211; The clusteval thread classes to add to a list.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of clusteval thread classes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getclusteringqualitymeasurefinderthread">
+<h3>getClusteringQualityMeasureFinderThread<a class="headerlink" href="#getclusteringqualitymeasurefinderthread" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.SupervisorThread.getClusteringQualityMeasureFinderThread()">
+public <a class="reference internal" href="../../cluster/quality/ClusteringQualityMeasureFinderThread.html#de.clusteval.cluster.quality.ClusteringQualityMeasureFinderThread" title="de.clusteval.cluster.quality.ClusteringQualityMeasureFinderThread">ClusteringQualityMeasureFinderThread</a> <code class="descname">getClusteringQualityMeasureFinderThread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.getClusteringQualityMeasureFinderThread()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The thread which finds clustering quality measures.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getdatasetconfigthread">
+<h3>getDataSetConfigThread<a class="headerlink" href="#getdatasetconfigthread" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.SupervisorThread.getDataSetConfigThread()">
+public <a class="reference internal" href="../../data/dataset/DataSetConfigFinderThread.html#de.clusteval.data.dataset.DataSetConfigFinderThread" title="de.clusteval.data.dataset.DataSetConfigFinderThread">DataSetConfigFinderThread</a> <code class="descname">getDataSetConfigThread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.getDataSetConfigThread()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The thread which finds dataset configurations.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getdatasetformatthread">
+<h3>getDataSetFormatThread<a class="headerlink" href="#getdatasetformatthread" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.SupervisorThread.getDataSetFormatThread()">
+public <a class="reference internal" href="../../data/dataset/format/DataSetFormatFinderThread.html#de.clusteval.data.dataset.format.DataSetFormatFinderThread" title="de.clusteval.data.dataset.format.DataSetFormatFinderThread">DataSetFormatFinderThread</a> <code class="descname">getDataSetFormatThread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.getDataSetFormatThread()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The thread which finds dataset formats.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getdatastatisticfinderthread">
+<h3>getDataStatisticFinderThread<a class="headerlink" href="#getdatastatisticfinderthread" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.SupervisorThread.getDataStatisticFinderThread()">
+public <a class="reference internal" href="../../data/statistics/DataStatisticFinderThread.html#de.clusteval.data.statistics.DataStatisticFinderThread" title="de.clusteval.data.statistics.DataStatisticFinderThread">DataStatisticFinderThread</a> <code class="descname">getDataStatisticFinderThread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.getDataStatisticFinderThread()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The thread which finds data statistics.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getparameteroptimizationmethodfinderthread">
+<h3>getParameterOptimizationMethodFinderThread<a class="headerlink" href="#getparameteroptimizationmethodfinderthread" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.SupervisorThread.getParameterOptimizationMethodFinderThread()">
+public <a class="reference internal" href="../../cluster/paramOptimization/ParameterOptimizationMethodFinderThread.html#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethodFinderThread" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethodFinderThread">ParameterOptimizationMethodFinderThread</a> <code class="descname">getParameterOptimizationMethodFinderThread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.getParameterOptimizationMethodFinderThread()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The thread which finds parameter optimization methods.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getrunfinderthread">
+<h3>getRunFinderThread<a class="headerlink" href="#getrunfinderthread" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.SupervisorThread.getRunFinderThread()">
+public <a class="reference internal" href="../../run/RunFinderThread.html#de.clusteval.run.RunFinderThread" title="de.clusteval.run.RunFinderThread">RunFinderThread</a> <code class="descname">getRunFinderThread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.getRunFinderThread()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The thread which finds runs.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getrunresultformatthread">
+<h3>getRunResultFormatThread<a class="headerlink" href="#getrunresultformatthread" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.SupervisorThread.getRunResultFormatThread()">
+public <a class="reference internal" href="../../run/result/format/RunResultFormatFinderThread.html#de.clusteval.run.result.format.RunResultFormatFinderThread" title="de.clusteval.run.result.format.RunResultFormatFinderThread">RunResultFormatFinderThread</a> <code class="descname">getRunResultFormatThread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.getRunResultFormatThread()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The thread which finds runresult formats.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getrunscheduler">
+<h3>getRunScheduler<a class="headerlink" href="#getrunscheduler" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.SupervisorThread.getRunScheduler()">
+public <a class="reference internal" href="RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread" title="de.clusteval.framework.threading.RunSchedulerThread">RunSchedulerThread</a> <code class="descname">getRunScheduler</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.getRunScheduler()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The run scheduler thread.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getrunstatisticfinderthread">
+<h3>getRunStatisticFinderThread<a class="headerlink" href="#getrunstatisticfinderthread" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.SupervisorThread.getRunStatisticFinderThread()">
+public <a class="reference internal" href="../../run/statistics/RunStatisticFinderThread.html#de.clusteval.run.statistics.RunStatisticFinderThread" title="de.clusteval.run.statistics.RunStatisticFinderThread">RunStatisticFinderThread</a> <code class="descname">getRunStatisticFinderThread</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.getRunStatisticFinderThread()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The thread which finds run statistics.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getthread">
+<h3>getThread<a class="headerlink" href="#getthread" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.SupervisorThread.getThread(Class)">
+public <a class="reference internal" href="ClustevalThread.html#de.clusteval.framework.threading.ClustevalThread" title="de.clusteval.framework.threading.ClustevalThread">ClustevalThread</a> <code class="descname">getThread</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="ClustevalThread.html#de.clusteval.framework.threading.ClustevalThread" title="de.clusteval.framework.threading.ClustevalThread">ClustevalThread</a>&gt;<em> clazz</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.getThread(Class)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>clazz</strong> &#8211; The class for which we want the thread instance</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The thread instance of the passed class.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="interrupt">
+<h3>interrupt<a class="headerlink" href="#interrupt" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.SupervisorThread.interrupt()">
+public void <code class="descname">interrupt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.interrupt()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="run">
+<h3>run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.SupervisorThread.run()">
+public void <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.SupervisorThread.run()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SupervisorThread</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#checkonce">checkOnce</a></li>
+<li><a class="reference internal" href="#interrupted">interrupted</a></li>
+<li><a class="reference internal" href="#log">log</a></li>
+<li><a class="reference internal" href="#repository">repository</a></li>
+<li><a class="reference internal" href="#supervisorsleeptime">supervisorSleepTime</a></li>
+<li><a class="reference internal" href="#threads">threads</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">SupervisorThread</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#createlist">createList</a></li>
+<li><a class="reference internal" href="#getclusteringqualitymeasurefinderthread">getClusteringQualityMeasureFinderThread</a></li>
+<li><a class="reference internal" href="#getdatasetconfigthread">getDataSetConfigThread</a></li>
+<li><a class="reference internal" href="#getdatasetformatthread">getDataSetFormatThread</a></li>
+<li><a class="reference internal" href="#getdatastatisticfinderthread">getDataStatisticFinderThread</a></li>
+<li><a class="reference internal" href="#getparameteroptimizationmethodfinderthread">getParameterOptimizationMethodFinderThread</a></li>
+<li><a class="reference internal" href="#getrunfinderthread">getRunFinderThread</a></li>
+<li><a class="reference internal" href="#getrunresultformatthread">getRunResultFormatThread</a></li>
+<li><a class="reference internal" href="#getrunscheduler">getRunScheduler</a></li>
+<li><a class="reference internal" href="#getrunstatisticfinderthread">getRunStatisticFinderThread</a></li>
+<li><a class="reference internal" href="#getthread">getThread</a></li>
+<li><a class="reference internal" href="#interrupt">interrupt</a></li>
+<li><a class="reference internal" href="#run">run</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/framework/threading/SupervisorThread.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

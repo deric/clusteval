@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>MyRengine &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="myrengine">
+<h1>MyRengine<a class="headerlink" href="#myrengine" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.framework.repository.MyRengine">
+public class <code class="descname">MyRengine</code><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is used throughout the framework to provide access to the R framework.</p>
+<p>This class is a wrapper class for <code class="xref java java-ref docutils literal"><span class="pre">RConnection</span></code> which adds convenience functions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="connection">
+<h3>connection<a class="headerlink" href="#connection" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.MyRengine.connection">
+protected RConnection <code class="descname">connection</code><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.connection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="interrupted">
+<h3>interrupted<a class="headerlink" href="#interrupted" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.MyRengine.interrupted">
+protected boolean <code class="descname">interrupted</code><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.interrupted" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="loadedlibraries">
+<h3>loadedLibraries<a class="headerlink" href="#loadedlibraries" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.MyRengine.loadedLibraries">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html" title="java.util.Set">Set</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">loadedLibraries</code><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.loadedLibraries" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="log">
+<h3>log<a class="headerlink" href="#log" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.MyRengine.log">
+protected Logger <code class="descname">log</code><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="pid">
+<h3>pid<a class="headerlink" href="#pid" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.MyRengine.pid">
+protected int <code class="descname">pid</code><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.pid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>MyRengine<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.framework.repository.MyRengine.MyRengine(String)">
+public <code class="descname">MyRengine</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> string</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.MyRengine(String)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> &#8211; The parameter string.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RserveException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="assign">
+<h3>assign<a class="headerlink" href="#assign" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.MyRengine.assign(String, double[][])">
+public void <code class="descname">assign</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> arg0</em>, double[][]<em> arg1</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.assign(String, double[][])" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method allows to assign a two-dimensional double array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>arg0</strong> &#8211; The variable name in R.</li>
+<li><strong>arg1</strong> &#8211; A two-dimensional double array which is assigned to the new variable.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+<li><strong>REngineException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>assign<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.MyRengine.assign(String, int[][])">
+public void <code class="descname">assign</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> arg0</em>, int[][]<em> arg1</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.assign(String, int[][])" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method allows to assign a two-dimensional integer array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>arg0</strong> &#8211; The variable name in R.</li>
+<li><strong>arg1</strong> &#8211; A two-dimensional integer array which is assigned to the new variable.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+<li><strong>REngineException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h3>assign<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.MyRengine.assign(String, int[])">
+public void <code class="descname">assign</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> arg0</em>, int[]<em> arg1</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.assign(String, int[])" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id4">
+<h3>assign<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.MyRengine.assign(String, double[])">
+public void <code class="descname">assign</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> arg0</em>, double[]<em> arg1</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.assign(String, double[])" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id5">
+<h3>assign<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.MyRengine.assign(String, String[])">
+public void <code class="descname">assign</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> arg0</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> arg1</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.assign(String, String[])" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="clear">
+<h3>clear<a class="headerlink" href="#clear" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.MyRengine.clear()">
+public void <code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.clear()" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method clears all variables stored in the session corresponding to this rengine.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RserveException</strong> &#8211; </li>
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="close">
+<h3>close<a class="headerlink" href="#close" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.MyRengine.close()">
+protected boolean <code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.close()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="detach">
+<h3>detach<a class="headerlink" href="#detach" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.MyRengine.detach()">
+public void <code class="descname">detach</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.detach()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="eval">
+<h3>eval<a class="headerlink" href="#eval" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.MyRengine.eval(String)">
+public REXP <code class="descname">eval</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> cmd</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.eval(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getlasterror">
+<h3>getLastError<a class="headerlink" href="#getlasterror" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.MyRengine.getLastError()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getLastError</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.getLastError()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="interrupt">
+<h3>interrupt<a class="headerlink" href="#interrupt" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.MyRengine.interrupt()">
+public boolean <code class="descname">interrupt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.interrupt()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="loadlibrary">
+<h3>loadLibrary<a class="headerlink" href="#loadlibrary" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.MyRengine.loadLibrary(String, String)">
+public boolean <code class="descname">loadLibrary</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> name</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> requiredByClass</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.loadLibrary(String, String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method tries to load the library with the given name.</p>
+<p>If the library could not be loaded, this method throws a <a class="reference internal" href="../RLibraryNotLoadedException.html#de.clusteval.framework.RLibraryNotLoadedException" title="de.clusteval.framework.RLibraryNotLoadedException"><code class="xref java java-ref docutils literal"><span class="pre">RLibraryNotLoadedException</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> &#8211; The name of the library.</li>
+<li><strong>requiredByClass</strong> &#8211; The name of the class that requires the library.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="../RLibraryNotLoadedException.html#de.clusteval.framework.RLibraryNotLoadedException" title="de.clusteval.framework.RLibraryNotLoadedException"><strong>RLibraryNotLoadedException</strong></a> &#8211; </li>
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the library was loaded successfully or was loaded before.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="printlasterror">
+<h3>printLastError<a class="headerlink" href="#printlasterror" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.MyRengine.printLastError()">
+public void <code class="descname">printLastError</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.printLastError()" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO: use this instead of printStackTrace() This method logs the last error.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="shutdown">
+<h3>shutdown<a class="headerlink" href="#shutdown" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.MyRengine.shutdown()">
+protected boolean <code class="descname">shutdown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.MyRengine.shutdown()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">MyRengine</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#connection">connection</a></li>
+<li><a class="reference internal" href="#interrupted">interrupted</a></li>
+<li><a class="reference internal" href="#loadedlibraries">loadedLibraries</a></li>
+<li><a class="reference internal" href="#log">log</a></li>
+<li><a class="reference internal" href="#pid">pid</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">MyRengine</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#assign">assign</a></li>
+<li><a class="reference internal" href="#id2">assign</a></li>
+<li><a class="reference internal" href="#id3">assign</a></li>
+<li><a class="reference internal" href="#id4">assign</a></li>
+<li><a class="reference internal" href="#id5">assign</a></li>
+<li><a class="reference internal" href="#clear">clear</a></li>
+<li><a class="reference internal" href="#close">close</a></li>
+<li><a class="reference internal" href="#detach">detach</a></li>
+<li><a class="reference internal" href="#eval">eval</a></li>
+<li><a class="reference internal" href="#getlasterror">getLastError</a></li>
+<li><a class="reference internal" href="#interrupt">interrupt</a></li>
+<li><a class="reference internal" href="#loadlibrary">loadLibrary</a></li>
+<li><a class="reference internal" href="#printlasterror">printLastError</a></li>
+<li><a class="reference internal" href="#shutdown">shutdown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/framework/repository/MyRengine.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

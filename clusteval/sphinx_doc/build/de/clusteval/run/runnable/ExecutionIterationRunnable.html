@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ExecutionIterationRunnable &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="executioniterationrunnable">
+<h1>ExecutionIterationRunnable<a class="headerlink" href="#executioniterationrunnable" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.run.runnable.ExecutionIterationRunnable">
+public abstract class <code class="descname">ExecutionIterationRunnable</code> extends <a class="reference internal" href="IterationRunnable.html#de.clusteval.run.runnable.IterationRunnable" title="de.clusteval.run.runnable.IterationRunnable">IterationRunnable</a>&lt;<a class="reference internal" href="ExecutionIterationWrapper.html#de.clusteval.run.runnable.ExecutionIterationWrapper" title="de.clusteval.run.runnable.ExecutionIterationWrapper">ExecutionIterationWrapper</a>&gt;<a class="headerlink" href="#de.clusteval.run.runnable.ExecutionIterationRunnable" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="norunresultexception">
+<h3>noRunResultException<a class="headerlink" href="#norunresultexception" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.runnable.ExecutionIterationRunnable.noRunResultException">
+protected <a class="reference internal" href="../result/NoRunResultFormatParserException.html#de.clusteval.run.result.NoRunResultFormatParserException" title="de.clusteval.run.result.NoRunResultFormatParserException">NoRunResultFormatParserException</a> <code class="descname">noRunResultException</code><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionIterationRunnable.noRunResultException" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="proc">
+<h3>proc<a class="headerlink" href="#proc" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.runnable.ExecutionIterationRunnable.proc">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Process.html" title="java.lang.Process">Process</a> <code class="descname">proc</code><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionIterationRunnable.proc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>ExecutionIterationRunnable<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.run.runnable.ExecutionIterationRunnable.ExecutionIterationRunnable(ExecutionIterationWrapper)">
+public <code class="descname">ExecutionIterationRunnable</code><span class="sig-paren">(</span><a class="reference internal" href="ExecutionIterationWrapper.html#de.clusteval.run.runnable.ExecutionIterationWrapper" title="de.clusteval.run.runnable.ExecutionIterationWrapper">ExecutionIterationWrapper</a><em> iterationWrapper</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionIterationRunnable.ExecutionIterationRunnable(ExecutionIterationWrapper)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>iterationWrapper</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getiterationnumber">
+<h3>getIterationNumber<a class="headerlink" href="#getiterationnumber" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionIterationRunnable.getIterationNumber()">
+public int <code class="descname">getIterationNumber</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionIterationRunnable.getIterationNumber()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getnorunresultexception">
+<h3>getNoRunResultException<a class="headerlink" href="#getnorunresultexception" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionIterationRunnable.getNoRunResultException()">
+public <a class="reference internal" href="../result/NoRunResultFormatParserException.html#de.clusteval.run.result.NoRunResultFormatParserException" title="de.clusteval.run.result.NoRunResultFormatParserException">NoRunResultFormatParserException</a> <code class="descname">getNoRunResultException</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionIterationRunnable.getNoRunResultException()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the noRunResultException</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getprocess">
+<h3>getProcess<a class="headerlink" href="#getprocess" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionIterationRunnable.getProcess()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Process.html" title="java.lang.Process">Process</a> <code class="descname">getProcess</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionIterationRunnable.getProcess()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrun">
+<h3>getRun<a class="headerlink" href="#getrun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionIterationRunnable.getRun()">
+public <a class="reference internal" href="../ExecutionRun.html#de.clusteval.run.ExecutionRun" title="de.clusteval.run.ExecutionRun">ExecutionRun</a> <code class="descname">getRun</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionIterationRunnable.getRun()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ExecutionIterationRunnable</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#norunresultexception">noRunResultException</a></li>
+<li><a class="reference internal" href="#proc">proc</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">ExecutionIterationRunnable</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#getiterationnumber">getIterationNumber</a></li>
+<li><a class="reference internal" href="#getnorunresultexception">getNoRunResultException</a></li>
+<li><a class="reference internal" href="#getprocess">getProcess</a></li>
+<li><a class="reference internal" href="#getrun">getRun</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/run/runnable/ExecutionIterationRunnable.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

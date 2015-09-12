@@ -1,0 +1,593 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ExecutionRun &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="executionrun">
+<h1>ExecutionRun<a class="headerlink" href="#executionrun" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.run.ExecutionRun">
+public abstract class <code class="descname">ExecutionRun</code> extends <a class="reference internal" href="Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run">Run</a><a class="headerlink" href="#de.clusteval.run.ExecutionRun" title="Permalink to this definition">¶</a></dt>
+<dd><p>An abstract class for all run types, that involve execution of clustering tools and applying them to datasets.</p>
+<p>An execution run has a list of program and data configurations. These are pairwise combined and for every pair (see <a class="reference internal" href="#de.clusteval.run.ExecutionRun.runPairs" title="de.clusteval.run.ExecutionRun.runPairs"><code class="xref java java-ref docutils literal"><span class="pre">runPairs</span></code></a>) a runnable is created and executed asynchronously by the <code class="xref java java-ref docutils literal"><span class="pre">RunnerScheduler</span></code>.</p>
+<p>The data and program configurations passed to this run are the same as the objects stored in the repository. Thus those objects can change during runtime of this run. To avoid those changes affecting the run during its execution the original objects are cloned in <a class="reference internal" href="#de.clusteval.run.ExecutionRun.initRunPairs(List, List)" title="de.clusteval.run.ExecutionRun.initRunPairs(List, List)"><code class="xref java java-ref docutils literal"><span class="pre">initRunPairs(List,List)</span></code></a> before they are passed to the run runnables which are performed asynchronously.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dataconfigs">
+<h3>dataConfigs<a class="headerlink" href="#dataconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.ExecutionRun.dataConfigs">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt; <code class="descname">dataConfigs</code><a class="headerlink" href="#de.clusteval.run.ExecutionRun.dataConfigs" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of data configurations contained in this run.</p>
+<p>The references to data configurations in this list are the same as those stored in the repository. That means the objects in this list can change during runtime of the run.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="maxexecutiontimes">
+<h3>maxExecutionTimes<a class="headerlink" href="#maxexecutiontimes" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.ExecutionRun.maxExecutionTimes">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html" title="java.lang.Integer">Integer</a>&gt; <code class="descname">maxExecutionTimes</code><a class="headerlink" href="#de.clusteval.run.ExecutionRun.maxExecutionTimes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="parametervalues">
+<h3>parameterValues<a class="headerlink" href="#parametervalues" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.ExecutionRun.parameterValues">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;&gt; <code class="descname">parameterValues</code><a class="headerlink" href="#de.clusteval.run.ExecutionRun.parameterValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>The parameter values for every pair of program and data configuration.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="postprocessors">
+<h3>postProcessors<a class="headerlink" href="#postprocessors" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.ExecutionRun.postProcessors">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="result/postprocessing/RunResultPostprocessor.html#de.clusteval.run.result.postprocessing.RunResultPostprocessor" title="de.clusteval.run.result.postprocessing.RunResultPostprocessor">RunResultPostprocessor</a>&gt; <code class="descname">postProcessors</code><a class="headerlink" href="#de.clusteval.run.ExecutionRun.postProcessors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="programconfigs">
+<h3>programConfigs<a class="headerlink" href="#programconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.ExecutionRun.programConfigs">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a>&gt; <code class="descname">programConfigs</code><a class="headerlink" href="#de.clusteval.run.ExecutionRun.programConfigs" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of program configurations contained in this run.</p>
+<p>The references to program configurations in this list are the same as those stored in the repository. That means the objects in this list can change during runtime of the run.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="qualitymeasures">
+<h3>qualityMeasures<a class="headerlink" href="#qualitymeasures" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.ExecutionRun.qualityMeasures">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../cluster/quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure">ClusteringQualityMeasure</a>&gt; <code class="descname">qualityMeasures</code><a class="headerlink" href="#de.clusteval.run.ExecutionRun.qualityMeasures" title="Permalink to this definition">¶</a></dt>
+<dd><p>During execution of this run for every clustering that is calculated a set of clustering quality measures is calculated.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="runpairs">
+<h3>runPairs<a class="headerlink" href="#runpairs" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.ExecutionRun.runPairs">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;Pair&lt;<a class="reference internal" href="../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a>, <a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt;&gt; <code class="descname">runPairs</code><a class="headerlink" href="#de.clusteval.run.ExecutionRun.runPairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The pairwise combinations of data and program configurations that are used to create the runnables.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>ExecutionRun<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.run.ExecutionRun.ExecutionRun(Repository, Context, boolean, long, File, List, List, List, List, List, Map)">
+protected <code class="descname">ExecutionRun</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference internal" href="../context/Context.html#de.clusteval.context.Context" title="de.clusteval.context.Context">Context</a><em> context</em>, boolean<em> register</em>, long<em> changeDate</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a>&gt;<em> programConfigs</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt;<em> dataConfigs</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../cluster/quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure">ClusteringQualityMeasure</a>&gt;<em> qualityMeasures</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;&gt;<em> parameterValues</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="result/postprocessing/RunResultPostprocessor.html#de.clusteval.run.result.postprocessing.RunResultPostprocessor" title="de.clusteval.run.result.postprocessing.RunResultPostprocessor">RunResultPostprocessor</a>&gt;<em> postProcessors</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Integer.html" title="java.lang.Integer">Integer</a>&gt;<em> maxExecutionTimes</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.ExecutionRun(Repository, Context, boolean, long, File, List, List, List, List, List, Map)" title="Permalink to this definition">¶</a></dt>
+<dd><p>The constructor of this class takes a name, date and configuration. It is protected, to force usage of the static method</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; the repository</li>
+<li><strong>register</strong> &#8211; Whether the new instance should be registered at the repository.</li>
+<li><strong>name</strong> &#8211; The name of this run.</li>
+<li><strong>changeDate</strong> &#8211; The date this run was performed.</li>
+<li><strong>absPath</strong> &#8211; The absolute path to the file on the filesystem that corresponds to this run.</li>
+<li><strong>programConfigs</strong> &#8211; The program configurations of the new run.</li>
+<li><strong>dataConfigs</strong> &#8211; The data configurations of the new run.</li>
+<li><strong>qualityMeasures</strong> &#8211; The clustering quality measures of the new run.</li>
+<li><strong>parameterValues</strong> &#8211; The parameter values of this run.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>ExecutionRun<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.run.ExecutionRun.ExecutionRun(ExecutionRun)">
+protected <code class="descname">ExecutionRun</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.run.ExecutionRun" title="de.clusteval.run.ExecutionRun">ExecutionRun</a><em> other</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.ExecutionRun(ExecutionRun)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy constructor for execution runs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>other</strong> &#8211; The execution run to be cloned.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="checkcompatibilityqualitymeasuresdataconfigs">
+<h3>checkCompatibilityQualityMeasuresDataConfigs<a class="headerlink" href="#checkcompatibilityqualitymeasuresdataconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.checkCompatibilityQualityMeasuresDataConfigs(List, List)">
+public static void <code class="descname">checkCompatibilityQualityMeasuresDataConfigs</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt;<em> dataConfigs</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../cluster/quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure">ClusteringQualityMeasure</a>&gt;<em> qualityMeasures</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.checkCompatibilityQualityMeasuresDataConfigs(List, List)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method verifies that all quality measures can be calculated for every data configuration. This can be due to the fact, that some quality measures require a goldstandard. If a data configuration does not contain a goldstandard, such quality measures cannot be calculated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataConfigs</strong> &#8211; The data configurations to check.</li>
+<li><strong>qualityMeasures</strong> &#8211; The quality measures to check.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="RunException.html#de.clusteval.run.RunException" title="de.clusteval.run.RunException"><strong>RunException</strong></a> &#8211; An exception that indicates, that some quality measures and data configurations are not compatible.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="clone">
+<h3>clone<a class="headerlink" href="#clone" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.clone()">
+public abstract <a class="reference internal" href="#de.clusteval.run.ExecutionRun" title="de.clusteval.run.ExecutionRun">ExecutionRun</a> <code class="descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.clone()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="cloneparametervalues">
+<h3>cloneParameterValues<a class="headerlink" href="#cloneparametervalues" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.cloneParameterValues(List)">
+protected static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;&gt; <code class="descname">cloneParameterValues</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;&gt;<em> parameterValues</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.cloneParameterValues(List)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="clonepostprocessors">
+<h3>clonePostProcessors<a class="headerlink" href="#clonepostprocessors" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.clonePostProcessors(List)">
+protected static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="result/postprocessing/RunResultPostprocessor.html#de.clusteval.run.result.postprocessing.RunResultPostprocessor" title="de.clusteval.run.result.postprocessing.RunResultPostprocessor">RunResultPostprocessor</a>&gt; <code class="descname">clonePostProcessors</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="result/postprocessing/RunResultPostprocessor.html#de.clusteval.run.result.postprocessing.RunResultPostprocessor" title="de.clusteval.run.result.postprocessing.RunResultPostprocessor">RunResultPostprocessor</a>&gt;<em> postProcessors</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.clonePostProcessors(List)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="createandschedulerunnableforresumepair">
+<h3>createAndScheduleRunnableForResumePair<a class="headerlink" href="#createandschedulerunnableforresumepair" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.createAndScheduleRunnableForResumePair(RunSchedulerThread, int)">
+protected <a class="reference internal" href="runnable/RunRunnable.html#de.clusteval.run.runnable.RunRunnable" title="de.clusteval.run.runnable.RunRunnable">RunRunnable</a> <code class="descname">createAndScheduleRunnableForResumePair</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/threading/RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread" title="de.clusteval.framework.threading.RunSchedulerThread">RunSchedulerThread</a><em> runScheduler</em>, int<em> p</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.createAndScheduleRunnableForResumePair(RunSchedulerThread, int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="createandschedulerunnableforrunpair">
+<h3>createAndScheduleRunnableForRunPair<a class="headerlink" href="#createandschedulerunnableforrunpair" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.createAndScheduleRunnableForRunPair(RunSchedulerThread, int)">
+protected <a class="reference internal" href="runnable/RunRunnable.html#de.clusteval.run.runnable.RunRunnable" title="de.clusteval.run.runnable.RunRunnable">RunRunnable</a> <code class="descname">createAndScheduleRunnableForRunPair</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/threading/RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread" title="de.clusteval.framework.threading.RunSchedulerThread">RunSchedulerThread</a><em> runScheduler</em>, int<em> p</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.createAndScheduleRunnableForRunPair(RunSchedulerThread, int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="createrunrunnablefor">
+<h3>createRunRunnableFor<a class="headerlink" href="#createrunrunnablefor" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.createRunRunnableFor(RunSchedulerThread, Run, ProgramConfig, DataConfig, String, boolean, Map)">
+protected abstract <a class="reference internal" href="runnable/ExecutionRunRunnable.html#de.clusteval.run.runnable.ExecutionRunRunnable" title="de.clusteval.run.runnable.ExecutionRunRunnable">ExecutionRunRunnable</a> <code class="descname">createRunRunnableFor</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/threading/RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread" title="de.clusteval.framework.threading.RunSchedulerThread">RunSchedulerThread</a><em> runScheduler</em>, <a class="reference internal" href="Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run">Run</a><em> run</em>, <a class="reference internal" href="../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a><em> programConfig</em>, <a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a><em> dataConfig</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runIdentString</em>, boolean<em> isResume</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> runParams</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.createRunRunnableFor(RunSchedulerThread, Run, ProgramConfig, DataConfig, String, boolean, Map)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a helper method for the <a class="reference internal" href="Run.html#de.clusteval.run.Run.createAndScheduleRunnableForResumePair(RunSchedulerThread, int)" title="de.clusteval.run.Run.createAndScheduleRunnableForResumePair(RunSchedulerThread, int)"><code class="xref java java-ref docutils literal"><span class="pre">createAndScheduleRunnableForResumePair(RunSchedulerThread,int)</span></code></a> and <a class="reference internal" href="RunAnalysisRun.html#de.clusteval.run.RunAnalysisRun.createAndScheduleRunnableForRunPair(RunSchedulerThread, int)" title="de.clusteval.run.RunAnalysisRun.createAndScheduleRunnableForRunPair(RunSchedulerThread, int)"><code class="xref java java-ref docutils literal"><span class="pre">createAndScheduleRunnableForRunPair(RunSchedulerThread,int)</span></code></a> methods. This method is responsible to instanciate objects of the corresponding runnable runtime type for the runtime type of this run. Override it in your own sub type of the ExecutionRun class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>runScheduler</strong> &#8211; The run scheduler to which the newly created runnable should be passed.</li>
+<li><strong>run</strong> &#8211; A reference to a cloned copy of this run that should be executed.</li>
+<li><strong>programConfig</strong> &#8211; The program configuration that is used by the resulting runnable.</li>
+<li><strong>dataConfig</strong> &#8211; The data configuration that is used by the resulting runnable.</li>
+<li><strong>runIdentString</strong> &#8211; The unique run identification string, that identifies this execution of the run.</li>
+<li><strong>isResume</strong> &#8211; A boolean which indicates, whether the created runnable should perform a run or resume one.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The runnable being executed asynchronously.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getdataconfigs">
+<h3>getDataConfigs<a class="headerlink" href="#getdataconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.getDataConfigs()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt; <code class="descname">getDataConfigs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.getDataConfigs()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list containing all data configurations of this run.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getmaxexecutiontime">
+<h3>getMaxExecutionTime<a class="headerlink" href="#getmaxexecutiontime" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.getMaxExecutionTime(ProgramConfig)">
+public int <code class="descname">getMaxExecutionTime</code><span class="sig-paren">(</span><a class="reference internal" href="../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a><em> pc</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.getMaxExecutionTime(ProgramConfig)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getnumberofrunrunnables">
+<h3>getNumberOfRunRunnables<a class="headerlink" href="#getnumberofrunrunnables" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.getNumberOfRunRunnables()">
+protected int <code class="descname">getNumberOfRunRunnables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.getNumberOfRunRunnables()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getparametervalues">
+<h3>getParameterValues<a class="headerlink" href="#getparametervalues" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.getParameterValues()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;&gt; <code class="descname">getParameterValues</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.getParameterValues()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of maps containing parameter values. Every entry of the list corresponds to one runpair.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getpostprocessors">
+<h3>getPostProcessors<a class="headerlink" href="#getpostprocessors" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.getPostProcessors()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="result/postprocessing/RunResultPostprocessor.html#de.clusteval.run.result.postprocessing.RunResultPostprocessor" title="de.clusteval.run.result.postprocessing.RunResultPostprocessor">RunResultPostprocessor</a>&gt; <code class="descname">getPostProcessors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.getPostProcessors()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getprogramconfigs">
+<h3>getProgramConfigs<a class="headerlink" href="#getprogramconfigs" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.getProgramConfigs()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a>&gt; <code class="descname">getProgramConfigs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.getProgramConfigs()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list containing all program configurations of this run.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getqualitymeasures">
+<h3>getQualityMeasures<a class="headerlink" href="#getqualitymeasures" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.getQualityMeasures()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../cluster/quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure">ClusteringQualityMeasure</a>&gt; <code class="descname">getQualityMeasures</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.getQualityMeasures()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list containing all clustering quality measures to be evaluated during execution of this run.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getrunpairs">
+<h3>getRunPairs<a class="headerlink" href="#getrunpairs" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.getRunPairs()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;Pair&lt;<a class="reference internal" href="../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a>, <a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt;&gt; <code class="descname">getRunPairs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.getRunPairs()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of runpairs consisting of program and data configurations each.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getrunparameterforrunpair">
+<h3>getRunParameterForRunPair<a class="headerlink" href="#getrunparameterforrunpair" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.getRunParameterForRunPair(int)">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;? extends <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html" title="java.lang.Object">Object</a>&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getRunParameterForRunPair</code><span class="sig-paren">(</span>int<em> p</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.getRunParameterForRunPair(int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getupperlimitprogress">
+<h3>getUpperLimitProgress<a class="headerlink" href="#getupperlimitprogress" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.getUpperLimitProgress()">
+protected long <code class="descname">getUpperLimitProgress</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.getUpperLimitProgress()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="hasmaxexecutiontime">
+<h3>hasMaxExecutionTime<a class="headerlink" href="#hasmaxexecutiontime" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.hasMaxExecutionTime(ProgramConfig)">
+public boolean <code class="descname">hasMaxExecutionTime</code><span class="sig-paren">(</span><a class="reference internal" href="../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a><em> pc</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.hasMaxExecutionTime(ProgramConfig)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="initrunpairs">
+<h3>initRunPairs<a class="headerlink" href="#initrunpairs" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.initRunPairs(List, List)">
+protected void <code class="descname">initRunPairs</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a>&gt;<em> programConfigs</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a>&gt;<em> dataConfigs</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.initRunPairs(List, List)" title="Permalink to this definition">¶</a></dt>
+<dd><p>For every pair of program and data configuration we create an object and add it to the list of runpairs.</p>
+<p>This method clones the data and program configurations of this execution run, such that only cloned objects are passed to the threads. This ensures, that changes that happen to the configurations during runtime do not affect the runs currently performing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>programConfigs</strong> &#8211; The list of program configurations of this run.</li>
+<li><strong>dataConfigs</strong> &#8211; The list of data configurations of this run.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../framework/repository/RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="notify">
+<h3>notify<a class="headerlink" href="#notify" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.notify(RepositoryEvent)">
+public void <code class="descname">notify</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/RepositoryEvent.html#de.clusteval.framework.repository.RepositoryEvent" title="de.clusteval.framework.repository.RepositoryEvent">RepositoryEvent</a><em> e</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.notify(RepositoryEvent)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="perform">
+<h3>perform<a class="headerlink" href="#perform" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.perform(RunSchedulerThread)">
+public void <code class="descname">perform</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/threading/RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread" title="de.clusteval.framework.threading.RunSchedulerThread">RunSchedulerThread</a><em> runScheduler</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.perform(RunSchedulerThread)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method will perform this run, i.e. it combines every program with every dataset contained in this run&#8217;s configuration. For every such combination a runnable is performed and the result of this will be added to the list of run results.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="runnable/RunRunnableInitializationException.html#de.clusteval.run.runnable.RunRunnableInitializationException" title="de.clusteval.run.runnable.RunRunnableInitializationException"><strong>RunRunnableInitializationException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="RunInitializationException.html#de.clusteval.run.RunInitializationException" title="de.clusteval.run.RunInitializationException"><strong>RunInitializationException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="resume">
+<h3>resume<a class="headerlink" href="#resume" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.resume(RunSchedulerThread, String)">
+public void <code class="descname">resume</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/threading/RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread" title="de.clusteval.framework.threading.RunSchedulerThread">RunSchedulerThread</a><em> runScheduler</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runIdentString</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.resume(RunSchedulerThread, String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method will resume this run, i.e. it combines every program with every dataset contained in this run&#8217;s configuration. For every such combination a runnable is performed and the result of this will be added to the list of run results.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="runnable/RunRunnableInitializationException.html#de.clusteval.run.runnable.RunRunnableInitializationException" title="de.clusteval.run.runnable.RunRunnableInitializationException"><strong>RunRunnableInitializationException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="RunInitializationException.html#de.clusteval.run.RunInitializationException" title="de.clusteval.run.RunInitializationException"><strong>RunInitializationException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="terminate">
+<h3>terminate<a class="headerlink" href="#terminate" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.ExecutionRun.terminate()">
+public boolean <code class="descname">terminate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.ExecutionRun.terminate()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ExecutionRun</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#dataconfigs">dataConfigs</a></li>
+<li><a class="reference internal" href="#maxexecutiontimes">maxExecutionTimes</a></li>
+<li><a class="reference internal" href="#parametervalues">parameterValues</a></li>
+<li><a class="reference internal" href="#postprocessors">postProcessors</a></li>
+<li><a class="reference internal" href="#programconfigs">programConfigs</a></li>
+<li><a class="reference internal" href="#qualitymeasures">qualityMeasures</a></li>
+<li><a class="reference internal" href="#runpairs">runPairs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">ExecutionRun</a></li>
+<li><a class="reference internal" href="#id2">ExecutionRun</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#checkcompatibilityqualitymeasuresdataconfigs">checkCompatibilityQualityMeasuresDataConfigs</a></li>
+<li><a class="reference internal" href="#clone">clone</a></li>
+<li><a class="reference internal" href="#cloneparametervalues">cloneParameterValues</a></li>
+<li><a class="reference internal" href="#clonepostprocessors">clonePostProcessors</a></li>
+<li><a class="reference internal" href="#createandschedulerunnableforresumepair">createAndScheduleRunnableForResumePair</a></li>
+<li><a class="reference internal" href="#createandschedulerunnableforrunpair">createAndScheduleRunnableForRunPair</a></li>
+<li><a class="reference internal" href="#createrunrunnablefor">createRunRunnableFor</a></li>
+<li><a class="reference internal" href="#getdataconfigs">getDataConfigs</a></li>
+<li><a class="reference internal" href="#getmaxexecutiontime">getMaxExecutionTime</a></li>
+<li><a class="reference internal" href="#getnumberofrunrunnables">getNumberOfRunRunnables</a></li>
+<li><a class="reference internal" href="#getparametervalues">getParameterValues</a></li>
+<li><a class="reference internal" href="#getpostprocessors">getPostProcessors</a></li>
+<li><a class="reference internal" href="#getprogramconfigs">getProgramConfigs</a></li>
+<li><a class="reference internal" href="#getqualitymeasures">getQualityMeasures</a></li>
+<li><a class="reference internal" href="#getrunpairs">getRunPairs</a></li>
+<li><a class="reference internal" href="#getrunparameterforrunpair">getRunParameterForRunPair</a></li>
+<li><a class="reference internal" href="#getupperlimitprogress">getUpperLimitProgress</a></li>
+<li><a class="reference internal" href="#hasmaxexecutiontime">hasMaxExecutionTime</a></li>
+<li><a class="reference internal" href="#initrunpairs">initRunPairs</a></li>
+<li><a class="reference internal" href="#notify">notify</a></li>
+<li><a class="reference internal" href="#perform">perform</a></li>
+<li><a class="reference internal" href="#resume">resume</a></li>
+<li><a class="reference internal" href="#terminate">terminate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/de/clusteval/run/ExecutionRun.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

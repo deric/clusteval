@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RepositoryConfig &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="repositoryconfig">
+<h1>RepositoryConfig<a class="headerlink" href="#repositoryconfig" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.framework.repository.config.RepositoryConfig">
+public class <code class="descname">RepositoryConfig</code><a class="headerlink" href="#de.clusteval.framework.repository.config.RepositoryConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>A repository configuration determines certain settings and options for a <a class="reference internal" href="../Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository"><code class="xref java java-ref docutils literal"><span class="pre">Repository</span></code></a> and also for the complete backend. This includes for example whether an sql database should be used or how often the supervising threads of the repository should scan for changes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mysqlconfig">
+<h3>mysqlConfig<a class="headerlink" href="#mysqlconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.config.RepositoryConfig.mysqlConfig">
+protected <a class="reference internal" href="../db/SQLConfig.html#de.clusteval.framework.repository.db.SQLConfig" title="de.clusteval.framework.repository.db.SQLConfig">SQLConfig</a> <code class="descname">mysqlConfig</code><a class="headerlink" href="#de.clusteval.framework.repository.config.RepositoryConfig.mysqlConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>The configuration of the mysql connection of the repository.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="threadingsleepingtimes">
+<h3>threadingSleepingTimes<a class="headerlink" href="#threadingsleepingtimes" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.config.RepositoryConfig.threadingSleepingTimes">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Long.html" title="java.lang.Long">Long</a>&gt; <code class="descname">threadingSleepingTimes</code><a class="headerlink" href="#de.clusteval.framework.repository.config.RepositoryConfig.threadingSleepingTimes" title="Permalink to this definition">¶</a></dt>
+<dd><p>This map holds the sleeping times for all threads that check the repository for changes.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>RepositoryConfig<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.framework.repository.config.RepositoryConfig.RepositoryConfig(SQLConfig, Map)">
+public <code class="descname">RepositoryConfig</code><span class="sig-paren">(</span><a class="reference internal" href="../db/SQLConfig.html#de.clusteval.framework.repository.db.SQLConfig" title="de.clusteval.framework.repository.db.SQLConfig">SQLConfig</a><em> mysqlConfig</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Long.html" title="java.lang.Long">Long</a>&gt;<em> threadingSleepTimes</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.config.RepositoryConfig.RepositoryConfig(SQLConfig, Map)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new repository configuration.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mysqlConfig</strong> &#8211; The mysql configuration for the repository.</li>
+<li><strong>threadingSleepTimes</strong> &#8211; The sleep times of the threads created for the repository.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getmysqlconfig">
+<h3>getMysqlConfig<a class="headerlink" href="#getmysqlconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.config.RepositoryConfig.getMysqlConfig()">
+public <a class="reference internal" href="../db/SQLConfig.html#de.clusteval.framework.repository.db.SQLConfig" title="de.clusteval.framework.repository.db.SQLConfig">SQLConfig</a> <code class="descname">getMysqlConfig</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.config.RepositoryConfig.getMysqlConfig()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The mysql configuration of this repository.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getthreadsleeptimes">
+<h3>getThreadSleepTimes<a class="headerlink" href="#getthreadsleeptimes" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.config.RepositoryConfig.getThreadSleepTimes()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Long.html" title="java.lang.Long">Long</a>&gt; <code class="descname">getThreadSleepTimes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.config.RepositoryConfig.getThreadSleepTimes()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The thread sleep times for the repository.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>See also:</strong> <code class="xref java java-ref docutils literal"><span class="pre">.threadingSleepingTimes</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="parsefromfile">
+<h3>parseFromFile<a class="headerlink" href="#parsefromfile" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.config.RepositoryConfig.parseFromFile(File)">
+public static <a class="reference internal" href="#de.clusteval.framework.repository.config.RepositoryConfig" title="de.clusteval.framework.repository.config.RepositoryConfig">RepositoryConfig</a> <code class="descname">parseFromFile</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absConfigPath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.config.RepositoryConfig.parseFromFile(File)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method parses a repository configuration from the file at the given absolute path.</p>
+<p>A repository configuration contains several sections and possible options:</p>
+<ul class="simple">
+<li><strong>[mysql]</strong></li>
+<li><strong>[threading]</strong></li>
+<li><strong>NameOfTheThreadSleepTime</strong>: Sleeping time of the thread &#8216;NameOfTheThread&#8217;. This option can be used to control the frequency, with which the threads check for changes on the filesystem.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>absConfigPath</strong> &#8211; The absolute path of the repository configuration file.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="RepositoryConfigurationException.html#de.clusteval.framework.repository.config.RepositoryConfigurationException" title="de.clusteval.framework.repository.config.RepositoryConfigurationException"><strong>RepositoryConfigurationException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="RepositoryConfigNotFoundException.html#de.clusteval.framework.repository.config.RepositoryConfigNotFoundException" title="de.clusteval.framework.repository.config.RepositoryConfigNotFoundException"><strong>RepositoryConfigNotFoundException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The parsed repository configuration.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="setmysqlconfig">
+<h3>setMysqlConfig<a class="headerlink" href="#setmysqlconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.config.RepositoryConfig.setMysqlConfig(SQLConfig)">
+public void <code class="descname">setMysqlConfig</code><span class="sig-paren">(</span><a class="reference internal" href="../db/SQLConfig.html#de.clusteval.framework.repository.db.SQLConfig" title="de.clusteval.framework.repository.db.SQLConfig">SQLConfig</a><em> mysqlConfig</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.config.RepositoryConfig.setMysqlConfig(SQLConfig)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override the mysql configuration of this repository.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mysqlConfig</strong> &#8211; The new mysql configuration.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">RepositoryConfig</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#mysqlconfig">mysqlConfig</a></li>
+<li><a class="reference internal" href="#threadingsleepingtimes">threadingSleepingTimes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">RepositoryConfig</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#getmysqlconfig">getMysqlConfig</a></li>
+<li><a class="reference internal" href="#getthreadsleeptimes">getThreadSleepTimes</a></li>
+<li><a class="reference internal" href="#parsefromfile">parseFromFile</a></li>
+<li><a class="reference internal" href="#setmysqlconfig">setMysqlConfig</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../../_sources/de/clusteval/framework/repository/config/RepositoryConfig.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

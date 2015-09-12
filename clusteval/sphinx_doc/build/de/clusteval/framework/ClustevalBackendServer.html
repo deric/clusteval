@@ -1,0 +1,665 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClustevalBackendServer &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="clustevalbackendserver">
+<h1>ClustevalBackendServer<a class="headerlink" href="#clustevalbackendserver" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.framework.ClustevalBackendServer">
+public class <code class="descname">ClustevalBackendServer</code> implements <a class="reference internal" href="../serverclient/IBackendServer.html#de.clusteval.serverclient.IBackendServer" title="de.clusteval.serverclient.IBackendServer">IBackendServer</a><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents the server of the backend of the framework. The server takes commands from the client (see <a class="reference internal" href="../serverclient/BackendClient.html#de.clusteval.serverclient.BackendClient" title="de.clusteval.serverclient.BackendClient"><code class="xref java java-ref docutils literal"><span class="pre">BackendClient</span></code></a>) like performing, resuming or terminating runs, shutdown the framework or get status information about various objects available in the repository (e.g. datasets, runs, programs,...).</p>
+<p>You can start the server by invoking the <a class="reference internal" href="#de.clusteval.framework.ClustevalBackendServer.main(String[])" title="de.clusteval.framework.ClustevalBackendServer.main(String[])"><code class="xref java java-ref docutils literal"><span class="pre">main(String[])</span></code></a> method. If you do so, you can pass either a path to an existing repository or a new repository is automatically created in the subfolder &#8216;repository&#8217;.</p>
+<p>When the server is started it registers itself in the RMI registry (remote method invocation), either with the default port 1099 or if specified with -hostport xxxx under any other port.</p>
+<p>The start of the server requires a running Rserve instance. If this cannot be found, the server will not start.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="version">
+<h3>VERSION<a class="headerlink" href="#version" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.ClustevalBackendServer.VERSION">
+protected static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">VERSION</code><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.VERSION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="clientcount">
+<h3>clientCount<a class="headerlink" href="#clientcount" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.ClustevalBackendServer.clientCount">
+protected int <code class="descname">clientCount</code><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.clientCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of clients connected to this server so far. This number is used to give new clients a new number for authentication in case, several users connect to the server.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="config">
+<h3>config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.ClustevalBackendServer.config">
+protected static <a class="reference internal" href="BackendServerConfig.html#de.clusteval.framework.BackendServerConfig" title="de.clusteval.framework.BackendServerConfig">BackendServerConfig</a> <code class="descname">config</code><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="isravailable">
+<h3>isRAvailable<a class="headerlink" href="#isravailable" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.ClustevalBackendServer.isRAvailable">
+protected static boolean <code class="descname">isRAvailable</code><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.isRAvailable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="port">
+<h3>port<a class="headerlink" href="#port" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.ClustevalBackendServer.port">
+protected static int <code class="descname">port</code><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.port" title="Permalink to this definition">¶</a></dt>
+<dd><p>This variable holds the port this server will be listening on. It can be specified by passing -hostport xxx to the <a class="reference internal" href="../serverclient/BackendClient.html#de.clusteval.serverclient.BackendClient.main(String[])" title="de.clusteval.serverclient.BackendClient.main(String[])"><code class="xref java java-ref docutils literal"><span class="pre">main(String[])</span></code></a> method.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="repository">
+<h3>repository<a class="headerlink" href="#repository" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.ClustevalBackendServer.repository">
+protected <a class="reference internal" href="repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a> <code class="descname">repository</code><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.repository" title="Permalink to this definition">¶</a></dt>
+<dd><p>Every backend server has exactly one repository, which stores all the data on the filesystem.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="serverclioptions">
+<h3>serverCLIOptions<a class="headerlink" href="#serverclioptions" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.ClustevalBackendServer.serverCLIOptions">
+public static Options <code class="descname">serverCLIOptions</code><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.serverCLIOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>This variable holds the command line options of the backend server.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>ClustevalBackendServer<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.framework.ClustevalBackendServer.ClustevalBackendServer(String)">
+public <code class="descname">ClustevalBackendServer</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> absRepositoryPath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.ClustevalBackendServer(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiates a new backend server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>absRepositoryPath</strong> &#8211; The absolute path to the repository used by this server.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RepositoryConfigNotFoundException</strong> &#8211; </li>
+<li><strong>RepositoryAlreadyExistsException</strong> &#8211; </li>
+<li><strong>InterruptedException</strong> &#8211; </li>
+<li><strong>RepositoryConfigurationException</strong> &#8211; </li>
+<li><strong>InvalidRepositoryException</strong> &#8211; </li>
+<li><strong>FileNotFoundException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>ClustevalBackendServer<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.framework.ClustevalBackendServer.ClustevalBackendServer(Repository)">
+public <code class="descname">ClustevalBackendServer</code><span class="sig-paren">(</span><a class="reference internal" href="repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.ClustevalBackendServer(Repository)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiates a new backend server and registers the server at the RMI registry.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; The repository used by this server.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>InterruptedException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h3>ClustevalBackendServer<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.framework.ClustevalBackendServer.ClustevalBackendServer(Repository, boolean)">
+public <code class="descname">ClustevalBackendServer</code><span class="sig-paren">(</span><a class="reference internal" href="repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, boolean<em> registerServer</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.ClustevalBackendServer(Repository, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; </li>
+<li><strong>registerServer</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>InterruptedException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="generatedataset">
+<h3>generateDataSet<a class="headerlink" href="#generatedataset" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.generateDataSet(String, String[])">
+public boolean <code class="descname">generateDataSet</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> generatorName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> args</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.generateDataSet(String, String[])" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getactivethreads">
+<h3>getActiveThreads<a class="headerlink" href="#getactivethreads" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getActiveThreads()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, Triple&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Long.html" title="java.lang.Long">Long</a>&gt;&gt; <code class="descname">getActiveThreads</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getActiveThreads()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getbackendserverconfiguration">
+<h3>getBackendServerConfiguration<a class="headerlink" href="#getbackendserverconfiguration" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getBackendServerConfiguration()">
+public static <a class="reference internal" href="BackendServerConfig.html#de.clusteval.framework.BackendServerConfig" title="de.clusteval.framework.BackendServerConfig">BackendServerConfig</a> <code class="descname">getBackendServerConfiguration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getBackendServerConfiguration()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The configuration of this backend server.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getclientid">
+<h3>getClientId<a class="headerlink" href="#getclientid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getClientId()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getClientId</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getClientId()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getcommonfile">
+<h3>getCommonFile<a class="headerlink" href="#getcommonfile" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getCommonFile(File)">
+public static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a> <code class="descname">getCommonFile</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> file</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getCommonFile(File)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method returns file objects that can be used to synchronize process wide access to files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>file</strong> &#8211; The file object for which you want a common file object.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A common file object for the passed file, that is stored centrally such that synchronize operations on this file object affect all other methods, that also use this method.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getdatarandomizers">
+<h3>getDataRandomizers<a class="headerlink" href="#getdatarandomizers" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getDataRandomizers()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getDataRandomizers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getDataRandomizers()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getdatasetgenerators">
+<h3>getDataSetGenerators<a class="headerlink" href="#getdatasetgenerators" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getDataSetGenerators()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getDataSetGenerators</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getDataSetGenerators()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getdatasets">
+<h3>getDataSets<a class="headerlink" href="#getdatasets" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getDataSets()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getDataSets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getDataSets()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getoptimizationrunstatusforclientid">
+<h3>getOptimizationRunStatusForClientId<a class="headerlink" href="#getoptimizationrunstatusforclientid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getOptimizationRunStatusForClientId(String)">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, Pair&lt;Pair&lt;<a class="reference internal" href="../run/RUN_STATUS.html#de.clusteval.run.RUN_STATUS" title="de.clusteval.run.RUN_STATUS">RUN_STATUS</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Float.html" title="java.lang.Float">Float</a>&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;Pair&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;, Pair&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Double.html" title="java.lang.Double">Double</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, Pair&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;&gt;&gt;&gt;&gt;&gt; <code class="descname">getOptimizationRunStatusForClientId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getOptimizationRunStatusForClientId(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getoptionsfordatarandomizer">
+<h3>getOptionsForDataRandomizer<a class="headerlink" href="#getoptionsfordatarandomizer" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getOptionsForDataRandomizer(String)">
+public Options <code class="descname">getOptionsForDataRandomizer</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> randomizerName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getOptionsForDataRandomizer(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getoptionsfordatasetgenerator">
+<h3>getOptionsForDataSetGenerator<a class="headerlink" href="#getoptionsfordatasetgenerator" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getOptionsForDataSetGenerator(String)">
+public Options <code class="descname">getOptionsForDataSetGenerator</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> generatorName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getOptionsForDataSetGenerator(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getprograms">
+<h3>getPrograms<a class="headerlink" href="#getprograms" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getPrograms()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getPrograms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getPrograms()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getqueue">
+<h3>getQueue<a class="headerlink" href="#getqueue" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getQueue()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getQueue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getQueue()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrepository">
+<h3>getRepository<a class="headerlink" href="#getrepository" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getRepository()">
+public <a class="reference internal" href="repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a> <code class="descname">getRepository</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getRepository()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the repository.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The repository used by this server.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>See also:</strong> <code class="xref java java-ref docutils literal"><span class="pre">.repository</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="getrunresults">
+<h3>getRunResults<a class="headerlink" href="#getrunresults" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getRunResults()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getRunResults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getRunResults()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id4">
+<h3>getRunResults<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getRunResults(String)">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;Pair&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Double.html" title="java.lang.Double">Double</a>&gt;&gt; <code class="descname">getRunResults</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> uniqueRunIdentifier</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getRunResults(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrunresumes">
+<h3>getRunResumes<a class="headerlink" href="#getrunresumes" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getRunResumes()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getRunResumes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getRunResumes()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getrunstatusforclientid">
+<h3>getRunStatusForClientId<a class="headerlink" href="#getrunstatusforclientid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getRunStatusForClientId(String)">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, Pair&lt;<a class="reference internal" href="../run/RUN_STATUS.html#de.clusteval.run.RUN_STATUS" title="de.clusteval.run.RUN_STATUS">RUN_STATUS</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Float.html" title="java.lang.Float">Float</a>&gt;&gt; <code class="descname">getRunStatusForClientId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getRunStatusForClientId(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getruns">
+<h3>getRuns<a class="headerlink" href="#getruns" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.getRuns()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getRuns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.getRuns()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id5">
+<h3>isRAvailable<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.isRAvailable()">
+public static boolean <code class="descname">isRAvailable</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.isRAvailable()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if R is available through Rserve, false otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="isrunning">
+<h3>isRunning<a class="headerlink" href="#isrunning" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.isRunning()">
+public boolean <code class="descname">isRunning</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.isRunning()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True, if this framework is still running and the corresponding supervisor thread hasn&#8217;t been interrupted.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="loglevel">
+<h3>logLevel<a class="headerlink" href="#loglevel" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.logLevel(Level)">
+public static void <code class="descname">logLevel</code><span class="sig-paren">(</span>Level<em> logLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.logLevel(Level)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the log level of this JVM.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>logLevel</strong> &#8211; The new log level</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="main">
+<h3>main<a class="headerlink" href="#main" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.main(String[])">
+public static void <code class="descname">main</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> args</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.main(String[])" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method can be used to start a backend server. The args parameter can contain options that specify the behaviour of the server:</p>
+<ul class="simple">
+<li><strong>-absRepositoryPath</strong>: An absolute path to the repository</li>
+<li><strong>-port</strong>: The port on which this server should listen</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> &#8211; Arguments to control the behaviour of the server</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="repository/config/RepositoryConfigNotFoundException.html#de.clusteval.framework.repository.config.RepositoryConfigNotFoundException" title="de.clusteval.framework.repository.config.RepositoryConfigNotFoundException"><strong>RepositoryConfigNotFoundException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="repository/RepositoryAlreadyExistsException.html#de.clusteval.framework.repository.RepositoryAlreadyExistsException" title="de.clusteval.framework.repository.RepositoryAlreadyExistsException"><strong>RepositoryAlreadyExistsException</strong></a> &#8211; </li>
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="repository/config/RepositoryConfigurationException.html#de.clusteval.framework.repository.config.RepositoryConfigurationException" title="de.clusteval.framework.repository.config.RepositoryConfigurationException"><strong>RepositoryConfigurationException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="repository/InvalidRepositoryException.html#de.clusteval.framework.repository.InvalidRepositoryException" title="de.clusteval.framework.repository.InvalidRepositoryException"><strong>InvalidRepositoryException</strong></a> &#8211; </li>
+<li><strong>FileNotFoundException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="performrun">
+<h3>performRun<a class="headerlink" href="#performrun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.performRun(String, String)">
+public boolean <code class="descname">performRun</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.performRun(String, String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="randomizedataconfig">
+<h3>randomizeDataConfig<a class="headerlink" href="#randomizedataconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.randomizeDataConfig(String, String[])">
+public boolean <code class="descname">randomizeDataConfig</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> randomizerName</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> args</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.randomizeDataConfig(String, String[])" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="registerserver">
+<h3>registerServer<a class="headerlink" href="#registerserver" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.registerServer(ClustevalBackendServer)">
+protected static boolean <code class="descname">registerServer</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.framework.ClustevalBackendServer" title="de.clusteval.framework.ClustevalBackendServer">ClustevalBackendServer</a><em> framework</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.registerServer(ClustevalBackendServer)" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper method for <code class="xref java java-ref docutils literal"><span class="pre">ClusteringEvalFramework(Repository)</span></code>, which registers the new backend server instance in the RMI registry.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>framework</strong> &#8211; The backend server to register.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the server has been registered successfully</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="resumerun">
+<h3>resumeRun<a class="headerlink" href="#resumerun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.resumeRun(String, String)">
+public boolean <code class="descname">resumeRun</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> uniqueRunIdentifier</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.resumeRun(String, String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="setloglevel">
+<h3>setLogLevel<a class="headerlink" href="#setloglevel" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.setLogLevel(Level)">
+public void <code class="descname">setLogLevel</code><span class="sig-paren">(</span>Level<em> logLevel</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.setLogLevel(Level)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="setthreadnumber">
+<h3>setThreadNumber<a class="headerlink" href="#setthreadnumber" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.setThreadNumber(int)">
+public void <code class="descname">setThreadNumber</code><span class="sig-paren">(</span>int<em> threadNumber</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.setThreadNumber(int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="shutdown">
+<h3>shutdown<a class="headerlink" href="#shutdown" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.shutdown(String, long)">
+public void <code class="descname">shutdown</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em>, long<em> timeOut</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.shutdown(String, long)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="terminaterun">
+<h3>terminateRun<a class="headerlink" href="#terminaterun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.ClustevalBackendServer.terminateRun(String, String)">
+public boolean <code class="descname">terminateRun</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.ClustevalBackendServer.terminateRun(String, String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ClustevalBackendServer</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#version">VERSION</a></li>
+<li><a class="reference internal" href="#clientcount">clientCount</a></li>
+<li><a class="reference internal" href="#config">config</a></li>
+<li><a class="reference internal" href="#isravailable">isRAvailable</a></li>
+<li><a class="reference internal" href="#port">port</a></li>
+<li><a class="reference internal" href="#repository">repository</a></li>
+<li><a class="reference internal" href="#serverclioptions">serverCLIOptions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">ClustevalBackendServer</a></li>
+<li><a class="reference internal" href="#id2">ClustevalBackendServer</a></li>
+<li><a class="reference internal" href="#id3">ClustevalBackendServer</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#generatedataset">generateDataSet</a></li>
+<li><a class="reference internal" href="#getactivethreads">getActiveThreads</a></li>
+<li><a class="reference internal" href="#getbackendserverconfiguration">getBackendServerConfiguration</a></li>
+<li><a class="reference internal" href="#getclientid">getClientId</a></li>
+<li><a class="reference internal" href="#getcommonfile">getCommonFile</a></li>
+<li><a class="reference internal" href="#getdatarandomizers">getDataRandomizers</a></li>
+<li><a class="reference internal" href="#getdatasetgenerators">getDataSetGenerators</a></li>
+<li><a class="reference internal" href="#getdatasets">getDataSets</a></li>
+<li><a class="reference internal" href="#getoptimizationrunstatusforclientid">getOptimizationRunStatusForClientId</a></li>
+<li><a class="reference internal" href="#getoptionsfordatarandomizer">getOptionsForDataRandomizer</a></li>
+<li><a class="reference internal" href="#getoptionsfordatasetgenerator">getOptionsForDataSetGenerator</a></li>
+<li><a class="reference internal" href="#getprograms">getPrograms</a></li>
+<li><a class="reference internal" href="#getqueue">getQueue</a></li>
+<li><a class="reference internal" href="#getrepository">getRepository</a></li>
+<li><a class="reference internal" href="#getrunresults">getRunResults</a></li>
+<li><a class="reference internal" href="#id4">getRunResults</a></li>
+<li><a class="reference internal" href="#getrunresumes">getRunResumes</a></li>
+<li><a class="reference internal" href="#getrunstatusforclientid">getRunStatusForClientId</a></li>
+<li><a class="reference internal" href="#getruns">getRuns</a></li>
+<li><a class="reference internal" href="#id5">isRAvailable</a></li>
+<li><a class="reference internal" href="#isrunning">isRunning</a></li>
+<li><a class="reference internal" href="#loglevel">logLevel</a></li>
+<li><a class="reference internal" href="#main">main</a></li>
+<li><a class="reference internal" href="#performrun">performRun</a></li>
+<li><a class="reference internal" href="#randomizedataconfig">randomizeDataConfig</a></li>
+<li><a class="reference internal" href="#registerserver">registerServer</a></li>
+<li><a class="reference internal" href="#resumerun">resumeRun</a></li>
+<li><a class="reference internal" href="#setloglevel">setLogLevel</a></li>
+<li><a class="reference internal" href="#setthreadnumber">setThreadNumber</a></li>
+<li><a class="reference internal" href="#shutdown">shutdown</a></li>
+<li><a class="reference internal" href="#terminaterun">terminateRun</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/de/clusteval/framework/ClustevalBackendServer.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

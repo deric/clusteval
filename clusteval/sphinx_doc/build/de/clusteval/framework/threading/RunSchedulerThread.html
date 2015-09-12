@@ -1,0 +1,482 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RunSchedulerThread &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="runschedulerthread">
+<h1>RunSchedulerThread<a class="headerlink" href="#runschedulerthread" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread">
+public class <code class="descname">RunSchedulerThread</code> extends <a class="reference internal" href="ClustevalThread.html#de.clusteval.framework.threading.ClustevalThread" title="de.clusteval.framework.threading.ClustevalThread">ClustevalThread</a><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Threads of this class are responsible for scheduling, creating, starting and terminating runs.</p>
+<p>The methods <a class="reference internal" href="#de.clusteval.framework.threading.RunSchedulerThread.schedule(String, String)" title="de.clusteval.framework.threading.RunSchedulerThread.schedule(String, String)"><code class="xref java java-ref docutils literal"><span class="pre">schedule(String,String)</span></code></a>, <a class="reference internal" href="#de.clusteval.framework.threading.RunSchedulerThread.scheduleResume(String, String)" title="de.clusteval.framework.threading.RunSchedulerThread.scheduleResume(String, String)"><code class="xref java java-ref docutils literal"><span class="pre">scheduleResume(String,String)</span></code></a> and <a class="reference internal" href="../../run/ExecutionRun.html#de.clusteval.run.ExecutionRun.terminate()" title="de.clusteval.run.ExecutionRun.terminate()"><code class="xref java java-ref docutils literal"><span class="pre">terminate(String,String)</span></code></a> of this thread are invoked by the backend server <a class="reference internal" href="../ClustevalBackendServer.html#de.clusteval.framework.ClustevalBackendServer" title="de.clusteval.framework.ClustevalBackendServer"><code class="xref java java-ref docutils literal"><span class="pre">ClustevalBackendServer</span></code></a> which in turn gets its commands from a client.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="activeiterationrunnables">
+<h3>activeIterationRunnables<a class="headerlink" href="#activeiterationrunnables" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.activeIterationRunnables">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Thread.html" title="java.lang.Thread">Thread</a>, <a class="reference internal" href="../../run/runnable/IterationRunnable.html#de.clusteval.run.runnable.IterationRunnable" title="de.clusteval.run.runnable.IterationRunnable">IterationRunnable</a>&lt;? extends <a class="reference internal" href="../../run/runnable/IterationWrapper.html#de.clusteval.run.runnable.IterationWrapper" title="de.clusteval.run.runnable.IterationWrapper">IterationWrapper</a>&gt;&gt; <code class="descname">activeIterationRunnables</code><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.activeIterationRunnables" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="clienttorunresumes">
+<h3>clientToRunResumes<a class="headerlink" href="#clienttorunresumes" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.clientToRunResumes">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference internal" href="../../run/Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run">Run</a>&gt;&gt; <code class="descname">clientToRunResumes</code><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.clientToRunResumes" title="Permalink to this definition">¶</a></dt>
+<dd><p>A map containing all the run resumes that are executed right now. The map maps from client id to collections of runs.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="clienttoruns">
+<h3>clientToRuns<a class="headerlink" href="#clienttoruns" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.clientToRuns">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Collection.html" title="java.util.Collection">Collection</a>&lt;<a class="reference internal" href="../../run/Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run">Run</a>&gt;&gt; <code class="descname">clientToRuns</code><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.clientToRuns" title="Permalink to this definition">¶</a></dt>
+<dd><p>A map containing all the runs that are executed right now. The map maps from client id to collections of runs.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="iterationthreadpool">
+<h3>iterationThreadPool<a class="headerlink" href="#iterationthreadpool" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.iterationThreadPool">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/ScheduledThreadPoolExecutor.html" title="java.util.concurrent.ScheduledThreadPoolExecutor">ScheduledThreadPoolExecutor</a> <code class="descname">iterationThreadPool</code><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.iterationThreadPool" title="Permalink to this definition">¶</a></dt>
+<dd><p>A thread pool containing all threads that were started to execute iteration runnables. Iteration runnables are started by certain types of run runnables (e.g. ParameterOptimizationRunRunnables)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="log">
+<h3>log<a class="headerlink" href="#log" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.log">
+protected Logger <code class="descname">log</code><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="repository">
+<h3>repository<a class="headerlink" href="#repository" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.repository">
+protected <a class="reference internal" href="../repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a> <code class="descname">repository</code><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.repository" title="Permalink to this definition">¶</a></dt>
+<dd><p>The repository this run scheduler belongs to. This scheduler can only control runs that are contained in this repository.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="runqueue">
+<h3>runQueue<a class="headerlink" href="#runqueue" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.runQueue">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Queue.html" title="java.util.Queue">Queue</a>&lt;Triple&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Boolean.html" title="java.lang.Boolean">Boolean</a>&gt;&gt; <code class="descname">runQueue</code><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.runQueue" title="Permalink to this definition">¶</a></dt>
+<dd><p>A queue containing all the runs that were scheduled, but not yet executed. Every entry of the queue contains (clientId,runId,isResume).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="threadpool">
+<h3>threadPool<a class="headerlink" href="#threadpool" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.threadPool">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/ScheduledThreadPoolExecutor.html" title="java.util.concurrent.ScheduledThreadPoolExecutor">ScheduledThreadPoolExecutor</a> <code class="descname">threadPool</code><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.threadPool" title="Permalink to this definition">¶</a></dt>
+<dd><p>A thread pool containing all threads that were started to execute runs. This data structure allows convenient control over the number of threads to be started in parallel.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>RunSchedulerThread<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.RunSchedulerThread(SupervisorThread, Repository, int)">
+public <code class="descname">RunSchedulerThread</code><span class="sig-paren">(</span><a class="reference internal" href="SupervisorThread.html#de.clusteval.framework.threading.SupervisorThread" title="de.clusteval.framework.threading.SupervisorThread">SupervisorThread</a><em> supervisorThread</em>, <a class="reference internal" href="../repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, int<em> numberThreads</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.RunSchedulerThread(SupervisorThread, Repository, int)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor of run scheduler threads.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>supervisorThread</strong> &#8211; </li>
+<li><strong>repository</strong> &#8211; The repository this run scheduler belongs to. This scheduler can only control runs that are contained in this repository.</li>
+<li><strong>numberThreads</strong> &#8211; The maximal number of threads to run in parallel.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getactiveiterationrunnables">
+<h3>getActiveIterationRunnables<a class="headerlink" href="#getactiveiterationrunnables" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.getActiveIterationRunnables()">
+public synchronized <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Thread.html" title="java.lang.Thread">Thread</a>, <a class="reference internal" href="../../run/runnable/IterationRunnable.html#de.clusteval.run.runnable.IterationRunnable" title="de.clusteval.run.runnable.IterationRunnable">IterationRunnable</a>&lt;? extends <a class="reference internal" href="../../run/runnable/IterationWrapper.html#de.clusteval.run.runnable.IterationWrapper" title="de.clusteval.run.runnable.IterationWrapper">IterationWrapper</a>&gt;&gt; <code class="descname">getActiveIterationRunnables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.getActiveIterationRunnables()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getoptimizationrunstatusforclientid">
+<h3>getOptimizationRunStatusForClientId<a class="headerlink" href="#getoptimizationrunstatusforclientid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.getOptimizationRunStatusForClientId(String)">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, Pair&lt;Pair&lt;<a class="reference internal" href="../../run/RUN_STATUS.html#de.clusteval.run.RUN_STATUS" title="de.clusteval.run.RUN_STATUS">RUN_STATUS</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Float.html" title="java.lang.Float">Float</a>&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;Pair&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;, Pair&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Double.html" title="java.lang.Double">Double</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, Pair&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;&gt;&gt;&gt;&gt;&gt; <code class="descname">getOptimizationRunStatusForClientId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.getOptimizationRunStatusForClientId(String)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>clientId</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getqueue">
+<h3>getQueue<a class="headerlink" href="#getqueue" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.getQueue()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Queue.html" title="java.util.Queue">Queue</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">getQueue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.getQueue()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A collection containing names of all enqueued runs and run resumes.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getrunstatusforclientid">
+<h3>getRunStatusForClientId<a class="headerlink" href="#getrunstatusforclientid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.getRunStatusForClientId(String)">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, Pair&lt;<a class="reference internal" href="../../run/RUN_STATUS.html#de.clusteval.run.RUN_STATUS" title="de.clusteval.run.RUN_STATUS">RUN_STATUS</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Float.html" title="java.lang.Float">Float</a>&gt;&gt; <code class="descname">getRunStatusForClientId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.getRunStatusForClientId(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is invoked by <a class="reference internal" href="../ClustevalBackendServer.html#de.clusteval.framework.ClustevalBackendServer.getRunStatusForClientId(String)" title="de.clusteval.framework.ClustevalBackendServer.getRunStatusForClientId(String)"><code class="xref java java-ref docutils literal"><span class="pre">ClustevalBackendServer.getRunStatusForClientId(String)</span></code></a> and gets the status of all runs and run resumes scheduled and executed by the user with the given id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>clientId</strong> &#8211; The id of the client for which we want to know the status of its scheduled and executed runs and run resumes.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A map containing the id of the runs and run resumes together with their current status and percentage (if currently executing).</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getruns">
+<h3>getRuns<a class="headerlink" href="#getruns" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.getRuns()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html" title="java.util.Set">Set</a>&lt;<a class="reference internal" href="../../run/Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run">Run</a>&gt; <code class="descname">getRuns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.getRuns()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A collection of runs, that have been executed or resumed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="informonfinishediterationrunnable">
+<h3>informOnFinishedIterationRunnable<a class="headerlink" href="#informonfinishediterationrunnable" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.informOnFinishedIterationRunnable(Thread, IterationRunnable)">
+public synchronized void <code class="descname">informOnFinishedIterationRunnable</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Thread.html" title="java.lang.Thread">Thread</a><em> t</em>, <a class="reference internal" href="../../run/runnable/IterationRunnable.html#de.clusteval.run.runnable.IterationRunnable" title="de.clusteval.run.runnable.IterationRunnable">IterationRunnable</a><em> runnable</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.informOnFinishedIterationRunnable(Thread, IterationRunnable)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="informonstartediterationrunnable">
+<h3>informOnStartedIterationRunnable<a class="headerlink" href="#informonstartediterationrunnable" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.informOnStartedIterationRunnable(Thread, IterationRunnable)">
+public synchronized void <code class="descname">informOnStartedIterationRunnable</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Thread.html" title="java.lang.Thread">Thread</a><em> t</em>, <a class="reference internal" href="../../run/runnable/IterationRunnable.html#de.clusteval.run.runnable.IterationRunnable" title="de.clusteval.run.runnable.IterationRunnable">IterationRunnable</a><em> runnable</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.informOnStartedIterationRunnable(Thread, IterationRunnable)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="interrupt">
+<h3>interrupt<a class="headerlink" href="#interrupt" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.interrupt()">
+public void <code class="descname">interrupt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.interrupt()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="registeriterationrunnable">
+<h3>registerIterationRunnable<a class="headerlink" href="#registeriterationrunnable" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.registerIterationRunnable(IterationRunnable)">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/Future.html" title="java.util.concurrent.Future">Future</a>&lt;?&gt; <code class="descname">registerIterationRunnable</code><span class="sig-paren">(</span><a class="reference internal" href="../../run/runnable/IterationRunnable.html#de.clusteval.run.runnable.IterationRunnable" title="de.clusteval.run.runnable.IterationRunnable">IterationRunnable</a><em> iterationRunnable</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.registerIterationRunnable(IterationRunnable)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="registerrunrunnable">
+<h3>registerRunRunnable<a class="headerlink" href="#registerrunrunnable" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.registerRunRunnable(RunRunnable)">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/Future.html" title="java.util.concurrent.Future">Future</a>&lt;?&gt; <code class="descname">registerRunRunnable</code><span class="sig-paren">(</span><a class="reference internal" href="../../run/runnable/RunRunnable.html#de.clusteval.run.runnable.RunRunnable" title="de.clusteval.run.runnable.RunRunnable">RunRunnable</a><em> runRunnable</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.registerRunRunnable(RunRunnable)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method takes a <a class="reference internal" href="../../run/runnable/RunRunnable.html#de.clusteval.run.runnable.RunRunnable" title="de.clusteval.run.runnable.RunRunnable"><code class="xref java java-ref docutils literal"><span class="pre">RunRunnable</span></code></a> and adds it to the thread pool of this run scheduler thread. The thread pool then determines, when the runnable can and will be performed depending on the available ressources.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>runRunnable</strong> &#8211; The new runnable to perform.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A future object, that allows to retrieve the current status of the execution of the runnable.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="run">
+<h3>run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.run()">
+public void <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.run()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="schedule">
+<h3>schedule<a class="headerlink" href="#schedule" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.schedule(String, String)">
+public boolean <code class="descname">schedule</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.schedule(String, String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is invoked by <a class="reference internal" href="../ClustevalBackendServer.html#de.clusteval.framework.ClustevalBackendServer.performRun(String, String)" title="de.clusteval.framework.ClustevalBackendServer.performRun(String, String)"><code class="xref java java-ref docutils literal"><span class="pre">ClustevalBackendServer.performRun(String,String)</span></code></a> and schedules a run. As soon as ressources are available this run is then performed in an asynchronous way in its own thread.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>clientId</strong> &#8211; The id of the client that wants to schedule this run.</li>
+<li><strong>runId</strong> &#8211; The id of the run that should be scheduled</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if successful. That means, a run with the given id must exist and the run has not been scheduled already.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="scheduleresume">
+<h3>scheduleResume<a class="headerlink" href="#scheduleresume" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.scheduleResume(String, String)">
+public boolean <code class="descname">scheduleResume</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> uniqueRunResultIdentifier</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.scheduleResume(String, String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is invoked by <a class="reference internal" href="../ClustevalBackendServer.html#de.clusteval.framework.ClustevalBackendServer.resumeRun(String, String)" title="de.clusteval.framework.ClustevalBackendServer.resumeRun(String, String)"><code class="xref java java-ref docutils literal"><span class="pre">ClustevalBackendServer.resumeRun(String,String)</span></code></a> and schedules a resume of a run. As soon as ressources are available this resume is then performed in an asynchronous way in its own thread.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>clientId</strong> &#8211; The id of the client that wants to schedule this run.</li>
+<li><strong>uniqueRunResultIdentifier</strong> &#8211; The unique identifier of the run result that should be resumed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if successful. That means, a run result with the given id must exist and the run has not been scheduled already.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="terminate">
+<h3>terminate<a class="headerlink" href="#terminate" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.terminate(String, String)">
+public boolean <code class="descname">terminate</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runId</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.terminate(String, String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is invoked by <a class="reference internal" href="../ClustevalBackendServer.html#de.clusteval.framework.ClustevalBackendServer.terminateRun(String, String)" title="de.clusteval.framework.ClustevalBackendServer.terminateRun(String, String)"><code class="xref java java-ref docutils literal"><span class="pre">ClustevalBackendServer.terminateRun(String,String)</span></code></a> and terminates a run that is currently being executed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>clientId</strong> &#8211; The id of the client that wants to terminate this run.</li>
+<li><strong>runId</strong> &#8211; The id of the run that should be terminated</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if successful. That means, a run with the given id must exist and it is currently being executed.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>terminate<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.terminate(String, String, boolean)">
+protected boolean <code class="descname">terminate</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clientId</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runId</em>, boolean<em> isResume</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.terminate(String, String, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="updatethreadpoolsize">
+<h3>updateThreadPoolSize<a class="headerlink" href="#updatethreadpoolsize" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.threading.RunSchedulerThread.updateThreadPoolSize(int)">
+public synchronized void <code class="descname">updateThreadPoolSize</code><span class="sig-paren">(</span>int<em> numberThreads</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.threading.RunSchedulerThread.updateThreadPoolSize(int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">RunSchedulerThread</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#activeiterationrunnables">activeIterationRunnables</a></li>
+<li><a class="reference internal" href="#clienttorunresumes">clientToRunResumes</a></li>
+<li><a class="reference internal" href="#clienttoruns">clientToRuns</a></li>
+<li><a class="reference internal" href="#iterationthreadpool">iterationThreadPool</a></li>
+<li><a class="reference internal" href="#log">log</a></li>
+<li><a class="reference internal" href="#repository">repository</a></li>
+<li><a class="reference internal" href="#runqueue">runQueue</a></li>
+<li><a class="reference internal" href="#threadpool">threadPool</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">RunSchedulerThread</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#getactiveiterationrunnables">getActiveIterationRunnables</a></li>
+<li><a class="reference internal" href="#getoptimizationrunstatusforclientid">getOptimizationRunStatusForClientId</a></li>
+<li><a class="reference internal" href="#getqueue">getQueue</a></li>
+<li><a class="reference internal" href="#getrunstatusforclientid">getRunStatusForClientId</a></li>
+<li><a class="reference internal" href="#getruns">getRuns</a></li>
+<li><a class="reference internal" href="#informonfinishediterationrunnable">informOnFinishedIterationRunnable</a></li>
+<li><a class="reference internal" href="#informonstartediterationrunnable">informOnStartedIterationRunnable</a></li>
+<li><a class="reference internal" href="#interrupt">interrupt</a></li>
+<li><a class="reference internal" href="#registeriterationrunnable">registerIterationRunnable</a></li>
+<li><a class="reference internal" href="#registerrunrunnable">registerRunRunnable</a></li>
+<li><a class="reference internal" href="#run">run</a></li>
+<li><a class="reference internal" href="#schedule">schedule</a></li>
+<li><a class="reference internal" href="#scheduleresume">scheduleResume</a></li>
+<li><a class="reference internal" href="#terminate">terminate</a></li>
+<li><a class="reference internal" href="#id2">terminate</a></li>
+<li><a class="reference internal" href="#updatethreadpoolsize">updateThreadPoolSize</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/framework/threading/RunSchedulerThread.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RunResultFormatRepositoryEntity &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="runresultformatrepositoryentity">
+<h1>RunResultFormatRepositoryEntity<a class="headerlink" href="#runresultformatrepositoryentity" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.framework.repository.RunResultFormatRepositoryEntity">
+public class <code class="descname">RunResultFormatRepositoryEntity</code> extends <a class="reference internal" href="DynamicRepositoryEntity.html#de.clusteval.framework.repository.DynamicRepositoryEntity" title="de.clusteval.framework.repository.DynamicRepositoryEntity">DynamicRepositoryEntity</a>&lt;<a class="reference internal" href="../../run/result/format/RunResultFormat.html#de.clusteval.run.result.format.RunResultFormat" title="de.clusteval.run.result.format.RunResultFormat">RunResultFormat</a>&gt;<a class="headerlink" href="#de.clusteval.framework.repository.RunResultFormatRepositoryEntity" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="runresultformatparser">
+<h3>runResultFormatParser<a class="headerlink" href="#runresultformatparser" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.RunResultFormatRepositoryEntity.runResultFormatParser">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../run/result/format/RunResultFormatParser.html#de.clusteval.run.result.format.RunResultFormatParser" title="de.clusteval.run.result.format.RunResultFormatParser">RunResultFormatParser</a>&gt;&gt; <code class="descname">runResultFormatParser</code><a class="headerlink" href="#de.clusteval.framework.repository.RunResultFormatRepositoryEntity.runResultFormatParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>A map containing all runresult format parsers registered in this repository.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>RunResultFormatRepositoryEntity<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.framework.repository.RunResultFormatRepositoryEntity.RunResultFormatRepositoryEntity(Repository, DynamicRepositoryEntity, String)">
+public <code class="descname">RunResultFormatRepositoryEntity</code><span class="sig-paren">(</span><a class="reference internal" href="Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference internal" href="DynamicRepositoryEntity.html#de.clusteval.framework.repository.DynamicRepositoryEntity" title="de.clusteval.framework.repository.DynamicRepositoryEntity">DynamicRepositoryEntity</a>&lt;<a class="reference internal" href="../../run/result/format/RunResultFormat.html#de.clusteval.run.result.format.RunResultFormat" title="de.clusteval.run.result.format.RunResultFormat">RunResultFormat</a>&gt;<em> parent</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> basePath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.RunResultFormatRepositoryEntity.RunResultFormatRepositoryEntity(Repository, DynamicRepositoryEntity, String)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>repository</strong> &#8211; </li>
+<li><strong>parent</strong> &#8211; </li>
+<li><strong>basePath</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getrunresultformatparser">
+<h3>getRunResultFormatParser<a class="headerlink" href="#getrunresultformatparser" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.RunResultFormatRepositoryEntity.getRunResultFormatParser(String)">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../run/result/format/RunResultFormatParser.html#de.clusteval.run.result.format.RunResultFormatParser" title="de.clusteval.run.result.format.RunResultFormatParser">RunResultFormatParser</a>&gt; <code class="descname">getRunResultFormatParser</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runResultFormatName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.RunResultFormatRepositoryEntity.getRunResultFormatParser(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method looks up and returns (if it exists) the class of the runresult format parser corresponding to the runresult format with the given name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>runResultFormatName</strong> &#8211; The runresult format name.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The runresult format parser for the given runresult format name, or null if it does not exist.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="isregisteredforrunresultformat">
+<h3>isRegisteredForRunResultFormat<a class="headerlink" href="#isregisteredforrunresultformat" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.RunResultFormatRepositoryEntity.isRegisteredForRunResultFormat(Class)">
+public boolean <code class="descname">isRegisteredForRunResultFormat</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../run/result/format/RunResultFormat.html#de.clusteval.run.result.format.RunResultFormat" title="de.clusteval.run.result.format.RunResultFormat">RunResultFormat</a>&gt;<em> runResultFormat</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.RunResultFormatRepositoryEntity.isRegisteredForRunResultFormat(Class)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method checks whether a parser has been registered for the given runresult format class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>runResultFormat</strong> &#8211; The class for which we want to know whether a parser has been registered.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the parser has been registered.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>isRegisteredForRunResultFormat<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.RunResultFormatRepositoryEntity.isRegisteredForRunResultFormat(String)">
+public boolean <code class="descname">isRegisteredForRunResultFormat</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runResultFormatName</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.RunResultFormatRepositoryEntity.isRegisteredForRunResultFormat(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method checks whether a parser has been registered for the dataset format with the given class name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>runResultFormatName</strong> &#8211; The class for which we want to know whether a parser has been registered.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the parser has been registered.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="registerrunresultformatparser">
+<h3>registerRunResultFormatParser<a class="headerlink" href="#registerrunresultformatparser" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.RunResultFormatRepositoryEntity.registerRunResultFormatParser(Class)">
+public boolean <code class="descname">registerRunResultFormatParser</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../run/result/format/RunResultFormatParser.html#de.clusteval.run.result.format.RunResultFormatParser" title="de.clusteval.run.result.format.RunResultFormatParser">RunResultFormatParser</a>&gt;<em> runResultFormatParser</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.RunResultFormatRepositoryEntity.registerRunResultFormatParser(Class)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method registers a new runresult format parser class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>runResultFormatParser</strong> &#8211; The new class to register.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the new class replaced an old one.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="unregisterrunresultformatparser">
+<h3>unregisterRunResultFormatParser<a class="headerlink" href="#unregisterrunresultformatparser" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.RunResultFormatRepositoryEntity.unregisterRunResultFormatParser(Class)">
+public boolean <code class="descname">unregisterRunResultFormatParser</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Class.html" title="java.lang.Class">Class</a>&lt;? extends <a class="reference internal" href="../../run/result/format/RunResultFormatParser.html#de.clusteval.run.result.format.RunResultFormatParser" title="de.clusteval.run.result.format.RunResultFormatParser">RunResultFormatParser</a>&gt;<em> object</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.RunResultFormatRepositoryEntity.unregisterRunResultFormatParser(Class)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method unregisters the passed object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>object</strong> &#8211; The object to be removed.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if the object was remved successfully</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">RunResultFormatRepositoryEntity</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#runresultformatparser">runResultFormatParser</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">RunResultFormatRepositoryEntity</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#getrunresultformatparser">getRunResultFormatParser</a></li>
+<li><a class="reference internal" href="#isregisteredforrunresultformat">isRegisteredForRunResultFormat</a></li>
+<li><a class="reference internal" href="#id2">isRegisteredForRunResultFormat</a></li>
+<li><a class="reference internal" href="#registerrunresultformatparser">registerRunResultFormatParser</a></li>
+<li><a class="reference internal" href="#unregisterrunresultformatparser">unregisterRunResultFormatParser</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/framework/repository/RunResultFormatRepositoryEntity.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

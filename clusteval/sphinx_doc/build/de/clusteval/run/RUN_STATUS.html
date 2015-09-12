@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RUN_STATUS &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="run-status">
+<h1>RUN_STATUS<a class="headerlink" href="#run-status" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.run.RUN_STATUS">
+public enum <code class="descname">RUN_STATUS</code><a class="headerlink" href="#de.clusteval.run.RUN_STATUS" title="Permalink to this definition">¶</a></dt>
+<dd><p>During execution of a run, the corresponding object has a certain status.</p>
+</dd></dl>
+
+<div class="section" id="enum-constants">
+<h2>Enum Constants<a class="headerlink" href="#enum-constants" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="finished">
+<h3>FINISHED<a class="headerlink" href="#finished" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.RUN_STATUS.FINISHED">
+public static final <a class="reference internal" href="#de.clusteval.run.RUN_STATUS" title="de.clusteval.run.RUN_STATUS">RUN_STATUS</a> <code class="descname">FINISHED</code><a class="headerlink" href="#de.clusteval.run.RUN_STATUS.FINISHED" title="Permalink to this definition">¶</a></dt>
+<dd><p>When the job containing all its subprocesses is completely finished, its status is changed to FINISHED.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="inactive">
+<h3>INACTIVE<a class="headerlink" href="#inactive" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.RUN_STATUS.INACTIVE">
+public static final <a class="reference internal" href="#de.clusteval.run.RUN_STATUS" title="de.clusteval.run.RUN_STATUS">RUN_STATUS</a> <code class="descname">INACTIVE</code><a class="headerlink" href="#de.clusteval.run.RUN_STATUS.INACTIVE" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a job is just inactive</p>
+</dd></dl>
+
+</div>
+<div class="section" id="running">
+<h3>RUNNING<a class="headerlink" href="#running" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.RUN_STATUS.RUNNING">
+public static final <a class="reference internal" href="#de.clusteval.run.RUN_STATUS" title="de.clusteval.run.RUN_STATUS">RUN_STATUS</a> <code class="descname">RUNNING</code><a class="headerlink" href="#de.clusteval.run.RUN_STATUS.RUNNING" title="Permalink to this definition">¶</a></dt>
+<dd><p>As soon as ressourcess are available, the scheduler starts the job and its status is changed to RUNNING.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="scheduled">
+<h3>SCHEDULED<a class="headerlink" href="#scheduled" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.RUN_STATUS.SCHEDULED">
+public static final <a class="reference internal" href="#de.clusteval.run.RUN_STATUS" title="de.clusteval.run.RUN_STATUS">RUN_STATUS</a> <code class="descname">SCHEDULED</code><a class="headerlink" href="#de.clusteval.run.RUN_STATUS.SCHEDULED" title="Permalink to this definition">¶</a></dt>
+<dd><p>Immediately after giving the command to execute the job, it is added to the queue of the <a class="reference internal" href="../framework/threading/RunSchedulerThread.html#de.clusteval.framework.threading.RunSchedulerThread" title="de.clusteval.framework.threading.RunSchedulerThread"><code class="xref java java-ref docutils literal"><span class="pre">de.clusteval.framework.threading.RunSchedulerThread</span></code></a> with status SCHEDULED.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="terminated">
+<h3>TERMINATED<a class="headerlink" href="#terminated" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.RUN_STATUS.TERMINATED">
+public static final <a class="reference internal" href="#de.clusteval.run.RUN_STATUS" title="de.clusteval.run.RUN_STATUS">RUN_STATUS</a> <code class="descname">TERMINATED</code><a class="headerlink" href="#de.clusteval.run.RUN_STATUS.TERMINATED" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a job is terminated before it was finished, its status is changed to TERMINATED.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">RUN_STATUS</a><ul>
+<li><a class="reference internal" href="#enum-constants">Enum Constants</a><ul>
+<li><a class="reference internal" href="#finished">FINISHED</a></li>
+<li><a class="reference internal" href="#inactive">INACTIVE</a></li>
+<li><a class="reference internal" href="#running">RUNNING</a></li>
+<li><a class="reference internal" href="#scheduled">SCHEDULED</a></li>
+<li><a class="reference internal" href="#terminated">TERMINATED</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/de/clusteval/run/RUN_STATUS.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

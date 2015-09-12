@@ -1,0 +1,709 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ExecutionRunRunnable &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="executionrunrunnable">
+<h1>ExecutionRunRunnable<a class="headerlink" href="#executionrunrunnable" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable">
+public abstract class <code class="descname">ExecutionRunRunnable</code> extends <a class="reference internal" href="RunRunnable.html#de.clusteval.run.runnable.RunRunnable" title="de.clusteval.run.runnable.RunRunnable">RunRunnable</a>&lt;<a class="reference internal" href="ExecutionIterationRunnable.html#de.clusteval.run.runnable.ExecutionIterationRunnable" title="de.clusteval.run.runnable.ExecutionIterationRunnable">ExecutionIterationRunnable</a>, <a class="reference internal" href="ExecutionIterationWrapper.html#de.clusteval.run.runnable.ExecutionIterationWrapper" title="de.clusteval.run.runnable.ExecutionIterationWrapper">ExecutionIterationWrapper</a>&gt;<a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable" title="Permalink to this definition">¶</a></dt>
+<dd><p>A type of a runnable, that corresponds to <a class="reference internal" href="../ExecutionRun.html#de.clusteval.run.ExecutionRun" title="de.clusteval.run.ExecutionRun"><code class="xref java java-ref docutils literal"><span class="pre">ExecutionRun</span></code></a>s and is therefore responsible for performing program configurations and certain data configurations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="completequalityoutput">
+<h3>completeQualityOutput<a class="headerlink" href="#completequalityoutput" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.completeQualityOutput">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">completeQualityOutput</code><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.completeQualityOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>A temporary variable holding the absolute path to the current complete quality output file during execution of the runnable.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="dataconfig">
+<h3>dataConfig<a class="headerlink" href="#dataconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.dataConfig">
+protected <a class="reference internal" href="../../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a> <code class="descname">dataConfig</code><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.dataConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>The data configuration this thread combines with a program configuration.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="format">
+<h3>format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.format">
+protected <a class="reference internal" href="../result/format/RunResultFormat.html#de.clusteval.run.result.format.RunResultFormat" title="de.clusteval.run.result.format.RunResultFormat">RunResultFormat</a> <code class="descname">format</code><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the run result format of the program that is being executed by this runnable.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="programconfig">
+<h3>programConfig<a class="headerlink" href="#programconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.programConfig">
+protected <a class="reference internal" href="../../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a> <code class="descname">programConfig</code><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.programConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>The program configuration this thread combines with a data configuration.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="runparams">
+<h3>runParams<a class="headerlink" href="#runparams" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.runParams">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt; <code class="descname">runParams</code><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.runParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>A map containing all the parameter values set in the run.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>ExecutionRunRunnable<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.ExecutionRunRunnable(Run, ProgramConfig, DataConfig, String, boolean, Map)">
+public <code class="descname">ExecutionRunRunnable</code><span class="sig-paren">(</span><a class="reference internal" href="../Run.html#de.clusteval.run.Run" title="de.clusteval.run.Run">Run</a><em> run</em>, <a class="reference internal" href="../../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a><em> programConfig</em>, <a class="reference internal" href="../../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a><em> dataConfig</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> runIdentString</em>, boolean<em> isResume</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="../../program/ProgramParameter.html#de.clusteval.program.ProgramParameter" title="de.clusteval.program.ProgramParameter">ProgramParameter</a>&lt;?&gt;, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> runParams</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.ExecutionRunRunnable(Run, ProgramConfig, DataConfig, String, boolean, Map)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>run</strong> &#8211; The run this runnable belongs to.</li>
+<li><strong>runIdentString</strong> &#8211; The unique identification string of the run which is used to store the results in a unique folder to avoid overwriting.</li>
+<li><strong>programConfig</strong> &#8211; The program configuration encapsulating the program executed by this runnable.</li>
+<li><strong>dataConfig</strong> &#8211; The data configuration used by this runnable.</li>
+<li><strong>isResume</strong> &#8211; True, if this run is a resumption of a previous execution or a completely new execution.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="afterrun">
+<h3>afterRun<a class="headerlink" href="#afterrun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.afterRun()">
+protected void <code class="descname">afterRun</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.afterRun()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="beforerun">
+<h3>beforeRun<a class="headerlink" href="#beforerun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.beforeRun()">
+protected void <code class="descname">beforeRun</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.beforeRun()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="checkcompatibilitydatasetgoldstandard">
+<h3>checkCompatibilityDataSetGoldStandard<a class="headerlink" href="#checkcompatibilitydatasetgoldstandard" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.checkCompatibilityDataSetGoldStandard(DataSetConfig, GoldStandardConfig)">
+protected void <code class="descname">checkCompatibilityDataSetGoldStandard</code><span class="sig-paren">(</span><a class="reference internal" href="../../data/dataset/DataSetConfig.html#de.clusteval.data.dataset.DataSetConfig" title="de.clusteval.data.dataset.DataSetConfig">DataSetConfig</a><em> dataSetConfig</em>, <a class="reference internal" href="../../data/goldstandard/GoldStandardConfig.html#de.clusteval.data.goldstandard.GoldStandardConfig" title="de.clusteval.data.goldstandard.GoldStandardConfig">GoldStandardConfig</a><em> goldStandardConfig</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.checkCompatibilityDataSetGoldStandard(DataSetConfig, GoldStandardConfig)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method checks, whether the dataset is compatible to the goldstandard, by verifying, that all objects contained in the dataset have an entry in the goldstandard and vice versa.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataSetConfig</strong> &#8211; The dataset configuration encapsulating the dataset to be checked.</li>
+<li><strong>goldStandardConfig</strong> &#8211; The goldstandard configuration encapsulating the goldstandardto be checked.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="../../data/goldstandard/format/UnknownGoldStandardFormatException.html#de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException" title="de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException"><strong>UnknownGoldStandardFormatException</strong></a> &#8211; </li>
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/IllegalArgumentException.html" title="java.lang.IllegalArgumentException"><strong>IllegalArgumentException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../data/dataset/format/UnknownDataSetFormatException.html#de.clusteval.data.dataset.format.UnknownDataSetFormatException" title="de.clusteval.data.dataset.format.UnknownDataSetFormatException"><strong>UnknownDataSetFormatException</strong></a> &#8211; </li>
+<li><strong>IOException</strong> &#8211; </li>
+<li><a class="reference internal" href="../../data/goldstandard/IncompleteGoldStandardException.html#de.clusteval.data.goldstandard.IncompleteGoldStandardException" title="de.clusteval.data.goldstandard.IncompleteGoldStandardException"><strong>IncompleteGoldStandardException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../data/dataset/format/InvalidDataSetFormatVersionException.html#de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException" title="de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException"><strong>InvalidDataSetFormatVersionException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="convertresult">
+<h3>convertResult<a class="headerlink" href="#convertresult" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.convertResult(ClusteringRunResult, Map, Map)">
+protected <a class="reference internal" href="../result/ClusteringRunResult.html#de.clusteval.run.result.ClusteringRunResult" title="de.clusteval.run.result.ClusteringRunResult">ClusteringRunResult</a> <code class="descname">convertResult</code><span class="sig-paren">(</span><a class="reference internal" href="../result/ClusteringRunResult.html#de.clusteval.run.result.ClusteringRunResult" title="de.clusteval.run.result.ClusteringRunResult">ClusteringRunResult</a><em> result</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> effectiveParams</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> internalParams</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.convertResult(ClusteringRunResult, Map, Map)" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper method for the conversion of the run result, which handles logging and adding the converted result to the results of the run.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="../result/format/RunResultNotFoundException.html#de.clusteval.run.result.format.RunResultNotFoundException" title="de.clusteval.run.result.format.RunResultNotFoundException"><strong>RunResultNotFoundException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="RunResultConversionException.html#de.clusteval.run.runnable.RunResultConversionException" title="de.clusteval.run.runnable.RunResultConversionException"><strong>RunResultConversionException</strong></a> &#8211; </li>
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/SecurityException.html" title="java.lang.SecurityException"><strong>SecurityException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../result/NoRunResultFormatParserException.html#de.clusteval.run.result.NoRunResultFormatParserException" title="de.clusteval.run.result.NoRunResultFormatParserException"><strong>NoRunResultFormatParserException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The result of the last iteration converted to the standard format.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="createiterationrunnable">
+<h3>createIterationRunnable<a class="headerlink" href="#createiterationrunnable" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.createIterationRunnable(ExecutionIterationWrapper)">
+protected <a class="reference internal" href="ExecutionIterationRunnable.html#de.clusteval.run.runnable.ExecutionIterationRunnable" title="de.clusteval.run.runnable.ExecutionIterationRunnable">ExecutionIterationRunnable</a> <code class="descname">createIterationRunnable</code><span class="sig-paren">(</span><a class="reference internal" href="ExecutionIterationWrapper.html#de.clusteval.run.runnable.ExecutionIterationWrapper" title="de.clusteval.run.runnable.ExecutionIterationWrapper">ExecutionIterationWrapper</a><em> iterationWrapper</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.createIterationRunnable(ExecutionIterationWrapper)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="createiterationwrapper">
+<h3>createIterationWrapper<a class="headerlink" href="#createiterationwrapper" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.createIterationWrapper()">
+protected <a class="reference internal" href="ExecutionIterationWrapper.html#de.clusteval.run.runnable.ExecutionIterationWrapper" title="de.clusteval.run.runnable.ExecutionIterationWrapper">ExecutionIterationWrapper</a> <code class="descname">createIterationWrapper</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.createIterationWrapper()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="decorateiterationwrapper">
+<h3>decorateIterationWrapper<a class="headerlink" href="#decorateiterationwrapper" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.decorateIterationWrapper(ExecutionIterationWrapper, int)">
+protected void <code class="descname">decorateIterationWrapper</code><span class="sig-paren">(</span><a class="reference internal" href="ExecutionIterationWrapper.html#de.clusteval.run.runnable.ExecutionIterationWrapper" title="de.clusteval.run.runnable.ExecutionIterationWrapper">ExecutionIterationWrapper</a><em> iterationWrapper</em>, int<em> currentPos</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.decorateIterationWrapper(ExecutionIterationWrapper, int)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="doruniteration">
+<h3>doRunIteration<a class="headerlink" href="#doruniteration" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.doRunIteration(ExecutionIterationWrapper)">
+protected void <code class="descname">doRunIteration</code><span class="sig-paren">(</span><a class="reference internal" href="ExecutionIterationWrapper.html#de.clusteval.run.runnable.ExecutionIterationWrapper" title="de.clusteval.run.runnable.ExecutionIterationWrapper">ExecutionIterationWrapper</a><em> iterationWrapper</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.doRunIteration(ExecutionIterationWrapper)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method invoked by <a class="reference internal" href="AnalysisIterationRunnable.html#de.clusteval.run.runnable.AnalysisIterationRunnable.doRun()" title="de.clusteval.run.runnable.AnalysisIterationRunnable.doRun()"><code class="xref java java-ref docutils literal"><span class="pre">doRun()</span></code></a> which performs a single iteration of the run. If this runnable is of type parameter optimization, this method is invoked several times. In case of a clustering run, it is invoked only once.</p>
+<p>First this method initializes all files and folder structures in <a class="reference internal" href="#de.clusteval.run.runnable.ExecutionRunRunnable.initAndEnsureIterationFilesAndFolders(ExecutionIterationWrapper)" title="de.clusteval.run.runnable.ExecutionRunRunnable.initAndEnsureIterationFilesAndFolders(ExecutionIterationWrapper)"><code class="xref java java-ref docutils literal"><span class="pre">initAndEnsureIterationFilesAndFolders()</span></code></a> such that the following computations can be performed smoothly.</p>
+<p>It initializes all attribute variables needed throughout the process itself and by invoking <a class="reference internal" href="#de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)" title="de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)"><code class="xref java java-ref docutils literal"><span class="pre">parseInvocationLineAndEffectiveParameters()</span></code></a>.</p>
+<p>The clustering method is executed with the given parameter values and settings asynchronously. It waits until the second process finishes.</p>
+<p>The result file of the clustering method is converted to the standard result format by invoking <a class="reference internal" href="#de.clusteval.run.runnable.ExecutionRunRunnable.convertResult(ClusteringRunResult, Map, Map)" title="de.clusteval.run.runnable.ExecutionRunRunnable.convertResult(ClusteringRunResult, Map, Map)"><code class="xref java java-ref docutils literal"><span class="pre">convertResult()</span></code></a>.</p>
+<p>Next the qualities of the converted result file are assessed in <code class="xref java java-ref docutils literal"><span class="pre">assessQualities(ClusteringRunResult)</span></code>.</p>
+<p>Then it invokes <a class="reference internal" href="ParameterOptimizationRunRunnable.html#de.clusteval.run.runnable.ParameterOptimizationRunRunnable.writeQualitiesToFile(List)" title="de.clusteval.run.runnable.ParameterOptimizationRunRunnable.writeQualitiesToFile(List)"><code class="xref java java-ref docutils literal"><span class="pre">writeQualitiesToFile(List)</span></code></a>, which writes the assessed cluster qualities into files on the filesystem.</p>
+<p>In <code class="xref java java-ref docutils literal"><span class="pre">afterClustering(ClusteringRunResult)</span></code> all actions are performed, that require the clustering process to be finished beforehand.</p>
+<p>Last the result is added to the list of run results of the corresponding run of this runnable.</p>
+<p>In case the run result is missing or cannot be parsed successfully, <a class="reference internal" href="ParameterOptimizationRunRunnable.html#de.clusteval.run.runnable.ParameterOptimizationRunRunnable.handleMissingRunResult(ExecutionIterationWrapper)" title="de.clusteval.run.runnable.ParameterOptimizationRunRunnable.handleMissingRunResult(ExecutionIterationWrapper)"><code class="xref java java-ref docutils literal"><span class="pre">handleMissingRunResult()</span></code></a> is responsible for performing actions ensuring, that the next iterations can be executed without problems.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="getcompletequalityoutput">
+<h3>getCompleteQualityOutput<a class="headerlink" href="#getcompletequalityoutput" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.getCompleteQualityOutput()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getCompleteQualityOutput</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.getCompleteQualityOutput()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getdataconfig">
+<h3>getDataConfig<a class="headerlink" href="#getdataconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.getDataConfig()">
+public <a class="reference internal" href="../../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a> <code class="descname">getDataConfig</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.getDataConfig()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The data configuration of this runnable.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getinvocationformat">
+<h3>getInvocationFormat<a class="headerlink" href="#getinvocationformat" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.getInvocationFormat()">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getInvocationFormat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.getInvocationFormat()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method for <a class="reference internal" href="#de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)" title="de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)"><code class="xref java java-ref docutils literal"><span class="pre">parseInvocationLineAndEffectiveParameters(String,String,Map,Map,Map,StringBuilder)</span></code></a></p>
+<p>Get the original invocation line format from the program configuration without replacing of any parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The invocation line.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getprogramconfig">
+<h3>getProgramConfig<a class="headerlink" href="#getprogramconfig" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.getProgramConfig()">
+public <a class="reference internal" href="../../program/ProgramConfig.html#de.clusteval.program.ProgramConfig" title="de.clusteval.program.ProgramConfig">ProgramConfig</a> <code class="descname">getProgramConfig</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.getProgramConfig()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The program configuration of this runnable.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getrun">
+<h3>getRun<a class="headerlink" href="#getrun" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.getRun()">
+public <a class="reference internal" href="../ExecutionRun.html#de.clusteval.run.ExecutionRun" title="de.clusteval.run.ExecutionRun">ExecutionRun</a> <code class="descname">getRun</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.getRun()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="handlemissingrunresult">
+<h3>handleMissingRunResult<a class="headerlink" href="#handlemissingrunresult" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.handleMissingRunResult(ExecutionIterationWrapper)">
+protected void <code class="descname">handleMissingRunResult</code><span class="sig-paren">(</span><a class="reference internal" href="ExecutionIterationWrapper.html#de.clusteval.run.runnable.ExecutionIterationWrapper" title="de.clusteval.run.runnable.ExecutionIterationWrapper">ExecutionIterationWrapper</a><em> iterationWrapper</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.handleMissingRunResult(ExecutionIterationWrapper)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overwrite this method in your subclass, if you want to handle missing run results individually.</p>
+<p>This can comprise actions ensuring that further iterations can be executed smoothly.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="initandensureiterationfilesandfolders">
+<h3>initAndEnsureIterationFilesAndFolders<a class="headerlink" href="#initandensureiterationfilesandfolders" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.initAndEnsureIterationFilesAndFolders(ExecutionIterationWrapper)">
+protected void <code class="descname">initAndEnsureIterationFilesAndFolders</code><span class="sig-paren">(</span><a class="reference internal" href="ExecutionIterationWrapper.html#de.clusteval.run.runnable.ExecutionIterationWrapper" title="de.clusteval.run.runnable.ExecutionIterationWrapper">ExecutionIterationWrapper</a><em> iterationWrapper</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.initAndEnsureIterationFilesAndFolders(ExecutionIterationWrapper)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is invoked by <a class="reference internal" href="RunRunnable.html#de.clusteval.run.runnable.RunRunnable.doRunIteration(IW)" title="de.clusteval.run.runnable.RunRunnable.doRunIteration(IW)"><code class="xref java java-ref docutils literal"><span class="pre">doRunIteration()</span></code></a> before any calculations are done, to ensure, that all folders and files are created such that the remainder process can be performed without problems.</p>
+<p>This method also initializes the file object attribute variables that are used throughout the process: <code class="xref java java-ref docutils literal"><span class="pre">logFile</span></code>, <code class="xref java java-ref docutils literal"><span class="pre">clusteringResultFile</span></code> and <code class="xref java java-ref docutils literal"><span class="pre">resultQualityFile</span></code>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="parseexecutable">
+<h3>parseExecutable<a class="headerlink" href="#parseexecutable" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.parseExecutable(String[], Map)">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[] <code class="descname">parseExecutable</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> invocation</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> internalParams</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.parseExecutable(String[], Map)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method for <a class="reference internal" href="#de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)" title="de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)"><code class="xref java java-ref docutils literal"><span class="pre">parseInvocationLineAndEffectiveParameters(String,String,Map,Map,Map,StringBuilder)</span></code></a></p>
+<p>Replace the executable parameter %e% in the invocation line by the absolute path to the executable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>invocation</strong> &#8211; The invocation line without replaced executable parameter.</li>
+<li><strong>internalParams</strong> &#8211; The map containing all internal parameters, e.g. the executable path.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The invocation line with replaced executable parameter.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="parsegoldstandard">
+<h3>parseGoldStandard<a class="headerlink" href="#parsegoldstandard" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.parseGoldStandard(String[], Map)">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[] <code class="descname">parseGoldStandard</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> invocation</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> internalParams</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.parseGoldStandard(String[], Map)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method for <a class="reference internal" href="#de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)" title="de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)"><code class="xref java java-ref docutils literal"><span class="pre">parseInvocationLineAndEffectiveParameters(String,String,Map,Map,Map,StringBuilder)</span></code></a></p>
+<p>Replace the goldstandard parameter %gs% in the invocation line by the absolute path to the goldstandard.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>invocation</strong> &#8211; The invocation line without replaced goldstandard parameter.</li>
+<li><strong>internalParams</strong> &#8211; The map containing all internal parameters, e.g. the goldstandard path.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The invocation line with replaced goldstandard parameter.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="parseinput">
+<h3>parseInput<a class="headerlink" href="#parseinput" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.parseInput(String[], Map)">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[] <code class="descname">parseInput</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> invocation</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> internalParams</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.parseInput(String[], Map)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method for <a class="reference internal" href="#de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)" title="de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)"><code class="xref java java-ref docutils literal"><span class="pre">parseInvocationLineAndEffectiveParameters(String,String,Map,Map,Map,StringBuilder)</span></code></a></p>
+<p>Replace the input parameter %i% in the invocation line by the absolute path to the input file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>invocation</strong> &#8211; The invocation line without replaced input parameter.</li>
+<li><strong>internalParams</strong> &#8211; The map containing all internal parameters, e.g. the input path.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The invocation line with replaced input parameter.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="parseinvocationlineandeffectiveparameters">
+<h3>parseInvocationLineAndEffectiveParameters<a class="headerlink" href="#parseinvocationlineandeffectiveparameters" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[] <code class="descname">parseInvocationLineAndEffectiveParameters</code><span class="sig-paren">(</span><a class="reference internal" href="ExecutionIterationWrapper.html#de.clusteval.run.runnable.ExecutionIterationWrapper" title="de.clusteval.run.runnable.ExecutionIterationWrapper">ExecutionIterationWrapper</a><em> iterationWrapper</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method builds up the invocation line by replacing placeholders of internal parameters by their actual runtime values:</p>
+<ul class="simple">
+<li><strong>%e%</strong>: The absolute path to the executable</li>
+<li><strong>%i%</strong>: The absolute path to the input file</li>
+<li><strong>%gs%</strong>: The absolute path to the goldstandard file</li>
+<li><strong>%o%</strong>: The absolute path to the output file</li>
+</ul>
+<p>Afterwards, non-internal parameters are replaced, that means parameters, that are defined in the configuration files of the run or program in <a class="reference internal" href="#de.clusteval.run.runnable.ExecutionRunRunnable.replaceRunParameters(String[], Map)" title="de.clusteval.run.runnable.ExecutionRunRunnable.replaceRunParameters(String[], Map)"><code class="xref java java-ref docutils literal"><span class="pre">replaceRunParameters(String[])</span></code></a>, e.g.:</p>
+<ul class="simple">
+<li><strong>%T%</strong> is replaced by 2.0</li>
+</ul>
+<p>All placeholders that are not replaced at this point are replaced by the default values of the corresponding parameters by invoking <a class="reference internal" href="#de.clusteval.run.runnable.ExecutionRunRunnable.replaceDefaultParameters(String[], Map)" title="de.clusteval.run.runnable.ExecutionRunRunnable.replaceDefaultParameters(String[], Map)"><code class="xref java java-ref docutils literal"><span class="pre">replaceDefaultParameters(String[])</span></code></a>. If the invocation line contains placeholders that cannot be mapped to a parameter, an exception is thrown and the process is terminated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="../../cluster/paramOptimization/NoParameterSetFoundException.html#de.clusteval.cluster.paramOptimization.NoParameterSetFoundException" title="de.clusteval.cluster.paramOptimization.NoParameterSetFoundException"><strong>NoParameterSetFoundException</strong></a> &#8211; This exception is thrown, if no parameter set was found that was not already evaluated before.</li>
+<li><a class="reference internal" href="../../utils/InternalAttributeException.html#de.clusteval.utils.InternalAttributeException" title="de.clusteval.utils.InternalAttributeException"><strong>InternalAttributeException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../framework/repository/RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The parsed invocation line.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="parseoutput">
+<h3>parseOutput<a class="headerlink" href="#parseoutput" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.parseOutput(String, String, String[], Map)">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[] <code class="descname">parseOutput</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> clusteringOutput</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> qualityOutput</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> invocation</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> internalParams</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.parseOutput(String, String, String[], Map)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method for <a class="reference internal" href="#de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)" title="de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)"><code class="xref java java-ref docutils literal"><span class="pre">parseInvocationLineAndEffectiveParameters(String,String,Map,Map,Map,StringBuilder)</span></code></a></p>
+<p>Replace the output parameter %o% in the invocation line by the absolute path to the output file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>invocation</strong> &#8211; The invocation line without replaced output parameter.</li>
+<li><strong>internalParams</strong> &#8211; The map containing all internal parameters, e.g. the output file path.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The invocation line with replaced output parameter.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="preprocessandcheckcompatibledatasetformat">
+<h3>preprocessAndCheckCompatibleDataSetFormat<a class="headerlink" href="#preprocessandcheckcompatibledatasetformat" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.preprocessAndCheckCompatibleDataSetFormat()">
+protected boolean <code class="descname">preprocessAndCheckCompatibleDataSetFormat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.preprocessAndCheckCompatibleDataSetFormat()" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method checks, whether the format of the data input is compatible to the input formats of the program configuration.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>IOException</strong> &#8211; </li>
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/InterruptedException.html" title="java.lang.InterruptedException"><strong>InterruptedException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../framework/repository/RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True, if compatible, false otherwise.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="replacedefaultparameters">
+<h3>replaceDefaultParameters<a class="headerlink" href="#replacedefaultparameters" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.replaceDefaultParameters(String[], Map)">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[] <code class="descname">replaceDefaultParameters</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> invocation</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> effectiveParams</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.replaceDefaultParameters(String[], Map)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method for <a class="reference internal" href="#de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)" title="de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)"><code class="xref java java-ref docutils literal"><span class="pre">parseInvocationLineAndEffectiveParameters()</span></code></a>.</p>
+<p>All remaining parameters in the invocation line, that are not set to an actual value in the run configuration will be set to the default values of the corresponding parameters defined in the program configuration. Throw an exception if no value is set for a certain parameter-string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>invocation</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="../MissingParameterValueException.html#de.clusteval.run.MissingParameterValueException" title="de.clusteval.run.MissingParameterValueException"><strong>MissingParameterValueException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../utils/InternalAttributeException.html#de.clusteval.utils.InternalAttributeException" title="de.clusteval.utils.InternalAttributeException"><strong>InternalAttributeException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The invocation line with all parameters replaced.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="replacerunparameters">
+<h3>replaceRunParameters<a class="headerlink" href="#replacerunparameters" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.replaceRunParameters(String[], Map)">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[] <code class="descname">replaceRunParameters</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> invocation</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>&gt;<em> effectiveParams</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.replaceRunParameters(String[], Map)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method for <a class="reference internal" href="#de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)" title="de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)"><code class="xref java java-ref docutils literal"><span class="pre">parseInvocationLineAndEffectiveParameters()</span></code></a>.</p>
+<p>Non-internal parameters are replaced, that means parameters, that are defined in the configuration files of the run or program in <a class="reference internal" href="#de.clusteval.run.runnable.ExecutionRunRunnable.replaceRunParameters(String[], Map)" title="de.clusteval.run.runnable.ExecutionRunRunnable.replaceRunParameters(String[], Map)"><code class="xref java java-ref docutils literal"><span class="pre">replaceRunParameters(String)</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>invocation</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="../../cluster/paramOptimization/NoParameterSetFoundException.html#de.clusteval.cluster.paramOptimization.NoParameterSetFoundException" title="de.clusteval.cluster.paramOptimization.NoParameterSetFoundException"><strong>NoParameterSetFoundException</strong></a> &#8211; This exception is thrown, if no parameter set was found that was not already evaluated before.</li>
+<li><a class="reference internal" href="../../utils/InternalAttributeException.html#de.clusteval.utils.InternalAttributeException" title="de.clusteval.utils.InternalAttributeException"><strong>InternalAttributeException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../framework/repository/RegisterException.html#de.clusteval.framework.repository.RegisterException" title="de.clusteval.framework.repository.RegisterException"><strong>RegisterException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The invocation line with replaced run parameters.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="setinternalattributes">
+<h3>setInternalAttributes<a class="headerlink" href="#setinternalattributes" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.setInternalAttributes()">
+protected void <code class="descname">setInternalAttributes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.setInternalAttributes()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the internal attributes of the framework, e.g. the meanSimilarity attribute which holds the mean similarity of the input dataset. These internal attributes are then used later on, to replace parameter placeholders in the invocation line in <a class="reference internal" href="#de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)" title="de.clusteval.run.runnable.ExecutionRunRunnable.parseInvocationLineAndEffectiveParameters(ExecutionIterationWrapper)"><code class="xref java java-ref docutils literal"><span class="pre">parseInvocationLineAndEffectiveParameters()</span></code></a>.</p>
+<p>This method is invoked in <a class="reference internal" href="DataAnalysisRunRunnable.html#de.clusteval.run.runnable.DataAnalysisRunRunnable.beforeRun()" title="de.clusteval.run.runnable.DataAnalysisRunRunnable.beforeRun()"><code class="xref java java-ref docutils literal"><span class="pre">beforeRun()</span></code></a>, thus is only evaluated once.</p>
+<p>The dataset in standard format is assumed to be loaded before this method is invoked and to be unloaded after return of this method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/IllegalArgumentException.html" title="java.lang.IllegalArgumentException"><strong>IllegalArgumentException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../../data/dataset/format/UnknownDataSetFormatException.html#de.clusteval.data.dataset.format.UnknownDataSetFormatException" title="de.clusteval.data.dataset.format.UnknownDataSetFormatException"><strong>UnknownDataSetFormatException</strong></a> &#8211; </li>
+<li><strong>IOException</strong> &#8211; </li>
+<li><a class="reference internal" href="../../data/dataset/format/InvalidDataSetFormatVersionException.html#de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException" title="de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException"><strong>InvalidDataSetFormatVersionException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="writeheaderintocompletefile">
+<h3>writeHeaderIntoCompleteFile<a class="headerlink" href="#writeheaderintocompletefile" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.writeHeaderIntoCompleteFile(String)">
+protected void <code class="descname">writeHeaderIntoCompleteFile</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> completeQualityOutput</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.writeHeaderIntoCompleteFile(String)" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper method to write a header into the complete quality output in the beginning.</p>
+<p>If at all, then this method is invoked by <code class="xref java java-ref docutils literal"><span class="pre">beginRun()</span></code> before anything has been executed by the runnable.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="writequalitiestofile">
+<h3>writeQualitiesToFile<a class="headerlink" href="#writequalitiestofile" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.run.runnable.ExecutionRunRunnable.writeQualitiesToFile(List)">
+protected void <code class="descname">writeQualitiesToFile</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;Triple&lt;<a class="reference internal" href="../../program/ParameterSet.html#de.clusteval.program.ParameterSet" title="de.clusteval.program.ParameterSet">ParameterSet</a>, <a class="reference internal" href="../../cluster/quality/ClusteringQualitySet.html#de.clusteval.cluster.quality.ClusteringQualitySet" title="de.clusteval.cluster.quality.ClusteringQualitySet">ClusteringQualitySet</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Long.html" title="java.lang.Long">Long</a>&gt;&gt;<em> qualities</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.run.runnable.ExecutionRunRunnable.writeQualitiesToFile(List)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper method of <code class="xref java java-ref docutils literal"><span class="pre">assessQualities(ClusteringRunResult)</span></code>, invoked to write the assessed clustering qualities into files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>qualities</strong> &#8211; A list containing pairs of parameter sets and corresponding clustering qualities of different measures.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ExecutionRunRunnable</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#completequalityoutput">completeQualityOutput</a></li>
+<li><a class="reference internal" href="#dataconfig">dataConfig</a></li>
+<li><a class="reference internal" href="#format">format</a></li>
+<li><a class="reference internal" href="#programconfig">programConfig</a></li>
+<li><a class="reference internal" href="#runparams">runParams</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">ExecutionRunRunnable</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#afterrun">afterRun</a></li>
+<li><a class="reference internal" href="#beforerun">beforeRun</a></li>
+<li><a class="reference internal" href="#checkcompatibilitydatasetgoldstandard">checkCompatibilityDataSetGoldStandard</a></li>
+<li><a class="reference internal" href="#convertresult">convertResult</a></li>
+<li><a class="reference internal" href="#createiterationrunnable">createIterationRunnable</a></li>
+<li><a class="reference internal" href="#createiterationwrapper">createIterationWrapper</a></li>
+<li><a class="reference internal" href="#decorateiterationwrapper">decorateIterationWrapper</a></li>
+<li><a class="reference internal" href="#doruniteration">doRunIteration</a></li>
+<li><a class="reference internal" href="#getcompletequalityoutput">getCompleteQualityOutput</a></li>
+<li><a class="reference internal" href="#getdataconfig">getDataConfig</a></li>
+<li><a class="reference internal" href="#getinvocationformat">getInvocationFormat</a></li>
+<li><a class="reference internal" href="#getprogramconfig">getProgramConfig</a></li>
+<li><a class="reference internal" href="#getrun">getRun</a></li>
+<li><a class="reference internal" href="#handlemissingrunresult">handleMissingRunResult</a></li>
+<li><a class="reference internal" href="#initandensureiterationfilesandfolders">initAndEnsureIterationFilesAndFolders</a></li>
+<li><a class="reference internal" href="#parseexecutable">parseExecutable</a></li>
+<li><a class="reference internal" href="#parsegoldstandard">parseGoldStandard</a></li>
+<li><a class="reference internal" href="#parseinput">parseInput</a></li>
+<li><a class="reference internal" href="#parseinvocationlineandeffectiveparameters">parseInvocationLineAndEffectiveParameters</a></li>
+<li><a class="reference internal" href="#parseoutput">parseOutput</a></li>
+<li><a class="reference internal" href="#preprocessandcheckcompatibledatasetformat">preprocessAndCheckCompatibleDataSetFormat</a></li>
+<li><a class="reference internal" href="#replacedefaultparameters">replaceDefaultParameters</a></li>
+<li><a class="reference internal" href="#replacerunparameters">replaceRunParameters</a></li>
+<li><a class="reference internal" href="#setinternalattributes">setInternalAttributes</a></li>
+<li><a class="reference internal" href="#writeheaderintocompletefile">writeHeaderIntoCompleteFile</a></li>
+<li><a class="reference internal" href="#writequalitiestofile">writeQualitiesToFile</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/de/clusteval/run/runnable/ExecutionRunRunnable.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

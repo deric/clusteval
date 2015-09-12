@@ -1,0 +1,770 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Clustering &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="clustering">
+<h1>Clustering<a class="headerlink" href="#clustering" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.cluster.Clustering">
+public class <code class="descname">Clustering</code> extends <a class="reference internal" href="../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a> implements <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Iterable.html" title="java.lang.Iterable">Iterable</a>&lt;<a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a>&gt;<a class="headerlink" href="#de.clusteval.cluster.Clustering" title="Permalink to this definition">¶</a></dt>
+<dd><p>A clustering contains several clusters. Every cluster contains cluster items.</p>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clusteridtocluster">
+<h3>clusterIdToCluster<a class="headerlink" href="#clusteridtocluster" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.Clustering.clusterIdToCluster">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a>&gt; <code class="descname">clusterIdToCluster</code><a class="headerlink" href="#de.clusteval.cluster.Clustering.clusterIdToCluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to get clusters in O(1) with their id.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="clusters">
+<h3>clusters<a class="headerlink" href="#clusters" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.Clustering.clusters">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html" title="java.util.Set">Set</a>&lt;<a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a>&gt; <code class="descname">clusters</code><a class="headerlink" href="#de.clusteval.cluster.Clustering.clusters" title="Permalink to this definition">¶</a></dt>
+<dd><p>The clusters contained in this clustering.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="fuzzysize">
+<h3>fuzzySize<a class="headerlink" href="#fuzzysize" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.Clustering.fuzzySize">
+protected float <code class="descname">fuzzySize</code><a class="headerlink" href="#de.clusteval.cluster.Clustering.fuzzySize" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fuzzy size of this clustering is the sum of all fuzzy coefficients of any item contained in any cluster.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="itemidtoitem">
+<h3>itemIdToItem<a class="headerlink" href="#itemidtoitem" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.Clustering.itemIdToItem">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference internal" href="ClusterItem.html#de.clusteval.cluster.ClusterItem" title="de.clusteval.cluster.ClusterItem">ClusterItem</a>&gt; <code class="descname">itemIdToItem</code><a class="headerlink" href="#de.clusteval.cluster.Clustering.itemIdToItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to get cluster items in O(1) with their id.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="itemtocluster">
+<h3>itemToCluster<a class="headerlink" href="#itemtocluster" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.Clustering.itemToCluster">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="ClusterItem.html#de.clusteval.cluster.ClusterItem" title="de.clusteval.cluster.ClusterItem">ClusterItem</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Float.html" title="java.lang.Float">Float</a>&gt;&gt; <code class="descname">itemToCluster</code><a class="headerlink" href="#de.clusteval.cluster.Clustering.itemToCluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>A map from cluster item to cluster and fuzzy coefficient. This serves for fast access and performance purposes only.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="qualities">
+<h3>qualities<a class="headerlink" href="#qualities" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.cluster.Clustering.qualities">
+protected <a class="reference internal" href="quality/ClusteringQualitySet.html#de.clusteval.cluster.quality.ClusteringQualitySet" title="de.clusteval.cluster.quality.ClusteringQualitySet">ClusteringQualitySet</a> <code class="descname">qualities</code><a class="headerlink" href="#de.clusteval.cluster.Clustering.qualities" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the qualities of this clustering were set using the method <a class="reference internal" href="#de.clusteval.cluster.Clustering.setQualities(ClusteringQualitySet)" title="de.clusteval.cluster.Clustering.setQualities(ClusteringQualitySet)"><code class="xref java java-ref docutils literal"><span class="pre">setQualities(ClusteringQualitySet)</span></code></a>, they are stored in this attribute.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Clustering<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.cluster.Clustering.Clustering(Repository, long, File)">
+public <code class="descname">Clustering</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, long<em> changeDate</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.Clustering(Repository, long, File)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiates a new clustering.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; </li>
+<li><strong>changeDate</strong> &#8211; </li>
+<li><strong>absPath</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>Clustering<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.cluster.Clustering.Clustering(Clustering)">
+public <code class="descname">Clustering</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.cluster.Clustering" title="de.clusteval.cluster.Clustering">Clustering</a><em> other</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.Clustering(Clustering)" title="Permalink to this definition">¶</a></dt>
+<dd><p>The copy constructor of clusterings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>other</strong> &#8211; The object to clone.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="addcluster">
+<h3>addCluster<a class="headerlink" href="#addcluster" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.addCluster(Cluster)">
+public boolean <code class="descname">addCluster</code><span class="sig-paren">(</span><a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a><em> cluster</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.addCluster(Cluster)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a cluster to this clustering.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cluster</strong> &#8211; The cluster to add.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">true, if the cluster is added and hasn&#8217;t been in the clustering before.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="assessquality">
+<h3>assessQuality<a class="headerlink" href="#assessquality" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.assessQuality(DataConfig, List)">
+public <a class="reference internal" href="quality/ClusteringQualitySet.html#de.clusteval.cluster.quality.ClusteringQualitySet" title="de.clusteval.cluster.quality.ClusteringQualitySet">ClusteringQualitySet</a> <code class="descname">assessQuality</code><span class="sig-paren">(</span><a class="reference internal" href="../data/DataConfig.html#de.clusteval.data.DataConfig" title="de.clusteval.data.DataConfig">DataConfig</a><em> dataConfig</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/List.html" title="java.util.List">List</a>&lt;<a class="reference internal" href="quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure">ClusteringQualityMeasure</a>&gt;<em> qualityMeasures</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.assessQuality(DataConfig, List)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assess quality.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataConfig</strong> &#8211; </li>
+<li><strong>qualityMeasures</strong> &#8211; the quality measures</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="../data/dataset/format/UnknownDataSetFormatException.html#de.clusteval.data.dataset.format.UnknownDataSetFormatException" title="de.clusteval.data.dataset.format.UnknownDataSetFormatException"><strong>UnknownDataSetFormatException</strong></a> &#8211; </li>
+<li><a class="reference internal" href="../data/goldstandard/format/UnknownGoldStandardFormatException.html#de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException" title="de.clusteval.data.goldstandard.format.UnknownGoldStandardFormatException"><strong>UnknownGoldStandardFormatException</strong></a> &#8211; the unknown gold standard format exception</li>
+<li><strong>IOException</strong> &#8211; Signals that an I/O exception has occurred.</li>
+<li><a class="reference internal" href="../data/dataset/format/InvalidDataSetFormatVersionException.html#de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException" title="de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException"><strong>InvalidDataSetFormatVersionException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A set of qualities for every quality measure that was passed in the list.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="clone">
+<h3>clone<a class="headerlink" href="#clone" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.clone()">
+public <a class="reference internal" href="#de.clusteval.cluster.Clustering" title="de.clusteval.cluster.Clustering">Clustering</a> <code class="descname">clone</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.clone()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="cloneclusteridtocluster">
+<h3>cloneClusterIdToCluster<a class="headerlink" href="#cloneclusteridtocluster" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.cloneClusterIdToCluster(Map)">
+protected static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a>&gt; <code class="descname">cloneClusterIdToCluster</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a>&gt;<em> clusterIdToCluster</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.cloneClusterIdToCluster(Map)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="cloneclusters">
+<h3>cloneClusters<a class="headerlink" href="#cloneclusters" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.cloneClusters(Set)">
+protected static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html" title="java.util.Set">Set</a>&lt;<a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a>&gt; <code class="descname">cloneClusters</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html" title="java.util.Set">Set</a>&lt;<a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a>&gt;<em> clusters</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.cloneClusters(Set)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="cloneitemidtoitem">
+<h3>cloneItemIdToItem<a class="headerlink" href="#cloneitemidtoitem" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.cloneItemIdToItem(Map)">
+protected static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference internal" href="ClusterItem.html#de.clusteval.cluster.ClusterItem" title="de.clusteval.cluster.ClusterItem">ClusterItem</a>&gt; <code class="descname">cloneItemIdToItem</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>, <a class="reference internal" href="ClusterItem.html#de.clusteval.cluster.ClusterItem" title="de.clusteval.cluster.ClusterItem">ClusterItem</a>&gt;<em> itemIdToItem</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.cloneItemIdToItem(Map)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="cloneitemtoclusters">
+<h3>cloneItemToClusters<a class="headerlink" href="#cloneitemtoclusters" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.cloneItemToClusters(Map)">
+protected static <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="ClusterItem.html#de.clusteval.cluster.ClusterItem" title="de.clusteval.cluster.ClusterItem">ClusterItem</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Float.html" title="java.lang.Float">Float</a>&gt;&gt; <code class="descname">cloneItemToClusters</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="ClusterItem.html#de.clusteval.cluster.ClusterItem" title="de.clusteval.cluster.ClusterItem">ClusterItem</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Float.html" title="java.lang.Float">Float</a>&gt;&gt;<em> itemToCluster2</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.cloneItemToClusters(Map)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="clusteridstofuzzycoeff">
+<h3>clusterIdsToFuzzyCoeff<a class="headerlink" href="#clusteridstofuzzycoeff" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.clusterIdsToFuzzyCoeff(int[])">
+public static float[][] <code class="descname">clusterIdsToFuzzyCoeff</code><span class="sig-paren">(</span>int[]<em> clusterIds</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.clusterIdsToFuzzyCoeff(int[])" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an integer array holding cluster ids for every object to a fuzzy coefficient matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>clusterIds</strong> &#8211; The cluster ids of the objects.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Fuzzy coefficient matrix. [i][j] holds the fuzzy coefficient for object i and cluster j.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="equals">
+<h3>equals<a class="headerlink" href="#equals" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.equals(Object)">
+public boolean <code class="descname">equals</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Object.html" title="java.lang.Object">Object</a><em> obj</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.equals(Object)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h3>fuzzySize<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.fuzzySize()">
+public float <code class="descname">fuzzySize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.fuzzySize()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The fuzzy size of this clustering.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>See also:</strong> <code class="xref java java-ref docutils literal"><span class="pre">.fuzzySize</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="getclusterforitem">
+<h3>getClusterForItem<a class="headerlink" href="#getclusterforitem" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.getClusterForItem(ClusterItem)">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Map.html" title="java.util.Map">Map</a>&lt;<a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/Float.html" title="java.lang.Float">Float</a>&gt; <code class="descname">getClusterForItem</code><span class="sig-paren">(</span><a class="reference internal" href="ClusterItem.html#de.clusteval.cluster.ClusterItem" title="de.clusteval.cluster.ClusterItem">ClusterItem</a><em> item</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.getClusterForItem(ClusterItem)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>item</strong> &#8211; The item to look for.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A map containing all clusters together with fuzzy coefficients, in which the given item is contained.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getclusteritemwithid">
+<h3>getClusterItemWithId<a class="headerlink" href="#getclusteritemwithid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.getClusterItemWithId(String)">
+public <a class="reference internal" href="ClusterItem.html#de.clusteval.cluster.ClusterItem" title="de.clusteval.cluster.ClusterItem">ClusterItem</a> <code class="descname">getClusterItemWithId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> id</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.getClusterItemWithId(String)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> &#8211; The id of the cluster item.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The cluster item with the given id.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getclusteritems">
+<h3>getClusterItems<a class="headerlink" href="#getclusteritems" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.getClusterItems()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html" title="java.util.Set">Set</a>&lt;<a class="reference internal" href="ClusterItem.html#de.clusteval.cluster.ClusterItem" title="de.clusteval.cluster.ClusterItem">ClusterItem</a>&gt; <code class="descname">getClusterItems</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.getClusterItems()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A set with all cluster items contained in this clustering.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getclusterwithid">
+<h3>getClusterWithId<a class="headerlink" href="#getclusterwithid" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.getClusterWithId(String)">
+public <a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a> <code class="descname">getClusterWithId</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> id</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.getClusterWithId(String)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> &#8211; The id of the cluster.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The cluster with the given id.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getclusters">
+<h3>getClusters<a class="headerlink" href="#getclusters" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.getClusters()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Set.html" title="java.util.Set">Set</a>&lt;<a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a>&gt; <code class="descname">getClusters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.getClusters()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A set with all clusters of this clustering.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="getqualities">
+<h3>getQualities<a class="headerlink" href="#getqualities" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.getQualities()">
+public <a class="reference internal" href="quality/ClusteringQualitySet.html#de.clusteval.cluster.quality.ClusteringQualitySet" title="de.clusteval.cluster.quality.ClusteringQualitySet">ClusteringQualitySet</a> <code class="descname">getQualities</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.getQualities()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Returns the qualities of this clustering.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>See also:</strong> <a class="reference internal" href="#de.clusteval.cluster.Clustering.qualities" title="de.clusteval.cluster.Clustering.qualities"><code class="xref java java-ref docutils literal"><span class="pre">Clustering.qualities</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="hashcode">
+<h3>hashCode<a class="headerlink" href="#hashcode" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.hashCode()">
+public int <code class="descname">hashCode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.hashCode()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="iterator">
+<h3>iterator<a class="headerlink" href="#iterator" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.iterator()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/util/Iterator.html" title="java.util.Iterator">Iterator</a>&lt;<a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a>&gt; <code class="descname">iterator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.iterator()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="loadintomemory">
+<h3>loadIntoMemory<a class="headerlink" href="#loadintomemory" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.loadIntoMemory()">
+public void <code class="descname">loadIntoMemory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.loadIntoMemory()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads this clustering into memory (clusters + cluster items);</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference internal" href="ClusteringParseException.html#de.clusteval.cluster.ClusteringParseException" title="de.clusteval.cluster.ClusteringParseException"><strong>ClusteringParseException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="parsefromfile">
+<h3>parseFromFile<a class="headerlink" href="#parsefromfile" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.parseFromFile(Repository, File, boolean)">
+public static Pair&lt;<a class="reference internal" href="../program/ParameterSet.html#de.clusteval.program.ParameterSet" title="de.clusteval.program.ParameterSet">ParameterSet</a>, <a class="reference internal" href="#de.clusteval.cluster.Clustering" title="de.clusteval.cluster.Clustering">Clustering</a>&gt; <code class="descname">parseFromFile</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absFilePath</em>, boolean<em> parseQualities</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.parseFromFile(Repository, File, boolean)" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method parses clusterings together with the corresponding parameter sets from a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repository</strong> &#8211; </li>
+<li><strong>absFilePath</strong> &#8211; The absolute path to the input file.</li>
+<li><strong>parseQualities</strong> &#8211; True, if the qualities of the clusterings should also be parsed. Those will be taken from .qual-files.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><strong>IOException</strong> &#8211; Signals that an I/O exception has occurred.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A map containing parameter sets and corresponding clusterings.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="parsefromfuzzycoeffmatrix">
+<h3>parseFromFuzzyCoeffMatrix<a class="headerlink" href="#parsefromfuzzycoeffmatrix" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.parseFromFuzzyCoeffMatrix(Repository, File, String[], float[][])">
+public static <a class="reference internal" href="#de.clusteval.cluster.Clustering" title="de.clusteval.cluster.Clustering">Clustering</a> <code class="descname">parseFromFuzzyCoeffMatrix</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> objectIds</em>, float[][]<em> fuzzyCoeffs</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.parseFromFuzzyCoeffMatrix(Repository, File, String[], float[][])" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>objectIds</strong> &#8211; The ids of the cluster items.</li>
+<li><strong>fuzzyCoeffs</strong> &#8211; Position [i,j] is the fuzzy coefficient of object i and cluster j.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A clustering wrapper object.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="parsefromintarray">
+<h3>parseFromIntArray<a class="headerlink" href="#parsefromintarray" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.parseFromIntArray(Repository, File, String[], int[])">
+public static <a class="reference internal" href="#de.clusteval.cluster.Clustering" title="de.clusteval.cluster.Clustering">Clustering</a> <code class="descname">parseFromIntArray</code><span class="sig-paren">(</span><a class="reference internal" href="../framework/repository/Repository.html#de.clusteval.framework.repository.Repository" title="de.clusteval.framework.repository.Repository">Repository</a><em> repository</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> objectIds</em>, int[]<em> clusterIds</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.parseFromIntArray(Repository, File, String[], int[])" title="Permalink to this definition">¶</a></dt>
+<dd><p>The passed clustering is assumed to be a hard (non-fuzzy) clustering.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>objectIds</strong> &#8211; The ids of the cluster items.</li>
+<li><strong>clusterIds</strong> &#8211; Position i holds the cluster id of cluster item i.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A clustering wrapper object.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="removeclusteritem">
+<h3>removeClusterItem<a class="headerlink" href="#removeclusteritem" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.removeClusterItem(ClusterItem)">
+public boolean <code class="descname">removeClusterItem</code><span class="sig-paren">(</span><a class="reference internal" href="ClusterItem.html#de.clusteval.cluster.ClusterItem" title="de.clusteval.cluster.ClusterItem">ClusterItem</a><em> item</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.removeClusterItem(ClusterItem)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a cluster item from this clustering by removing the item from every cluster contained.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>item</strong> &#8211; The item to remove</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if this item was contained in this clustering.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id4">
+<h3>removeClusterItem<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.removeClusterItem(ClusterItem, Cluster)">
+public boolean <code class="descname">removeClusterItem</code><span class="sig-paren">(</span><a class="reference internal" href="ClusterItem.html#de.clusteval.cluster.ClusterItem" title="de.clusteval.cluster.ClusterItem">ClusterItem</a><em> item</em>, <a class="reference internal" href="Cluster.html#de.clusteval.cluster.Cluster" title="de.clusteval.cluster.Cluster">Cluster</a><em> cluster</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.removeClusterItem(ClusterItem, Cluster)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a cluster item from the specified cluster.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>item</strong> &#8211; The item to remove</li>
+<li><strong>cluster</strong> &#8211; The cluster to remove the item from.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if this item was contained in this clustering.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="setqualities">
+<h3>setQualities<a class="headerlink" href="#setqualities" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.setQualities(ClusteringQualitySet)">
+public void <code class="descname">setQualities</code><span class="sig-paren">(</span><a class="reference internal" href="quality/ClusteringQualitySet.html#de.clusteval.cluster.quality.ClusteringQualitySet" title="de.clusteval.cluster.quality.ClusteringQualitySet">ClusteringQualitySet</a><em> qualitySet</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.setQualities(ClusteringQualitySet)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>qualitySet</strong> &#8211; Set the qualities of this clustering.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="size">
+<h3>size<a class="headerlink" href="#size" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.size()">
+public int <code class="descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.size()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of items in this clustering. In case of fuzzy clusterings this may differ from the fuzzy size.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="toformattedstring">
+<h3>toFormattedString<a class="headerlink" href="#toformattedstring" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.toFormattedString()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">toFormattedString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.toFormattedString()" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A string representing this clustering, where clusters are separated by semi-colons and elements of clusters are separated by commas.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="tohardclustering">
+<h3>toHardClustering<a class="headerlink" href="#tohardclustering" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.toHardClustering()">
+public <a class="reference internal" href="#de.clusteval.cluster.Clustering" title="de.clusteval.cluster.Clustering">Clustering</a> <code class="descname">toHardClustering</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.toHardClustering()" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method converts a fuzzy to a hard clustering by assigning each item to the cluster, with the highest according fuzzy coefficient. If there are ties, the assigned cluster is randomly selected.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A hard clustering resulting from converting this fuzzy clustering.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="tostring">
+<h3>toString<a class="headerlink" href="#tostring" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.toString()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">toString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.toString()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="unloadfrommemory">
+<h3>unloadFromMemory<a class="headerlink" href="#unloadfrommemory" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.cluster.Clustering.unloadFromMemory()">
+public void <code class="descname">unloadFromMemory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.cluster.Clustering.unloadFromMemory()" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unloads this clustering from memory.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Clustering</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#clusteridtocluster">clusterIdToCluster</a></li>
+<li><a class="reference internal" href="#clusters">clusters</a></li>
+<li><a class="reference internal" href="#fuzzysize">fuzzySize</a></li>
+<li><a class="reference internal" href="#itemidtoitem">itemIdToItem</a></li>
+<li><a class="reference internal" href="#itemtocluster">itemToCluster</a></li>
+<li><a class="reference internal" href="#qualities">qualities</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">Clustering</a></li>
+<li><a class="reference internal" href="#id2">Clustering</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#addcluster">addCluster</a></li>
+<li><a class="reference internal" href="#assessquality">assessQuality</a></li>
+<li><a class="reference internal" href="#clone">clone</a></li>
+<li><a class="reference internal" href="#cloneclusteridtocluster">cloneClusterIdToCluster</a></li>
+<li><a class="reference internal" href="#cloneclusters">cloneClusters</a></li>
+<li><a class="reference internal" href="#cloneitemidtoitem">cloneItemIdToItem</a></li>
+<li><a class="reference internal" href="#cloneitemtoclusters">cloneItemToClusters</a></li>
+<li><a class="reference internal" href="#clusteridstofuzzycoeff">clusterIdsToFuzzyCoeff</a></li>
+<li><a class="reference internal" href="#equals">equals</a></li>
+<li><a class="reference internal" href="#id3">fuzzySize</a></li>
+<li><a class="reference internal" href="#getclusterforitem">getClusterForItem</a></li>
+<li><a class="reference internal" href="#getclusteritemwithid">getClusterItemWithId</a></li>
+<li><a class="reference internal" href="#getclusteritems">getClusterItems</a></li>
+<li><a class="reference internal" href="#getclusterwithid">getClusterWithId</a></li>
+<li><a class="reference internal" href="#getclusters">getClusters</a></li>
+<li><a class="reference internal" href="#getqualities">getQualities</a></li>
+<li><a class="reference internal" href="#hashcode">hashCode</a></li>
+<li><a class="reference internal" href="#iterator">iterator</a></li>
+<li><a class="reference internal" href="#loadintomemory">loadIntoMemory</a></li>
+<li><a class="reference internal" href="#parsefromfile">parseFromFile</a></li>
+<li><a class="reference internal" href="#parsefromfuzzycoeffmatrix">parseFromFuzzyCoeffMatrix</a></li>
+<li><a class="reference internal" href="#parsefromintarray">parseFromIntArray</a></li>
+<li><a class="reference internal" href="#removeclusteritem">removeClusterItem</a></li>
+<li><a class="reference internal" href="#id4">removeClusterItem</a></li>
+<li><a class="reference internal" href="#setqualities">setQualities</a></li>
+<li><a class="reference internal" href="#size">size</a></li>
+<li><a class="reference internal" href="#toformattedstring">toFormattedString</a></li>
+<li><a class="reference internal" href="#tohardclustering">toHardClustering</a></li>
+<li><a class="reference internal" href="#tostring">toString</a></li>
+<li><a class="reference internal" href="#unloadfrommemory">unloadFromMemory</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../_sources/de/clusteval/cluster/Clustering.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>
