@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Extending ClustEval &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="extending-clusteval">
+<span id="extendingclusteval"></span><h1>Extending ClustEval<a class="headerlink" href="#extending-clusteval" title="Permalink to this headline">¶</a></h1>
+<p>ClustEval can be extended in different ways. The following sections will show you, which functionality you can add to the framework and how.</p>
+<div class="section" id="clustering-methods">
+<h2>Clustering Methods<a class="headerlink" href="#clustering-methods" title="Permalink to this headline">¶</a></h2>
+<p>As explained in 4.2 clusteval supports two different kinds of clustering methods: Stan-
+dalone programs and R programs. Standalone programs are those, for which you have
+to provide an executable file which then will be executed by the framework. R programs
+are methods implemented in R, which will be invoked by clusteval by using the Rserve
+interface.</p>
+<div class="section" id="standalone-programs">
+<h3>Standalone Programs<a class="headerlink" href="#standalone-programs" title="Permalink to this headline">¶</a></h3>
+<p>See the API documentation of <a class="reference internal" href="de/clusteval/program/StandaloneProgram.html#de.clusteval.program.StandaloneProgram" title="de.clusteval.program.StandaloneProgram"><code class="xref java java-ref docutils literal"><span class="pre">StandaloneProgram</span></code></a>.</p>
+</div>
+<div class="section" id="r-programs">
+<h3>R Programs<a class="headerlink" href="#r-programs" title="Permalink to this headline">¶</a></h3>
+<p>See the API documentation of <a class="reference internal" href="de/clusteval/program/r/RProgram.html#de.clusteval.program.r.RProgram" title="de.clusteval.program.r.RProgram"><code class="xref java java-ref docutils literal"><span class="pre">RProgram</span></code></a>.</p>
+<p>For a list of available R programs see the <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/program/r/package-index.html">corresponding</a> package.</p>
+</div>
+</div>
+<div class="section" id="data-set-types">
+<h2>Data Set Types<a class="headerlink" href="#data-set-types" title="Permalink to this headline">¶</a></h2>
+<p>See the API documentation of <a class="reference internal" href="de/clusteval/data/dataset/type/DataSetType.html#de.clusteval.data.dataset.type.DataSetType" title="de.clusteval.data.dataset.type.DataSetType"><code class="xref java java-ref docutils literal"><span class="pre">DataSetType</span></code></a>.</p>
+<p>For a list of available data set types see the <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/data/dataset/type/package-index.html">data set type</a> package.</p>
+</div>
+<div class="section" id="formats">
+<span id="clusteval-extend-formats"></span><h2>Formats<a class="headerlink" href="#formats" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-set-formats">
+<h3>Data Set Formats<a class="headerlink" href="#data-set-formats" title="Permalink to this headline">¶</a></h3>
+<p>See the API documentation of <a class="reference internal" href="de/clusteval/data/dataset/format/DataSetFormat.html#de.clusteval.data.dataset.format.DataSetFormat" title="de.clusteval.data.dataset.format.DataSetFormat"><code class="xref java java-ref docutils literal"><span class="pre">DataSetFormat</span></code></a>.</p>
+<p>For a list of available data formats see the <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/data/dataset/format/package-index.html">corresponding</a> package.</p>
+</div>
+<div class="section" id="run-result-formats">
+<h3>Run Result Formats<a class="headerlink" href="#run-result-formats" title="Permalink to this headline">¶</a></h3>
+<p>See the API documentation of <a class="reference internal" href="de/clusteval/run/result/format/RunResultFormat.html#de.clusteval.run.result.format.RunResultFormat" title="de.clusteval.run.result.format.RunResultFormat"><code class="xref java java-ref docutils literal"><span class="pre">RunResultFormat</span></code></a>.</p>
+<p>For a list of available run result formats see the <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/run/result/format/package-index.html">corresponding</a> package.</p>
+</div>
+</div>
+<div class="section" id="parameter-optimization-methods">
+<span id="clusteval-extend-parameter-optimization-method"></span><h2>Parameter Optimization Methods<a class="headerlink" href="#parameter-optimization-methods" title="Permalink to this headline">¶</a></h2>
+<p>See the API documentation of <a class="reference internal" href="de/clusteval/cluster/paramOptimization/ParameterOptimizationMethod.html#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod"><code class="xref java java-ref docutils literal"><span class="pre">ParameterOptimizationMethod</span></code></a></p>
+<p>For a list of available parameter optimization methods see the <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/cluster/paramOptimization/package-index.html">corresponding</a> package.</p>
+</div>
+<div class="section" id="distance-measures">
+<span id="clusteval-extend-distance-measures"></span><h2>Distance Measures<a class="headerlink" href="#distance-measures" title="Permalink to this headline">¶</a></h2>
+<p>See the API documentation of <a class="reference internal" href="de/clusteval/data/distance/DistanceMeasure.html#de.clusteval.data.distance.DistanceMeasure" title="de.clusteval.data.distance.DistanceMeasure"><code class="xref java java-ref docutils literal"><span class="pre">DistanceMeasure</span></code></a></p>
+<p>For a list of distance measures see the <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/data/distance/package-index.html">corresponding</a> package.</p>
+</div>
+<div class="section" id="clustering-quality-measures">
+<span id="clusteval-extend-quality-measures"></span><h2>Clustering Quality Measures<a class="headerlink" href="#clustering-quality-measures" title="Permalink to this headline">¶</a></h2>
+<p>See the API documentation of <a class="reference internal" href="de/clusteval/cluster/quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure"><code class="xref java java-ref docutils literal"><span class="pre">ClusteringQualityMeasure</span></code></a></p>
+<p>For a list of clustering quality measures see the <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/cluster/quality/package-index.html">corresponding</a> package.</p>
+</div>
+<div class="section" id="statistics">
+<h2>Statistics<a class="headerlink" href="#statistics" title="Permalink to this headline">¶</a></h2>
+<p>ClustEval can analyze properties of clusterings, data sets and relationship between the two. We call such properties run, data and run-data statistics respectively.</p>
+<p>For more information about how to extend ClustEval with your own statistics have a look at</p>
+<ul class="simple">
+<li>the API documentation of <a class="reference internal" href="de/clusteval/run/statistics/RunStatistic.html#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic</span></code></a>,</li>
+<li>the API documentation of <a class="reference internal" href="de/clusteval/data/statistics/DataStatistic.html#de.clusteval.data.statistics.DataStatistic" title="de.clusteval.data.statistics.DataStatistic"><code class="xref java java-ref docutils literal"><span class="pre">DataStatistic</span></code></a>,</li>
+<li>the API documentation of <a class="reference internal" href="de/clusteval/run/statistics/RunDataStatistic.html#de.clusteval.run.statistics.RunDataStatistic" title="de.clusteval.run.statistics.RunDataStatistic"><code class="xref java java-ref docutils literal"><span class="pre">RunDataStatistic</span></code></a>.</li>
+</ul>
+<p>For a list of available statistics see the <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/run/statistics/package-index.html">run statistics</a> and <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/data/statistics/package-index.html">data statistics</a> packages.</p>
+</div>
+<div class="section" id="data-preprocessors">
+<span id="clusteval-extend-data-preprocessors"></span><h2>Data Preprocessors<a class="headerlink" href="#data-preprocessors" title="Permalink to this headline">¶</a></h2>
+<p>See the API documentation of <a class="reference internal" href="de/clusteval/data/preprocessing/DataPreprocessor.html#de.clusteval.data.preprocessing.DataPreprocessor" title="de.clusteval.data.preprocessing.DataPreprocessor"><code class="xref java java-ref docutils literal"><span class="pre">DataPreprocessor</span></code></a></p>
+<p>For a list of data preprocessors see the <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/data/preprocessing/package-index.html">corresponding</a> package.</p>
+</div>
+<div class="section" id="data-randomizers">
+<span id="clusteval-extend-data-randomizers"></span><h2>Data Randomizers<a class="headerlink" href="#data-randomizers" title="Permalink to this headline">¶</a></h2>
+<p>See the API documentation of <a class="reference internal" href="de/clusteval/data/randomizer/DataRandomizer.html#de.clusteval.data.randomizer.DataRandomizer" title="de.clusteval.data.randomizer.DataRandomizer"><code class="xref java java-ref docutils literal"><span class="pre">DataRandomizer</span></code></a></p>
+<p>For a list of data randomizer see the <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/data/randomizer/package-index.html">corresponding</a> package.</p>
+</div>
+<div class="section" id="data-set-generators">
+<span id="clusteval-extend-dataset-generators"></span><h2>Data Set Generators<a class="headerlink" href="#data-set-generators" title="Permalink to this headline">¶</a></h2>
+<p>See the API documentation of <a class="reference internal" href="de/clusteval/data/dataset/generator/DataSetGenerator.html#de.clusteval.data.dataset.generator.DataSetGenerator" title="de.clusteval.data.dataset.generator.DataSetGenerator"><code class="xref java java-ref docutils literal"><span class="pre">DataSetGenerator</span></code></a></p>
+<p>For a list of data set generator see the <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/data/dataset/generator/package-index.html">corresponding</a> package.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Extending ClustEval</a><ul>
+<li><a class="reference internal" href="#clustering-methods">Clustering Methods</a><ul>
+<li><a class="reference internal" href="#standalone-programs">Standalone Programs</a></li>
+<li><a class="reference internal" href="#r-programs">R Programs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#data-set-types">Data Set Types</a></li>
+<li><a class="reference internal" href="#formats">Formats</a><ul>
+<li><a class="reference internal" href="#data-set-formats">Data Set Formats</a></li>
+<li><a class="reference internal" href="#run-result-formats">Run Result Formats</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#parameter-optimization-methods">Parameter Optimization Methods</a></li>
+<li><a class="reference internal" href="#distance-measures">Distance Measures</a></li>
+<li><a class="reference internal" href="#clustering-quality-measures">Clustering Quality Measures</a></li>
+<li><a class="reference internal" href="#statistics">Statistics</a></li>
+<li><a class="reference internal" href="#data-preprocessors">Data Preprocessors</a></li>
+<li><a class="reference internal" href="#data-randomizers">Data Randomizers</a></li>
+<li><a class="reference internal" href="#data-set-generators">Data Set Generators</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/extendingclusteval.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

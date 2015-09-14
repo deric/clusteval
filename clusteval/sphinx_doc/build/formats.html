@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Formats - Input &amp; Output &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="contents.html" />
+    <link rel="up" title="Backend" href="backend.html" />
+    <link rel="next" title="Clustering Quality Measures - Is It a Good Clustering?" href="qualitymeasures.html" />
+    <link rel="prev" title="Configuration Files - Handling ClustEval" href="configurations.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="qualitymeasures.html" title="Clustering Quality Measures - Is It a Good Clustering?"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="configurations.html" title="Configuration Files - Handling ClustEval"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="backend.html" accesskey="U">Backend</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="formats-input-output">
+<span id="formats"></span><h1>Formats - Input &amp; Output<a class="headerlink" href="#formats-input-output" title="Permalink to this headline">¶</a></h1>
+<p>As already mentioned, datasets have their own formats and clustering methods can
+require different input and output formats. The general process how these formats link
+together can be visualized as seen in figure 4.
+A dataset of a certain format known to the framework is converted into the standard
+input format of the framework using the parser belonging to the format of the dataset.
+Then the dataset in the standard format is converted to any of the supported input
+formats of the clustering method using the parser belonging to the chosen supported
+input format of the clustering method. Now the clustering method is applied to the
+dataset in the supported format. A clustering result is produced in the format of the
+clustering method. This result is then converted to the standard output format of the
+framework using the parser belonging to the format of the result. The framework then
+has access to the clustering results of the clustering method applied to the dataset in a
+format it understands, such that diverse operations can be performed on the result.</p>
+<p>If a new clustering method is added to the framework, its input and output formats
+need to be known to the framework.
+clusteval ships with a set of supported input and output formats. The input
+formats are</p>
+<div class="section" id="available-formats">
+<h2>Available Formats<a class="headerlink" href="#available-formats" title="Permalink to this headline">¶</a></h2>
+<p>For lists of all available input and result formats see <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/data/dataset/format/package-index.html">here</a> and <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/run/result/format/package-index.html">here</a> respectively.</p>
+</div>
+<div class="section" id="providing-new-formats">
+<h2>Providing New Formats<a class="headerlink" href="#providing-new-formats" title="Permalink to this headline">¶</a></h2>
+<p>If the new clustering method requires another input format not in the list, you will
+have to make it available to the framework by writing</p>
+<ul class="simple">
+<li>a wrapper class for this dataset format and</li>
+<li>a parser, which converts the standardized input format of this framework to this input format.</li>
+</ul>
+<p>If the new clustering method has a so far unknown output format, you will have to
+provide</p>
+<ul class="simple">
+<li>a wrapper class for this output format as well as</li>
+<li>a parser that converts that format to the standardized output format.</li>
+</ul>
+<p>When this clustering method is applied to a dataset, the resulting clustering in the
+new format is converted to a standardized output format using your parser, such that
+further analyses can be performed regardless of the used clustering method.</p>
+<p>For more information on how the extend ClustEval by new formats see <a class="reference internal" href="extendingclusteval.html#clusteval-extend-formats"><span>Formats</span></a>.</p>
+</div>
+<div class="section" id="standard-input-format">
+<h2>Standard Input Format<a class="headerlink" href="#standard-input-format" title="Permalink to this headline">¶</a></h2>
+<p>The standard input format is a SimMatrixDataSetFormat which is described under
+4.5.6.</p>
+</div>
+<div class="section" id="standard-output-format">
+<h2>Standard Output Format<a class="headerlink" href="#standard-output-format" title="Permalink to this headline">¶</a></h2>
+<p>The standard output format contains one clustering generated for parameter values
+p 1 = v1,...,p K = vK in one line with clusters c1, ..., cK, cluster sizes size(ci) = si.
+Every cluster ci contains elements e i 1, ..., e i si with fuzzy coefficients f i 1, ..., f i si.
+The format for this looks as follows:</p>
+<p>TODO</p>
+<p>The parameter names and values on the left have to be separated by a TAB from
+the string &#8220;Clustering&#8221; and the clustering on the right. If the fuzzy coefficients are
+missing, the framework will not be able to parse the result file.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Formats - Input &amp; Output</a><ul>
+<li><a class="reference internal" href="#available-formats">Available Formats</a></li>
+<li><a class="reference internal" href="#providing-new-formats">Providing New Formats</a></li>
+<li><a class="reference internal" href="#standard-input-format">Standard Input Format</a></li>
+<li><a class="reference internal" href="#standard-output-format">Standard Output Format</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="configurations.html"
+                        title="previous chapter">Configuration Files - Handling ClustEval</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="qualitymeasures.html"
+                        title="next chapter">Clustering Quality Measures - Is It a Good Clustering?</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/formats.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="qualitymeasures.html" title="Clustering Quality Measures - Is It a Good Clustering?"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="configurations.html" title="Configuration Files - Handling ClustEval"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="backend.html" >Backend</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

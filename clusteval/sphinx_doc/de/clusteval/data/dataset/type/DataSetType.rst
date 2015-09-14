@@ -24,6 +24,23 @@ DataSetType
 
    Dataset types are used to classify datasets into different thematic groups.
 
+   Data set types can be added to ClustEval by
+
+   1. extending this class with your own class MyDataSetType. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.
+
+     * :java:ref:`DataSetType(Repository, boolean,long, File)`: The constructor of your class. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.
+     * :java:ref:`DataSetType(MyDataSetType)`: The copy constructor of your class taking another instance of your class. This constructor has to be im- plemented and public.
+     * :java:ref:`getAlias()`: This alias is used whenever this program is visually represented and a readable name is needed. This is used to represent your program on the website for example.
+
+   2. Creating a jar file named MyDataSetType.jar containing the MyDataSetType.class compiled on your machine in the correct folder structure corresponding to the packages:
+
+     * de/clusteval/data/dataset/type/MyDataSetType.class
+
+   3. Putting the MyDataSetType.jar into the dataset types folder of the repository:
+
+     * <REPOSITORY ROOT>/supp/types/dataset
+     * The backend server will recognize and try to load the new dataset type automatically the next time, the :java:ref:`DataSetTypeFinderThread` checks the filesystem.
+
    :author: Christian Wiwie
 
 Constructors

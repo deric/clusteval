@@ -29,6 +29,32 @@ import de.clusteval.framework.repository.RepositoryObject;
  * Every runresult format comes together with a parser class (see
  * {@link RunResultFormatParser}).
  * 
+ * <p>
+ * {@code
+ * 
+ * A runresult format MyRunResultFormat can be added to ClustEval by
+ * 
+ * 1. extending this class with your own class MyRunResultFormat. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your runresult format.
+ * 
+ *   * :java:ref:`RunResultFormat(Repository, boolean, long, File)`: The constructor of your runresult format class. This constructor has to be implemented and public, otherwise the framework will not be able to load your runresult format.
+ *   * :java:ref:`RunResultFormat(RunResultFormat)`: The copy constructor of your class taking another instance of your class. This constructor has to be implemented and public.
+ *   
+ * 2. extending the class :java:ref:`RunResultFormatParser` with your own class MyRunResultFormatParser. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.
+ * 
+ *   * :java:ref:`convertToStandardFormat()`: This method converts the given runresult to the standard runresult format of the framework. The converted runresult has to be named exactly as the input file postfixed with the extension ".conv". The original runresult <REPOSITORY ROOT>/results/<runIdentifier>/clusters/TransClust sfld.1.result has to be converted to <REPOSITORY ROOT>/results/<runIdentifier>/clusters/TransClust sfld.1.result.conv by this method. A wrapper object for the converted runresult has be stored in the result attribute.
+ *   
+ * 3. Creating a jar file named MyRunResultFormat.jar containing the MyRunResultFormat.class and MyRunResultFormatParser.class compiled on your machine in the correct folder structure corresponding to the packages:
+ * 
+ *   * de/clusteval/run/result/format/MyRunResultFormat.class
+ *   * de/clusteval/run/result/format/MyRunResultFormatParser.class
+ *   
+ * 4. Putting the MyRunResultFormat.jar into the runresult formats folder of the repository:
+ * 
+ *   * <REPOSITORY ROOT>/supp/formats/runresult
+ *   * The backend server will recognize and try to load the new runresult format automatically the next time, the :java:ref:`RunResultFormatFinderThread` checks the filesystem.
+ * 
+ * }
+ * 
  * @author Christian Wiwie
  */
 public abstract class RunResultFormat extends RepositoryObject {

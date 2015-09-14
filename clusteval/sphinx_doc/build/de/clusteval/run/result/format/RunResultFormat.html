@@ -48,6 +48,42 @@
 public abstract class <code class="descname">RunResultFormat</code> extends <a class="reference internal" href="../../../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a><a class="headerlink" href="#de.clusteval.run.result.format.RunResultFormat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run results (e.g. clusterings) can have different formats. For all kinds of operations the framework needs to know which format a runresult has and how it can be converted to an understandable (standard) format.</p>
 <p>Every runresult format comes together with a parser class (see <a class="reference internal" href="RunResultFormatParser.html#de.clusteval.run.result.format.RunResultFormatParser" title="de.clusteval.run.result.format.RunResultFormatParser"><code class="xref java java-ref docutils literal"><span class="pre">RunResultFormatParser</span></code></a>).</p>
+<p>A runresult format MyRunResultFormat can be added to ClustEval by</p>
+<ol class="arabic simple">
+<li>extending this class with your own class MyRunResultFormat. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your runresult format.</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#de.clusteval.run.result.format.RunResultFormat.RunResultFormat(Repository, boolean, long, File)" title="de.clusteval.run.result.format.RunResultFormat.RunResultFormat(Repository, boolean, long, File)"><code class="xref java java-ref docutils literal"><span class="pre">RunResultFormat(Repository,</span> <span class="pre">boolean,</span> <span class="pre">long,</span> <span class="pre">File)</span></code></a>: The constructor of your runresult format class. This constructor has to be implemented and public, otherwise the framework will not be able to load your runresult format.</li>
+<li><a class="reference internal" href="#de.clusteval.run.result.format.RunResultFormat.RunResultFormat(RunResultFormat)" title="de.clusteval.run.result.format.RunResultFormat.RunResultFormat(RunResultFormat)"><code class="xref java java-ref docutils literal"><span class="pre">RunResultFormat(RunResultFormat)</span></code></a>: The copy constructor of your class taking another instance of your class. This constructor has to be implemented and public.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>extending the class <a class="reference internal" href="RunResultFormatParser.html#de.clusteval.run.result.format.RunResultFormatParser" title="de.clusteval.run.result.format.RunResultFormatParser"><code class="xref java java-ref docutils literal"><span class="pre">RunResultFormatParser</span></code></a> with your own class MyRunResultFormatParser. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="RRWRunResultFormatParser.html#de.clusteval.run.result.format.RRWRunResultFormatParser.convertToStandardFormat()" title="de.clusteval.run.result.format.RRWRunResultFormatParser.convertToStandardFormat()"><code class="xref java java-ref docutils literal"><span class="pre">convertToStandardFormat()</span></code></a>: This method converts the given runresult to the standard runresult format of the framework. The converted runresult has to be named exactly as the input file postfixed with the extension &#8221;.conv&#8221;. The original runresult &lt;REPOSITORY ROOT&gt;/results/&lt;runIdentifier&gt;/clusters/TransClust sfld.1.result has to be converted to &lt;REPOSITORY ROOT&gt;/results/&lt;runIdentifier&gt;/clusters/TransClust sfld.1.result.conv by this method. A wrapper object for the converted runresult has be stored in the result attribute.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Creating a jar file named MyRunResultFormat.jar containing the MyRunResultFormat.class and MyRunResultFormatParser.class compiled on your machine in the correct folder structure corresponding to the packages:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>de/clusteval/run/result/format/MyRunResultFormat.class</li>
+<li>de/clusteval/run/result/format/MyRunResultFormatParser.class</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li>Putting the MyRunResultFormat.jar into the runresult formats folder of the repository:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>&lt;REPOSITORY ROOT&gt;/supp/formats/runresult</li>
+<li>The backend server will recognize and try to load the new runresult format automatically the next time, the <a class="reference internal" href="RunResultFormatFinderThread.html#de.clusteval.run.result.format.RunResultFormatFinderThread" title="de.clusteval.run.result.format.RunResultFormatFinderThread"><code class="xref java java-ref docutils literal"><span class="pre">RunResultFormatFinderThread</span></code></a> checks the filesystem.</li>
+</ul>
+</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Run Results &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="run-results">
+<h1>Run Results<a class="headerlink" href="#run-results" title="Permalink to this headline">¶</a></h1>
+<p>When a run is performed, a unique run identifier is determined which includes the start time and date and the name of the run. If the run exampleRun is performed at the 5th of July 2012 at 12:58:38, its unique run identifier is:</p>
+<div class="highlight-python"><div class="highlight"><pre>06_05_2012-12_58_38_exampleRun
+</pre></div>
+</div>
+<p>which is also used as the subfolder to store its results in:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;REPOSITORY ROOT&gt;/results/06_05_2012-12_58_38_exampleRun.
+</pre></div>
+</div>
+<p>Every such folder contains some subfolders. Common to all run types are the following subfolders:</p>
+<ul class="simple">
+<li>&lt;REPOSITORY ROOT&gt;/results/&lt;runIdentifier&gt;/configs : Contains the configuration files that are used in this run, which includes all data-, dataset-, goldstandard- and program configurations as well as the run file.</li>
+<li>&lt;REPOSITORY ROOT&gt;/results/&lt;runIdentifier&gt;/inputs : Contains backups of all the input files used in this run, which includes all datasets referenced by the data configurations.</li>
+<li>&lt;REPOSITORY ROOT&gt;/results/&lt;runIdentifier&gt;/goldstandards : Contains backups of all the goldstandard files used in this run.</li>
+<li>&lt;REPOSITORY ROOT&gt;/results/&lt;runIdentifier&gt;/logs : Contains different log files, one for the complete run and one for every iteration performed during the run.</li>
+</ul>
+<div class="section" id="execution-run-results">
+<h2>Execution Run Results<a class="headerlink" href="#execution-run-results" title="Permalink to this headline">¶</a></h2>
+<p>Execution run result folders additionally contain the following subfolders:</p>
+<ul class="simple">
+<li>&lt;REPOSITORY ROOT&gt;/results/&lt;runIdentifier&gt;/clusters</li>
+</ul>
+</div>
+<div class="section" id="analysis-run-results">
+<h2>Analysis Run Results<a class="headerlink" href="#analysis-run-results" title="Permalink to this headline">¶</a></h2>
+<p>Analysis run result folders additionally contain the following subfolders:</p>
+<ul class="simple">
+<li>&lt;REPOSITORY ROOT&gt;/results/&lt;runIdentifier&gt;/analyses</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Run Results</a><ul>
+<li><a class="reference internal" href="#execution-run-results">Execution Run Results</a></li>
+<li><a class="reference internal" href="#analysis-run-results">Analysis Run Results</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/results.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

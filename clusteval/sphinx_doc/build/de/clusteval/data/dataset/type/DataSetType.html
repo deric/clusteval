@@ -47,6 +47,34 @@
 <dt id="de.clusteval.data.dataset.type.DataSetType">
 public abstract class <code class="descname">DataSetType</code> extends <a class="reference internal" href="../../../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a><a class="headerlink" href="#de.clusteval.data.dataset.type.DataSetType" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dataset types are used to classify datasets into different thematic groups.</p>
+<p>Data set types can be added to ClustEval by</p>
+<ol class="arabic simple">
+<li>extending this class with your own class MyDataSetType. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#de.clusteval.data.dataset.type.DataSetType.DataSetType(Repository, boolean, long, File)" title="de.clusteval.data.dataset.type.DataSetType.DataSetType(Repository, boolean, long, File)"><code class="xref java java-ref docutils literal"><span class="pre">DataSetType(Repository,</span> <span class="pre">boolean,long,</span> <span class="pre">File)</span></code></a>: The constructor of your class. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.</li>
+<li><a class="reference internal" href="#de.clusteval.data.dataset.type.DataSetType.DataSetType(Repository, boolean, long, File)" title="de.clusteval.data.dataset.type.DataSetType.DataSetType(Repository, boolean, long, File)"><code class="xref java java-ref docutils literal"><span class="pre">DataSetType(MyDataSetType)</span></code></a>: The copy constructor of your class taking another instance of your class. This constructor has to be im- plemented and public.</li>
+<li><a class="reference internal" href="#de.clusteval.data.dataset.type.DataSetType.getAlias()" title="de.clusteval.data.dataset.type.DataSetType.getAlias()"><code class="xref java java-ref docutils literal"><span class="pre">getAlias()</span></code></a>: This alias is used whenever this program is visually represented and a readable name is needed. This is used to represent your program on the website for example.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Creating a jar file named MyDataSetType.jar containing the MyDataSetType.class compiled on your machine in the correct folder structure corresponding to the packages:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>de/clusteval/data/dataset/type/MyDataSetType.class</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Putting the MyDataSetType.jar into the dataset types folder of the repository:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>&lt;REPOSITORY ROOT&gt;/supp/types/dataset</li>
+<li>The backend server will recognize and try to load the new dataset type automatically the next time, the <a class="reference internal" href="DataSetTypeFinderThread.html#de.clusteval.data.dataset.type.DataSetTypeFinderThread" title="de.clusteval.data.dataset.type.DataSetTypeFinderThread"><code class="xref java java-ref docutils literal"><span class="pre">DataSetTypeFinderThread</span></code></a> checks the filesystem.</li>
+</ul>
+</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

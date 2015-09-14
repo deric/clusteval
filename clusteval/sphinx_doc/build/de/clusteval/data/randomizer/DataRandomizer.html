@@ -46,7 +46,38 @@
 <dl class="type">
 <dt id="de.clusteval.data.randomizer.DataRandomizer">
 public abstract class <code class="descname">DataRandomizer</code> extends <a class="reference internal" href="../../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a> implements <a class="reference internal" href="../../program/r/RLibraryInferior.html#de.clusteval.program.r.RLibraryInferior" title="de.clusteval.program.r.RLibraryInferior">RLibraryInferior</a><a class="headerlink" href="#de.clusteval.data.randomizer.DataRandomizer" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>A data randomizer MyDataRandomizer can be added to ClustEval by</p>
+<ol class="arabic simple">
+<li>extending this class with your own class MyDataRandomizer. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your runresult format.</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#de.clusteval.data.randomizer.DataRandomizer.DataRandomizer(Repository, boolean, long, File)" title="de.clusteval.data.randomizer.DataRandomizer.DataRandomizer(Repository, boolean, long, File)"><code class="xref java java-ref docutils literal"><span class="pre">DataRandomizer(Repository,</span> <span class="pre">boolean,</span> <span class="pre">long,</span> <span class="pre">File)</span></code></a>: The constructor of your class. This constructor has to be implemented and public, otherwise the framework will not be able to load your runresult format.</li>
+<li><a class="reference internal" href="#de.clusteval.data.randomizer.DataRandomizer.DataRandomizer(DataRandomizer)" title="de.clusteval.data.randomizer.DataRandomizer.DataRandomizer(DataRandomizer)"><code class="xref java java-ref docutils literal"><span class="pre">DataRandomizer(DataRandomizer)</span></code></a>: The copy constructor of your class taking another instance of your class. This constructor has to be implemented and public.</li>
+<li><a class="reference internal" href="#de.clusteval.data.randomizer.DataRandomizer.getOptions()" title="de.clusteval.data.randomizer.DataRandomizer.getOptions()"><code class="xref java java-ref docutils literal"><span class="pre">getOptions()</span></code></a>: This method returns an <code class="xref java java-ref docutils literal"><span class="pre">Options</span></code> object that encapsulates all parameters that this randomizer has. These can be set by the user in the client.</li>
+<li><a class="reference internal" href="#de.clusteval.data.randomizer.DataRandomizer.handleOptions(CommandLine)" title="de.clusteval.data.randomizer.DataRandomizer.handleOptions(CommandLine)"><code class="xref java java-ref docutils literal"><span class="pre">handleOptions(CommandLine)</span></code></a>: This method handles the values that the user set for the parameters specified in <a class="reference internal" href="#de.clusteval.data.randomizer.DataRandomizer.getOptions()" title="de.clusteval.data.randomizer.DataRandomizer.getOptions()"><code class="xref java java-ref docutils literal"><span class="pre">getOptions()</span></code></a>.</li>
+<li><a class="reference internal" href="#de.clusteval.data.randomizer.DataRandomizer.getDataSetFileNamePostFix()" title="de.clusteval.data.randomizer.DataRandomizer.getDataSetFileNamePostFix()"><code class="xref java java-ref docutils literal"><span class="pre">getDataSetFileNamePostFix()</span></code></a>: This method makes sure, that randomized data sets of the same data configuration do not end up with the same file name and overwrite each other. A good advice is to integrate the randomizer parameter values or a timestamp.</li>
+<li><a class="reference internal" href="#de.clusteval.data.randomizer.DataRandomizer.randomizeDataConfig()" title="de.clusteval.data.randomizer.DataRandomizer.randomizeDataConfig()"><code class="xref java java-ref docutils literal"><span class="pre">randomizeDataConfig()</span></code></a>: This is the core of your randomizer; In this method the #dataConfig attribute is randomized and a distorted data set and gold standard is returned.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Creating a jar file named MyDataRandomizer.jar containing the MyDataRandomizer.class compiled on your machine in the correct folder structure corresponding to the packages:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>de/clusteval/data/randomizer/MyDataRandomizer.class</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Putting the MyDataRandomizer.jar into the corresponding folder of the repository:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>&lt;REPOSITORY ROOT&gt;/supp/randomizers</li>
+<li>The backend server will recognize and try to load the new class automatically the next time, the <a class="reference internal" href="DataRandomizerFinderThread.html#de.clusteval.data.randomizer.DataRandomizerFinderThread" title="de.clusteval.data.randomizer.DataRandomizerFinderThread"><code class="xref java java-ref docutils literal"><span class="pre">DataRandomizerFinderThread</span></code></a> checks the filesystem.</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -182,7 +213,7 @@ protected abstract Options <code class="descname">getOptions</code><span class="
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A wrapper object keeping the options of your dataset generator. The options returned by this method are going to be used and interpreted in your subclass implementation in <a class="reference internal" href="../dataset/generator/CuboidDataSetGenerator.html#de.clusteval.data.dataset.generator.CuboidDataSetGenerator.generateDataSet()" title="de.clusteval.data.dataset.generator.CuboidDataSetGenerator.generateDataSet()"><code class="xref java java-ref docutils literal"><span class="pre">generateDataSet()</span></code></a> .</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A wrapper object keeping the options of your dataset generator. The options returned by this method are going to be used and interpreted in your subclass implementation in <a class="reference internal" href="../dataset/generator/DataSetGenerator.html#de.clusteval.data.dataset.generator.DataSetGenerator.generateDataSet()" title="de.clusteval.data.dataset.generator.DataSetGenerator.generateDataSet()"><code class="xref java java-ref docutils literal"><span class="pre">generateDataSet()</span></code></a> .</td>
 </tr>
 </tbody>
 </table>
@@ -195,7 +226,7 @@ protected abstract Options <code class="descname">getOptions</code><span class="
 <dt id="de.clusteval.data.randomizer.DataRandomizer.handleOptions(CommandLine)">
 protected abstract void <code class="descname">handleOptions</code><span class="sig-paren">(</span>CommandLine<em> cmd</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.randomizer.DataRandomizer.handleOptions(CommandLine)" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method is reponsible for interpreting the arguments passed to this generator call and to initialize possibly needed member variables.</p>
-<p>If you want to react to certain options in your implementation of <a class="reference internal" href="../dataset/generator/CuboidDataSetGenerator.html#de.clusteval.data.dataset.generator.CuboidDataSetGenerator.generateDataSet()" title="de.clusteval.data.dataset.generator.CuboidDataSetGenerator.generateDataSet()"><code class="xref java java-ref docutils literal"><span class="pre">generateDataSet()</span></code></a>, initialize member variables in this method.</p>
+<p>If you want to react to certain options in your implementation of <a class="reference internal" href="../dataset/generator/DataSetGenerator.html#de.clusteval.data.dataset.generator.DataSetGenerator.generateDataSet()" title="de.clusteval.data.dataset.generator.DataSetGenerator.generateDataSet()"><code class="xref java java-ref docutils literal"><span class="pre">generateDataSet()</span></code></a>, initialize member variables in this method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

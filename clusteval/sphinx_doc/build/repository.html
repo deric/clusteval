@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Repository - The Central Storage of ClustEval &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="contents.html" />
+    <link rel="up" title="Backend" href="backend.html" />
+    <link rel="next" title="Run Results" href="results.html" />
+    <link rel="prev" title="Parameter Optimization Methods" href="paramoptmethods.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="results.html" title="Run Results"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="paramoptmethods.html" title="Parameter Optimization Methods"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="backend.html" accesskey="U">Backend</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="repository-the-central-storage-of-clusteval">
+<span id="repository"></span><h1>Repository - The Central Storage of ClustEval<a class="headerlink" href="#repository-the-central-storage-of-clusteval" title="Permalink to this headline">¶</a></h1>
+<p>The backend server is based on a central repository which concludes all files in its folder
+structure. You can easily start a framework with a different set of files by simply using
+another repository.</p>
+<div class="section" id="folder-structure">
+<h2>Folder Structure<a class="headerlink" href="#folder-structure" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>data: Contains all data-related files.<ul>
+<li>configs [<a href="#id1"><span class="problematic" id="id2">*</span></a>.dataconfig]: Contains the data configuration files 4.9.1.</li>
+<li>data sets: Contains all data set-related files 4.3.<ul>
+<li>configs [<a href="#id3"><span class="problematic" id="id4">*</span></a>.dsconfig]: Contains the data set configuration files 4.9.3.</li>
+<li>[subfolder for every data set]: The data set files themselves.</li>
+</ul>
+</li>
+<li>goldstandards: Contains all goldstandard-related files 4.4.<ul>
+<li>configs [<a href="#id5"><span class="problematic" id="id6">*</span></a>.gsconfig]: Contains the goldstandard configurations 4.9.5.</li>
+<li>[subfolder for every goldstandard]: Contains the goldstandard files themselves.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>programs: Contains all program-related files<ul>
+<li>configs [<a href="#id7"><span class="problematic" id="id8">*</span></a>.config]: Contains all program configuration files 4.9.7.</li>
+<li>[subfolder for every program]: The program files themselves.</li>
+</ul>
+</li>
+<li>results: The results of run executions 4.11.<ul>
+<li>[subfolder for every run execution]: A subfolder contains the results of one run execution.<ul>
+<li>clusters: The clustering results, including clustering qualities and graphics.</li>
+<li>configs: Copies of all used configuration files of this run execution to enable exact reproduction.</li>
+<li>inputs: Copies of all used inputs of this run execution to enable exact reproduction.</li>
+<li>logs: All log files corresponding to this run execution.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>runs: All run-related files.<ul>
+<li>[<a href="#id9"><span class="problematic" id="id10">*</span></a>.run: a file for every run]: Contains the run-files.</li>
+</ul>
+</li>
+<li>supp: Contains supplementary material.<ul>
+<li>clustering: Supplementary material related to clusterings.</li>
+<li>paramOptimization: Contains clustering parameter optimization methods 4.8.<ul>
+<li>[<a href="#id11"><span class="problematic" id="id12">*</span></a>.jar]: Each jar-file corresponds to a parameter optimization method and is loaded dynamically by the framework.</li>
+</ul>
+</li>
+<li>qualityMeasures: Contains clustering quality measures 4.6.<ul>
+<li>[<a href="#id13"><span class="problematic" id="id14">*</span></a>.jar]: Each jar-file corresponds to a clustering quality measure and is loaded dynamically by the framework.</li>
+</ul>
+</li>
+<li>formats: Contains all formats used by the framework.<ul>
+<li>data set: Contains all data set formats 4.5.
+* [<a href="#id15"><span class="problematic" id="id16">*</span></a>.jar]: Each jar-file corresponds to a data set format and is loaded dynamically by the framework.</li>
+<li>runresult: Contains all runresult formats 4.5.
+* [<a href="#id17"><span class="problematic" id="id18">*</span></a>.jar]: Each jar-file corresponds to a runresult format and is loaded dynamically by the framework.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Repository - The Central Storage of ClustEval</a><ul>
+<li><a class="reference internal" href="#folder-structure">Folder Structure</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="paramoptmethods.html"
+                        title="previous chapter">Parameter Optimization Methods</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="results.html"
+                        title="next chapter">Run Results</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/repository.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="results.html" title="Run Results"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="paramoptmethods.html" title="Parameter Optimization Methods"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="backend.html" >Backend</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

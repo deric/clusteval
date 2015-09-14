@@ -29,7 +29,7 @@ RunDataStatistic
    1. extending the class :java:ref:`RunDataStatistic` with your own class MyRunDataStatistic. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.
 
      * :java:ref:`RunDataStatistic(Repository, boolean, long, File)` : The constructor for your run-data statistic. This constructor has to be implemented and public.
-     * :java:ref:`RunDataStatistic(MyRunDataStatistic)`q : The copy constructor for your run-data statistic. This constructor has to be implemented and public.
+     * :java:ref:`RunDataStatistic(MyRunDataStatistic)` : The copy constructor for your run-data statistic. This constructor has to be implemented and public.
      * :java:ref:`Statistic.getAlias()` : See :java:ref:`Statistic.getAlias()`.
      * :java:ref:`Statistic.parseFromString(String)` : See :java:ref:`Statistic.parseFromString(String)`.
 

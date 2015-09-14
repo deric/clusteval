@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Parameter Optimization Methods - Finding Good Clustering Parameters &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="contents.html" />
+    <link rel="up" title="Backend" href="backend.html" />
+    <link rel="next" title="Data Set Types - Classifying Data" href="datasettypes.html" />
+    <link rel="prev" title="Distance Measures - Converting Absolute Coordinates to Pairwise Similarities" href="distancemeasures.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="datasettypes.html" title="Data Set Types - Classifying Data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="distancemeasures.html" title="Distance Measures - Converting Absolute Coordinates to Pairwise Similarities"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="backend.html" accesskey="U">Backend</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="parameter-optimization-methods-finding-good-clustering-parameters">
+<span id="paramoptmethods"></span><h1>Parameter Optimization Methods - Finding Good Clustering Parameters<a class="headerlink" href="#parameter-optimization-methods-finding-good-clustering-parameters" title="Permalink to this headline">¶</a></h1>
+<p>The backend can perform automatized and autonomous optimization of parameters of
+clustering methods. This is an iterative procedure where the backend assesses qualities
+of clustering results of the last iteration and adapts the parameter for the next iteration
+in order to find optimal parameters for the method on the given data. The parameter
+optimization method determines the following aspects:</p>
+<ol class="arabic simple">
+<li>the number of iterations of the optimization process</li>
+<li>the parameter sets evaluated</li>
+<li>the handling of diverging iterations</li>
+<li>the storage of the iteration results in RAM</li>
+</ol>
+<p>ClustEval ships with a standard set of parameter optimization methods. You can find a list <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/cluster/paramOptimization/package-index.html">here</a></p>
+<p>Check <a class="reference internal" href="extendingclusteval.html#clusteval-extend-parameter-optimization-method"><span>Parameter Optimization Methods</span></a> for more information on how to extend the framework by new parameter optimization
+methods.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="distancemeasures.html"
+                        title="previous chapter">Distance Measures - Converting Absolute Coordinates to Pairwise Similarities</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="datasettypes.html"
+                        title="next chapter">Data Set Types - Classifying Data</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/paramoptmethods.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="datasettypes.html" title="Data Set Types - Classifying Data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="distancemeasures.html" title="Distance Measures - Converting Absolute Coordinates to Pairwise Similarities"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="backend.html" >Backend</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

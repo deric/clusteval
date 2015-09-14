@@ -74,6 +74,31 @@ import de.clusteval.run.statistics.UnknownRunStatisticException;
 import file.FileUtils;
 
 /**
+ * <p>
+ * {@code
+ * 
+ * A data randomizer MyDataRandomizer can be added to ClustEval by
+ * 
+ * 1. extending this class with your own class MyDataRandomizer. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your runresult format.
+ * 
+ *   * :java:ref:`DataRandomizer(Repository, boolean, long, File)`: The constructor of your class. This constructor has to be implemented and public, otherwise the framework will not be able to load your runresult format.
+ *   * :java:ref:`DataRandomizer(DataRandomizer)`: The copy constructor of your class taking another instance of your class. This constructor has to be implemented and public.
+ *   * :java:ref:`getOptions()`: This method returns an :java:ref:`Options` object that encapsulates all parameters that this randomizer has. These can be set by the user in the client.
+ *   * :java:ref:`handleOptions(CommandLine)`: This method handles the values that the user set for the parameters specified in :java:ref:`getOptions()`.
+ *   * :java:ref:`getDataSetFileNamePostFix()`: This method makes sure, that randomized data sets of the same data configuration do not end up with the same file name and overwrite each other. A good advice is to integrate the randomizer parameter values or a timestamp.
+ *   * :java:ref:`randomizeDataConfig()`: This is the core of your randomizer; In this method the #dataConfig attribute is randomized and a distorted data set and gold standard is returned.
+ *     
+ * 2. Creating a jar file named MyDataRandomizer.jar containing the MyDataRandomizer.class compiled on your machine in the correct folder structure corresponding to the packages:
+ * 
+ *   * de/clusteval/data/randomizer/MyDataRandomizer.class
+ *   
+ * 3. Putting the MyDataRandomizer.jar into the corresponding folder of the repository:
+ * 
+ *   * <REPOSITORY ROOT>/supp/randomizers
+ *   * The backend server will recognize and try to load the new class automatically the next time, the :java:ref:`DataRandomizerFinderThread` checks the filesystem.
+ * 
+ * }
+ * 
  * @author Christian Wiwie
  * 
  */

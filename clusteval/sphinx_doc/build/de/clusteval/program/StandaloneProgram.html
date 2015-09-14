@@ -47,6 +47,27 @@
 <dt id="de.clusteval.program.StandaloneProgram">
 public class <code class="descname">StandaloneProgram</code> extends <a class="reference internal" href="Program.html#de.clusteval.program.Program" title="de.clusteval.program.Program">Program</a><a class="headerlink" href="#de.clusteval.program.StandaloneProgram" title="Permalink to this definition">¶</a></dt>
 <dd><p>A type of program that corresponds to executables on the filesystem.</p>
+<p>Standalone programs can be added to ClustEval by</p>
+<ol class="arabic simple">
+<li>putting the executable file (together with all required shared libraries) into a respective folder in the repository programs directory</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>&lt;REPOSITORY ROOT&gt;/programs/&lt;programFolder&gt;/&lt;executable&gt;</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>putting a program configuration file (see 4.9.7) into the repository program configuration directory</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>&lt;REPOSITORY ROOT&gt;/programs/configs</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>if the program requires a new input format, follow the instructions under 11.3 for the new input format</li>
+<li>if the program has an unknown output format, follow the instructions under 11.4 for the new output format</li>
+</ol>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

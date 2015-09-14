@@ -26,6 +26,24 @@ DataPreprocessor
 
 .. java:type:: public abstract class DataPreprocessor extends RepositoryObject implements RLibraryInferior
 
+   A data preprocessor MyDataPreprocessor can be added to ClustEval by
+
+   1. extending this class with your own class MyDataPreprocessor. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your runresult format.
+
+     * :java:ref:`DataPreprocessor(Repository, boolean, long, File)`: The constructor of your class. This constructor has to be implemented and public, otherwise the framework will not be able to load your runresult format.
+     * :java:ref:`DataPreprocessor(DataPreprocessor)`: The copy constructor of your class taking another instance of your class. This constructor has to be implemented and public.
+     * :java:ref:`getCompatibleDataSetFormats()`: Returns a set of data formats that this preprocessor can be applied to.
+     * :java:Ref:`preprocess()`: This is the core of your preprocessor; it takes the input data set and returns a wrapper object of the preprocessed one.
+
+   2. Creating a jar file named MyDataPreprocessor.jar containing the MyDataPreprocessor.class compiled on your machine in the correct folder structure corresponding to the packages:
+
+     * de/clusteval/data/preprocessing/MyDataPreprocessor.class
+
+   3. Putting the MyRunResultFormat.jar into the corresponding folder of the repository:
+
+     * <REPOSITORY ROOT>/supp/preprocessing
+     * The backend server will recognize and try to load the new runresult format automatically the next time, the :java:ref:`DataPreprocessorFinderThread` checks the filesystem.
+
    :author: Christian Wiwie
 
 Constructors

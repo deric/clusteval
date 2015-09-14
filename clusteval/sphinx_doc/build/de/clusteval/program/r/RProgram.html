@@ -47,7 +47,65 @@
 <dt id="de.clusteval.program.r.RProgram">
 public abstract class <code class="descname">RProgram</code> extends <a class="reference internal" href="../Program.html#de.clusteval.program.Program" title="de.clusteval.program.Program">Program</a> implements <a class="reference internal" href="RLibraryInferior.html#de.clusteval.program.r.RLibraryInferior" title="de.clusteval.program.r.RLibraryInferior">RLibraryInferior</a><a class="headerlink" href="#de.clusteval.program.r.RProgram" title="Permalink to this definition">¶</a></dt>
 <dd><p>A type of progam that encapsulates a program embedded in R.</p>
-<p>Note that the name of the method in R is not itself written in plaintext in the <a class="reference internal" href="../StandaloneProgram.html#de.clusteval.program.StandaloneProgram.exec(DataConfig, ProgramConfig, String[], Map, Map)" title="de.clusteval.program.StandaloneProgram.exec(DataConfig, ProgramConfig, String[], Map, Map)"><code class="xref java java-ref docutils literal"><span class="pre">exec(de.clusteval.data.DataConfig,de.clusteval.program.ProgramConfig,String[],java.util.Map,java.util.Map)</span></code></a> method of RPrograms, but instead it is defined in the corresponding program configuration in the invocation format parameter.</p>
+<p>Note that the name of the method in R is not itself written in plaintext in the <a class="reference internal" href="../Program.html#de.clusteval.program.Program.exec(DataConfig, ProgramConfig, String[], Map, Map)" title="de.clusteval.program.Program.exec(DataConfig, ProgramConfig, String[], Map, Map)"><code class="xref java java-ref docutils literal"><span class="pre">exec(de.clusteval.data.DataConfig,de.clusteval.program.ProgramConfig,String[],java.util.Map,java.util.Map)</span></code></a> method of RPrograms, but instead it is defined in the corresponding program configuration in the invocation format parameter.</p>
+<p>R programs can be added to ClustEval by</p>
+<ol class="arabic simple">
+<li>extending this class with your own class MyRProgram. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.</li>
+</ol>
+<blockquote>
+<div><ul>
+<li><p class="first"><a class="reference internal" href="#de.clusteval.program.r.RProgram.RProgram(RProgram)" title="de.clusteval.program.r.RProgram.RProgram(RProgram)"><code class="xref java java-ref docutils literal"><span class="pre">RProgram(Repository)</span></code></a> : The constructor of your class taking a repository parameter. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.</p>
+</li>
+<li><p class="first"><a class="reference internal" href="#de.clusteval.program.r.RProgram.RProgram(RProgram)" title="de.clusteval.program.r.RProgram.RProgram(RProgram)"><code class="xref java java-ref docutils literal"><span class="pre">RProgram(MyRProgram)</span></code></a> : The copy constructor of your class taking another instance of your class. This constructor has to be implemented and public.</p>
+</li>
+<li><p class="first"><a class="reference internal" href="KMedoidsClusteringRProgram.html#de.clusteval.program.r.KMedoidsClusteringRProgram.getAlias()" title="de.clusteval.program.r.KMedoidsClusteringRProgram.getAlias()"><code class="xref java java-ref docutils literal"><span class="pre">getAlias()</span></code></a> : See <a class="reference internal" href="../Program.html#de.clusteval.program.Program.getAlias()" title="de.clusteval.program.Program.getAlias()"><code class="xref java java-ref docutils literal"><span class="pre">Program.getAlias()</span></code></a>.</p>
+</li>
+<li><p class="first"><a class="reference internal" href="#de.clusteval.program.r.RProgram.getInvocationFormat()" title="de.clusteval.program.r.RProgram.getInvocationFormat()"><code class="xref java java-ref docutils literal"><span class="pre">getInvocationFormat()</span></code></a> : This is the invocation of the R method including potential parameters, that have to be defined in the program configuration.</p>
+</li>
+<li><p class="first"><a class="reference internal" href="../Program.html#de.clusteval.program.Program.exec(DataConfig, ProgramConfig, String[], Map, Map)" title="de.clusteval.program.Program.exec(DataConfig, ProgramConfig, String[], Map, Map)"><code class="xref java java-ref docutils literal"><span class="pre">exec(DataConfig,ProgramConfig,String[],Map,Map)</span></code></a> : See <a class="reference internal" href="../Program.html#de.clusteval.program.Program.exec(DataConfig, ProgramConfig, String[], Map, Map)" title="de.clusteval.program.Program.exec(DataConfig, ProgramConfig, String[], Map, Map)"><code class="xref java java-ref docutils literal"><span class="pre">Program.exec(DataConfig,ProgramConfig,String[],Map,Map)</span></code></a> In this method the actual execution of the R Program happens. In here you have to implement the invocation of the R method via Rserve and any pre- and postcalculations necessary. The communications with R can be visualized by the following code snippet:</p>
+<div class="highlight-python"><div class="highlight"><pre>try {
+  // precalculations
+  double[] input = ...;
+  ...
+  MyRengine rEngine = new MyRengine(&quot;&quot;);
+  try {
+    rEngine.assign(&quot;input&quot;,input);
+    rEngine.eval(&quot;result &lt;- yourMethodInvocation()&quot;);
+    REXP result = rEngine.eval(&quot;result@.Data&quot;);
+    // postcalculations
+    ...
+  } catch (RserveException e) {
+    e.printStackTrace();
+  } finally {
+    rEngine.close();
+  }
+} catch (Exception e) {
+  e.printStackTrace();
+}
+// for return type compatibility reasons
+return null;
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Creating a jar file named MyRProgram.jar containing the MyRProgram.class compiled on your machine in the correct folder structure corresponding to the packages:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>de/clusteval/program/r/MyRProgram.class</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Putting the MyRProgram.jar into the programs folder of the repository:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>&lt;REPOSITORY ROOT&gt;/programs</li>
+<li>The backend server will recognize and try to load the new program automatically the next time, the <cite>RProgramFinderThread</cite> checks the filesystem.</li>
+</ul>
+</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

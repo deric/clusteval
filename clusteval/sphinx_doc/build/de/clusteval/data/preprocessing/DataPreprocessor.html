@@ -46,7 +46,36 @@
 <dl class="type">
 <dt id="de.clusteval.data.preprocessing.DataPreprocessor">
 public abstract class <code class="descname">DataPreprocessor</code> extends <a class="reference internal" href="../../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a> implements <a class="reference internal" href="../../program/r/RLibraryInferior.html#de.clusteval.program.r.RLibraryInferior" title="de.clusteval.program.r.RLibraryInferior">RLibraryInferior</a><a class="headerlink" href="#de.clusteval.data.preprocessing.DataPreprocessor" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>A data preprocessor MyDataPreprocessor can be added to ClustEval by</p>
+<ol class="arabic simple">
+<li>extending this class with your own class MyDataPreprocessor. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your runresult format.</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#de.clusteval.data.preprocessing.DataPreprocessor.DataPreprocessor(Repository, boolean, long, File)" title="de.clusteval.data.preprocessing.DataPreprocessor.DataPreprocessor(Repository, boolean, long, File)"><code class="xref java java-ref docutils literal"><span class="pre">DataPreprocessor(Repository,</span> <span class="pre">boolean,</span> <span class="pre">long,</span> <span class="pre">File)</span></code></a>: The constructor of your class. This constructor has to be implemented and public, otherwise the framework will not be able to load your runresult format.</li>
+<li><a class="reference internal" href="#de.clusteval.data.preprocessing.DataPreprocessor.DataPreprocessor(DataPreprocessor)" title="de.clusteval.data.preprocessing.DataPreprocessor.DataPreprocessor(DataPreprocessor)"><code class="xref java java-ref docutils literal"><span class="pre">DataPreprocessor(DataPreprocessor)</span></code></a>: The copy constructor of your class taking another instance of your class. This constructor has to be implemented and public.</li>
+<li><a class="reference internal" href="#de.clusteval.data.preprocessing.DataPreprocessor.getCompatibleDataSetFormats()" title="de.clusteval.data.preprocessing.DataPreprocessor.getCompatibleDataSetFormats()"><code class="xref java java-ref docutils literal"><span class="pre">getCompatibleDataSetFormats()</span></code></a>: Returns a set of data formats that this preprocessor can be applied to.</li>
+<li><a class="reference internal" href="SampleRangeNormalizationDataPreprocessor.html#de.clusteval.data.preprocessing.SampleRangeNormalizationDataPreprocessor.preprocess(DataSet)" title="de.clusteval.data.preprocessing.SampleRangeNormalizationDataPreprocessor.preprocess(DataSet)"><code class="xref java java-ref docutils literal"><span class="pre">preprocess()</span></code></a>: This is the core of your preprocessor; it takes the input data set and returns a wrapper object of the preprocessed one.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Creating a jar file named MyDataPreprocessor.jar containing the MyDataPreprocessor.class compiled on your machine in the correct folder structure corresponding to the packages:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>de/clusteval/data/preprocessing/MyDataPreprocessor.class</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Putting the MyRunResultFormat.jar into the corresponding folder of the repository:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>&lt;REPOSITORY ROOT&gt;/supp/preprocessing</li>
+<li>The backend server will recognize and try to load the new runresult format automatically the next time, the <a class="reference internal" href="DataPreprocessorFinderThread.html#de.clusteval.data.preprocessing.DataPreprocessorFinderThread" title="de.clusteval.data.preprocessing.DataPreprocessorFinderThread"><code class="xref java java-ref docutils literal"><span class="pre">DataPreprocessorFinderThread</span></code></a> checks the filesystem.</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">

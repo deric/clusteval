@@ -25,6 +25,24 @@ import de.clusteval.framework.repository.Repository;
 
 /**
  * A type of program that corresponds to executables on the filesystem.
+ * <p>
+ * 
+ * {@code
+ * 
+ * Standalone programs can be added to ClustEval by
+ * 
+ * 1. putting the executable file (together with all required shared libraries) into a respective folder in the repository programs directory
+ * 
+ *   * <REPOSITORY ROOT>/programs/<programFolder>/<executable>
+ *   
+ * 2. putting a program configuration file (see 4.9.7) into the repository program configuration directory
+ * 
+ *   * <REPOSITORY ROOT>/programs/configs
+ *   
+ * 3. if the program requires a new input format, follow the instructions under 11.3 for the new input format
+ * 4. if the program has an unknown output format, follow the instructions under 11.4 for the new output format
+ * 
+ * }
  * 
  * @author Christian Wiwie
  * 

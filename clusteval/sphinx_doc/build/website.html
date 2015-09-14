@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Website &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="contents.html" />
+    <link rel="up" title="Frontend" href="frontend.html" />
+    <link rel="next" title="Database" href="database.html" />
+    <link rel="prev" title="Frontend" href="frontend.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="database.html" title="Database"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="frontend.html" title="Frontend"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="frontend.html" accesskey="U">Frontend</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="website">
+<span id="id1"></span><h1>Website<a class="headerlink" href="#website" title="Permalink to this headline">¶</a></h1>
+<p>The frontend website is designed to give a visual representation of the results calculated by the backend and also of the datasets, goldstandards, configurations available in the repository. The website is divided into several sections which will be discussed in 8.1. Here we describe, which information you can find in which section. Afterwards it follows a short explanation for every task you can realize using the website, including how to compare available clustering methods or datasets and how to interprete visualized run results.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This section presents you with a comparison matrix, containing the best achieved clustering qualities for every pair of clustering method and dataset. Above the matrix you
+can select from a list, which clustering quality measure you want to compare. Values in bold indicate the optimal clustering quality in the respective row. By hitting the Invert matrix button, you can interchange datasets with clustering methods, rows with columns.</p>
+</div>
+<div class="section" id="data-sets">
+<h2>Data Sets<a class="headerlink" href="#data-sets" title="Permalink to this headline">¶</a></h2>
+<p>On the left hand side you have different subsections to navigate to. Now you are at the &#8220;Overview&#8221; page.</p>
+<ul class="simple">
+<li>Overview shows you a list of all available datasets. The datasets are grouped together, based on their type.<ul>
+<li>By clicking on a dataset, you will be lead to information only about that dataset.</li>
+<li>General shows general information about the dataset including the first 10 lines of the raw file and a download link.</li>
+<li>Statistics shows data statistics assessed for this dataset.</li>
+<li>Comparison shows a comparison table, how different clustering methods perform on this dataset, measured by different clustering quality measures.</li>
+<li>Best Clusterings is comparable to the &#8220;Comparison&#8221; subsection, but also shows the parameter sets, that lead to the optimal clusterings.</li>
+<li>Clusterings shows all qualities of clusterings measured with a certain clustering quality measure that were calculated for this dataset together with the corresponding parameter sets.</li>
+</ul>
+</li>
+<li>Comparison will show you a table containing the optimal clustering qualities clustering methods achieved on a chosen dataset together with the parameter sets used.</li>
+</ul>
+</div>
+<div class="section" id="clustering-methods">
+<h2>Clustering Methods<a class="headerlink" href="#clustering-methods" title="Permalink to this headline">¶</a></h2>
+<p>On the left hand side you have different subsections to navigate to. Now you are at the &#8220;Overview&#8221; page.</p>
+<ul class="simple">
+<li>The overview shows you a list of all available clustering methods. For the clustering methods that ship with clusteval there will be shown a short description and a literature reference for more detailed information.<ul>
+<li>Clicking on &#8220;Details&#8221; of a specific clustering method, will lead you to information only about that method.</li>
+<li>General provides you with general information and a download link of the executable.</li>
+<li>Performance shows a comparison table, how this clustering method performs on different datasets measured by different clustering quality measures.</li>
+<li>Best Clusterings is comparable to the &#8220;Performance&#8221; subsection, but also shows the parameter sets, that lead to the optimal clusterings.</li>
+<li>Comparison will show you a table containing the optimal clustering qualities a chosen clustering method achieved on different datasets together with the parameter sets used.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="measures">
+<h2>Measures<a class="headerlink" href="#measures" title="Permalink to this headline">¶</a></h2>
+<p>This section shows you the available clustering quality measures.</p>
+<ul class="simple">
+<li>By clicking on a specific clustering quality measure you will get more information about it, including a formal definition.</li>
+</ul>
+</div>
+<div class="section" id="submit">
+<h2>Submit<a class="headerlink" href="#submit" title="Permalink to this headline">¶</a></h2>
+<p>This section allows you to contribute your own clustering methods or datasets to clusteval.</p>
+<ul class="simple">
+<li>General shows a short text, what you can do within this section.</li>
+<li>Submit dataset presents you an email form to send an email to the clusteval server to request an addition of your new dataset.</li>
+<li>Submit method presents you an email form to send and email to the clusteval server to request an addition of your new clustering method.</li>
+</ul>
+</div>
+<div class="section" id="advanced">
+<h2>Advanced<a class="headerlink" href="#advanced" title="Permalink to this headline">¶</a></h2>
+<p>The advanced section is only available after logging in into the website. This section shows more detailed information about the single runs that were performed, which run results were produced and all other data that is stored within the repository including configuration files.</p>
+<ul class="simple">
+<li>Clustering Method Configurations shows a table with all program configurations.<ul>
+<li>By clicking on a specific program configuration, you will see detailed information only about that configuration including e.g. the contents of the file or defined program parameters.</li>
+<li>Additionally you see a second table containing the clusterings that were calculated for this program configuration.</li>
+</ul>
+</li>
+<li>Data Configurations shows a table with all data configurations.<ul>
+<li>By clicking on a specific data configuration, you will see detailed information only about that configuration including e.g. the contents of the file or defined program parameters.</li>
+<li>Additionally you see a second table containing the clusterings that were calculated for this data configuration.</li>
+</ul>
+</li>
+<li>Dataset Configurations shows a table with all dataset configurations.<ul>
+<li>By clicking on a specific dataset configuration, you will see detailed information only about that configuration.</li>
+</ul>
+</li>
+<li>Goldstandard Configurations shows a table with all goldstandard configurations.<ul>
+<li>By clicking on a specific goldstandard configuration, you will see detailed information only about that configuration.</li>
+</ul>
+</li>
+<li>Runs shows a table with all runs.<ul>
+<li>By clicking on a specific run, you will see detailed information. Depending on the run type these information will vary.</li>
+<li>For execution runs the used program and data configurations as well as the assessed clustering quality measures will be shown, for analysis runs the statistics to assess and the target objects (either data configurations, execution run results or both data analysis run results and execution run results together). For parameter optimization runs the used parameter optimization methods and optimization parameters will be listed.</li>
+</ul>
+</li>
+<li>Results shows the run results calculated by the backend. Depending on the type of the run that corresponds to these run results, the representation varies.<ul>
+<li>Clustering Runs: Here only the program and data configurations together with the clustering quality measures to assess are shown.</li>
+<li>Parameter Optimization Runs: Additionally to the details of clustering runs here also the used parameter optimization methods are listed together with the optimization parameters for each program configuration.</li>
+<li>Data Analysis Runs: The data configurations to assess and the data statistics are shown.</li>
+<li>Run Analysis Runs: The unique execution run result identifier are listed together with the run statistics to assess.</li>
+<li>Run-Data Analysis Runs: The unique run result identifier of the execution run results and of the data analysis run results are shown together with the Run-Data Statistics to assess for pairs of these run results.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="clustering-run-results">
+<h2>Clustering Run Results<a class="headerlink" href="#clustering-run-results" title="Permalink to this headline">¶</a></h2>
+<p>A table is shown, with every pair of data and program configuration together with the evaluated parameter set and achieved clustering quality.</p>
+</div>
+<div class="section" id="parameter-optimization-run-results">
+<h2>Parameter Optimization Run Results<a class="headerlink" href="#parameter-optimization-run-results" title="Permalink to this headline">¶</a></h2>
+<p>For every pair of program and data configuration a graph and a table is shown. The graph contains the clustering qualities achieved in every iteration. It is good for visual inspection of the general optimization course. The table contains the same information, but in a textual format. It contains for every performed iteration of the parameter optimization process the evaluated parameter set, the assessed clustering quality measures together with the qualities of the resulting clusterings.</p>
+</div>
+<div class="section" id="data-analysis-run-results">
+<h2>Data Analysis Run Results<a class="headerlink" href="#data-analysis-run-results" title="Permalink to this headline">¶</a></h2>
+<p>For every data configuration you see a table containing rows for every assessed data statistic. On the left the name of the data statistic is shown and on the right you see either a plot or a string representation of the calculated data statistic.</p>
+</div>
+<div class="section" id="run-analysis-run-results">
+<h2>Run Analysis Run Results<a class="headerlink" href="#run-analysis-run-results" title="Permalink to this headline">¶</a></h2>
+<p>For every execution run result you see a table containing rows for every assessed run statistic. On the left the name of the run statistic is shown and on the right you see either a plot or a string representation of the calculated run statistic.</p>
+</div>
+<div class="section" id="run-data-analysis-run-results">
+<h2>Run-Data Analysis Run Results<a class="headerlink" href="#run-data-analysis-run-results" title="Permalink to this headline">¶</a></h2>
+<p>For every pair of execution run result and data analysis run result you see a table containing rows for every assessed run-data statistic. On the left the name of the run-data statistic is shown and on the right you see either a plot or a string representation of the calculated run-data statistic.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Website</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#data-sets">Data Sets</a></li>
+<li><a class="reference internal" href="#clustering-methods">Clustering Methods</a></li>
+<li><a class="reference internal" href="#measures">Measures</a></li>
+<li><a class="reference internal" href="#submit">Submit</a></li>
+<li><a class="reference internal" href="#advanced">Advanced</a></li>
+<li><a class="reference internal" href="#clustering-run-results">Clustering Run Results</a></li>
+<li><a class="reference internal" href="#parameter-optimization-run-results">Parameter Optimization Run Results</a></li>
+<li><a class="reference internal" href="#data-analysis-run-results">Data Analysis Run Results</a></li>
+<li><a class="reference internal" href="#run-analysis-run-results">Run Analysis Run Results</a></li>
+<li><a class="reference internal" href="#run-data-analysis-run-results">Run-Data Analysis Run Results</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="frontend.html"
+                        title="previous chapter">Frontend</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="database.html"
+                        title="next chapter">Database</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/website.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="database.html" title="Database"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="frontend.html" title="Frontend"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="frontend.html" >Frontend</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

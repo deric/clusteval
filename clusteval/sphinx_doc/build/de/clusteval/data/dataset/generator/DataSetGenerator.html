@@ -46,7 +46,39 @@
 <dl class="type">
 <dt id="de.clusteval.data.dataset.generator.DataSetGenerator">
 public abstract class <code class="descname">DataSetGenerator</code> extends <a class="reference internal" href="../../../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a> implements <a class="reference internal" href="../../../program/r/RLibraryInferior.html#de.clusteval.program.r.RLibraryInferior" title="de.clusteval.program.r.RLibraryInferior">RLibraryInferior</a><a class="headerlink" href="#de.clusteval.data.dataset.generator.DataSetGenerator" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>A data set generator MyDataSetGenerator can be added to ClustEval by</p>
+<ol class="arabic simple">
+<li>extending this class with your own class MyDataSetGenerator. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your runresult format.</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#de.clusteval.data.dataset.generator.DataSetGenerator.DataSetGenerator(Repository, boolean, long, File)" title="de.clusteval.data.dataset.generator.DataSetGenerator.DataSetGenerator(Repository, boolean, long, File)"><code class="xref java java-ref docutils literal"><span class="pre">DataSetGenerator(Repository,</span> <span class="pre">boolean,</span> <span class="pre">long,</span> <span class="pre">File)</span></code></a>: The constructor of your class. This constructor has to be implemented and public, otherwise the framework will not be able to load your runresult format.</li>
+<li><a class="reference internal" href="#de.clusteval.data.dataset.generator.DataSetGenerator.DataSetGenerator(DataSetGenerator)" title="de.clusteval.data.dataset.generator.DataSetGenerator.DataSetGenerator(DataSetGenerator)"><code class="xref java java-ref docutils literal"><span class="pre">DataSetGenerator(DataSetGenerator)</span></code></a>: The copy constructor of your class taking another instance of your class. This constructor has to be implemented and public.</li>
+<li><a class="reference internal" href="#de.clusteval.data.dataset.generator.DataSetGenerator.generateDataSet()" title="de.clusteval.data.dataset.generator.DataSetGenerator.generateDataSet()"><code class="xref java java-ref docutils literal"><span class="pre">generateDataSet()</span></code></a>: This method generates the data set, writes it to the file system and returns a DataSet wrapper object.</li>
+<li><a class="reference internal" href="#de.clusteval.data.dataset.generator.DataSetGenerator.generatesGoldStandard()" title="de.clusteval.data.dataset.generator.DataSetGenerator.generatesGoldStandard()"><code class="xref java java-ref docutils literal"><span class="pre">generatesGoldStandard()</span></code></a>: Returns true, if this generator generates a gold standard together with each generated data set.</li>
+<li><a class="reference internal" href="#de.clusteval.data.dataset.generator.DataSetGenerator.generateGoldStandard()" title="de.clusteval.data.dataset.generator.DataSetGenerator.generateGoldStandard()"><code class="xref java java-ref docutils literal"><span class="pre">generateGoldStandard()</span></code></a>: If <a class="reference internal" href="#de.clusteval.data.dataset.generator.DataSetGenerator.generatesGoldStandard()" title="de.clusteval.data.dataset.generator.DataSetGenerator.generatesGoldStandard()"><code class="xref java java-ref docutils literal"><span class="pre">generatesGoldStandard()</span></code></a> returns true, this method generates a gold standard for the generated data set, writes it to the file system and returns a GoldStandard wrapper object.</li>
+<li><a class="reference internal" href="#de.clusteval.data.dataset.generator.DataSetGenerator.getOptions()" title="de.clusteval.data.dataset.generator.DataSetGenerator.getOptions()"><code class="xref java java-ref docutils literal"><span class="pre">getOptions()</span></code></a>: This method returns an <code class="xref java java-ref docutils literal"><span class="pre">Options</span></code> object that encapsulates all parameters that this generator has. These can be set by the user in the client.</li>
+<li><a class="reference internal" href="#de.clusteval.data.dataset.generator.DataSetGenerator.handleOptions(CommandLine)" title="de.clusteval.data.dataset.generator.DataSetGenerator.handleOptions(CommandLine)"><code class="xref java java-ref docutils literal"><span class="pre">handleOptions(CommandLine)</span></code></a>: This method handles the values that the user set for the parameters specified in <a class="reference internal" href="#de.clusteval.data.dataset.generator.DataSetGenerator.getOptions()" title="de.clusteval.data.dataset.generator.DataSetGenerator.getOptions()"><code class="xref java java-ref docutils literal"><span class="pre">getOptions()</span></code></a>.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Creating a jar file named MyDataSetGenerator.jar containing the MyDataSetGenerator.class compiled on your machine in the correct folder structure corresponding to the packages:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>de/clusteval/data/dataset/generator/MyDataSetGenerator.class</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Putting the MyDataSetGenerator.jar into the corresponding folder of the repository:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>&lt;REPOSITORY ROOT&gt;/supp/generators</li>
+<li>The backend server will recognize and try to load the new class automatically the next time, the <a class="reference internal" href="DataSetGeneratorFinderThread.html#de.clusteval.data.dataset.generator.DataSetGeneratorFinderThread" title="de.clusteval.data.dataset.generator.DataSetGeneratorFinderThread"><code class="xref java java-ref docutils literal"><span class="pre">DataSetGeneratorFinderThread</span></code></a> checks the filesystem.</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">

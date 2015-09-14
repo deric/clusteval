@@ -52,6 +52,51 @@ import de.clusteval.utils.RNotAvailableException;
  * {@link #exec(de.clusteval.data.DataConfig, de.clusteval.program.ProgramConfig, String[], java.util.Map, java.util.Map)}
  * method of RPrograms, but instead it is defined in the corresponding program
  * configuration in the invocation format parameter.
+ * <p>
+ * 
+ * {@code
+ * R programs can be added to ClustEval by
+ * 
+ * 1. extending this class with your own class MyRProgram. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.
+ * 
+ *   * :java:ref:`RProgram(Repository)` : The constructor of your class taking a repository parameter. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.
+ *   * :java:ref:`RProgram(MyRProgram)` : The copy constructor of your class taking another instance of your class. This constructor has to be implemented and public.
+ *   * :java:ref:`getAlias()` : See :java:ref:`Program.getAlias()`.
+ *   * :java:ref:`getInvocationFormat()` : This is the invocation of the R method including potential parameters, that have to be defined in the program configuration.
+ *   * :java:ref:`exec(DataConfig,ProgramConfig,String[],Map,Map)` : See :java:ref:`Program.exec(DataConfig,ProgramConfig,String[],Map,Map)` In this method the actual execution of the R Program happens. In here you have to implement the invocation of the R method via Rserve and any pre- and postcalculations necessary. The communications with R can be visualized by the following code snippet::
+ *   
+ *       try {
+ *         // precalculations
+ *         double[] input = ...;
+ *         ...
+ *         MyRengine rEngine = new MyRengine("");
+ *         try {
+ *           rEngine.assign("input",input);
+ *           rEngine.eval("result <- yourMethodInvocation()");
+ *           REXP result = rEngine.eval("result@.Data");
+ *           // postcalculations
+ *           ...
+ *         } catch (RserveException e) {
+ *           e.printStackTrace();
+ *         } finally {
+ *           rEngine.close();
+ *         }
+ *       } catch (Exception e) {
+ *         e.printStackTrace();
+ *       }
+ *       // for return type compatibility reasons
+ *       return null;
+ *     
+ * 2. Creating a jar file named MyRProgram.jar containing the MyRProgram.class compiled on your machine in the correct folder structure corresponding to the packages:
+ * 
+ *   * de/clusteval/program/r/MyRProgram.class
+ *   
+ * 3. Putting the MyRProgram.jar into the programs folder of the repository:
+ * 
+ *   * <REPOSITORY ROOT>/programs
+ *   * The backend server will recognize and try to load the new program automatically the next time, the `RProgramFinderThread` checks the filesystem.
+ * 
+ * }
  * 
  * @author Christian Wiwie
  * 

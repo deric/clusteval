@@ -38,6 +38,27 @@ DataSetGenerator
 
 .. java:type:: public abstract class DataSetGenerator extends RepositoryObject implements RLibraryInferior
 
+   A data set generator MyDataSetGenerator can be added to ClustEval by
+
+   1. extending this class with your own class MyDataSetGenerator. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your runresult format.
+
+     * :java:ref:`DataSetGenerator(Repository, boolean, long, File)`: The constructor of your class. This constructor has to be implemented and public, otherwise the framework will not be able to load your runresult format.
+     * :java:ref:`DataSetGenerator(DataSetGenerator)`: The copy constructor of your class taking another instance of your class. This constructor has to be implemented and public.
+     * :java:ref:`generateDataSet()`: This method generates the data set, writes it to the file system and returns a DataSet wrapper object.
+     * :java:ref:`generatesGoldStandard()`: Returns true, if this generator generates a gold standard together with each generated data set.
+     * :java:ref:`generateGoldStandard()`: If :java:ref:`generatesGoldStandard()` returns true, this method generates a gold standard for the generated data set, writes it to the file system and returns a GoldStandard wrapper object.
+     * :java:ref:`getOptions()`: This method returns an :java:ref:`Options` object that encapsulates all parameters that this generator has. These can be set by the user in the client.
+     * :java:ref:`handleOptions(CommandLine)`: This method handles the values that the user set for the parameters specified in :java:ref:`getOptions()`.
+
+   2. Creating a jar file named MyDataSetGenerator.jar containing the MyDataSetGenerator.class compiled on your machine in the correct folder structure corresponding to the packages:
+
+     * de/clusteval/data/dataset/generator/MyDataSetGenerator.class
+
+   3. Putting the MyDataSetGenerator.jar into the corresponding folder of the repository:
+
+     * <REPOSITORY ROOT>/supp/generators
+     * The backend server will recognize and try to load the new class automatically the next time, the :java:ref:`DataSetGeneratorFinderThread` checks the filesystem.
+
    :author: Christian Wiwie
 
 Constructors

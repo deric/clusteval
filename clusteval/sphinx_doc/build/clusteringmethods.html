@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Clustering Methods &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="contents.html" />
+    <link rel="up" title="Backend" href="backend.html" />
+    <link rel="next" title="Configuration Files - Handling ClustEval" href="configurations.html" />
+    <link rel="prev" title="Gold Standards" href="goldstandards.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="configurations.html" title="Configuration Files - Handling ClustEval"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="goldstandards.html" title="Gold Standards"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="backend.html" accesskey="U">Backend</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="clustering-methods">
+<span id="clusteringmethods"></span><h1>Clustering Methods<a class="headerlink" href="#clustering-methods" title="Permalink to this headline">¶</a></h1>
+<p>Clustering Methods (technically also called Programs throughout this guide) can be
+executed by the framework, and be applied to data to calculate clusterings. In order
+to include a new clustering method and use it within the framework,</p>
+<ul class="simple">
+<li>the executable of the method has to be made available to the framework (an exception are Clustering Methods provided through the R framework, see 4.2.2),</li>
+<li>the method itself has to be specified in a configuration file (called program configuration)</li>
+<li>all other components (e.g. input and output formats) specified in the program configuration need to be available</li>
+</ul>
+<p>The configuration file for a clustering method (short program configuration) con-
+tains all information required, such that the framework can execute the method in
+an automatized and autonomous way. These information include for example, among
+others, the name of the method, its supported input formats, its output format, its
+parameters (including type and valid range of values). An exact description of how
+program configurations look like and which options and settings need to be specified
+can be found in 4.9.7.
+clusteval ships with a set of clustering methods including</p>
+<ul class="simple">
+<li>Affinity Propagation</li>
+<li>Hierarchical Clustering (Rserve)</li>
+<li>K-Means (Rserve)</li>
+<li>Markov Clustering</li>
+<li>Spectral Clustering (Rserve)</li>
+<li>Transitivity Clustering</li>
+</ul>
+<p>For every of these clustering methods a program configuration is also provided,
+such that they are directly usable from the start. Of course these program configurations
+can be modified and adapted to the user&#8217;s needs.</p>
+<div class="section" id="standalone">
+<h2>Standalone<a class="headerlink" href="#standalone" title="Permalink to this headline">¶</a></h2>
+<p>are programs that come as an executable. Those can be performed by the framework,
+after they have been specified in a program configuration. The executable needs to be
+compatible to the server architecture clusteval runs on and they need to be executable
+(+x modifier). How you can add your own standalone programs into the framework
+can be found here 11.1.1</p>
+</div>
+<div class="section" id="r-rserve">
+<h2>R (Rserve)<a class="headerlink" href="#r-rserve" title="Permalink to this headline">¶</a></h2>
+<p>are programs, that are implemented within some R package. Arbitrary methods imple-
+mented in R can be used as a program, as long as they can be made available within
+R on the server. This implies that the corresponding R Program is available for your
+R version and that it can be compiled and installed on your server architecture. How
+you can add your own R Programs into the framework can be found here 11.1.2.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Clustering Methods</a><ul>
+<li><a class="reference internal" href="#standalone">Standalone</a></li>
+<li><a class="reference internal" href="#r-rserve">R (Rserve)</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="goldstandards.html"
+                        title="previous chapter">Gold Standards</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="configurations.html"
+                        title="next chapter">Configuration Files - Handling ClustEval</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/clusteringmethods.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="configurations.html" title="Configuration Files - Handling ClustEval"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="goldstandards.html" title="Gold Standards"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li>
+          <li class="nav-item nav-item-1"><a href="backend.html" >Backend</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

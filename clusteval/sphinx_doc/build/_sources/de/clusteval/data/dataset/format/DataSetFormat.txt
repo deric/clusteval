@@ -42,6 +42,29 @@ DataSetFormat
 
    Every dataset format comes together with a parser class (see \ :java:ref:`DataSetFormatParser`\ ).
 
+   A data set format MyDataSetFormat can be added to ClustEval by
+
+   1. extending the class de.clusteval.data.dataset.format.DataSetFormat with your own class MyDataSetFormat. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your dataset format.
+
+     * :java:ref:`DataSetFormat(Repository, boolean, long, File, int)`: The constructor of your dataset format class. This constructor has to be implemented and public, otherwise the framework will not be able to load your dataset format.
+     * :java:ref:`DataSetFormat(DataSetFormat)`: The copy constructor of your class taking another instance of your class. This constructor has to be implemented and public.
+
+   2. extending the class de.clusteval.data.dataset.format.DataSetFormatParser with your own class MyDataSetFormatParser. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.
+
+     * :java:ref:`convertToStandardFormat(DataSet, ConversionInputToStandardConfiguration)`: This method converts the given dataset to the standard input format of the framework using the given conversion configuration. This assumes, that the passed dataset has this format.
+     * :java:ref:`convertToThisFormat(DataSet, DataSetFormat, ConversionConfiguration)`: This method converts the given dataset to the given input format using the conversion configuration.
+     * :java:ref:`parse(DataSet)`: This method parses the given dataset and returns an object, wrapping the contents of the dataset (e.g. an instance of SimilarityMatrix or DataMatrix ).
+
+   3. Creating a jar file named MyDataSetFormat.jar containing the MyDataSetFormat.class and MyDataSetFormatParser.class compiled on your machine in the correct folder structure corresponding to the packages:
+
+     * de/clusteval/data/dataset/format/MyDataSetFormat.class
+     * de/clusteval/data/dataset/format/MyDataSetFormatParser.class
+
+   4. Putting the MyDataSetFormat.jar into the dataset formats folder of the repository:
+
+     * <REPOSITORY ROOT>/supp/formats/dataset
+     * The backend server will recognize and try to load the new dataset format automatically the next time, the :java:ref:`DataSetFormatFinderThread` checks the filesystem.
+
    :author: Christian Wiwie
 
 Constructors
