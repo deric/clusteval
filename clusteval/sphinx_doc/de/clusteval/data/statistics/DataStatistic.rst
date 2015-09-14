@@ -22,9 +22,33 @@ DataStatistic
 
 .. java:type:: public abstract class DataStatistic extends Statistic
 
-   A data statistic is a type of \ :java:ref:`Statistic`\ , which corresponds to properties of a data configuration (dataset and goldstandard).
+   A data statistic is a \ :java:ref:`Statistic`\ , which summarizes properties of data sets. Data statistics are assessed by a \ :java:ref:`DataAnalysisRun`\ .
 
-   Data statistics correspond to \ :java:ref:`DataAnalysisRun`\  in the class hierarchy.
+   A data statistic MyDataStatistic can be added to ClustEval by
+
+   1. extending the class :java:ref:`DataStatistic` with your own class MyDataStatistic. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.
+
+     * :java:ref:`DataStatistic(Repository, boolean, long, File)` : The constructor for your data statistic. This constructor has to be implemented and public.
+     * :java:ref:`DataStatistic(MyDataStatistic)` : The copy constructor for your data statistic. This constructor has to be implemented and public.
+     * :java:ref:`Statistic.getAlias()` : See :java:ref:`Statistic.getAlias()`.
+     * :java:ref:`Statistic.parseFromString(String)` : See :java:ref:`Statistic.parseFromString(String)`.
+
+   2. extending the class :java:ref:`DataStatisticCalculator` with your own class MyDataStatisticCalculator . You have to provide your own implementations for the following methods.
+
+     * :java:ref:`DataStatisticCalculator(Repository, long, File, DataConfig)` : The constructor for your data statistic calculator. This constructor has to be implemented and public.
+     * :java:ref:`DataStatisticCalculator(MyDataStatisticCalculator)` : The copy constructor for your data statistic calculator. This constructor has to be implemented and public.
+     * :java:ref:`DataStatisticCalculator.calculateResult()`: See :java:ref:`StatisticCalculator.calculateResult()`.
+     * :java:ref:`StatisticCalculator.writeOutputTo(File)`: See :java:ref:`StatisticCalculator.writeOutputTo(File)`.
+
+   3. Creating a jar file named MyDataStatisticCalculator.jar containing the MyDataStatistic.class and MyDataStatisticCalculator.class compiled on your machine in the correct folder structure corresponding to the packages:
+
+     * de/clusteval/run/statistics/MyDataStatistic.class
+     * de/clusteval/run/statistics/MyDataStatisticCalculator.class
+
+   4. Putting the MyDataStatistic.jar into the data statistics folder of the repository:
+
+     * <REPOSITORY ROOT>/supp/statistics/data
+     * The backend server will recognize and try to load the new data statistics automatically the next time, the DataStatisticFinderThread checks the filesystem.
 
    :author: Christian Wiwie
 

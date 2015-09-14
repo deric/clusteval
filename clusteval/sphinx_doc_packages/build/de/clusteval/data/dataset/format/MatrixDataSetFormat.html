@@ -1,0 +1,281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>MatrixDataSetFormat &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="matrixdatasetformat">
+<h1>MatrixDataSetFormat<a class="headerlink" href="#matrixdatasetformat" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.data.dataset.format.MatrixDataSetFormat">
+public class <code class="descname">MatrixDataSetFormat</code> extends AbsoluteDataSetFormat<a class="headerlink" href="#de.clusteval.data.dataset.format.MatrixDataSetFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>This input format is an absolute dataset format, that means it contains
+samples together with their absolute coordinates:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="3%" />
+<col width="33%" />
+<col width="31%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">id</th>
+<th class="head">Coordinate 1</th>
+<th class="head">Coordinate 2</th>
+<th class="head">More Coordinates ...</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>0.3906545801525463</td>
+<td>-1.0438401650637388</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>-0.11979296618862012</td>
+<td>-1.3270683467388154</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>-0.7806096346173024</td>
+<td>-1.3467960953712463</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>-0.7524701467920664</td>
+<td>-1.2837891183793544</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>1.2399528585508164</td>
+<td>-1.195667176693678</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>6</td>
+<td>0.04637030350829807</td>
+<td>-1.3973623137921094</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>7</td>
+<td>0.7002680213377306</td>
+<td>-0.6829767350107432</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>8</td>
+<td>1.308168258994284</td>
+<td>-0.9344943936914205</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>9</td>
+<td>-0.8152683055235531</td>
+<td>-1.4669268283993007</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>10</td>
+<td>1.2038097787482234</td>
+<td>-0.8748601958155633</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>11</td>
+<td>0.8899462850502733</td>
+<td>-0.6867149177938701</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>12</td>
+<td>-0.998549301559696</td>
+<td>-0.9267734743654727</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>13</td>
+<td>-1.1530071769533163</td>
+<td>-0.7855240635573864</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Christian Wiwie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>MatrixDataSetFormat<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.data.dataset.format.MatrixDataSetFormat.MatrixDataSetFormat(Repository, boolean, long, File, int)">
+public <code class="descname">MatrixDataSetFormat</code><span class="sig-paren">(</span>Repository<em> repo</em>, boolean<em> register</em>, long<em> changeDate</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/File.html" title="java.io.File">File</a><em> absPath</em>, int<em> version</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.format.MatrixDataSetFormat.MatrixDataSetFormat(Repository, boolean, long, File, int)" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>repo</strong> &#8211; </li>
+<li><strong>register</strong> &#8211; </li>
+<li><strong>changeDate</strong> &#8211; </li>
+<li><strong>absPath</strong> &#8211; </li>
+<li><strong>version</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h3>MatrixDataSetFormat<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.data.dataset.format.MatrixDataSetFormat.MatrixDataSetFormat(MatrixDataSetFormat)">
+public <code class="descname">MatrixDataSetFormat</code><span class="sig-paren">(</span><a class="reference internal" href="#de.clusteval.data.dataset.format.MatrixDataSetFormat" title="de.clusteval.data.dataset.format.MatrixDataSetFormat">MatrixDataSetFormat</a><em> other</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.format.MatrixDataSetFormat.MatrixDataSetFormat(MatrixDataSetFormat)" title="Permalink to this definition">¶</a></dt>
+<dd><p>The copy constructor for this format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>other</strong> &#8211; The object to clone.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RegisterException</strong> &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getalias">
+<h3>getAlias<a class="headerlink" href="#getalias" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.format.MatrixDataSetFormat.getAlias()">
+public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getAlias</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.format.MatrixDataSetFormat.getAlias()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getdatasetformatparser">
+<h3>getDataSetFormatParser<a class="headerlink" href="#getdatasetformatparser" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.format.MatrixDataSetFormat.getDataSetFormatParser()">
+protected DataSetFormatParser <code class="descname">getDataSetFormatParser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.format.MatrixDataSetFormat.getDataSetFormatParser()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">MatrixDataSetFormat</a><ul>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#id1">MatrixDataSetFormat</a></li>
+<li><a class="reference internal" href="#id2">MatrixDataSetFormat</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#getalias">getAlias</a></li>
+<li><a class="reference internal" href="#getdatasetformatparser">getDataSetFormatParser</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../../_sources/de/clusteval/data/dataset/format/MatrixDataSetFormat.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

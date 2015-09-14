@@ -46,35 +46,48 @@
 <dl class="type">
 <dt id="de.clusteval.run.statistics.RunStatistic">
 public abstract class <code class="descname">RunStatistic</code> extends <a class="reference internal" href="../../utils/Statistic.html#de.clusteval.utils.Statistic" title="de.clusteval.utils.Statistic">Statistic</a><a class="headerlink" href="#de.clusteval.run.statistics.RunStatistic" title="Permalink to this definition">¶</a></dt>
-<dd><p>A run statistic is a type of <a class="reference internal" href="../../utils/Statistic.html#de.clusteval.utils.Statistic" title="de.clusteval.utils.Statistic"><code class="xref java java-ref docutils literal"><span class="pre">Statistic</span></code></a>, which corresponds to properties of run results.</p>
-<p>Run statistics correspond to <a class="reference internal" href="../RunAnalysisRun.html#de.clusteval.run.RunAnalysisRun" title="de.clusteval.run.RunAnalysisRun"><code class="xref java java-ref docutils literal"><span class="pre">RunAnalysisRun</span></code></a> in the class hierarchy. A run statistic MyRunStatistic can be added to ClustEval by</p>
-<ul class="simple">
-<li>extending the class <a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic</span></code></a> with your own class MyRunStatistic. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.<ul>
-<li>public MyRunStatistic(Repository, boolean, long, File) : The constructor for your run statistic. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.</li>
-<li>public MyRunStatistic(MyRunStatistic) : The copy constructor for your run statistic. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.</li>
-<li><a class="reference internal" href="../../utils/Statistic.html#de.clusteval.utils.Statistic.getAlias()" title="de.clusteval.utils.Statistic.getAlias()"><code class="xref java java-ref docutils literal"><span class="pre">Statistic.getAlias</span></code></a> : This method returns a readable alias for this run statistic which is used e.g. on the website.</li>
-<li><a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic.parseFromString(Repository, String[])" title="de.clusteval.run.statistics.RunStatistic.parseFromString(Repository, String[])"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic.parseFromString(String)</span></code></a> : This method interprets the string and fills this statistic object with its parsed contents.</li>
-<li>TODO: needed?: public Set getRequiredRlibraries() : Returns a set of names of all R libraries, this run statistic requires.</li>
+<dd><p>A run statistic is a <a class="reference internal" href="../../utils/Statistic.html#de.clusteval.utils.Statistic" title="de.clusteval.utils.Statistic"><code class="xref java java-ref docutils literal"><span class="pre">Statistic</span></code></a>, which summarizes properties of clustering run results. Run statistics are assessed by a <a class="reference internal" href="../RunAnalysisRun.html#de.clusteval.run.RunAnalysisRun" title="de.clusteval.run.RunAnalysisRun"><code class="xref java java-ref docutils literal"><span class="pre">RunAnalysisRun</span></code></a>.</p>
+<p>A run statistic MyRunStatistic can be added to ClustEval by</p>
+<ol class="arabic simple">
+<li>extending the class <a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic</span></code></a> with your own class MyRunStatistic. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic.RunStatistic(Repository, boolean, long, File)" title="de.clusteval.run.statistics.RunStatistic.RunStatistic(Repository, boolean, long, File)"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic(Repository,</span> <span class="pre">boolean,</span> <span class="pre">long,</span> <span class="pre">File)</span></code></a> : The constructor for your run statistic. This constructor has to be implemented and public.</li>
+<li><a class="reference internal" href="#de.clusteval.run.statistics.RunStatistic.RunStatistic(RunStatistic)" title="de.clusteval.run.statistics.RunStatistic.RunStatistic(RunStatistic)"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic(MyRunStatistic)</span></code></a> : The copy constructor for your run statistic. This constructor has to be implemented and public.</li>
+<li><a class="reference internal" href="../../utils/Statistic.html#de.clusteval.utils.Statistic.getAlias()" title="de.clusteval.utils.Statistic.getAlias()"><code class="xref java java-ref docutils literal"><span class="pre">Statistic.getAlias()</span></code></a> : See <a class="reference internal" href="../../utils/Statistic.html#de.clusteval.utils.Statistic.getAlias()" title="de.clusteval.utils.Statistic.getAlias()"><code class="xref java java-ref docutils literal"><span class="pre">Statistic.getAlias()</span></code></a>.</li>
+<li><a class="reference internal" href="../../utils/Statistic.html#de.clusteval.utils.Statistic.parseFromString(String)" title="de.clusteval.utils.Statistic.parseFromString(String)"><code class="xref java java-ref docutils literal"><span class="pre">Statistic.parseFromString(String)</span></code></a> : See <a class="reference internal" href="../../utils/Statistic.html#de.clusteval.utils.Statistic.parseFromString(String)" title="de.clusteval.utils.Statistic.parseFromString(String)"><code class="xref java java-ref docutils literal"><span class="pre">Statistic.parseFromString(String)</span></code></a>.</li>
 </ul>
-</li>
-<li>extending the class <a class="reference internal" href="RunStatisticCalculator.html#de.clusteval.run.statistics.RunStatisticCalculator" title="de.clusteval.run.statistics.RunStatisticCalculator"><code class="xref java java-ref docutils literal"><span class="pre">RunStatisticCalculator</span></code></a> with your own class MyRunStatisticCalculator . You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.<ul>
-<li>public MyRunStatisticCalculator(Repository, long, File, DataConfig) : The constructor for your run statistic calculator. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.</li>
-<li>public MyRunStatisticCalculator(MyRunStatisticCalculator) : The copy constructor for your run statistic calculator. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.</li>
-<li>protected MyRunStatistic calculateResult() : This method is the core of your run statistic calculator. It analysis the given runresults and returns a wrapper object for the results.</li>
-<li>public void writeOutputTo(File) : After calculateResult() has been invoked, this method writes the assessed results into the given file.</li>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>extending the class <a class="reference internal" href="RunStatisticCalculator.html#de.clusteval.run.statistics.RunStatisticCalculator" title="de.clusteval.run.statistics.RunStatisticCalculator"><code class="xref java java-ref docutils literal"><span class="pre">RunStatisticCalculator</span></code></a> with your own class MyRunStatisticCalculator . You have to provide your own implementations for the following methods.</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="RunStatisticCalculator.html#de.clusteval.run.statistics.RunStatisticCalculator.RunStatisticCalculator(RunStatisticCalculator)" title="de.clusteval.run.statistics.RunStatisticCalculator.RunStatisticCalculator(RunStatisticCalculator)"><code class="xref java java-ref docutils literal"><span class="pre">RunStatisticCalculator(Repository,</span> <span class="pre">long,</span> <span class="pre">File,</span> <span class="pre">DataConfig)</span></code></a> : The constructor for your run statistic calculator. This constructor has to be implemented and public.</li>
+<li><a class="reference internal" href="RunStatisticCalculator.html#de.clusteval.run.statistics.RunStatisticCalculator.RunStatisticCalculator(RunStatisticCalculator)" title="de.clusteval.run.statistics.RunStatisticCalculator.RunStatisticCalculator(RunStatisticCalculator)"><code class="xref java java-ref docutils literal"><span class="pre">RunStatisticCalculator(MyRunStatisticCalculator)</span></code></a> : The copy constructor for your run statistic calculator. This constructor has to be implemented and public.</li>
+<li><a class="reference internal" href="RunStatisticCalculator.html#de.clusteval.run.statistics.RunStatisticCalculator.calculateResult()" title="de.clusteval.run.statistics.RunStatisticCalculator.calculateResult()"><code class="xref java java-ref docutils literal"><span class="pre">RunStatisticCalculator.calculateResult()</span></code></a>: See <a class="reference internal" href="../../utils/StatisticCalculator.html#de.clusteval.utils.StatisticCalculator.calculateResult()" title="de.clusteval.utils.StatisticCalculator.calculateResult()"><code class="xref java java-ref docutils literal"><span class="pre">StatisticCalculator.calculateResult()</span></code></a>.</li>
+<li><a class="reference internal" href="../../utils/StatisticCalculator.html#de.clusteval.utils.StatisticCalculator.writeOutputTo(File)" title="de.clusteval.utils.StatisticCalculator.writeOutputTo(File)"><code class="xref java java-ref docutils literal"><span class="pre">StatisticCalculator.writeOutputTo(File)</span></code></a>: See <a class="reference internal" href="../../utils/StatisticCalculator.html#de.clusteval.utils.StatisticCalculator.writeOutputTo(File)" title="de.clusteval.utils.StatisticCalculator.writeOutputTo(File)"><code class="xref java java-ref docutils literal"><span class="pre">StatisticCalculator.writeOutputTo(File)</span></code></a>.</li>
 </ul>
-</li>
-<li>Creating a jar file named MyRunStatisticCalculator.jar containing the MyRunStatistic.class and MyRunStatisticCalculator.class compiled on your machine in the correct folder structure corresponding to the packages:<ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Creating a jar file named MyRunStatisticCalculator.jar containing the MyRunStatistic.class and MyRunStatisticCalculator.class compiled on your machine in the correct folder structure corresponding to the packages:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
 <li>de/clusteval/run/statistics/MyRunStatistic.class</li>
 <li>de/clusteval/run/statistics/MyRunStatisticCalculator.class</li>
 </ul>
-</li>
-<li>Putting the MyRunStatistic.jar into the run statistics folder of the repository:<ul>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li>Putting the MyRunStatistic.jar into the run statistics folder of the repository:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
 <li>&lt;REPOSITORY ROOT&gt;/supp/statistics/run</li>
 <li>The backend server will recognize and try to load the new run statistics automatically the next time, the RunStatisticFinderThread checks the filesystem.</li>
 </ul>
-</li>
-</ul>
+</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

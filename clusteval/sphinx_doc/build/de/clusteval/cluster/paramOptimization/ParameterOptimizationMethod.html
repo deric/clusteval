@@ -55,7 +55,8 @@ public abstract class <code class="descname">ParameterOptimizationMethod</code> 
 <li><strong>the handling of diverging iterations</strong></li>
 <li><strong>the storage of the iteration results</strong></li>
 </ul>
-<p>The <strong>basic usage</strong> of this class is as follows:</p>
+<p><strong>Basic Usage</strong></p>
+<p>The basic usage of this class is as follows:</p>
 <ul class="simple">
 <li>Instantiate an object of the parameter optimization method</li>
 <li>Invoke <a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.reset(File)" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.reset(File)"><code class="xref java java-ref docutils literal"><span class="pre">reset(File)</span></code></a> and tell the method to initialize itself. Results will be written to the passed file.</li>
@@ -64,6 +65,39 @@ public abstract class <code class="descname">ParameterOptimizationMethod</code> 
 <li>Pass the assessed qualities of <code class="xref java java-ref docutils literal"><span class="pre">ExecutionRunRunnable.assessQualities(ClusteringRunResult)</span></code> to <a class="reference internal" href="APParameterOptimizationMethod.html#de.clusteval.cluster.paramOptimization.APParameterOptimizationMethod.giveQualityFeedback(ParameterSet, ClusteringQualitySet)" title="de.clusteval.cluster.paramOptimization.APParameterOptimizationMethod.giveQualityFeedback(ParameterSet, ClusteringQualitySet)"><code class="xref java java-ref docutils literal"><span class="pre">giveQualityFeedback(ClusteringQualitySet)</span></code></a>.</li>
 <li>At the end use <a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getResult()" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getResult()"><code class="xref java java-ref docutils literal"><span class="pre">getResult()</span></code></a> to get the results of the iterations</li>
 </ul>
+<p><strong>Writing Custom Parameter Optimization Methods</strong></p>
+<p>A parameter optimization method MyParameterOptimizationMethod can be added to ClustEval by</p>
+<ol class="arabic simple">
+<li>extending this class with your own class MyParameterOptimizationMethod . You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your parameter optimization method.</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod"><code class="xref java java-ref docutils literal"><span class="pre">ParameterOptimizationMethod(Repository,</span> <span class="pre">boolean,</span> <span class="pre">long,</span> <span class="pre">File,</span> <span class="pre">ParameterOptimizationRun,</span> <span class="pre">ProgramConfig,</span> <span class="pre">DataConfig,</span> <span class="pre">List,</span> <span class="pre">ClusteringQualityMeasure,</span> <span class="pre">int[],</span> <span class="pre">boolean)</span></code></a>: The constructor for your parameter optimization method. This constructor has to be implemented and public, otherwise the framework will not be able to load your parameter optimization method.</li>
+<li><a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.ParameterOptimizationMethod(ParameterOptimizationMethod)" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.ParameterOptimizationMethod(ParameterOptimizationMethod)"><code class="xref java java-ref docutils literal"><span class="pre">ParameterOptimizationMethod(ParameterOptimizationMethod)</span></code></a>: The copy constructor for your parameter optimization method. This constructor has to be implemented and public, otherwise the framework will not be able to load your parameter optimization method.</li>
+<li><a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getCompatibleDataSetFormatBaseClasses()" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getCompatibleDataSetFormatBaseClasses()"><code class="xref java java-ref docutils literal"><span class="pre">getCompatibleDataSetFormatBaseClasses()</span></code></a> : A list of dataset formats, this parameter optimization method can be used for. If the list is empty, all dataset formats are assumed to be compatible.</li>
+<li><a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getCompatibleProgramNames()" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getCompatibleProgramNames()"><code class="xref java java-ref docutils literal"><span class="pre">getCompatibleProgramNames()</span></code></a> : A list of names of all programs that are compatible to this parameter optimization method. If the list is empty, all programs are assumed to be compatible.</li>
+<li><a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.hasNext()" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.hasNext()"><code class="xref java java-ref docutils literal"><span class="pre">hasNext()</span></code></a> : This method indicates, whether their is another parameter set to evaluate. This method must not change the current parameter set, as it may be invoked several times before next() is invoked.</li>
+<li><a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getNextParameterSet(ParameterSet)" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getNextParameterSet(ParameterSet)"><code class="xref java java-ref docutils literal"><span class="pre">getNextParameterSet(ParameterSet)</span></code></a> : Returns the next parameter set to evaluate. This method may change the internal status of the parameter optimization method, in that it stores the newly determined and returned parameter set as the current parameter set.</li>
+<li><a class="reference internal" href="#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getTotalIterationCount()" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod.getTotalIterationCount()"><code class="xref java java-ref docutils literal"><span class="pre">getTotalIterationCount()</span></code></a> : This is the total iteration count this parameter optimization method will perform. The returned value might not correspond to the expected value, when the method is instantiated. Therefore always use the return value of this method, when trying to determine the finished percentage of the parameter optimization process.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Creating a jar file named MyParameterOptimizationMethod.jar containing the MyParameterOptimizationMethod.class compiled on your machine in the correct folder structure corresponding to the packages:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>de/clusteval/cluster/paramOptimization/MyParameterOptimizationMethod.class</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Putting the MyParameterOptimizationMethod.jar into the parameter optimization methods folder of the repository:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>&lt;REPOSITORY ROOT&gt;/supp/clustering/paramOptimization</li>
+<li>The backend server will recognize and try to load the new parameter optimization method automatically the next time, the ParameterOptimizationMethodFinderThread checks the filesystem.</li>
+</ul>
+</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

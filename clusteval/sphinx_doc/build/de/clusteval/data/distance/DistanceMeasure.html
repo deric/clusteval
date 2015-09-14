@@ -46,7 +46,37 @@
 <dl class="type">
 <dt id="de.clusteval.data.distance.DistanceMeasure">
 public abstract class <code class="descname">DistanceMeasure</code> extends <a class="reference internal" href="../../framework/repository/RepositoryObject.html#de.clusteval.framework.repository.RepositoryObject" title="de.clusteval.framework.repository.RepositoryObject">RepositoryObject</a> implements <a class="reference internal" href="../../program/r/RLibraryInferior.html#de.clusteval.program.r.RLibraryInferior" title="de.clusteval.program.r.RLibraryInferior">RLibraryInferior</a><a class="headerlink" href="#de.clusteval.data.distance.DistanceMeasure" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>A distance measure MyDistanceMeasure can be added to ClustEval by</p>
+<ol class="arabic simple">
+<li>extending this class with your own class MyDistanceMeasure . You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your distance measure:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#de.clusteval.data.distance.DistanceMeasure.DistanceMeasure(Repository, boolean, long, File)" title="de.clusteval.data.distance.DistanceMeasure.DistanceMeasure(Repository, boolean, long, File)"><code class="xref java java-ref docutils literal"><span class="pre">DistanceMeasure(Repository,</span> <span class="pre">boolean,</span> <span class="pre">long,</span> <span class="pre">File)</span></code></a> : The constructor for your distance measure. This constructor has to be implemented and public, otherwise the framework will not be able to load your distance measure.</li>
+<li><a class="reference internal" href="#de.clusteval.data.distance.DistanceMeasure.DistanceMeasure(DistanceMeasure)" title="de.clusteval.data.distance.DistanceMeasure.DistanceMeasure(DistanceMeasure)"><code class="xref java java-ref docutils literal"><span class="pre">DistanceMeasure(MyDistanceMeasure)</span></code></a> : The copy constructor for your distance measure. This constructor has to be implemented and public, otherwise the framework will not be able to load your distance measure.</li>
+<li><a class="reference internal" href="#de.clusteval.data.distance.DistanceMeasure.getDistance(double[], double[])" title="de.clusteval.data.distance.DistanceMeasure.getDistance(double[], double[])"><code class="xref java java-ref docutils literal"><span class="pre">getDistance(double[],double[])</span></code></a> : This method is the core of your distance measure. It returns the distance of the two points specified by the absolute coordinates in the two double arrays.</li>
+<li><a class="reference internal" href="#de.clusteval.data.distance.DistanceMeasure.supportsMatrix()" title="de.clusteval.data.distance.DistanceMeasure.supportsMatrix()"><code class="xref java java-ref docutils literal"><span class="pre">supportsMatrix()</span></code></a> : This method indicates, whether your distance measure can calculate distances of a whole set of point-pairs, i.e. your distance measure implements the method getDistances(double[][]).</li>
+<li><a class="reference internal" href="#de.clusteval.data.distance.DistanceMeasure.getDistances(ConversionInputToStandardConfiguration, double[][])" title="de.clusteval.data.distance.DistanceMeasure.getDistances(ConversionInputToStandardConfiguration, double[][])"><code class="xref java java-ref docutils literal"><span class="pre">getDistances(double[][])</span></code></a> : The absolute coordinates of the points are stored row-wise in the given matrix and distances are calculated between every pair of rows. Position [i][j] of the returned double[][] matrix contains the distance between the i-th and j-th row of the input matrix.</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Creating a jar file named MyDistanceMeasure.jar containing the MyDistanceMeasure.class compiled on your machine in the correct folder structure corresponding to the packages:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>de/clusteval/data/distance/MyDistanceMeasure.class</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Putting the MyDistanceMeasure.jar into the distance measure folder of the repository:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>&lt;REPOSITORY ROOT&gt;/supp/distanceMeasures</li>
+</ul>
+</div></blockquote>
+<p>The backend server will recognize and try to load the new distance measure au- tomatically the</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">

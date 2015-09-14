@@ -73,7 +73,9 @@ ParameterOptimizationMethod
    * \ **the handling of diverging iterations**\
    * \ **the storage of the iteration results**\
 
-   The \ **basic usage**\  of this class is as follows:
+   \ **Basic Usage**\
+
+   The basic usage of this class is as follows:
 
    ..
 
@@ -83,6 +85,29 @@ ParameterOptimizationMethod
    * Use \ :java:ref:`next()`\  to get the next parameter set.
    * Pass the assessed qualities of \ :java:ref:`ExecutionRunRunnable.assessQualities(ClusteringRunResult)`\  to \ :java:ref:`giveQualityFeedback(ClusteringQualitySet)`\ .
    * At the end use \ :java:ref:`getResult()`\  to get the results of the iterations
+
+   \ **Writing Custom Parameter Optimization Methods**\
+
+   A parameter optimization method MyParameterOptimizationMethod can be added to ClustEval by
+
+   1. extending this class with your own class MyParameterOptimizationMethod . You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your parameter optimization method.
+
+     * :java:ref:`ParameterOptimizationMethod(Repository, boolean, long, File, ParameterOptimizationRun, ProgramConfig, DataConfig, List, ClusteringQualityMeasure, int[], boolean)`: The constructor for your parameter optimization method. This constructor has to be implemented and public, otherwise the framework will not be able to load your parameter optimization method.
+     * :java:ref:`ParameterOptimizationMethod(ParameterOptimizationMethod)`: The copy constructor for your parameter optimization method. This constructor has to be implemented and public, otherwise the framework will not be able to load your parameter optimization method.
+     * :java:ref:`getCompatibleDataSetFormatBaseClasses()` : A list of dataset formats, this parameter optimization method can be used for. If the list is empty, all dataset formats are assumed to be compatible.
+     * :java:ref:`getCompatibleProgramNames()` : A list of names of all programs that are compatible to this parameter optimization method. If the list is empty, all programs are assumed to be compatible.
+     * :java:ref:`hasNext()` : This method indicates, whether their is another parameter set to evaluate. This method must not change the current parameter set, as it may be invoked several times before next() is invoked.
+     * :java:ref:`getNextParameterSet(ParameterSet)` : Returns the next parameter set to evaluate. This method may change the internal status of the parameter optimization method, in that it stores the newly determined and returned parameter set as the current parameter set.
+     * :java:ref:`getTotalIterationCount()` : This is the total iteration count this parameter optimization method will perform. The returned value might not correspond to the expected value, when the method is instantiated. Therefore always use the return value of this method, when trying to determine the finished percentage of the parameter optimization process.
+
+   2. Creating a jar file named MyParameterOptimizationMethod.jar containing the MyParameterOptimizationMethod.class compiled on your machine in the correct folder structure corresponding to the packages:
+
+     * de/clusteval/cluster/paramOptimization/MyParameterOptimizationMethod.class
+
+   3. Putting the MyParameterOptimizationMethod.jar into the parameter optimization methods folder of the repository:
+
+     * <REPOSITORY ROOT>/supp/clustering/paramOptimization
+     * The backend server will recognize and try to load the new parameter optimization method automatically the next time, the ParameterOptimizationMethodFinderThread checks the filesystem.
 
    :author: Christian Wiwie
 

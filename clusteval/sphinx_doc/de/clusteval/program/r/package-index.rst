@@ -8,14 +8,6 @@ de.clusteval.program.r
 
    AbsoluteAndRelativeDataRProgram
    AbsoluteDataRProgram
-   CMeansClusteringRProgram
-   ClusterDPClusteringRProgram
-   DBSCANClusteringRProgram
-   FannyClusteringRProgram
-   HierarchicalClusteringRProgram
-   KMeansClusteringRProgram
-   KMedoidsClusteringRProgram
-   PPAMClusteringRProgram
    RLibraryInferior
    RProcess
    RProgram
@@ -25,7 +17,5 @@ de.clusteval.program.r
    RProgramThread
    RProgramURLClassLoader
    RelativeDataRProgram
-   SOMClusteringRProgram
-   SpectralClusteringRProgram
    UnknownRProgramException
 

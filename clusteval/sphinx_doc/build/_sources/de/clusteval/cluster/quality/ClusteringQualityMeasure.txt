@@ -38,11 +38,29 @@ ClusteringQualityMeasure
 
 .. java:type:: public abstract class ClusteringQualityMeasure extends RepositoryObject implements RLibraryInferior
 
-   A clustering quality measure is used to assess the quality of a \ :java:ref:`Clustering`\  by invoking \ :java:ref:`getQualityOfClustering(Clustering,Clustering,DataConfig)`\ .
+   A clustering quality measure is used to assess the quality of a \ :java:ref:`Clustering`\  by invoking \ :java:ref:`getQualityOfClustering(Clustering,Clustering,DataConfig)`\ . It has a range of possible values between \ :java:ref:`getMinimum()`\  and \ :java:ref:`getMaximum()`\ . Some measures can only be assessed if a goldstandard is available (see \ :java:ref:`requiresGoldstandard()`\ ). Furthermore, some measures are better when maximized and some when minimized (see \ :java:ref:`isBetterThan`\  and \ :java:ref:`isBetterThanHelper`\  ).
 
-   Every clustering quality measure has a range of possible qualities between \ :java:ref:`getMinimum()`\  and \ :java:ref:`getMaximum()`\ .
+   A clustering quality measure MyClusteringQualityMeasure can be added to ClustEval by
 
-   Some clustering quality measures can only be assessed if a goldstandard is available (see \ :java:ref:`requiresGoldstandard()`\ ).
+   1. extending the class :java:ref:`ClusteringQualityMeasure` with your own class MyClusteringQualityMeasure. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your clustering quality measure.
+
+     * public :java:ref:`ClusteringQualityMeasure(Repository, boolean, long, File, ClusteringQualityMeasureParameters)` : The constructor for your distance measure. This constructor has to be implemented and public.
+     * public :java:ref:`ClusteringQualityMeasure(MyClusteringQualityMeasure)` : The copy constructor for your distance measure. This constructor has to be implemented and public.
+     * public :java:ref:`getAlias()` : This method returns a readable alias for this clustering quality measure which is used e.g. on the website.
+     * public :java:ref:`getMinimum()` : Returns the minimal value this measure can calculate.
+     * public :java:ref:`getMaximum()` : Returns the maximal value this measure can calculate.
+     * public :java:ref:`requiresGoldStandard()` : Indicates, whether this clustering quality measure requires a goldstandard to assess the quality of a given clustering.
+     * public :java:ref:`getQualityOfClustering(Clustering)` : This method is the core of your clustering quality measure. It assesses and returns the quality of the given clustering.
+     * public :java:ref:`isBetterThanHelper(ClusteringQualityMeasureValue)` : This method is used by sorting algorithms of the framework to compare clustering quality measure results and find the optimal parameter sets.
+
+   2. Creating a jar file named MyClusteringQualityMeasure.jar containing the MyClusteringQualityMeasure class compiled on your machine in the correct folder structure corresponding to the packages:
+
+     * de/clusteval/cluster/quality/MyClusteringQualityMeasure.class
+
+   3. Putting the MyClusteringQualityMeasure.jar into the clustering quality measure folder of the repository:
+
+     * <REPOSITORY ROOT>/supp/clustering/qualityMeasures
+     * The backend server will recognize and try to load the new clustering quality measure automatically the next time, the ClusteringQualityMeasureFinderThread checks the filesystem.
 
    :author: Christian Wiwie
 
@@ -61,8 +79,6 @@ ClusteringQualityMeasure
 
 .. java:constructor:: public ClusteringQualityMeasure(Repository repo, boolean register, long changeDate, File absPath, ClusteringQualityMeasureParameters parameters) throws RegisterException
    :outertype: ClusteringQualityMeasure
-
-   Instantiates a new clustering quality measure.
 
    :param repo:
    :param register:

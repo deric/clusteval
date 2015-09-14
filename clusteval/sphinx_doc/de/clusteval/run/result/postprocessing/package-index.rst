@@ -6,7 +6,6 @@ de.clusteval.run.result.postprocessing
 .. toctree::
    :maxdepth: 1
 
-   FuzzyCoefficientThresholdRunResultPostprocessor
    RunResultPostprocessor
    RunResultPostprocessorFinder
    RunResultPostprocessorFinderThread

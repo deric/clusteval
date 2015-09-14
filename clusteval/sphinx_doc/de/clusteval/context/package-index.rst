@@ -6,7 +6,6 @@ de.clusteval.context
 .. toctree::
    :maxdepth: 1
 
-   ClusteringContext
    Context
    ContextFinder
    ContextFinderThread

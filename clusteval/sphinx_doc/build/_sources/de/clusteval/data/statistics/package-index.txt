@@ -6,12 +6,6 @@ de.clusteval.data.statistics
 .. toctree::
    :maxdepth: 1
 
-   ClassSizeDistributionDataStatistic
-   ClassSizeDistributionDataStatisticCalculator
-   ClusteringCoefficientDataStatistic
-   ClusteringCoefficientDataStatisticCalculator
-   ClusteringCoefficientRDataStatistic
-   ClusteringCoefficientRDataStatisticCalculator
    DataStatistic
    DataStatisticCalculateException
    DataStatisticCalculator
@@ -21,33 +15,9 @@ de.clusteval.data.statistics
    DataStatisticRCalculator
    DataStatisticURLClassLoader
    DoubleValueDataStatistic
-   GraphAdhesionRDataStatistic
-   GraphAdhesionRDataStatisticCalculator
-   GraphCohesionRDataStatistic
-   GraphCohesionRDataStatisticCalculator
-   GraphDensityRDataStatistic
-   GraphDensityRDataStatisticCalculator
-   GraphDiversityAverageRDataStatistic
-   GraphDiversityAverageRDataStatisticCalculator
-   GraphMinCutRDataStatistic
-   GraphMinCutRDataStatisticCalculator
-   HopkinsDataStatistic
-   HopkinsDataStatisticCalculator
    IncompatibleDataConfigDataStatisticException
-   IntraInterDistributionDataStatistic
-   IntraInterDistributionDataStatisticCalculator
-   IntraInterOverlapDataStatistic
-   IntraInterOverlapDataStatisticCalculator
-   MatrixRankRDataStatistic
-   MatrixRankRDataStatisticCalculator
-   NodeDegreeDistributionDataStatistic
-   NodeDegreeDistributionDataStatisticCalculator
-   NumberOfSamplesDataStatistic
-   NumberOfSamplesDataStatisticCalculator
    RunDataStatisticCalculateException
    RunStatisticCalculateException
-   SimilarityDistributionDataStatistic
-   SimilarityDistributionDataStatisticCalculator
    StatisticCalculateException
    UnknownDataStatisticException
 

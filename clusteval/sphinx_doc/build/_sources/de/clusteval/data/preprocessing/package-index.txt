@@ -10,12 +10,5 @@ de.clusteval.data.preprocessing
    DataPreprocessorFinder
    DataPreprocessorFinderThread
    DataPreprocessorURLClassLoader
-   EigenvectorTransDataPreprocessor
-   RangeNormalizationDataPreprocessor
-   RemoveSymmetricZeroFeaturesDataPreprocessor
-   RemoveZeroSamplesDataPreprocessor
-   SampleRangeNormalizationDataPreprocessor
-   SampleVarianceNormalizationDataPreprocessor
    UnknownDataPreprocessorException
-   VarianceNormalizationDataPreprocessor
 

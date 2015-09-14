@@ -11,6 +11,5 @@ de.clusteval.data.randomizer
    DataRandomizerFinder
    DataRandomizerFinderThread
    DataSetRandomizerURLClassLoader
-   RemoveAndAddNoiseDataRandomizer
    UnknownDataRandomizerException
 

@@ -10,13 +10,5 @@ de.clusteval.data.dataset.type
    DataSetTypeFinder
    DataSetTypeFinderThread
    DataSetTypeURLClassLoader
-   GeneExpressionDataSetType
-   OtherDataSetType
-   PPIDataSetType
-   ProteinSequenceSimilarityDataSetType
-   ProteinStructureSimilarityDataSetType
-   SocialNetworkDataSetType
-   SyntheticDataSetType
    UnknownDataSetTypeException
-   WordSenseDisambiguationDataSetType
 

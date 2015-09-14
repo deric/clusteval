@@ -6,17 +6,10 @@ de.clusteval.cluster.paramOptimization
 .. toctree::
    :maxdepth: 1
 
-   APDivisiveParameterOptimizationMethod
-   APParameterOptimizationMethod
-   DivisiveParameterOptimizationMethod
-   FlatteningLayeredDivisiveParameterOptimizationMethod
-   GapStatisticParameterOptimizationMethod
    IDivergingParameterOptimizationMethod
    IncompatibleParameterOptimizationMethodException
    InvalidOptimizationParameterException
-   LayeredDivisiveParameterOptimizationMethod
    LoadableClassParentAnnotation
-   MCODEDivisiveParameterOptimizationMethod
    NoParameterSetFoundException
    ParameterOptimizationException
    ParameterOptimizationMethod
@@ -24,6 +17,5 @@ de.clusteval.cluster.paramOptimization
    ParameterOptimizationMethodFinderThread
    ParameterOptimizationMethodURLClassLoader
    ParameterSetAlreadyEvaluatedException
-   TransClustQuantileParameterOptimizationMethod
    UnknownParameterOptimizationMethodException
 

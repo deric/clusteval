@@ -6,13 +6,7 @@ de.clusteval.data.dataset.format
 .. toctree::
    :maxdepth: 1
 
-   APRowSimDataSetFormat
-   APRowSimDataSetFormatParser
-   APRowSimDataSetFormatParser-APSimFileConverter
    AbsoluteDataSetFormat
-   BLASTDataSetFormat
-   BLASTDataSetFormatParser
-   BLASTDataSetFormatParser-APSimFileConverter
    ConversionConfiguration
    ConversionInputToStandardConfiguration
    ConversionStandardToInputConfiguration
@@ -24,17 +18,6 @@ de.clusteval.data.dataset.format
    DataSetFormatURLClassLoader
    IncompatibleDataSetFormatException
    InvalidDataSetFormatVersionException
-   MatrixDataSetFormat
-   MatrixDataSetFormatParser
-   MatrixDataSetFormatParser-MatrixParser
    RelativeDataSetFormat
-   RowSimDataSetFormat
-   RowSimDataSetFormatParser
-   RowSimDataSetFormatParser-APSimFileConverter
-   SimMatrixDataSetFormat
-   SimMatrixDataSetFormatParser
-   TransClustSimMatrixDataSetFormat
-   TransClustSimMatrixDataSetFormatParser
-   TransClustSimMatrixDataSetFormatParser-TransClustSimMatrixConverter
    UnknownDataSetFormatException
 

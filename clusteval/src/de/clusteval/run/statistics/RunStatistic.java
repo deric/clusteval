@@ -24,38 +24,37 @@ import de.clusteval.run.RunAnalysisRun;
 import de.clusteval.utils.Statistic;
 
 /**
- * A run statistic is a type of {@link Statistic}, which corresponds to
- * properties of run results.
+ * A run statistic is a {@link Statistic}, which summarizes properties of
+ * clustering run results. Run statistics are assessed by a
+ * {@link RunAnalysisRun}.
+ * <p/>
  * 
- * <p>
- * Run statistics correspond to {@link RunAnalysisRun} in the class hierarchy.
  * 
  * {@code
  * 
  * 
  * A run statistic MyRunStatistic can be added to ClustEval by
  * 
- * * extending the class :java:ref:`RunStatistic` with your own class MyRunStatistic. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.
+ * 1. extending the class :java:ref:`RunStatistic` with your own class MyRunStatistic. You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.
  * 
- *   * public MyRunStatistic(Repository, boolean, long, File) : The constructor for your run statistic. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.
- *   * public MyRunStatistic(MyRunStatistic) : The copy constructor for your run statistic. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.
- *   * :java:ref:`Statistic.getAlias()` : This method returns a readable alias for this run statistic which is used e.g. on the website.
- *   * :java:ref:`RunStatistic.parseFromString(String)` : This method interprets the string and fills this statistic object with its parsed contents.
- *   * TODO: needed?: public Set getRequiredRlibraries() : Returns a set of names of all R libraries, this run statistic requires.
+ *   * :java:ref:`RunStatistic(Repository, boolean, long, File)` : The constructor for your run statistic. This constructor has to be implemented and public.
+ *   * :java:ref:`RunStatistic(MyRunStatistic)` : The copy constructor for your run statistic. This constructor has to be implemented and public.
+ *   * :java:ref:`Statistic.getAlias()` : See :java:ref:`Statistic.getAlias()`.
+ *   * :java:ref:`Statistic.parseFromString(String)` : See :java:ref:`Statistic.parseFromString(String)`.
  *   
- * * extending the class :java:ref:`RunStatisticCalculator` with your own class MyRunStatisticCalculator . You have to provide your own implementations for the following methods, otherwise the framework will not be able to load your class.
- *
- *   * public MyRunStatisticCalculator(Repository, long, File, DataConfig) : The constructor for your run statistic calculator. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.
- *   * public MyRunStatisticCalculator(MyRunStatisticCalculator) : The copy constructor for your run statistic calculator. This constructor has to be implemented and public, otherwise the framework will not be able to load your class.
- *   * protected MyRunStatistic calculateResult() : This method is the core of your run statistic calculator. It analysis the given runresults and returns a wrapper object for the results.
- *   * public void writeOutputTo(File) : After calculateResult() has been invoked, this method writes the assessed results into the given file.
+ * 2. extending the class :java:ref:`RunStatisticCalculator` with your own class MyRunStatisticCalculator . You have to provide your own implementations for the following methods.
+ * 
+ *   * :java:ref:`RunStatisticCalculator(Repository, long, File, DataConfig)` : The constructor for your run statistic calculator. This constructor has to be implemented and public.
+ *   * :java:ref:`RunStatisticCalculator(MyRunStatisticCalculator)` : The copy constructor for your run statistic calculator. This constructor has to be implemented and public.
+ *   * :java:ref:`RunStatisticCalculator.calculateResult()`: See :java:ref:`StatisticCalculator.calculateResult()`.
+ *   * :java:ref:`StatisticCalculator.writeOutputTo(File)`: See :java:ref:`StatisticCalculator.writeOutputTo(File)`.
  *   
- * * Creating a jar file named MyRunStatisticCalculator.jar containing the MyRunStatistic.class and MyRunStatisticCalculator.class compiled on your machine in the correct folder structure corresponding to the packages:
+ * 3. Creating a jar file named MyRunStatisticCalculator.jar containing the MyRunStatistic.class and MyRunStatisticCalculator.class compiled on your machine in the correct folder structure corresponding to the packages:
  * 
  *   * de/clusteval/run/statistics/MyRunStatistic.class
  *   * de/clusteval/run/statistics/MyRunStatisticCalculator.class
  *   
- * * Putting the MyRunStatistic.jar into the run statistics folder of the repository:
+ * 4. Putting the MyRunStatistic.jar into the run statistics folder of the repository:
  * 
  *   * <REPOSITORY ROOT>/supp/statistics/run
  *   * The backend server will recognize and try to load the new run statistics automatically the next time, the RunStatisticFinderThread checks the filesystem.
@@ -131,8 +130,7 @@ public abstract class RunStatistic extends Statistic {
 	 */
 	public static RunStatistic parseFromString(final Repository repository,
 			String runStatistic) throws UnknownRunStatisticException {
-		Class<? extends RunStatistic> c = repository
-.getRegisteredClass(
+		Class<? extends RunStatistic> c = repository.getRegisteredClass(
 				RunStatistic.class, "de.clusteval.run.statistics."
 						+ runStatistic);
 

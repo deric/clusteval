@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RowSimDataSetFormatParser.APSimFileConverter &mdash; Python  documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="top" title="Python  documentation" href="../../../../../contents.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="rowsimdatasetformatparser-apsimfileconverter">
+<h1>RowSimDataSetFormatParser.APSimFileConverter<a class="headerlink" href="#rowsimdatasetformatparser-apsimfileconverter" title="Permalink to this headline">¶</a></h1>
+<dl class="type">
+<dt id="de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter">
+ class <code class="descname">APSimFileConverter</code> extends SimFileMatrixParser<a class="headerlink" href="#de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Class APSimFileConverter.</p>
+</dd></dl>
+
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mappingwriter">
+<h3>mappingWriter<a class="headerlink" href="#mappingwriter" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter.mappingWriter">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/io/BufferedWriter.html" title="java.io.BufferedWriter">BufferedWriter</a> <code class="descname">mappingWriter</code><a class="headerlink" href="#de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter.mappingWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mapping writer.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="constructors">
+<h2>Constructors<a class="headerlink" href="#constructors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="apsimfileconverter">
+<h3>APSimFileConverter<a class="headerlink" href="#apsimfileconverter" title="Permalink to this headline">¶</a></h3>
+<dl class="constructor">
+<dt id="de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter.APSimFileConverter(String, SIM_FILE_FORMAT, String, ID_FILE_FORMAT, String, OUTPUT_MODE, SIM_FILE_FORMAT)">
+public <code class="descname">APSimFileConverter</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> absFilePath</em>, SIM_FILE_FORMAT<em> simFileFormat</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> absIdFilePath</em>, ID_FILE_FORMAT<em> idFileFormat</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> outputFile</em>, OUTPUT_MODE<em> outputMode</em>, SIM_FILE_FORMAT<em> outputFormat</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter.APSimFileConverter(String, SIM_FILE_FORMAT, String, ID_FILE_FORMAT, String, OUTPUT_MODE, SIM_FILE_FORMAT)" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instantiates a new aP sim file converter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>absFilePath</strong> &#8211; the abs file path</li>
+<li><strong>simFileFormat</strong> &#8211; the sim file format</li>
+<li><strong>absIdFilePath</strong> &#8211; the abs id file path</li>
+<li><strong>idFileFormat</strong> &#8211; the id file format</li>
+<li><strong>outputFile</strong> &#8211; the output file</li>
+<li><strong>outputMode</strong> &#8211; the output mode</li>
+<li><strong>outputFormat</strong> &#8211; the output format</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
+<li><strong>IOException</strong> &#8211; Signals that an I/O exception has occurred.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="closestreams">
+<h3>closeStreams<a class="headerlink" href="#closestreams" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter.closeStreams()">
+protected void <code class="descname">closeStreams</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter.closeStreams()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="finishprocess">
+<h3>finishProcess<a class="headerlink" href="#finishprocess" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter.finishProcess()">
+public void <code class="descname">finishProcess</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter.finishProcess()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getidforkey">
+<h3>getIdForKey<a class="headerlink" href="#getidforkey" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter.getIdForKey(String)">
+public int <code class="descname">getIdForKey</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> key</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter.getIdForKey(String)" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="getlineoutput">
+<h3>getLineOutput<a class="headerlink" href="#getlineoutput" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter.getLineOutput(String[], String[])">
+protected <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a> <code class="descname">getLineOutput</code><span class="sig-paren">(</span><a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> key</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a>[]<em> value</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter.getLineOutput(String[], String[])" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="resetreader">
+<h3>resetReader<a class="headerlink" href="#resetreader" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter.resetReader()">
+protected void <code class="descname">resetReader</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.data.dataset.format.RowSimDataSetFormatParser.APSimFileConverter.resetReader()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../../../../contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">RowSimDataSetFormatParser.APSimFileConverter</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a><ul>
+<li><a class="reference internal" href="#mappingwriter">mappingWriter</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#constructors">Constructors</a><ul>
+<li><a class="reference internal" href="#apsimfileconverter">APSimFileConverter</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#closestreams">closeStreams</a></li>
+<li><a class="reference internal" href="#finishprocess">finishProcess</a></li>
+<li><a class="reference internal" href="#getidforkey">getIdForKey</a></li>
+<li><a class="reference internal" href="#getlineoutput">getLineOutput</a></li>
+<li><a class="reference internal" href="#resetreader">resetReader</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../../_sources/de/clusteval/data/dataset/format/RowSimDataSetFormatParser-APSimFileConverter.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../../../../contents.html">Python  documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
+    </div>
+  </body>
+</html>

@@ -133,8 +133,8 @@ package via TCP/IP.</p>
 <p>The backend server is based on a central repository which concludes all files in its folder
 structure. You can easily start a framework with a different set of files by simply using
 another repository.</p>
-<div class="section" id="repository-folder-structure">
-<h4>Repository Folder Structure<a class="headerlink" href="#repository-folder-structure" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="folder-structure">
+<h4>Folder Structure<a class="headerlink" href="#folder-structure" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li>data: Contains all data-related files.<ul>
 <li>configs [<a href="#id1"><span class="problematic" id="id2">*</span></a>.dataconfig]: Contains the data configuration files 4.9.1.</li>
@@ -220,16 +220,16 @@ clusteval ships with a set of clustering methods including</p>
 <p>For every of these clustering methods a program configuration is also provided,
 such that they are directly usable from the start. Of course these program configurations
 can be modified and adapted to the user&#8217;s needs.</p>
-<div class="section" id="standalone-methods">
-<h4>Standalone Methods<a class="headerlink" href="#standalone-methods" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="standalone">
+<h4>Standalone<a class="headerlink" href="#standalone" title="Permalink to this headline">¶</a></h4>
 <p>are programs that come as an executable. Those can be performed by the framework,
 after they have been specified in a program configuration. The executable needs to be
 compatible to the server architecture clusteval runs on and they need to be executable
 (+x modifier). How you can add your own standalone programs into the framework
 can be found here 11.1.1</p>
 </div>
-<div class="section" id="r-methods-rserve">
-<h4>R Methods (Rserve)<a class="headerlink" href="#r-methods-rserve" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="r-rserve">
+<h4>R (Rserve)<a class="headerlink" href="#r-rserve" title="Permalink to this headline">¶</a></h4>
 <p>are programs, that are implemented within some R package. Arbitrary methods imple-
 mented in R can be used as a program, as long as they can be made available within
 R on the server. This implies that the corresponding R Program is available for your
@@ -270,8 +270,8 @@ Protein similarity, Word-Sense disambiguation), for example</p>
 </ul>
 <p>The goldstandard configuration contains the name and path to the goldstandard file. Since the framework does only support one goldstandard format, this does not need to be provided. An exact description of how goldstandard configurations look like and which options and settings need to be specified can be found in 4.9.5.</p>
 </div>
-<div class="section" id="input-output-formats">
-<h3>Input &amp; Output Formats<a class="headerlink" href="#input-output-formats" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="formats">
+<h3>Formats<a class="headerlink" href="#formats" title="Permalink to this headline">¶</a></h3>
 <p>As already mentioned, datasets have their own formats and clustering methods can
 require different input and output formats. The general process how these formats link
 together can be visualized as seen in figure 4.
@@ -289,22 +289,12 @@ format it understands, such that diverse operations can be performed on the resu
 need to be known to the framework.
 clusteval ships with a set of supported input and output formats. The input
 formats are</p>
-<p>TODO: remove this list; it should be somehow visible from the API itself</p>
-<ul class="simple">
-<li>APRowSimDataSetFormat</li>
-<li>BLASTDataSetFormat</li>
-<li>MatrixDataSetFormat</li>
-<li>RowSimDataSetFormat</li>
-<li>SimMatrixDataSetFormat</li>
-<li>TransClustSimMatrixDataSetFormat</li>
-</ul>
-<p>and the output formats are</p>
-<ul class="simple">
-<li>APRunResultFormat</li>
-<li>MCLRunResultFormat</li>
-<li>TabSeparatedRunResultFormat</li>
-<li>TransClustRunResultFormat</li>
-</ul>
+<div class="section" id="available-formats">
+<h4>Available Formats<a class="headerlink" href="#available-formats" title="Permalink to this headline">¶</a></h4>
+<p>For lists of all available input and result formats see <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/data/dataset/format/package-index.html">here</a> and <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/run/result/format/package-index.html">here</a> respectively.</p>
+</div>
+<div class="section" id="providing-new-formats">
+<h4>Providing New Formats<a class="headerlink" href="#providing-new-formats" title="Permalink to this headline">¶</a></h4>
 <p>If the new clustering method requires another input format not in the list, you will
 have to make it available to the framework by writing</p>
 <ul class="simple">
@@ -319,9 +309,9 @@ provide</p>
 </ul>
 <p>When this clustering method is applied to a dataset, the resulting clustering in the
 new format is converted to a standardized output format using your parser, such that
-further analyses can be performed regardless of the used clustering method.
-For more information on how the framework can be extended by new input or output
-formats see 4.5 respectively.</p>
+further analyses can be performed regardless of the used clustering method.</p>
+<p>For more information on how the extend ClustEval by new formats see <a class="reference internal" href="#clusteval-extend-formats"><span>Formats</span></a>.</p>
+</div>
 <div class="section" id="standard-input-format">
 <h4>Standard Input Format<a class="headerlink" href="#standard-input-format" title="Permalink to this headline">¶</a></h4>
 <p>The standard input format is a SimMatrixDataSetFormat which is described under
@@ -337,140 +327,21 @@ The format for this looks as follows:</p>
 <p>The parameter names and values on the left have to be separated by a TAB from
 the string &#8220;Clustering&#8221; and the clustering on the right. If the fuzzy coefficients are
 missing, the framework will not be able to parse the result file.</p>
-<p>TODO: Move the following format descriptions into the javadoc</p>
-</div>
-<div class="section" id="aprowsimdatasetformat">
-<h4>APRowSimDataSetFormat<a class="headerlink" href="#aprowsimdatasetformat" title="Permalink to this headline">¶</a></h4>
-<p>This input format is used by Affinity Propagation. It is similar to the RowSimDataSet-
-Format, except that it accepts only numbers as ids and that it leaves out lines where
-id1=id2 such that it looks like this:</p>
-<div class="highlight-python"><div class="highlight"><pre>1       2       0.2
-1       3       0.6
-2       1       0.2
-2       3       0.5
-3       1       0.6
-3       2       0.5
-</pre></div>
-</div>
-<table border="1" class="docutils">
-<colgroup>
-<col width="19%" />
-<col width="19%" />
-<col width="63%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Id1</th>
-<th class="head">Id2</th>
-<th class="head">Similarity</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>1</td>
-<td>2</td>
-<td>0.2</td>
-</tr>
-<tr class="row-odd"><td>1</td>
-<td>3</td>
-<td>0.6</td>
-</tr>
-<tr class="row-even"><td>2</td>
-<td>1</td>
-<td>0.2</td>
-</tr>
-<tr class="row-odd"><td>2</td>
-<td>3</td>
-<td>0.5</td>
-</tr>
-<tr class="row-even"><td>3</td>
-<td>1</td>
-<td>0.6</td>
-</tr>
-<tr class="row-odd"><td>3</td>
-<td>2</td>
-<td>0.5</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="blastdatasetformat">
-<h4>BLASTDataSetFormat<a class="headerlink" href="#blastdatasetformat" title="Permalink to this headline">¶</a></h4>
-<p>TODO</p>
-<p>The BLAST dataset format needs a all-vs-all BLAST file and a corresponding FASTA
-file.
-Please note, that the FASTA file has to be named exactly like the BLAST file
-plus the additional .fasta extension. If the BLAST file is named like MyBlastFile.blast,
-then the FASTA file only be found by the framework, when it lies in the same directory
-and is named MyBlastFile.blast.fasta.</p>
-</div>
-<div class="section" id="matrixdatasetformat">
-<h4>MatrixDataSetFormat<a class="headerlink" href="#matrixdatasetformat" title="Permalink to this headline">¶</a></h4>
-<p>TODO</p>
-<p>This input format is a absolute dataset format, that means it contains samples together
-with their absolute coordinates:</p>
-</div>
-<div class="section" id="rowsimdatasetformat">
-<h4>RowSimDataSetFormat<a class="headerlink" href="#rowsimdatasetformat" title="Permalink to this headline">¶</a></h4>
-<p>TODO</p>
-<p>This input format consists of tab-separated rows looking as follows:</p>
-</div>
-<div class="section" id="simmatrixdatasetformat">
-<h4>SimMatrixDataSetFormat<a class="headerlink" href="#simmatrixdatasetformat" title="Permalink to this headline">¶</a></h4>
-<p>The SimMatrixDataSetFormat is a complete quadratic tab-separated similarity matrix
-with header row and column (containing ids). A dataset file with the SimMatrix-
-DataSetFormat could look as follows:</p>
-<p>TODO</p>
-<p>There are no spaces in this file, only tabs. It does not necessarily need to be symmetric,
-it depends on the clustering method, whether it supports asymmetric similarity data.</p>
-</div>
-<div class="section" id="transclustsimmatrixdatasetformat">
-<h4>TransClustSimMatrixDataSetFormat<a class="headerlink" href="#transclustsimmatrixdatasetformat" title="Permalink to this headline">¶</a></h4>
-<p>This format can be used by Transitivity Clustering and it looks as follows:</p>
-<p>TODO</p>
-</div>
-<div class="section" id="aprunresultformat">
-<h4>APRunResultFormat<a class="headerlink" href="#aprunresultformat" title="Permalink to this headline">¶</a></h4>
-<p>This is the result format of Affinity Propagation.</p>
-</div>
-<div class="section" id="mclrunresultformat">
-<h4>MCLRunResultFormat<a class="headerlink" href="#mclrunresultformat" title="Permalink to this headline">¶</a></h4>
-<p>This is the result format of Markov Clustering.</p>
-</div>
-<div class="section" id="transclustrunresultformat">
-<h4>TransClustRunResultFormat<a class="headerlink" href="#transclustrunresultformat" title="Permalink to this headline">¶</a></h4>
-<p>This is the result format of Transitivity Clustering.</p>
 </div>
 </div>
 <div class="section" id="clustering-quality-measures">
 <h3>Clustering Quality Measures<a class="headerlink" href="#clustering-quality-measures" title="Permalink to this headline">¶</a></h3>
-<p>The clustering quality measures are used by the framework to assess the quality of cal-
-culated clusterings. clusteval ships with a standard set of clustering quality measures</p>
-<p>TODO: remove this list; it should be somehow visible from the API itself</p>
-<ul class="simple">
-<li>F1 &amp; F2-Score</li>
-<li>False Discovery Rate (FDR)</li>
-<li>False Positive Rate (FPR)</li>
-<li>Rand Index</li>
-<li>Sensitivity</li>
-<li>Specificity</li>
-<li>Silhouette Value (Java &amp; R implementation)</li>
-</ul>
-<p>Please check 4.6 for more information on how to extend the framework by new clustering
-quality measures.</p>
+<p>Clustering quality measures assess the quality of calculated clusterings.</p>
+<p>ClustEval ships with a standard set of clustering quality measures. For a list of available clustering quality measures see <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/cluster/quality/package-index.html">here</a></p>
+<p>Check <a class="reference internal" href="#clusteval-extend-quality-measure"><span>Clustering Quality Measures</span></a> for more information on how to extend ClustEval by new clustering quality measures.</p>
 </div>
 <div class="section" id="distance-measures">
 <h3>Distance Measures<a class="headerlink" href="#distance-measures" title="Permalink to this headline">¶</a></h3>
 <p>The distance measures are used when converting absolute datasets (containing absolute
 coordinates) to relative datasets (pairwise similarities). The distance measures define
-how to assess the similarity between a pair of objects given their absolute coordinates.
-clusteval ships with the following distance measures</p>
-<p>TODO: remove this list; it should be somehow visible from the API itself</p>
-<ul class="simple">
-<li>Euclidian</li>
-<li>Hoeffding D Statistic (Rserve)</li>
-<li>Pearson Correlation Coefficient (Rserve)</li>
-<li>Spearman Correlation Coefficient (Rserve)</li>
-</ul>
-<p>Please check 4.7 for more information on how to extend the framework by new distance
+how to assess the similarity between a pair of objects given their absolute coordinates.</p>
+<p>ClustEval ships with a standard set of distance measures. For a list of available clustering quality measures see <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/data/distance/package-index.html">here</a></p>
+<p>Check <a class="reference internal" href="#clusteval-extend-distance-measure"><span>Distance Measures</span></a> for more information on how to extend the framework by new distance
 measures.</p>
 </div>
 <div class="section" id="parameter-optimization-methods">
@@ -480,23 +351,14 @@ clustering methods. This is an iterative procedure where the backend assesses qu
 of clustering results of the last iteration and adapts the parameter for the next iteration
 in order to find optimal parameters for the method on the given data. The parameter
 optimization method determines the following aspects:</p>
-<p>1 the number of iterations of the optimization process
-2 the parameter sets evaluated
-3 the handling of diverging iterations
-4 the storage of the iteration results in RAM</p>
-<p>clusteval ships with the following set of parameter optimization methods</p>
-<p>TODO: remove this list; it should be somehow visible from the API itself</p>
-<ul class="simple">
-<li>Affinity Propagation Divisive Parameter Optimization Method</li>
-<li>Affinity Propagation Parameter Optimization Method</li>
-<li>Divisive Parameter Optimization Method</li>
-<li>Gap Statistic Parameter Optimization Method</li>
-<li>Layered Divisive Parameter Optimization Method</li>
-<li>Transitivity Clustering Parameter Optimization Method</li>
-<li>Transitivity Clustering Quantile Parameter Optimization Method</li>
-</ul>
-<p>Detailed information about each of these methods can be found in [1]. Please check 4.8
-for more information on how to extend the framework by new parameter optimization
+<ol class="arabic simple">
+<li>the number of iterations of the optimization process</li>
+<li>the parameter sets evaluated</li>
+<li>the handling of diverging iterations</li>
+<li>the storage of the iteration results in RAM</li>
+</ol>
+<p>ClustEval ships with a standard set of parameter optimization methods. You can find a list <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/cluster/paramOptimization/package-index.html">here</a></p>
+<p>Check <a class="reference internal" href="#clusteval-extend-parameter-optimization-method"><span>Parameter Optimization Methods</span></a> for more information on how to extend the framework by new parameter optimization
 methods.</p>
 </div>
 <div class="section" id="configuration-files">
@@ -819,8 +681,8 @@ results. Run analysis runs are visualized in figure 10.</p>
 <p>This section presents you with a comparison matrix, containing the best achieved clustering qualities for every pair of clustering method and dataset. Above the matrix you
 can select from a list, which clustering quality measure you want to compare. Values in bold indicate the optimal clustering quality in the respective row. By hitting the Invert matrix button, you can interchange datasets with clustering methods, rows with columns.</p>
 </div>
-<div class="section" id="id19">
-<h3>Data Sets<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id23">
+<h3>Data Sets<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
 <p>On the left hand side you have different subsections to navigate to. Now you are at the &#8220;Overview&#8221; page.</p>
 <ul class="simple">
 <li>Overview shows you a list of all available datasets. The datasets are grouped together, based on their type.<ul>
@@ -835,8 +697,8 @@ can select from a list, which clustering quality measure you want to compare. Va
 <li>Comparison will show you a table containing the optimal clustering qualities clustering methods achieved on a chosen dataset together with the parameter sets used.</li>
 </ul>
 </div>
-<div class="section" id="id20">
-<h3>Clustering Methods<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id24">
+<h3>Clustering Methods<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h3>
 <p>On the left hand side you have different subsections to navigate to. Now you are at the &#8220;Overview&#8221; page.</p>
 <ul class="simple">
 <li>The overview shows you a list of all available clustering methods. For the clustering methods that ship with clusteval there will be shown a short description and a literature reference for more detailed information.<ul>
@@ -1018,8 +880,8 @@ can select from a list, which clustering quality measure you want to compare. Va
 <div class="section" id="extending-clusteval">
 <h2>Extending ClustEval<a class="headerlink" href="#extending-clusteval" title="Permalink to this headline">¶</a></h2>
 <p>clusteval can be extended in different ways. The following sections will show you, which functionality you can add to the framework and how.</p>
-<div class="section" id="id21">
-<h3>Clustering Methods<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id25">
+<h3>Clustering Methods<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
 <p>As explained in 4.2 clusteval supports two different kinds of clustering methods: Stan-
 dalone programs and R programs. Standalone programs are those, for which you have
 to provide an executable file which then will be executed by the framework. R programs
@@ -1119,6 +981,9 @@ de/clusteval/data/dataset/type/MyDataSetType.class
 The backend server will recognize and try to load the new dataset type automat-
 ically the next time, the DataSetTypeFinderThread checks the filesystem.</p>
 </div>
+<div class="section" id="clusteval-extend-formats">
+<span id="id26"></span><h3>Formats<a class="headerlink" href="#clusteval-extend-formats" title="Permalink to this headline">¶</a></h3>
+</div>
 <div class="section" id="dataset-formats">
 <h3>Dataset Formats<a class="headerlink" href="#dataset-formats" title="Permalink to this headline">¶</a></h3>
 <p>A dataset format MyDataSetFormat can be added to clusteval by
@@ -1202,236 +1067,28 @@ The backend server will recognize and try to load the new runresult format auto-
 matically the next time, the RunResultFormatFinderThread checks the filesys-
 tem.</p>
 </div>
-<div class="section" id="id22">
-<h3>Parameter Optimization Methods<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
-<p>A parameter optimization method MyParameterOptimizationMethod can be added
-to clusteval by
-1. extending the class de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod
-with your own class MyParameterOptimizationMethod . You have to provide
-your own implementations for the following methods, otherwise the framework
-will not be able to load your parameter optimization method.
-public MyParameterOptimizationMethod(Repository, boolean, long, File,
-ParameterOptimizationRun, ProgramConfig, DataConfig, List,
-(a)
-ClusteringQualityMeasure, int[], boolean)
-: The
-constructor for your parameter optimization method. This constructor has
-to be implemented and public, otherwise the framework will not be able to
-load your parameter optimization method.
-public MyParameterOptimizationMethod( MyParameterOptimization-
-(b) Method)
-: The
-copy constructor for your parameter optimization method. This constructor
-has to be implemented and public, otherwise the framework will not be able
-to load your parameter optimization method.
-(c) public List getCompatibleDataSetFormatBaseClasses() : A list of dataset
-formats, this parameter optimization method can be used for. If the list is
-empty, all dataset formats are assumed to be compatible.
-(d) public List getCompatibleProgramNames() : A list of names of all programs
-that are compatible to this parameter optimization method. If the list is
-empty, all programs are assumed to be compatible.
-(e) public boolean hasNext() : This method indicates, whether their is another
-parameter set to evaluate. This method must not change the current
-parameter set, as it may be invoked several times before next() is invoked.
-(f) protected ParameterSet getNextParameterSet(ParameterSet) : Returns the
-next parameter set to evaluate. This method may change the internal status
-of the parameter optimization method, in that it stores the newly determined
-and returned parameter set as the current parameter set.
-(g) public Set getRequiredRlibraries() : Returns a set of names of all R li-
-braries, this parameter optimization method requires.
-(h) public int getTotalIterationCount() : This is the total iteration count this
-parameter optimization method will perform. The returned value might not
-correspond to the expected value, when the method is instantiated. There-
-fore always use the return value of this method, when trying to determine
-the finished percentage of the parameter optimization process.
-2. Creating a jar file named MyParameterOptimizationMethod.jar containing the
-MyParameterOptimizationMethod.class compiled on your machine in the correct
-folder structure corresponding to the packages:
-de/clusteval/cluster/paramOptimization/MyParameterOptimizationMethod.class
-3. Putting the MyParameterOptimizationMethod.jar into the parameter optimiza-
-tion methods folder of the repository:
-&lt;REPOSITORY ROOT&gt;/supp/clustering/paramOptimization
-The backend server will recognize and try to load the new parameter optimization
-method automatically the next time, the ParameterOptimizationMethodFinderThread
-checks the filesystem.</p>
+<div class="section" id="clusteval-extend-parameter-optimization-method">
+<span id="id27"></span><h3>Parameter Optimization Methods<a class="headerlink" href="#clusteval-extend-parameter-optimization-method" title="Permalink to this headline">¶</a></h3>
+<p>See the API documentation of <a class="reference internal" href="de/clusteval/cluster/paramOptimization/ParameterOptimizationMethod.html#de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod" title="de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod"><code class="xref java java-ref docutils literal"><span class="pre">ParameterOptimizationMethod</span></code></a></p>
 </div>
-<div class="section" id="id23">
-<h3>Distance Measures<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
-<p>A distance measure MyDistanceMeasure can be added to clusteval by
-1. extending the class de.clusteval.data.distance.DistanceMeasure with your own
-class MyDistanceMeasure . You have to provide your own implementations for
-the following methods, otherwise the framework will not be able to load your
-distance measure.
-(a) public MyDistanceMeasure(Repository, boolean, long, File) : The construc-
-tor for your distance measure. This constructor has to be implemented and
-public, otherwise the framework will not be able to load your distance mea-
-sure.
-(b) public MyDistanceMeasure(MyDistanceMeasure) : The copy constructor for
-your distance measure. This constructor has to be implemented and public,
-otherwise the framework will not be able to load your distance measure.
-(c) public double getDistance(double[],double[]) : This method is the core of
-your distance measure. It returns the distance of the two points specified by
-the absolute coordinates in the two double arrays.
-(d) public boolean supportsMatrix() : This method indicates, whether your dis-
-tance measure can calculate distances of a whole set of point-pairs, i.e. your
-distance measure implements the method getDistances(double[][]).
-(e) public double[][] getDistances(double[][]) : The absolute coordinates of the
-points are stored row-wise in the given matrix and distances are calculated
-between every pair of rows. Position [i][j] of the returned double[][] matrix
-contains the distance between the i-th and j-th row of the input matrix.
-(f) public Set getRequiredRlibraries() : Returns a set of names of all R li-
-braries, this distance measure requires.
-2. Creating a jar file named MyDistanceMeasure.jar containing the MyDistanceMeasure.class
-compiled on your machine in the correct folder structure corresponding to the
-packages:
-de/clusteval/data/distance/MyDistanceMeasure.class
-3. Putting the MyDistanceMeasure.jar into the distance measure folder of the
-repository:
-&lt;REPOSITORY ROOT&gt;/supp/distanceMeasures
-The backend server will recognize and try to load the new distance measure au-
-tomatically the</p>
+<div class="section" id="clusteval-extend-distance-measure">
+<span id="id28"></span><h3>Distance Measures<a class="headerlink" href="#clusteval-extend-distance-measure" title="Permalink to this headline">¶</a></h3>
+<p>See the API documentation of <a class="reference internal" href="de/clusteval/data/distance/DistanceMeasure.html#de.clusteval.data.distance.DistanceMeasure" title="de.clusteval.data.distance.DistanceMeasure"><code class="xref java java-ref docutils literal"><span class="pre">DistanceMeasure</span></code></a></p>
 </div>
-<div class="section" id="id24">
-<h3>Clustering Quality Measures<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h3>
-<p>A clustering quality measure MyClusteringQualityMeasure can be added to clusteval
-by
-1. extending the class de.clusteval.cluster.quality.ClusteringQualityMeasure with
-your own class MyClusteringQualityMeasure . You have to provide your own
-implementations for the following methods, otherwise the framework will not be
-able to load your clustering quality measure.
-(a) public MyClusteringQualityMeasure(Repository, boolean, long, File) : The
-constructor for your distance measure. This constructor has to be imple-
-mented and public, otherwis
-(b) public MyClusteringQualityMeasure(MyClusteringQualityMeasure) : The copy
-constructor for your distance measure. This constructor has to be imple-
-mented and public, otherwise the framework will not be able to load your
-clustering quality measure.
-(c) public String getAlias() : This method returns a readable alias for this clus-
-tering quality measure which is used e.g. on the website.
-(d) public double getMinimum() : Returns the minimal value this measure can
-calculate.
-(e) public double getMaximum() : Returns the maximal value this measure can
-calculate.
-(f) public boolean requiresGoldStandard() : Indicates, whether this clustering
-quality measure requires a goldstandard to assess the quality of a given
-clustering.
-(g) public ClusteringQualityMeasureValue getQualityOfClustering(Clustering) :
-This method is the core of your clustering quality measure. It assesses and
-returns the quality of the given clustering.
-(h) public boolean isBetterThanHelper(ClusteringQualityMeasureValue : This
-method is used by sorting algorithms of the framework to compare clustering
-quality measure results and find the optimal parameter sets.
-(i) public Set getRequiredRlibraries() : Returns a set of names of all R li-
-braries, this clustering quality measure requires.
-2. Creating a jar file named MyClusteringQualityMeasure.jar containing the MyClusteringQualityM
-compiled on your machine in the correct folder structure corresponding to the
-packages:
-de/clusteval/cluster/quality/MyClusteringQualityMeasure.class
-3. Putting the MyClusteringQualityMeasure.jar into the clustering quality measure
-folder of the repository:
-&lt;REPOSITORY ROOT&gt;/supp/clustering/qualityMeasures
-The backend server will recognize and try to load the new clustering quality mea-
-sure automatically the next time, the ClusteringQualityMeasureFinderThread
-checks the filesystem.</p>
+<div class="section" id="clusteval-extend-quality-measure">
+<span id="id29"></span><h3>Clustering Quality Measures<a class="headerlink" href="#clusteval-extend-quality-measure" title="Permalink to this headline">¶</a></h3>
+<p>See the API documentation of <a class="reference internal" href="de/clusteval/cluster/quality/ClusteringQualityMeasure.html#de.clusteval.cluster.quality.ClusteringQualityMeasure" title="de.clusteval.cluster.quality.ClusteringQualityMeasure"><code class="xref java java-ref docutils literal"><span class="pre">ClusteringQualityMeasure</span></code></a></p>
 </div>
-<div class="section" id="data-statistics">
-<h3>Data Statistics<a class="headerlink" href="#data-statistics" title="Permalink to this headline">¶</a></h3>
-<p>A data statistic MyDataStatistic can be added to clusteval by
-1. extending the class de.clusteval.data.statistic.DataStatistic with your own class
-MyDataStatistic . You have to provide your own implementations for the follow-
-ing methods, otherwise the framework will not be able to load your class.
-(a) public MyDataStatistic(Repository, boolean, long, File) : The constructor
-for your data statistic. This constructor has to be implemented and public,
-otherwise the framework will not be able to load your class.
-(b) public MyDataStatistic(MyDataStatistic) : The copy constructor for your
-data statistic. This constructor has to be implemented and public, otherwise
-the framework will not be able to load your class.
-(c) public boolean requiresGoldStandard() : Indicates, whether this data statis-
-tic requires a goldstandard to assess the property of a given dataset.
-(d) public String getAlias() : This method returns a readable alias for this data
-statistic which is used e.g. on the website.
-(e) public void parseFromString(String) : This method interprets the string and
-fills this statistic object with its parsed contents.
-(f) public Set getRequiredRlibraries() : Returns a set of names of all R li-
-braries, this data statistic requires.
-2. extending the class de.clusteval.data.statistic.DataStatisticCalculator with your
-own class MyDataStatisticCalculator . You have to provide your own implemen-
-tations for the following methods, otherwise the framework will not be able to
-load your class.
-(a) public MyDataStatisticCalculator(Repository, long, File, DataConfig) : The
-constructor for your data statistic calculator. This constructor has to be im-
-plemented and public, otherwise the framework will not be able to load your
-class.
-(b) public MyDataStatisticCalculator(MyDataStatisticCalculator) : The copy
-constructor for your data statistic calculator. This constructor has to be
-implemented and public, otherwise the framework will not be able to load
-your class.
-(c) protected MyDataStatistic calculateResult() : This method is the core of
-your data statistic calculator. It analysis the given data configuration and
-returns a wrapper object for the results.
-(d) public void writeOutputTo(File) : After calculateResult() has been invoked,
-this method writes the assessed results into the given file.
-3. Creating a jar file named MyDataStatisticCalculator.jar containing the MyDataStatistic.class
-and MyDataStatisticCalculator.class compiled on your machine in the correct
-folder structure corresponding to the packages:
-de/clusteval/data/statistics/MyDataStatistic.class
-de/clusteval/data/statistics/MyDataStatisticCalculator.class
-4. Putting the MyDataStatistic.jar into the data statistics folder of the repository:
-&lt;REPOSITORY ROOT&gt;/supp/statistics/data
-The backend server will recognize and try to load the new data statistics auto-
-matically the next time, the DataStatisticFinderThread checks the filesystem.</p>
-</div>
-<div class="section" id="run-statistics">
-<h3>Run Statistics<a class="headerlink" href="#run-statistics" title="Permalink to this headline">¶</a></h3>
-<p>See the API documentation of <a class="reference internal" href="de/clusteval/run/statistics/RunStatistic.html#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic</span></code></a>.</p>
-</div>
-<div class="section" id="run-data-statistics">
-<h3>Run-Data Statistics<a class="headerlink" href="#run-data-statistics" title="Permalink to this headline">¶</a></h3>
-<p>A run-data statistic MyRunDataStatistic can be added to clusteval by
-1. extending the class de.clusteval.run.statistic.RunDataStatistic with your own
-class MyRunDataStatistic . You have to provide your own implementations for
-the following methods, otherwise the framework will not be able to load your
-class.
-(a) public MyRunDataStatistic(Repository, boolean, long, File) : The construc-
-tor for your run-data statistic. This constructor has to be implemented and
-public, otherwise the framework will not be able to load your class.
-(b) public MyRunDataStatistic(MyRunDataStatistic) : The copy constructor
-for your run-data statistic. This constructor has to be implemented and
-public, otherwise the framework will not be able to load your class.
-(c) public String getAlias() : This method returns a readable alias for this run-
-data statistic which is used e.g. on the website.
-(d) public void parseFromString(String) : This method interprets the string and
-fills this statistic object with its parsed contents.
-(e) public Set getRequiredRlibraries() : Returns a set of names of all R li-
-braries, this run-data statistic requires.
-2. extending the class de.clusteval.run.statistic.RunDataStatisticCalculator with
-your own class MyRunDataStatisticCalculator . You have to provide your own
-implementations for the following methods, otherwise the framework will not be
-able to load your class.
-(a) public MyRunDataStatisticCalculator(Repository, long, File, DataConfig) :
-The constructor for your run-data statistic calculator. This constructor has
-to be implemented and public, otherwise the framework will not be able to
-load your class.
-(b) public MyRunDataStatisticCalculator(MyRunDataStatisticCalculator) : The
-copy constructor for your run-data statistic calculator. This constructor has
-to be implemented and public, otherwise the framework will not be able to
-load your class.
-(c) protected MyRunDataStatistic calculateResult() : This method is the core
-of your run-data statistic calculator. It analysis the given runresults (data
-analysis and clustering) and returns a wrapper object for the results.
-(d) public void writeOutputTo(File) : After calculateResult() has been invoked,
-this method writes the assessed results into the given file.
-3. Creating a jar file named MyRunDataStatisticCalculator.jar containing the MyRunDataStatistic.
-and MyRunDataStatisticCalculator.class compiled on your machine in the cor-
-rect folder structure corresponding to the packages:
-de/clusteval/run/statistics/MyRunDataStatistic.class
-de/clusteval/run/statistics/MyRunDataStatisticCalculator.class
-4. Putting the MyRunDataStatistic.jar into the run-data statistics folder of the
-repository:
-&lt;REPOSITORY ROOT&gt;/supp/statistics/rundata
-The backend server will recognize and try to load the new run-data statistics au-
-tomatically the next time, the RunDataStatisticFinderThread checks the filesys-
-tem.</p>
+<div class="section" id="statistics">
+<h3>Statistics<a class="headerlink" href="#statistics" title="Permalink to this headline">¶</a></h3>
+<p>ClustEval can analyze properties of clusterings, data sets and relationship between the two. We call such properties run, data and run-data statistics respectively.</p>
+<p>For more information about how to extend ClustEval with your own statistics have a look at</p>
+<ul class="simple">
+<li>the API documentation of <a class="reference internal" href="de/clusteval/run/statistics/RunStatistic.html#de.clusteval.run.statistics.RunStatistic" title="de.clusteval.run.statistics.RunStatistic"><code class="xref java java-ref docutils literal"><span class="pre">RunStatistic</span></code></a>,</li>
+<li>the API documentation of <a class="reference internal" href="de/clusteval/data/statistics/DataStatistic.html#de.clusteval.data.statistics.DataStatistic" title="de.clusteval.data.statistics.DataStatistic"><code class="xref java java-ref docutils literal"><span class="pre">DataStatistic</span></code></a>,</li>
+<li>the API documentation of <a class="reference internal" href="de/clusteval/run/statistics/RunDataStatistic.html#de.clusteval.run.statistics.RunDataStatistic" title="de.clusteval.run.statistics.RunDataStatistic"><code class="xref java java-ref docutils literal"><span class="pre">RunDataStatistic</span></code></a>.</li>
+</ul>
+<p>For a list of available statistics see the <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/run/statistics/package-index.html">run statistics</a> and <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/data/statistics/package-index.html">data statistics</a> packages.</p>
 </div>
 </div>
 </div>
@@ -1453,28 +1110,21 @@ tem.</p>
 <li><a class="reference internal" href="#server">Server</a></li>
 <li><a class="reference internal" href="#client">Client</a></li>
 <li><a class="reference internal" href="#repository">Repository</a><ul>
-<li><a class="reference internal" href="#repository-folder-structure">Repository Folder Structure</a></li>
+<li><a class="reference internal" href="#folder-structure">Folder Structure</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#clustering-methods">Clustering Methods</a><ul>
-<li><a class="reference internal" href="#standalone-methods">Standalone Methods</a></li>
-<li><a class="reference internal" href="#r-methods-rserve">R Methods (Rserve)</a></li>
+<li><a class="reference internal" href="#standalone">Standalone</a></li>
+<li><a class="reference internal" href="#r-rserve">R (Rserve)</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#data-sets">Data Sets</a></li>
 <li><a class="reference internal" href="#gold-standards">Gold Standards</a></li>
-<li><a class="reference internal" href="#input-output-formats">Input &amp; Output Formats</a><ul>
+<li><a class="reference internal" href="#formats">Formats</a><ul>
+<li><a class="reference internal" href="#available-formats">Available Formats</a></li>
+<li><a class="reference internal" href="#providing-new-formats">Providing New Formats</a></li>
 <li><a class="reference internal" href="#standard-input-format">Standard Input Format</a></li>
 <li><a class="reference internal" href="#standard-output-format">Standard Output Format</a></li>
-<li><a class="reference internal" href="#aprowsimdatasetformat">APRowSimDataSetFormat</a></li>
-<li><a class="reference internal" href="#blastdatasetformat">BLASTDataSetFormat</a></li>
-<li><a class="reference internal" href="#matrixdatasetformat">MatrixDataSetFormat</a></li>
-<li><a class="reference internal" href="#rowsimdatasetformat">RowSimDataSetFormat</a></li>
-<li><a class="reference internal" href="#simmatrixdatasetformat">SimMatrixDataSetFormat</a></li>
-<li><a class="reference internal" href="#transclustsimmatrixdatasetformat">TransClustSimMatrixDataSetFormat</a></li>
-<li><a class="reference internal" href="#aprunresultformat">APRunResultFormat</a></li>
-<li><a class="reference internal" href="#mclrunresultformat">MCLRunResultFormat</a></li>
-<li><a class="reference internal" href="#transclustrunresultformat">TransClustRunResultFormat</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#clustering-quality-measures">Clustering Quality Measures</a></li>
@@ -1507,8 +1157,8 @@ tem.</p>
 </li>
 <li><a class="reference internal" href="#website">Website</a><ul>
 <li><a class="reference internal" href="#overview">Overview</a></li>
-<li><a class="reference internal" href="#id19">Data Sets</a></li>
-<li><a class="reference internal" href="#id20">Clustering Methods</a></li>
+<li><a class="reference internal" href="#id23">Data Sets</a></li>
+<li><a class="reference internal" href="#id24">Clustering Methods</a></li>
 <li><a class="reference internal" href="#measures">Measures</a></li>
 <li><a class="reference internal" href="#submit">Submit</a></li>
 <li><a class="reference internal" href="#advanced">Advanced</a></li>
@@ -1524,20 +1174,19 @@ tem.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#extending-clusteval">Extending ClustEval</a><ul>
-<li><a class="reference internal" href="#id21">Clustering Methods</a><ul>
+<li><a class="reference internal" href="#id25">Clustering Methods</a><ul>
 <li><a class="reference internal" href="#standalone-programs">Standalone Programs</a></li>
 <li><a class="reference internal" href="#r-programs">R Programs</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#dataset-types">Dataset Types</a></li>
+<li><a class="reference internal" href="#clusteval-extend-formats">Formats</a></li>
 <li><a class="reference internal" href="#dataset-formats">Dataset Formats</a></li>
 <li><a class="reference internal" href="#run-result-formats">Run Result Formats</a></li>
-<li><a class="reference internal" href="#id22">Parameter Optimization Methods</a></li>
-<li><a class="reference internal" href="#id23">Distance Measures</a></li>
-<li><a class="reference internal" href="#id24">Clustering Quality Measures</a></li>
-<li><a class="reference internal" href="#data-statistics">Data Statistics</a></li>
-<li><a class="reference internal" href="#run-statistics">Run Statistics</a></li>
-<li><a class="reference internal" href="#run-data-statistics">Run-Data Statistics</a></li>
+<li><a class="reference internal" href="#clusteval-extend-parameter-optimization-method">Parameter Optimization Methods</a></li>
+<li><a class="reference internal" href="#clusteval-extend-distance-measure">Distance Measures</a></li>
+<li><a class="reference internal" href="#clusteval-extend-quality-measure">Clustering Quality Measures</a></li>
+<li><a class="reference internal" href="#statistics">Statistics</a></li>
 </ul>
 </li>
 </ul>
