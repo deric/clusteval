@@ -2,12 +2,10 @@
 ClustEval documentation
 =======================
 
-TODO: images!
-
 ClustEval is an automated framework for cluster analysis written in Java which comes together with a Ruby on Rails website. This includes most common subtasks of every cluster analysis, such as 
 
 * :ref:`data preprocessing & data normalization <datapreprocessors>` 
-* :ref:`data conversion <formats>`
+* :ref:`data format conversion <formats>`
 * :ref:`clustering method execution <clusteringmethods>`
 * :ref:`parameter training and <paramoptmethods>`
 * :ref:`visualizations <website>`
@@ -25,6 +23,13 @@ Getting Started
 
 The Framework
 -------------
+
+.. figure:: ../img/framework_flow.png
+   :figwidth: 50 %
+   :alt: process flow of ClustEval
+
+   A general process diagram of ClustEval
+
 Our framework clusteval is intended to perform automatized cluster analysis of arbi-
 trary data sets and clustering methods. The goal is, that any clustering method known
 to the framework can be applied to any known data set (with certain exceptions, partly

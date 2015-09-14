@@ -2,6 +2,13 @@
 
 Formats - Input & Output
 -------
+
+.. figure:: ../img/flow_dataset.png
+   :figwidth: 50 %
+   :alt: schema of the format conversion processes in ClustEval
+
+   A schema of the format conversion processes in ClustEval
+   
 As already mentioned, datasets have their own formats and clustering methods can
 require different input and output formats. The general process how these formats link
 together can be visualized as seen in figure 4.
@@ -25,6 +32,25 @@ Available Formats
 ^^^^^^^^^^^^^^^^^^
 For lists of all available input and result formats see `here  <../../sphinx_doc_packages/build/de/clusteval/data/dataset/format/package-index.html>`_ and `here  <../../sphinx_doc_packages/build/de/clusteval/run/result/format/package-index.html>`_ respectively.
 
+Standard Input Format
+^^^^^^^^^^^^^^^^^^
+The standard input format is a SimMatrixDataSetFormat which is described under
+4.5.6.
+
+Standard Output Format
+^^^^^^^^^^^^^^^^^^
+The standard output format contains one clustering generated for parameter values
+p 1 = v1,...,p K = vK in one line with clusters c1, ..., cK, cluster sizes size(ci) = si.
+Every cluster ci contains elements e i 1, ..., e i si with fuzzy coefficients f i 1, ..., f i si.
+The format for this looks as follows:
+
+TODO
+
+The parameter names and values on the left have to be separated by a TAB from
+the string "Clustering" and the clustering on the right. If the fuzzy coefficients are
+missing, the framework will not be able to parse the result file.
+
+
 Providing New Formats
 ^^^^^^^^^^^^^^^^^^
 
@@ -46,21 +72,3 @@ further analyses can be performed regardless of the used clustering method.
 
 
 For more information on how the extend ClustEval by new formats see :ref:`clusteval_extend_formats`.
-
-Standard Input Format
-^^^^^^^^^^^^^^^^^^
-The standard input format is a SimMatrixDataSetFormat which is described under
-4.5.6.
-
-Standard Output Format
-^^^^^^^^^^^^^^^^^^
-The standard output format contains one clustering generated for parameter values
-p 1 = v1,...,p K = vK in one line with clusters c1, ..., cK, cluster sizes size(ci) = si.
-Every cluster ci contains elements e i 1, ..., e i si with fuzzy coefficients f i 1, ..., f i si.
-The format for this looks as follows:
-
-TODO
-
-The parameter names and values on the left have to be separated by a TAB from
-the string "Clustering" and the clustering on the right. If the fuzzy coefficients are
-missing, the framework will not be able to parse the result file.

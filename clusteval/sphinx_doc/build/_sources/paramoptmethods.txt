@@ -2,6 +2,13 @@
 
 Parameter Optimization Methods - Finding Good Clustering Parameters
 -----------------
+
+.. figure:: ../img/framework_flow_parameterOptimization.png
+   :figwidth: 50 %
+   :alt: schema of parameter optimization
+
+   A schema of parameter optimization in ClustEval
+   
 The backend can perform automatized and autonomous optimization of parameters of
 clustering methods. This is an iterative procedure where the backend assesses qualities
 of clustering results of the last iteration and adapts the parameter for the next iteration

@@ -9,6 +9,12 @@ another repository.
 Folder Structure
 ----------------
 
+.. figure:: ../img/repository_structure.png
+   :figwidth: 50 %
+   :alt: folder structure of repository
+
+   The folder structure of a repository
+
 * data: Contains all data-related files.
 
   * configs [*.dataconfig]: Contains the data configuration files 4.9.1.

@@ -1,5 +1,12 @@
 Backend
 -------
+
+.. figure:: ../img/framework_backend.png
+   :figwidth: 50 %
+   :alt: schema of the backend
+
+   A schema of the ClustEval backend
+   
 The backend of the framework is responsible for all calculations. It consists of a server
 and a client component. The server takes commands from the client and does the
 calculations internally and in a multithreaded way. The client can query the server to
@@ -26,8 +33,6 @@ the framework programatically but need to be provided can be summarized as
 
 Additional components that can be extended and might be needed in case the
 provided standard functionality of the framework is not sufficient for the user
-
-TODO: finish up     datasettypes    statistics    datasetgenerators datapreprocessors datarandomizer
    
    
 .. toctree::

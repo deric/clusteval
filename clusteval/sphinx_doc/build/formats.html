@@ -53,6 +53,10 @@
             
   <div class="section" id="formats-input-output">
 <span id="formats"></span><h1>Formats - Input &amp; Output<a class="headerlink" href="#formats-input-output" title="Permalink to this headline">¶</a></h1>
+<div class="figure" id="id2" style="width: 50%">
+<img alt="schema of the format conversion processes in ClustEval" src="../img/flow_dataset.png" />
+<p class="caption"><span class="caption-text">A schema of the format conversion processes in ClustEval</span></p>
+</div>
 <p>As already mentioned, datasets have their own formats and clustering methods can
 require different input and output formats. The general process how these formats link
 together can be visualized as seen in figure 4.
@@ -74,6 +78,22 @@ formats are</p>
 <h2>Available Formats<a class="headerlink" href="#available-formats" title="Permalink to this headline">¶</a></h2>
 <p>For lists of all available input and result formats see <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/data/dataset/format/package-index.html">here</a> and <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/run/result/format/package-index.html">here</a> respectively.</p>
 </div>
+<div class="section" id="standard-input-format">
+<h2>Standard Input Format<a class="headerlink" href="#standard-input-format" title="Permalink to this headline">¶</a></h2>
+<p>The standard input format is a SimMatrixDataSetFormat which is described under
+4.5.6.</p>
+</div>
+<div class="section" id="standard-output-format">
+<h2>Standard Output Format<a class="headerlink" href="#standard-output-format" title="Permalink to this headline">¶</a></h2>
+<p>The standard output format contains one clustering generated for parameter values
+p 1 = v1,...,p K = vK in one line with clusters c1, ..., cK, cluster sizes size(ci) = si.
+Every cluster ci contains elements e i 1, ..., e i si with fuzzy coefficients f i 1, ..., f i si.
+The format for this looks as follows:</p>
+<p>TODO</p>
+<p>The parameter names and values on the left have to be separated by a TAB from
+the string &#8220;Clustering&#8221; and the clustering on the right. If the fuzzy coefficients are
+missing, the framework will not be able to parse the result file.</p>
+</div>
 <div class="section" id="providing-new-formats">
 <h2>Providing New Formats<a class="headerlink" href="#providing-new-formats" title="Permalink to this headline">¶</a></h2>
 <p>If the new clustering method requires another input format not in the list, you will
@@ -93,22 +113,6 @@ new format is converted to a standardized output format using your parser, such 
 further analyses can be performed regardless of the used clustering method.</p>
 <p>For more information on how the extend ClustEval by new formats see <a class="reference internal" href="extendingclusteval.html#clusteval-extend-formats"><span>Formats</span></a>.</p>
 </div>
-<div class="section" id="standard-input-format">
-<h2>Standard Input Format<a class="headerlink" href="#standard-input-format" title="Permalink to this headline">¶</a></h2>
-<p>The standard input format is a SimMatrixDataSetFormat which is described under
-4.5.6.</p>
-</div>
-<div class="section" id="standard-output-format">
-<h2>Standard Output Format<a class="headerlink" href="#standard-output-format" title="Permalink to this headline">¶</a></h2>
-<p>The standard output format contains one clustering generated for parameter values
-p 1 = v1,...,p K = vK in one line with clusters c1, ..., cK, cluster sizes size(ci) = si.
-Every cluster ci contains elements e i 1, ..., e i si with fuzzy coefficients f i 1, ..., f i si.
-The format for this looks as follows:</p>
-<p>TODO</p>
-<p>The parameter names and values on the left have to be separated by a TAB from
-the string &#8220;Clustering&#8221; and the clustering on the right. If the fuzzy coefficients are
-missing, the framework will not be able to parse the result file.</p>
-</div>
 </div>
 
 
@@ -121,9 +125,9 @@ missing, the framework will not be able to parse the result file.</p>
   <ul>
 <li><a class="reference internal" href="#">Formats - Input &amp; Output</a><ul>
 <li><a class="reference internal" href="#available-formats">Available Formats</a></li>
-<li><a class="reference internal" href="#providing-new-formats">Providing New Formats</a></li>
 <li><a class="reference internal" href="#standard-input-format">Standard Input Format</a></li>
 <li><a class="reference internal" href="#standard-output-format">Standard Output Format</a></li>
+<li><a class="reference internal" href="#providing-new-formats">Providing New Formats</a></li>
 </ul>
 </li>
 </ul>

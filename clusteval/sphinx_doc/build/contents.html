@@ -47,11 +47,10 @@
             
   <div class="section" id="clusteval-documentation">
 <h1>ClustEval documentation<a class="headerlink" href="#clusteval-documentation" title="Permalink to this headline">¶</a></h1>
-<p>TODO: images!</p>
 <p>ClustEval is an automated framework for cluster analysis written in Java which comes together with a Ruby on Rails website. This includes most common subtasks of every cluster analysis, such as</p>
 <ul class="simple">
 <li><a class="reference internal" href="datapreprocessors.html#datapreprocessors"><span>data preprocessing &amp; data normalization</span></a></li>
-<li><a class="reference internal" href="formats.html#formats"><span>data conversion</span></a></li>
+<li><a class="reference internal" href="formats.html#formats"><span>data format conversion</span></a></li>
 <li><a class="reference internal" href="clusteringmethods.html#clusteringmethods"><span>clustering method execution</span></a></li>
 <li><a class="reference internal" href="paramoptmethods.html#paramoptmethods"><span>parameter training and</span></a></li>
 <li><a class="reference internal" href="website.html#website"><span>visualizations</span></a></li>
@@ -67,6 +66,10 @@
 </div>
 <div class="section" id="the-framework">
 <h2>The Framework<a class="headerlink" href="#the-framework" title="Permalink to this headline">¶</a></h2>
+<div class="figure" id="id1" style="width: 50%">
+<img alt="process flow of ClustEval" src="../img/framework_flow.png" />
+<p class="caption"><span class="caption-text">A general process diagram of ClustEval</span></p>
+</div>
 <p>Our framework clusteval is intended to perform automatized cluster analysis of arbi-
 trary data sets and clustering methods. The goal is, that any clustering method known
 to the framework can be applied to any known data set (with certain exceptions, partly
