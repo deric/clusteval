@@ -12,6 +12,8 @@ TransClustRunResultFormat
 
 .. java:type:: public class TransClustRunResultFormat extends RunResultFormat
 
+   This is the result format of Transitivity Clustering.
+
    :author: Christian Wiwie
 
 Constructors

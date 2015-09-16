@@ -2,7 +2,7 @@ import sys, os
 
 sys.path.append(os.path.abspath('sphinxext'))
 
-extensions = ['javasphinx']
+extensions = ['javasphinx','sphinx.ext.pngmath']
 
 
 # The name of the Pygments (syntax highlighting) style to use.

@@ -14,6 +14,26 @@ RowSimDataSetFormat
 
 .. java:type:: @FormatVersion public class RowSimDataSetFormat extends RelativeDataSetFormat
 
+   This input format consists of tab-separated rows looking as follows:
+
+   ==========   ==========  ==================
+   id1          id2         similarity
+   ==========   ==========  ==================
+   gi15801179   gi16129025  323.3062153431158
+   gi15801179   gi24112473  323.3062153431158
+   gi15801179   gi1651519   323.3062153431158
+   gi15801179   gi16764519  323.3062153431158
+   gi15801179   gi16760039  323.3062153431158
+   gi15801179   gi279570    323.3062153431158
+   gi15801179   gi1346930   3.0969100130080562
+   gi15801179   gi16078614  3.0
+   gi15801179   gi3122654   3.0
+   gi15801179   gi3024509   1.537602002101044
+   gi15801179   gi21294381  0.8538719643217619
+   gi15801179   gi400909    0.8239087409443188
+   gi15801179   gi279582    0.8239087409443188
+   ==========   ==========  ==================
+
    :author: Christian Wiwie
 
 Constructors

@@ -46,6 +46,29 @@
 <p>The backend server is based on a central repository which concludes all files in its folder
 structure. You can easily start a framework with a different set of files by simply using
 another repository.</p>
+<div class="section" id="repository-configuration">
+<span id="repository-config"></span><h2>Repository Configuration<a class="headerlink" href="#repository-configuration" title="Permalink to this headline">¶</a></h2>
+<p>A repository can be configured in a repository.config in the repository&#8217;s root folder. This configuration supports the following options and sections:</p>
+<ul class="simple">
+<li><strong>[mysql]</strong><ul>
+<li><strong>user</strong>: Name of the user with which to connect to the database.</li>
+<li><strong>database</strong>: Name of the ClustEval database.</li>
+<li><strong>host</strong>: A host string including ip address and port number.</li>
+</ul>
+</li>
+<li><strong>[postgresql]</strong><ul>
+<li><strong>user</strong>: Name of the user with which to connect to the database.</li>
+<li><strong>database</strong>: Name of the ClustEval database.</li>
+<li><strong>host</strong>: A host string including ip address and port number.</li>
+</ul>
+</li>
+<li><strong>[threading]</strong><ul>
+<li>** &lt;ClassNameOfFinderThread&gt;SleepTime**: Sleep time of the indicated finder thread.</li>
+</ul>
+</li>
+</ul>
+<p>Note that if both the mysql and postgresql sections are provided, the mysql section will overrule the postgresql section.</p>
+</div>
 <div class="section" id="folder-structure">
 <h2>Folder Structure<a class="headerlink" href="#folder-structure" title="Permalink to this headline">¶</a></h2>
 <div class="figure" id="id19" style="width: 50%">
@@ -118,6 +141,7 @@ another repository.</p>
   <h3><a href="contents.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Repository - The Central Storage of ClustEval</a><ul>
+<li><a class="reference internal" href="#repository-configuration">Repository Configuration</a></li>
 <li><a class="reference internal" href="#folder-structure">Folder Structure</a></li>
 </ul>
 </li>

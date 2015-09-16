@@ -70,7 +70,7 @@ public abstract class <code class="descname">StatisticCalculator</code>&lt;T ext
 <dl class="field">
 <dt id="de.clusteval.utils.StatisticCalculator.lastResult">
 protected T <code class="descname">lastResult</code><a class="headerlink" href="#de.clusteval.utils.StatisticCalculator.lastResult" title="Permalink to this definition">¶</a></dt>
-<dd><p>This attribute holds the statistic, after <a class="reference internal" href="../data/statistics/DataStatisticCalculator.html#de.clusteval.data.statistics.DataStatisticCalculator.calculate()" title="de.clusteval.data.statistics.DataStatisticCalculator.calculate()"><code class="xref java java-ref docutils literal"><span class="pre">calculate()</span></code></a> has been invoked.</p>
+<dd><p>This attribute holds the statistic, after <a class="reference internal" href="../run/statistics/RunStatisticCalculator.html#de.clusteval.run.statistics.RunStatisticCalculator.calculate()" title="de.clusteval.run.statistics.RunStatisticCalculator.calculate()"><code class="xref java java-ref docutils literal"><span class="pre">calculate()</span></code></a> has been invoked.</p>
 </dd></dl>
 
 </div>
@@ -136,7 +136,7 @@ public <code class="descname">StatisticCalculator</code><span class="sig-paren">
 <dl class="method">
 <dt id="de.clusteval.utils.StatisticCalculator.calculate()">
 public T <code class="descname">calculate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.utils.StatisticCalculator.calculate()" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the result. This method stores the calculated result in the <a class="reference internal" href="#de.clusteval.utils.StatisticCalculator.lastResult" title="de.clusteval.utils.StatisticCalculator.lastResult"><code class="xref java java-ref docutils literal"><span class="pre">lastResult</span></code></a> attribute for later usage, e.g. in <a class="reference internal" href="#de.clusteval.utils.StatisticCalculator.writeOutputTo(File)" title="de.clusteval.utils.StatisticCalculator.writeOutputTo(File)"><code class="xref java java-ref docutils literal"><span class="pre">writeOutputTo(File)</span></code></a>.</p>
+<dd><p>Calculate the result. This method stores the calculated result in the <a class="reference internal" href="#de.clusteval.utils.StatisticCalculator.lastResult" title="de.clusteval.utils.StatisticCalculator.lastResult"><code class="xref java java-ref docutils literal"><span class="pre">lastResult</span></code></a> attribute for later usage, e.g. in <a class="reference internal" href="../data/statistics/DataStatisticRCalculator.html#de.clusteval.data.statistics.DataStatisticRCalculator.writeOutputTo(File)" title="de.clusteval.data.statistics.DataStatisticRCalculator.writeOutputTo(File)"><code class="xref java java-ref docutils literal"><span class="pre">writeOutputTo(File)</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -245,7 +245,7 @@ public T <code class="descname">getStatistic</code><span class="sig-paren">(</sp
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The statistic calculated during the last <a class="reference internal" href="../data/statistics/DataStatisticCalculator.html#de.clusteval.data.statistics.DataStatisticCalculator.calculate()" title="de.clusteval.data.statistics.DataStatisticCalculator.calculate()"><code class="xref java java-ref docutils literal"><span class="pre">calculate()</span></code></a> invocation.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The statistic calculated during the last <a class="reference internal" href="../run/statistics/RunStatisticCalculator.html#de.clusteval.run.statistics.RunStatisticCalculator.calculate()" title="de.clusteval.run.statistics.RunStatisticCalculator.calculate()"><code class="xref java java-ref docutils literal"><span class="pre">calculate()</span></code></a> invocation.</td>
 </tr>
 </tbody>
 </table>

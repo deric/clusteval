@@ -12,6 +12,8 @@ MCLRunResultFormat
 
 .. java:type:: public class MCLRunResultFormat extends RunResultFormat
 
+   This is the result format of Markov Clustering.
+
    :author: Christian Wiwie
 
 Constructors

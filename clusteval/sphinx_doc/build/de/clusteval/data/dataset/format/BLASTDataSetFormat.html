@@ -46,7 +46,133 @@
 <dl class="type">
 <dt id="de.clusteval.data.dataset.format.BLASTDataSetFormat">
 public class <code class="descname">BLASTDataSetFormat</code> extends <a class="reference internal" href="RelativeDataSetFormat.html#de.clusteval.data.dataset.format.RelativeDataSetFormat" title="de.clusteval.data.dataset.format.RelativeDataSetFormat">RelativeDataSetFormat</a><a class="headerlink" href="#de.clusteval.data.dataset.format.BLASTDataSetFormat" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>The BLAST dataset format expects an all-vs-all BLAST file in m8 format and a corresponding FASTA file.</p>
+<p>Please note, that the FASTA file has to be named exactly as the BLAST file plus the additional .fasta extension. If the BLAST file is named like MyBlastFile.blast, then the FASTA file only be found by the framework, when it lies in the same directory and is named MyBlastFile.blast.fasta.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="8%" />
+<col width="9%" />
+<col width="5%" />
+<col width="16%" />
+<col width="10%" />
+<col width="12%" />
+<col width="7%" />
+<col width="5%" />
+<col width="7%" />
+<col width="5%" />
+<col width="7%" />
+<col width="9%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Query</th>
+<th class="head">Subject</th>
+<th class="head">% id</th>
+<th class="head">alignment length</th>
+<th class="head">mismatches</th>
+<th class="head">gap openings</th>
+<th class="head">q.start</th>
+<th class="head">q.end</th>
+<th class="head">s.start</th>
+<th class="head">s.end</th>
+<th class="head">e-value</th>
+<th class="head">bit score</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>d1dlwa_</td>
+<td>d1dlwa_</td>
+<td>77.59</td>
+<td>116</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>116</td>
+<td>1</td>
+<td>116</td>
+<td>4.4e-46</td>
+<td>172.6</td>
+</tr>
+<tr class="row-odd"><td>d1dlwa_</td>
+<td>d1idra_</td>
+<td>40.30</td>
+<td>67</td>
+<td>40</td>
+<td>0</td>
+<td>19</td>
+<td>85</td>
+<td>31</td>
+<td>97</td>
+<td>3.2e-12</td>
+<td>60.08</td>
+</tr>
+<tr class="row-even"><td>d1dlwa_</td>
+<td>d1dlya_</td>
+<td>32.00</td>
+<td>100</td>
+<td>62</td>
+<td>1</td>
+<td>19</td>
+<td>116</td>
+<td>19</td>
+<td>118</td>
+<td>1.6e-11</td>
+<td>57.77</td>
+</tr>
+<tr class="row-odd"><td>d1dlwa_</td>
+<td>d2gdm__</td>
+<td>45.45</td>
+<td>22</td>
+<td>12</td>
+<td>0</td>
+<td>60</td>
+<td>81</td>
+<td>89</td>
+<td>110</td>
+<td>0.435</td>
+<td>23.10</td>
+</tr>
+<tr class="row-even"><td>d1dlwa_</td>
+<td>d1cqxa1</td>
+<td>37.50</td>
+<td>24</td>
+<td>15</td>
+<td>0</td>
+<td>62</td>
+<td>85</td>
+<td>79</td>
+<td>102</td>
+<td>0.969</td>
+<td>21.94</td>
+</tr>
+<tr class="row-odd"><td>d1dlwa_</td>
+<td>d1cqxa1</td>
+<td>40.00</td>
+<td>5</td>
+<td>3</td>
+<td>0</td>
+<td>71</td>
+<td>75</td>
+<td>134</td>
+<td>138</td>
+<td>4975.0</td>
+<td>9.62</td>
+</tr>
+<tr class="row-even"><td>d1dlwa_</td>
+<td>d1kr7a_</td>
+<td>31.25</td>
+<td>32</td>
+<td>22</td>
+<td>0</td>
+<td>41</td>
+<td>72</td>
+<td>45</td>
+<td>76</td>
+<td>4.8</td>
+<td>19.63</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">

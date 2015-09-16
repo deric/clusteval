@@ -46,7 +46,80 @@
 <dl class="type">
 <dt id="de.clusteval.data.dataset.format.SimMatrixDataSetFormat">
 public class <code class="descname">SimMatrixDataSetFormat</code> extends <a class="reference internal" href="RelativeDataSetFormat.html#de.clusteval.data.dataset.format.RelativeDataSetFormat" title="de.clusteval.data.dataset.format.RelativeDataSetFormat">RelativeDataSetFormat</a><a class="headerlink" href="#de.clusteval.data.dataset.format.SimMatrixDataSetFormat" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>The SimMatrixDataSetFormat is a complete quadratic tab-separated similarity matrix with header row and column (containing ids). There are no spaces in this file, only tabs. It does not necessarily need to be symmetric, it depends on the clustering method, whether it supports asymmetric similarity data.</p>
+<p>Example:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">tab</th>
+<th class="head">Id1</th>
+<th class="head">Id2</th>
+<th class="head">Id3</th>
+<th class="head">Id4</th>
+<th class="head">Id5</th>
+<th class="head">...</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Id1</td>
+<td>1.0</td>
+<td>0.6</td>
+<td>0.2</td>
+<td>0.5</td>
+<td>0.6</td>
+<td>...</td>
+</tr>
+<tr class="row-odd"><td>Id2</td>
+<td>0.6</td>
+<td>1.0</td>
+<td>0.1</td>
+<td>0.5</td>
+<td>0.4</td>
+<td>...</td>
+</tr>
+<tr class="row-even"><td>Id3</td>
+<td>0.2</td>
+<td>0.1</td>
+<td>1.0</td>
+<td>0.7</td>
+<td>0.1</td>
+<td>...</td>
+</tr>
+<tr class="row-odd"><td>Id4</td>
+<td>0.5</td>
+<td>0.5</td>
+<td>0.7</td>
+<td>1.0</td>
+<td>0.4</td>
+<td>...</td>
+</tr>
+<tr class="row-even"><td>Id5</td>
+<td>0.6</td>
+<td>0.4</td>
+<td>0.1</td>
+<td>0.4</td>
+<td>1.0</td>
+<td>...</td>
+</tr>
+<tr class="row-odd"><td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">

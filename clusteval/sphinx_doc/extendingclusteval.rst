@@ -4,9 +4,11 @@ Extending ClustEval
 -------------------
 ClustEval can be extended in different ways. The following sections will show you, which functionality you can add to the framework and how.
 
+.. _clusteval_extend_programs:
+
 Clustering Methods
 ^^^^^^^
-As explained in 4.2 clusteval supports two different kinds of clustering methods: Stan-
+As explained in :ref:`clusteringmethods` clusteval supports two different kinds of clustering methods: Stan-
 dalone programs and R programs. Standalone programs are those, for which you have
 to provide an executable file which then will be executed by the framework. R programs
 are methods implemented in R, which will be invoked by clusteval by using the Rserve

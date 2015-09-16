@@ -6,6 +6,30 @@ The backend server is based on a central repository which concludes all files in
 structure. You can easily start a framework with a different set of files by simply using
 another repository.
 
+.. _repository_config:
+
+Repository Configuration
+-------------
+A repository can be configured in a repository.config in the repository's root folder. This configuration supports the following options and sections:
+
+* **[mysql]**
+
+  * **user**: Name of the user with which to connect to the database.
+  * **database**: Name of the ClustEval database.
+  * **host**: A host string including ip address and port number.
+  
+* **[postgresql]**
+
+  * **user**: Name of the user with which to connect to the database.
+  * **database**: Name of the ClustEval database.
+  * **host**: A host string including ip address and port number.
+  
+* **[threading]**
+
+  * ** <ClassNameOfFinderThread>SleepTime**: Sleep time of the indicated finder thread.
+  
+Note that if both the mysql and postgresql sections are provided, the mysql section will overrule the postgresql section.
+
 Folder Structure
 ----------------
 

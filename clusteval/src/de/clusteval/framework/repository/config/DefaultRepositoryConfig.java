@@ -27,7 +27,7 @@ public class DefaultRepositoryConfig extends RepositoryConfig {
 	/**
 	 */
 	public DefaultRepositoryConfig() {
-		super(new SQLConfig(false, DB_TYPE.NONE, null, null, null),
+		super(new SQLConfig(false, DB_TYPE.NONE, null, null, null, false),
 				new HashMap<String, Long>());
 	}
 }

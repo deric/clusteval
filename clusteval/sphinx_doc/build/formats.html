@@ -78,21 +78,10 @@ formats are</p>
 <h2>Available Formats<a class="headerlink" href="#available-formats" title="Permalink to this headline">¶</a></h2>
 <p>For lists of all available input and result formats see <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/data/dataset/format/package-index.html">here</a> and <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/run/result/format/package-index.html">here</a> respectively.</p>
 </div>
-<div class="section" id="standard-input-format">
-<h2>Standard Input Format<a class="headerlink" href="#standard-input-format" title="Permalink to this headline">¶</a></h2>
-<p>The standard input format is a SimMatrixDataSetFormat which is described under
-4.5.6.</p>
-</div>
-<div class="section" id="standard-output-format">
-<h2>Standard Output Format<a class="headerlink" href="#standard-output-format" title="Permalink to this headline">¶</a></h2>
-<p>The standard output format contains one clustering generated for parameter values
-p 1 = v1,...,p K = vK in one line with clusters c1, ..., cK, cluster sizes size(ci) = si.
-Every cluster ci contains elements e i 1, ..., e i si with fuzzy coefficients f i 1, ..., f i si.
-The format for this looks as follows:</p>
-<p>TODO</p>
-<p>The parameter names and values on the left have to be separated by a TAB from
-the string &#8220;Clustering&#8221; and the clustering on the right. If the fuzzy coefficients are
-missing, the framework will not be able to parse the result file.</p>
+<div class="section" id="standard-formats">
+<h2>Standard Formats<a class="headerlink" href="#standard-formats" title="Permalink to this headline">¶</a></h2>
+<p>The standard input format is the <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/data/dataset/format/SimMatrixDataSetFormat.html">SimMatrixDataSetFormat</a>.
+The standard result format is the <a class="reference external" href="../../sphinx_doc_packages/build/de/clusteval/run/result/format/TabSeparatedRunResultFormat.html">TabSeparatedRunResultFormat</a>.</p>
 </div>
 <div class="section" id="providing-new-formats">
 <h2>Providing New Formats<a class="headerlink" href="#providing-new-formats" title="Permalink to this headline">¶</a></h2>
@@ -125,8 +114,7 @@ further analyses can be performed regardless of the used clustering method.</p>
   <ul>
 <li><a class="reference internal" href="#">Formats - Input &amp; Output</a><ul>
 <li><a class="reference internal" href="#available-formats">Available Formats</a></li>
-<li><a class="reference internal" href="#standard-input-format">Standard Input Format</a></li>
-<li><a class="reference internal" href="#standard-output-format">Standard Output Format</a></li>
+<li><a class="reference internal" href="#standard-formats">Standard Formats</a></li>
 <li><a class="reference internal" href="#providing-new-formats">Providing New Formats</a></li>
 </ul>
 </li>

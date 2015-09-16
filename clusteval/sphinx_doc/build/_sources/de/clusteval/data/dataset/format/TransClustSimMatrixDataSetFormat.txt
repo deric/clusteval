@@ -14,6 +14,19 @@ TransClustSimMatrixDataSetFormat
 
 .. java:type:: @FormatVersion public class TransClustSimMatrixDataSetFormat extends RelativeDataSetFormat
 
+   This format is used by Transitivity Clustering. The number in the first line is the number of objects. It is followed by all object ids in the next lines. Then it follows the tab-separated upper half of the similarity matrix. This format expects that the similarity matrix is symmetric.
+
+   Example::
+
+     3
+     id1
+     id2
+     id3
+     id4
+     0.1  0.2  0.6
+     0.3  0.5
+     0.8
+
    :author: Christian Wiwie
 
 Constructors

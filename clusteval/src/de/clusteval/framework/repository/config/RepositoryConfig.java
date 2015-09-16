@@ -99,27 +99,32 @@ public class RepositoryConfig {
 							.getNoDatabase()) {
 				usesMysql = true;
 				String mysqlUsername, mysqlDatabase, mysqlHost;
+				boolean usesPassword;
 				SubnodeConfiguration mysql = props.getSection("mysql");
 				mysqlUsername = mysql.getString("user");
 
 				mysqlDatabase = mysql.getString("database");
 				mysqlHost = mysql.getString("host");
+				usesPassword = !mysql.containsKey("password");
 				mysqlConfig = new SQLConfig(usesMysql, DB_TYPE.MYSQL,
-						mysqlUsername, mysqlDatabase, mysqlHost);
+						mysqlUsername, mysqlDatabase, mysqlHost, usesPassword);
 			} else if (props.getSections().contains("postgresql")
 					&& !ClustevalBackendServer.getBackendServerConfiguration()
 							.getNoDatabase()) {
 				usesMysql = true;
 				String username, db, host;
+				boolean usesPassword;
 				SubnodeConfiguration mysql = props.getSection("postgresql");
 				username = mysql.getString("user");
 
 				db = mysql.getString("database");
 				host = mysql.getString("host");
+				usesPassword = !mysql.containsKey("password");
 				mysqlConfig = new SQLConfig(usesMysql, DB_TYPE.POSTGRESQL,
-						username, db, host);
+						username, db, host, usesPassword);
 			} else
-				mysqlConfig = new SQLConfig(usesMysql, DB_TYPE.NONE, "", "", "");
+				mysqlConfig = new SQLConfig(false, DB_TYPE.NONE, "", "", "",
+						false);
 
 			Map<String, Long> threadingSleepTimes = new HashMap<String, Long>();
 

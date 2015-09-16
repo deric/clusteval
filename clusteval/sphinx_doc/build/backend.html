@@ -50,8 +50,8 @@
           <div class="body" role="main">
             
   <div class="section" id="backend">
-<h1>Backend<a class="headerlink" href="#backend" title="Permalink to this headline">¶</a></h1>
-<div class="figure" id="id1" style="width: 50%">
+<span id="id1"></span><h1>Backend<a class="headerlink" href="#backend" title="Permalink to this headline">¶</a></h1>
+<div class="figure" id="id3" style="width: 50%">
 <img alt="schema of the backend" src="../img/framework_backend.png" />
 <p class="caption"><span class="caption-text">A schema of the ClustEval backend</span></p>
 </div>
@@ -92,11 +92,12 @@ provided standard functionality of the framework is not sufficient for the user<
 <li class="toctree-l1"><a class="reference internal" href="datarandomizer.html">Data Randomizer - Distorting Existing Data Sets</a></li>
 </ul>
 </div>
+<div class="section" id="repository">
+<h3>Repository<a class="headerlink" href="#repository" title="Permalink to this headline">¶</a></h3>
 <p>All these components have to be located in the repository of the framework (see <a class="reference internal" href="repository.html#repository"><span>Repository - The Central Storage of ClustEval</span></a>
 for more details). The repository is a file system hierarchy located at a specified path
-and contains all components used by and available to the framework. data sets, cluster-
-ing methods or configurations outside the repository cannot be used by the framework.
-After these components have been made available to the backend, they can be
+and contains all components used by and available to the framework. Data sets, clustering methods or configurations outside the repository cannot be used by the framework.
+When these components have been made available to the backend, they can be
 combined almost arbitrarily. In the following we will describe the dependencies of each
 of these components which need to be fulfilled such that a new component of each type
 can be recognized and used by the framework.</p>
@@ -107,12 +108,89 @@ can be recognized and used by the framework.</p>
 </ul>
 </div>
 </div>
+<div class="section" id="cli-command-line-interface">
+<span id="server-cli"></span><h3>CLI (Command line interface)<a class="headerlink" href="#cli-command-line-interface" title="Permalink to this headline">¶</a></h3>
+<p>The server provides the following command line parameters:</p>
+<dl class="docutils">
+<dt><strong>&#8211;absRepoPath &lt;ABSOLUTEFOLDERPATH&gt;</strong></dt>
+<dd>The absolute path to the repository</dd>
+<dt><strong>&#8211;help</strong></dt>
+<dd>Print help and usage information</dd>
+<dt><strong>&#8211;version</strong></dt>
+<dd>Print the version of the server</dd>
+<dt><strong>&#8211;port &lt;INTEGER&gt;</strong></dt>
+<dd>The port this server should listen on for clients</dd>
+<dt><strong>&#8211;logLevel &lt;INTEGER&gt;</strong></dt>
+<dd>The verbosity this server should use during the logging process. 0=ALL, 1=TRACE, 2=DEBUG, 3=INFO, 4=WARN, 5=ERROR, 6=OFF</dd>
+<dt><strong>&#8211;numberOfThreads &lt;INTEGER&gt;</strong></dt>
+<dd>The maximal number of threads that should be created in parallel when executing runs.</dd>
+<dt><strong>&#8211;checkForRunResults &lt;BOOLEAN&gt;</strong></dt>
+<dd>Indicates, whether this server should check for run results in its repository.</dd>
+<dt><strong>&#8211;noDatabase &lt;BOOLEAN&gt;</strong></dt>
+<dd>Indicates, whether this server should connect to a database.</dd>
+<dt><strong>&#8211;rServeHost &lt;IPADDRESS|STRING&gt;</strong></dt>
+<dd>The address on which Rserve is listening.</dd>
+<dt><strong>&#8211;rServePort &lt;INTEGER&gt;</strong></dt>
+<dd>The port on which Rserve is listening.</dd>
+</dl>
+</div>
+</div>
 <div class="section" id="client">
 <h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h2>
 <p>The backend client is a small command-line tool which gives commands to the back-
 end server, for example to execute a certain run or terminate a run that is currently
 executing. It offers tab completion and communicates with the server using the Rserve
 package via TCP/IP.</p>
+<div class="section" id="client-cli">
+<span id="id2"></span><h3>CLI (Command line interface)<a class="headerlink" href="#client-cli" title="Permalink to this headline">¶</a></h3>
+<p>The client provides the following command line parameters:</p>
+<dl class="docutils">
+<dt><strong>&#8211;help</strong></dt>
+<dd>Print help and usage information</dd>
+<dt><strong>&#8211;logLevel &lt;INTEGER&gt;</strong></dt>
+<dd>The verbosity this server should use during the logging process. 0=ALL, 1=TRACE, 2=DEBUG, 3=INFO, 4=WARN, 5=ERROR, 6=OFF</dd>
+<dt><strong>&#8211;version</strong></dt>
+<dd>Print the version of the server</dd>
+<dt><strong>&#8211;ip &lt;IPADDRESS&gt;</strong></dt>
+<dd>The ip address of the backend server to connect to.</dd>
+<dt><strong>&#8211;port &lt;INTEGER&gt;</strong></dt>
+<dd>The port number of the backend server to connect to.</dd>
+<dt><strong>&#8211;clientId &lt;INTEGER&gt;</strong></dt>
+<dd>The client id for identification purposes of this client with the server. TODO: explain</dd>
+<dt><strong>&#8211;performRun &lt;RUNNAME&gt;</strong></dt>
+<dd>Performs a certain run (if not already running)</dd>
+<dt><strong>&#8211;resumeRun &lt;RESULTID&gt;</strong></dt>
+<dd>Resumes a certain run that was started and terminated earlier</dd>
+<dt><strong>&#8211;terminateRun &lt;RESULTID&gt;</strong></dt>
+<dd>Terminates a certain run that was started earlier.</dd>
+<dt><strong>&#8211;getDataSets</strong></dt>
+<dd>Queries the available datasets from the server.</dd>
+<dt><strong>&#8211;getPrograms</strong></dt>
+<dd>Queries the available programs from the server.</dd>
+<dt><strong>&#8211;getRuns</strong></dt>
+<dd>Queries the available runs from the server.</dd>
+<dt><strong>&#8211;getRunResumes</strong></dt>
+<dd>Queries the available run resumes from the server.</dd>
+<dt><strong>&#8211;getRunStatus &lt;RESULTID&gt;</strong></dt>
+<dd>Queries the status of a certain run</dd>
+<dt><strong>&#8211;getOptRunStatus &lt;RESULTID&gt;</strong></dt>
+<dd>Queries the optimization status of a certain run</dd>
+<dt><strong>&#8211;getQueue</strong></dt>
+<dd>Gets the enqueued runs and run resumes of the backend server</dd>
+<dt><strong>&#8211;getActiveThreads</strong></dt>
+<dd>Gets the currently active threads and the corresponding iterations which they perform</dd>
+<dt><strong>&#8211;setThreadNumber &lt;INTEGER&gt;</strong></dt>
+<dd>Sets the maximal number of parallel threads.</dd>
+<dt><strong>&#8211;generateDataSet &lt;GENERATORNAME&gt;</strong></dt>
+<dd>Generates a dataset using the generator with the given name. Usage help will be shown after this command has been executed.</dd>
+<dt><strong>&#8211;randomizeDataConfig &lt;RANDOMIZERNAME&gt;</strong></dt>
+<dd>Randomizes a dataconfig using the randomizer with the given name. Usage help will be shown after this command has been executed.</dd>
+<dt><strong>&#8211;shutdown</strong></dt>
+<dd>Shut down the ClustEval server.</dd>
+<dt><strong>&#8211;waitForRuns</strong></dt>
+<dd>The client will wait until all runs that this client started are finished.</dd>
+</dl>
+</div>
 </div>
 </div>
 
@@ -126,9 +204,14 @@ package via TCP/IP.</p>
   <ul>
 <li><a class="reference internal" href="#">Backend</a><ul>
 <li><a class="reference internal" href="#server">Server</a><ul>
+<li><a class="reference internal" href="#repository">Repository</a></li>
+<li><a class="reference internal" href="#cli-command-line-interface">CLI (Command line interface)</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#client">Client</a></li>
+<li><a class="reference internal" href="#client">Client</a><ul>
+<li><a class="reference internal" href="#client-cli">CLI (Command line interface)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

@@ -12,6 +12,8 @@ APRunResultFormat
 
 .. java:type:: public class APRunResultFormat extends RunResultFormat
 
+   This is the result format of Affinity Propagation.
+
    :author: Christian Wiwie
 
 Constructors

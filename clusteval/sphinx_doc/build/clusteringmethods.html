@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Python  documentation" href="contents.html" />
     <link rel="up" title="Backend" href="backend.html" />
-    <link rel="next" title="Configuration Files - Handling ClustEval" href="configurations.html" />
+    <link rel="next" title="Affinity Propagation" href="standalone_ap.html" />
     <link rel="prev" title="Gold Standards" href="goldstandards.html" /> 
   </head>
   <body role="document">
@@ -36,7 +36,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="configurations.html" title="Configuration Files - Handling ClustEval"
+          <a href="standalone_ap.html" title="Affinity Propagation"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="goldstandards.html" title="Gold Standards"
@@ -57,44 +57,49 @@
 executed by the framework, and be applied to data to calculate clusterings. In order
 to include a new clustering method and use it within the framework,</p>
 <ul class="simple">
-<li>the executable of the method has to be made available to the framework (an exception are Clustering Methods provided through the R framework, see 4.2.2),</li>
+<li>the executable of the method has to be made available to the framework (an exception are Clustering Methods provided through the R framework),</li>
 <li>the method itself has to be specified in a configuration file (called program configuration)</li>
 <li>all other components (e.g. input and output formats) specified in the program configuration need to be available</li>
 </ul>
-<p>The configuration file for a clustering method (short program configuration) con-
-tains all information required, such that the framework can execute the method in
-an automatized and autonomous way. These information include for example, among
-others, the name of the method, its supported input formats, its output format, its
-parameters (including type and valid range of values). An exact description of how
-program configurations look like and which options and settings need to be specified
-can be found in 4.9.7.
-clusteval ships with a set of clustering methods including</p>
-<ul class="simple">
-<li>Affinity Propagation</li>
-<li>Hierarchical Clustering (Rserve)</li>
-<li>K-Means (Rserve)</li>
-<li>Markov Clustering</li>
-<li>Spectral Clustering (Rserve)</li>
-<li>Transitivity Clustering</li>
+<p>The configuration file for a clustering method (short program configuration) contains all information required, such that the framework can execute the method in
+an automatized and autonomous way. These information include for example, among others, the name of the method, its supported input formats, its output format, its parameters (including type and valid range of values). An exact description of how program configurations look like and which options and settings need to be specified can be found in.</p>
+<div class="section" id="standalone">
+<h2>Standalone<a class="headerlink" href="#standalone" title="Permalink to this headline">¶</a></h2>
+<p>Standalone programs come as an executable that can be performed by the framework, after they have been specified in a program configuration. The executable needs to be
+compatible to the server architecture clusteval runs on and they need to be executable (+x modifier).</p>
+</div>
+<div class="section" id="r-programs-rserve">
+<h2>R Programs (Rserve)<a class="headerlink" href="#r-programs-rserve" title="Permalink to this headline">¶</a></h2>
+<p>ClustEval supports the execution of R implementations. Arbitrary methods implemented in R can be used as a program, as long as they can be made available within
+R on the server. This implies that the corresponding R Program is available for your R version and that it can be compiled and installed on your server architecture.</p>
+</div>
+<div class="section" id="available-clustering-methods">
+<h2>Available Clustering Methods<a class="headerlink" href="#available-clustering-methods" title="Permalink to this headline">¶</a></h2>
+<p>ClustEval ships with a set of clustering methods:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="standalone_ap.html">Affinity Propagation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="r_dbscan.html">DBSCAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="standalone_cl1.html">clusterONE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="r_cdp.html">clusterdp</a></li>
+<li class="toctree-l1"><a class="reference internal" href="r_fanny.html">Fanny</a></li>
+<li class="toctree-l1"><a class="reference internal" href="r_hc.html">Hierarchical Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="r_kmeans.html">K-means</a></li>
+<li class="toctree-l1"><a class="reference internal" href="standalone_mcode.html">MCODE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="standalone_mcl.html">Markov Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="r_pam.html">k-Medoids (PAM)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="r_som.html">Self Organizing Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="r_sc.html">Spectral Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="standalone_tc.html">Transitivity Clustering</a></li>
 </ul>
+</div>
 <p>For every of these clustering methods a program configuration is also provided,
 such that they are directly usable from the start. Of course these program configurations
 can be modified and adapted to the user&#8217;s needs.</p>
-<div class="section" id="standalone">
-<h2>Standalone<a class="headerlink" href="#standalone" title="Permalink to this headline">¶</a></h2>
-<p>are programs that come as an executable. Those can be performed by the framework,
-after they have been specified in a program configuration. The executable needs to be
-compatible to the server architecture clusteval runs on and they need to be executable
-(+x modifier). How you can add your own standalone programs into the framework
-can be found here 11.1.1</p>
 </div>
-<div class="section" id="r-rserve">
-<h2>R (Rserve)<a class="headerlink" href="#r-rserve" title="Permalink to this headline">¶</a></h2>
-<p>are programs, that are implemented within some R package. Arbitrary methods imple-
-mented in R can be used as a program, as long as they can be made available within
-R on the server. This implies that the corresponding R Program is available for your
-R version and that it can be compiled and installed on your server architecture. How
-you can add your own R Programs into the framework can be found here 11.1.2.</p>
+<div class="section" id="extending-clusteval">
+<h2>Extending ClustEval<a class="headerlink" href="#extending-clusteval" title="Permalink to this headline">¶</a></h2>
+<p>How you can extend ClustEval with your own clustering methods is described under <a class="reference internal" href="extendingclusteval.html#clusteval-extend-programs"><span>Clustering Methods</span></a>.</p>
 </div>
 </div>
 
@@ -108,7 +113,9 @@ you can add your own R Programs into the framework can be found here 11.1.2.</p>
   <ul>
 <li><a class="reference internal" href="#">Clustering Methods</a><ul>
 <li><a class="reference internal" href="#standalone">Standalone</a></li>
-<li><a class="reference internal" href="#r-rserve">R (Rserve)</a></li>
+<li><a class="reference internal" href="#r-programs-rserve">R Programs (Rserve)</a></li>
+<li><a class="reference internal" href="#available-clustering-methods">Available Clustering Methods</a></li>
+<li><a class="reference internal" href="#extending-clusteval">Extending ClustEval</a></li>
 </ul>
 </li>
 </ul>
@@ -117,8 +124,8 @@ you can add your own R Programs into the framework can be found here 11.1.2.</p>
   <p class="topless"><a href="goldstandards.html"
                         title="previous chapter">Gold Standards</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="configurations.html"
-                        title="next chapter">Configuration Files - Handling ClustEval</a></p>
+  <p class="topless"><a href="standalone_ap.html"
+                        title="next chapter">Affinity Propagation</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -150,7 +157,7 @@ you can add your own R Programs into the framework can be found here 11.1.2.</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="configurations.html" title="Configuration Files - Handling ClustEval"
+          <a href="standalone_ap.html" title="Affinity Propagation"
              >next</a> |</li>
         <li class="right" >
           <a href="goldstandards.html" title="Gold Standards"

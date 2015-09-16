@@ -18,14 +18,18 @@ APRowSimDataSetFormat
 
 .. java:type:: @FormatVersion public class APRowSimDataSetFormat extends RowSimDataSetFormat
 
-   This input format is used by Affinity Propagation. It is similar to the RowSimDataSet-Format, except that it accepts only numbers as ids and that it leaves out lines where id1=id2. Example::
+   This input format is used by Affinity Propagation. It is similar to the :java:ref:`RowSimDataSetFormat`, except that it accepts only numbers as ids and that it leaves out lines where id1=id2.
 
-       1    2    0.2
-       1    3    0.6
-       2    1    0.2
-       2    3    0.5
-       3    1    0.6
-       3    2    0.5
+   === === ==========
+   Id1 Id2 Similarity
+   === === ==========
+   1   2   0.2
+   1   3   0.6
+   2   1   0.2
+   2   3   0.5
+   3   1   0.6
+   3   2   0.5
+   === === ==========
 
    :author: Christian Wiwie
 

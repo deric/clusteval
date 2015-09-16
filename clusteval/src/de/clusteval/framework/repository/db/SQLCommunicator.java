@@ -762,7 +762,10 @@ public abstract class SQLCommunicator {
 	public void initDB() {
 		try {
 			// SQLException lastException = null;
-			String password = getDBPassword();
+			boolean hasPassword = sqlConfig.usesPassword();
+			String password = "";
+			if (hasPassword)
+				password = getDBPassword();
 			/**
 			 * While we do not have a connection and the password is wrong,
 			 * retry

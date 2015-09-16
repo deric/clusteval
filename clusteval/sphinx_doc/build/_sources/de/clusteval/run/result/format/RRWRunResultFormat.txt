@@ -12,6 +12,8 @@ RRWRunResultFormat
 
 .. java:type:: public class RRWRunResultFormat extends RunResultFormat
 
+   This is the result format of RRW.
+
    :author: Christian Wiwie
 
 Constructors

@@ -24,7 +24,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Python  documentation" href="contents.html" />
-    <link rel="prev" title="Download &amp; Installation" href="download.html" /> 
+    <link rel="next" title="Backend" href="backend.html" />
+    <link rel="prev" title="Dependencies" href="download.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -34,7 +35,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="download.html" title="Download &amp; Installation"
+          <a href="backend.html" title="Backend"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="download.html" title="Dependencies"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li> 
       </ul>
@@ -47,11 +51,109 @@
             
   <div class="section" id="basic-usage">
 <h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h1>
-<p>After you downloaded and installed clusteval , you need to know how to use it. The
-backend server and client are distributed as two executables which can be simply started
-with a single command in the command line. Both can be invoked with different
-command line parameters, which will be explained in the next sections.
-For the following scenarios we assume, that the website is ready to use.</p>
+<p>The backend server and client are distributed as two Java executables which can be simply started with a single command in the command line. Both can be invoked with different
+command line parameters, which are explained <a class="reference internal" href="backend.html#backend"><span>here</span></a>. For the following scenarios we assume, that you have followed the instructions under <a class="reference internal" href="download.html#download"><span>Dependencies</span></a>.</p>
+<p>Here we assume, that you have cloned the</p>
+<ul class="simple">
+<li><strong>clusteval</strong> GitHub repository to /home/clusteval/clusteval</li>
+<li><strong>clustevalWebsite</strong> GitHub repository to /home/clusteval/clustevalWebsite</li>
+</ul>
+<div class="section" id="check-out-a-minimal-repository">
+<h2>1. Check out a Minimal Repository<a class="headerlink" href="#check-out-a-minimal-repository" title="Permalink to this headline">¶</a></h2>
+<p>We provide a ready to use repository on GitHub. You can check it out using the git command line tool:</p>
+<div class="highlight-python"><div class="highlight"><pre>git clone https://github.com/wiwie/clustevalDockerRepository /home/clusteval/clustevalDockerRepository
+</pre></div>
+</div>
+</div>
+<div class="section" id="do-you-need-the-website">
+<h2>2. Do you need the Website?<a class="headerlink" href="#do-you-need-the-website" title="Permalink to this headline">¶</a></h2>
+<p>First you should be clear about whether you need the database + website. If yes you can continue with step 3. Otherwise, you can edit the repository configuration file under:</p>
+<div class="highlight-python"><div class="highlight"><pre>/home/clusteval/clustevalDockerRepository/repository.config
+</pre></div>
+</div>
+<p>and remove the postgreSQL section. ClustEval will now not connect to a database.</p>
+</div>
+<div class="section" id="start-the-backend-server">
+<h2>3. Start the Backend Server<a class="headerlink" href="#start-the-backend-server" title="Permalink to this headline">¶</a></h2>
+<p>As mentioned above, the backend server is a Java executable (jar) and has several parameters. The parameters are described <a class="reference internal" href="backend.html#server-cli"><span>here</span></a>. We use the repository from the previous step:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">clusteval</span><span class="o">/</span><span class="n">clusteval</span><span class="o">/</span><span class="n">clusteval</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">clustevalBackendServer</span><span class="o">.</span><span class="n">jar</span> <span class="o">--</span><span class="n">absRepoPath</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">clusteval</span><span class="o">/</span><span class="n">clustevalDockerRepository</span>
+</pre></div>
+</div>
+<p>If you are using a database at this point, you will be prompted for the credentials.</p>
+<p>ClustEval will now start parsing the contents of the repository and will show you status messages in the terminal. Once it is finished, it will inform you that the server is now listening for clients commands.</p>
+</div>
+<div class="section" id="start-the-backend-client">
+<h2>4. Start the Backend Client<a class="headerlink" href="#start-the-backend-client" title="Permalink to this headline">¶</a></h2>
+<p>The client is a Java executable as well and can be started as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">clusteval</span><span class="o">/</span><span class="n">clusteval</span><span class="o">/</span><span class="n">clusteval</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">clustevalBackendClient</span><span class="o">.</span><span class="n">jar</span>
+</pre></div>
+</div>
+<p>It will now connect to the backend server and present you with a CLI to enter commands which will then be sent to the server. For example, you can get a list of all available runs in our repository:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">getRuns</span>
+</pre></div>
+</div>
+<p>Afterwards you can perform one of those runs by entering:</p>
+<div class="highlight-python"><div class="highlight"><pre>performRun bonemarrow
+</pre></div>
+</div>
+<p>ClustEval will now cluster the bone_marrow data set with DBSCAN, Fanny, KMedoids, K-means, Transitivity Clustering, Hierarchical Clustering, Affinity Propagation, Markov Clustering, Self Organizing Maps, Spectral Clustering, clusterdp, clusterONE and MCODE and 1000 parameter sets each. For each of the resulting clusterings it will evaluate the clustering quality measures which are specified in the run file (bonemarrow.run).</p>
+</div>
+<div class="section" id="getting-the-status-of-the-run-execution">
+<h2>5. Getting the Status of the Run Execution<a class="headerlink" href="#getting-the-status-of-the-run-execution" title="Permalink to this headline">¶</a></h2>
+<p>To track the progress of your run, you can either follow the status messages on the server terminal or use the client:</p>
+<div class="highlight-python"><div class="highlight"><pre>getRunStatus &lt;RESULTID&gt;
+</pre></div>
+</div>
+<p>Here &lt;RESULTID&gt; is the unique identifier that your run execution was assigned. By typing getRunStatus into the client CLI, pressing tab will show you all available such ids. Which currently, should only be one for the bonemarrow run.</p>
+<p>Since we are executing a run of type parameter optimization, we can also use the following command of the client to get a more detailed status:</p>
+<div class="highlight-python"><div class="highlight"><pre>getOptRunStatus &lt;RESULTID&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="terminating-a-run">
+<h2>6. Terminating a Run<a class="headerlink" href="#terminating-a-run" title="Permalink to this headline">¶</a></h2>
+<p>If the run takes too long or you want to decrease the number of parameter sets (iterations) per clustering method, you first want to stop the running job, before editing the files and starting it again:</p>
+<div class="highlight-python"><div class="highlight"><pre>terminateRun &lt;RESULTID&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="inspecting-the-results">
+<h2>7. Inspecting the Results<a class="headerlink" href="#inspecting-the-results" title="Permalink to this headline">¶</a></h2>
+<p>The results of a run can be either inspected using the client, the result files itself or the website (if the database and website have been set up and the repository.config contained a configuration for the database).</p>
+<div class="section" id="using-the-client">
+<h3>Using the Client<a class="headerlink" href="#using-the-client" title="Permalink to this headline">¶</a></h3>
+<p>We can get a summary of the performances of each tool using the following command:</p>
+<div class="highlight-python"><div class="highlight"><pre>getOptRunStatus &lt;RESULTID&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="on-the-file-system">
+<h3>On the File-System<a class="headerlink" href="#on-the-file-system" title="Permalink to this headline">¶</a></h3>
+<p>Each run execution is assigned a unique result id which you have already been using in the steps above. The results of a run are also stored under this result id on the file-system. If we want to inspect the results of our run, we can navigate to:</p>
+<div class="highlight-python"><div class="highlight"><pre>/home/clusteval/clustevalDockerRepository/results/&lt;RESULTID&gt;/clusters
+</pre></div>
+</div>
+<p>This folder contains all the clustering results procuced by any of the clustering methods. Each <a href="#id1"><span class="problematic" id="id2">*</span></a>.complete file summarizes all iterations of one particular clustering method and makes it easier to identify parameter sets which performed better.</p>
+</div>
+<div class="section" id="on-the-website">
+<h3>On the Website<a class="headerlink" href="#on-the-website" title="Permalink to this headline">¶</a></h3>
+<p>If you have configured the server to run with a database connection, it will automatically parse the clustering results into the database once a run terminates.</p>
+<p>You can then get a quick overview on the Overview page:</p>
+<div class="highlight-python"><div class="highlight"><pre>Start page -&gt; Overview
+</pre></div>
+</div>
+<p>Select the clustering quality measure on the top and you see which clustering method performed how well on the bone_marrow data set.</p>
+<a class="reference internal image-reference" href="../img/website_overview.png"><img alt="../img/website_overview.png" class="align-center" src="../img/website_overview.png" style="width: 90%;" /></a>
+<a class="reference internal image-reference" href="../img/website_overview_2.png"><img alt="../img/website_overview_2.png" class="align-center" src="../img/website_overview_2.png" style="width: 90%;" /></a>
+<p>To get more detailed information about the run, navigate to:</p>
+<div class="highlight-python"><div class="highlight"><pre>Start page -&gt; Advanced -&gt; Run results -&gt; Click on result with &lt;RESULTID&gt;
+</pre></div>
+</div>
+<p>The page shows you a section for each pair of program configuration and data configuration. The iterations of the parameter optimization are shown in a table and a chart.</p>
+<a class="reference internal image-reference" href="../img/website_optimization_chart.png"><img alt="../img/website_optimization_chart.png" class="align-center" src="../img/website_optimization_chart.png" style="width: 90%;" /></a>
+<a class="reference internal image-reference" href="../img/website_optimization_table.png"><img alt="../img/website_optimization_table.png" class="align-center" src="../img/website_optimization_table.png" style="width: 90%;" /></a>
+</div>
+</div>
 </div>
 
 
@@ -60,9 +162,31 @@ For the following scenarios we assume, that the website is ready to use.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="contents.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Basic Usage</a><ul>
+<li><a class="reference internal" href="#check-out-a-minimal-repository">1. Check out a Minimal Repository</a></li>
+<li><a class="reference internal" href="#do-you-need-the-website">2. Do you need the Website?</a></li>
+<li><a class="reference internal" href="#start-the-backend-server">3. Start the Backend Server</a></li>
+<li><a class="reference internal" href="#start-the-backend-client">4. Start the Backend Client</a></li>
+<li><a class="reference internal" href="#getting-the-status-of-the-run-execution">5. Getting the Status of the Run Execution</a></li>
+<li><a class="reference internal" href="#terminating-a-run">6. Terminating a Run</a></li>
+<li><a class="reference internal" href="#inspecting-the-results">7. Inspecting the Results</a><ul>
+<li><a class="reference internal" href="#using-the-client">Using the Client</a></li>
+<li><a class="reference internal" href="#on-the-file-system">On the File-System</a></li>
+<li><a class="reference internal" href="#on-the-website">On the Website</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="download.html"
-                        title="previous chapter">Download &amp; Installation</a></p>
+                        title="previous chapter">Dependencies</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="backend.html"
+                        title="next chapter">Backend</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -94,7 +218,10 @@ For the following scenarios we assume, that the website is ready to use.</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="download.html" title="Download &amp; Installation"
+          <a href="backend.html" title="Backend"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="download.html" title="Dependencies"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="contents.html">Python  documentation</a> &raquo;</li> 
       </ul>

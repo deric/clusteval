@@ -196,7 +196,7 @@ public class ClustevalBackendServer implements IBackendServer {
 		Option optionHelp = OptionBuilder.create("help");
 		serverCLIOptions.addOption(optionHelp);
 
-		OptionBuilder.withDescription("Print the version of this client");
+		OptionBuilder.withDescription("Print the version of the server");
 		Option optionVersion = OptionBuilder.create("version");
 		serverCLIOptions.addOption(optionVersion);
 

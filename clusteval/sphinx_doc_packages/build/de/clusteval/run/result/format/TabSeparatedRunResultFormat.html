@@ -46,7 +46,14 @@
 <dl class="type">
 <dt id="de.clusteval.run.result.format.TabSeparatedRunResultFormat">
 public class <code class="descname">TabSeparatedRunResultFormat</code> extends RunResultFormat<a class="headerlink" href="#de.clusteval.run.result.format.TabSeparatedRunResultFormat" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the standard result format of ClustEval.</p>
+<dd><p>This is the standard result format of ClustEval. It contains a parameter set together with the resulting clustering in each line. Let the parameters and their values be defined as <img class="math" src="../../../../../_images/math/1859e6531117afe2147cc5f27441a6925e281719.png" alt="p_1 = v_1, ... , p_M = v_M"/> and let the clusters be <img class="math" src="../../../../../_images/math/6ea3a26e9d49a92b49c708dad3c301375c92fe34.png" alt="c_1, ..., c_K"/> with sizes <img class="math" src="../../../../../_images/math/4f21aea904f8dc194adc05881b745a3ef1cefc7d.png" alt="|c_i| = s_i"/>. Every cluster <img class="math" src="../../../../../_images/math/496867ca68c428fa123f26f0f73997632e61e116.png" alt="c_i"/> contains elements <img class="math" src="../../../../../_images/math/06ef9db5830d87e2cb708f38d73c0d0b9067475a.png" alt="e_{i_1}, ..., e_{i_{s_i}}"/> with fuzzy coefficients <img class="math" src="../../../../../_images/math/d154bbf69cfc74f8e99002514b4e18f1adc60e67.png" alt="f_{i_1}, ..., f_{i_{s_i}}"/>. Then the format describing these parameter values and clustering looks as follows:</p>
+<p><img class="math" src="../../../../../_images/math/c8d85ed86fa8b0ab0382307e5817b50e47172e50.png" alt="\begin{tabular}{ll} $p_1$, \ldots , $p_M$ &amp; Clustering \\ $v_1$, \ldots ,$v_M$ &amp; $e_{1_1}:f_{1_1}$, \ldots ,$e_{1_{s_1}}:f_{1_{s_1}}$; \ldots ; $e_{K_1}:f_{K_1}$, \ldots ,$e_{K_{s_1}}:f_{K_{s_1}}$ \end{tabular}"/></p>
+<p>The parameter names and values on the left have to be separated by a TAB from the string &#8220;Clustering&#8221; and the clustering on the right. If the fuzzy coefficients are missing, the framework will not be able to parse the result file.</p>
+<p>Example with two parameters A and B and a clustering of five objects into two clusters:</p>
+<div class="highlight-python"><div class="highlight"><pre>A,B    Clustering
+0.1,3    id1:1.0,id4:1.0,id5:1.0;id2:1.0,id3:1.0
+</pre></div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

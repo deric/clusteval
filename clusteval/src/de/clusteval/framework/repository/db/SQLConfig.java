@@ -27,13 +27,14 @@ import java.io.InputStreamReader;
 public class SQLConfig {
 
 	public static SQLConfig DUMMY_CONFIG = new SQLConfig(false, DB_TYPE.NONE,
-			null, null, null);
+			null, null, null, false);
 
 	protected boolean usesSql;
 	protected DB_TYPE dbType;
 	protected String username;
 	protected String database;
 	protected String host;
+	protected boolean usesPassword;
 
 	/**
 	 * @author Christian Wiwie
@@ -49,15 +50,20 @@ public class SQLConfig {
 	 * @param username
 	 * @param database
 	 * @param host
+	 * @param usesPassword
+	 *            Whether the sql connection uses a password to connect and thus
+	 *            prompt for it when connecting.
 	 */
 	public SQLConfig(final boolean usesSql, final DB_TYPE dbType,
-			final String username, final String database, final String host) {
+			final String username, final String database, final String host,
+			final boolean usesPassword) {
 		super();
 		this.usesSql = usesSql;
 		this.dbType = dbType;
 		this.username = username;
 		this.database = database;
 		this.host = host;
+		this.usesPassword = usesPassword;
 	}
 
 	/**
@@ -81,6 +87,10 @@ public class SQLConfig {
 	 */
 	public String getUsername() {
 		return this.username;
+	}
+
+	public boolean usesPassword() {
+		return this.usesPassword;
 	}
 
 	/**

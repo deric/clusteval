@@ -32,24 +32,10 @@ Available Formats
 ^^^^^^^^^^^^^^^^^^
 For lists of all available input and result formats see `here  <../../sphinx_doc_packages/build/de/clusteval/data/dataset/format/package-index.html>`_ and `here  <../../sphinx_doc_packages/build/de/clusteval/run/result/format/package-index.html>`_ respectively.
 
-Standard Input Format
+Standard Formats
 ^^^^^^^^^^^^^^^^^^
-The standard input format is a SimMatrixDataSetFormat which is described under
-4.5.6.
-
-Standard Output Format
-^^^^^^^^^^^^^^^^^^
-The standard output format contains one clustering generated for parameter values
-p 1 = v1,...,p K = vK in one line with clusters c1, ..., cK, cluster sizes size(ci) = si.
-Every cluster ci contains elements e i 1, ..., e i si with fuzzy coefficients f i 1, ..., f i si.
-The format for this looks as follows:
-
-TODO
-
-The parameter names and values on the left have to be separated by a TAB from
-the string "Clustering" and the clustering on the right. If the fuzzy coefficients are
-missing, the framework will not be able to parse the result file.
-
+The standard input format is the `SimMatrixDataSetFormat  <../../sphinx_doc_packages/build/de/clusteval/data/dataset/format/SimMatrixDataSetFormat.html>`_.
+The standard result format is the `TabSeparatedRunResultFormat  <../../sphinx_doc_packages/build/de/clusteval/run/result/format/TabSeparatedRunResultFormat.html>`_.
 
 Providing New Formats
 ^^^^^^^^^^^^^^^^^^

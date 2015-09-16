@@ -46,7 +46,19 @@
 <dl class="type">
 <dt id="de.clusteval.data.dataset.format.TransClustSimMatrixDataSetFormat">
 public class <code class="descname">TransClustSimMatrixDataSetFormat</code> extends <a class="reference internal" href="RelativeDataSetFormat.html#de.clusteval.data.dataset.format.RelativeDataSetFormat" title="de.clusteval.data.dataset.format.RelativeDataSetFormat">RelativeDataSetFormat</a><a class="headerlink" href="#de.clusteval.data.dataset.format.TransClustSimMatrixDataSetFormat" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>This format is used by Transitivity Clustering. The number in the first line is the number of objects. It is followed by all object ids in the next lines. Then it follows the tab-separated upper half of the similarity matrix. This format expects that the similarity matrix is symmetric.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre>3
+id1
+id2
+id3
+id4
+0.1  0.2  0.6
+0.3  0.5
+0.8
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">

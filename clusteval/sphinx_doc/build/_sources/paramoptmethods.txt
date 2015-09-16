@@ -20,7 +20,13 @@ optimization method determines the following aspects:
 3. the handling of diverging iterations
 4. the storage of the iteration results in RAM
 
+Available Parameter Optimization Methods
+^^^^^^^^^^^
+
 ClustEval ships with a standard set of parameter optimization methods. You can find a list `here <../../sphinx_doc_packages/build/de/clusteval/cluster/paramOptimization/package-index.html>`_
+
+Extending ClustEval
+^^^^^^^^^^^^^^^^^^^
 
 Check :ref:`clusteval_extend_parameter_optimization_method` for more information on how to extend the framework by new parameter optimization
 methods.

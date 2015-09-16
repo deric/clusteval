@@ -12,6 +12,8 @@ clusterONERunResultFormat
 
 .. java:type:: public class clusterONERunResultFormat extends RunResultFormat
 
+   This is the result format of clusterONE.
+
    :author: Christian Wiwie
 
 Constructors

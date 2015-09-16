@@ -12,6 +12,8 @@ MCODERunResultFormat
 
 .. java:type:: public class MCODERunResultFormat extends RunResultFormat
 
+   This is the result format of MCODE.
+
    :author: Christian Wiwie
 
 Constructors
