@@ -158,6 +158,8 @@
 
 .. java:import:: de.clusteval.framework.repository.config RepositoryConfigurationException
 
+.. java:import:: de.clusteval.framework.repository.db DatabaseConnectException
+
 .. java:import:: de.clusteval.framework.threading RunSchedulerThread
 
 .. java:import:: de.clusteval.framework.threading SupervisorThread
@@ -299,7 +301,7 @@ Constructors
 ClustevalBackendServer
 ^^^^^^^^^^^^^^^^^^^^^^
 
-.. java:constructor:: public ClustevalBackendServer(String absRepositoryPath) throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException, RepositoryConfigNotFoundException, RepositoryConfigurationException, InterruptedException
+.. java:constructor:: public ClustevalBackendServer(String absRepositoryPath) throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException, RepositoryConfigNotFoundException, RepositoryConfigurationException, InterruptedException, DatabaseConnectException
    :outertype: ClustevalBackendServer
 
    Instantiates a new backend server.
@@ -308,6 +310,7 @@ ClustevalBackendServer
    :throws RepositoryConfigNotFoundException:
    :throws RepositoryAlreadyExistsException:
    :throws InterruptedException:
+   :throws DatabaseConnectException:
    :throws RepositoryConfigurationException:
    :throws InvalidRepositoryException:
    :throws FileNotFoundException:
@@ -491,7 +494,7 @@ logLevel
 main
 ^^^^
 
-.. java:method:: public static void main(String[] args) throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException, RepositoryConfigNotFoundException, RepositoryConfigurationException, InterruptedException
+.. java:method:: public static void main(String[] args) throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException, RepositoryConfigNotFoundException, RepositoryConfigurationException, InterruptedException, DatabaseConnectException
    :outertype: ClustevalBackendServer
 
    This method can be used to start a backend server. The args parameter can contain options that specify the behaviour of the server:
@@ -505,6 +508,7 @@ main
    :throws RepositoryConfigNotFoundException:
    :throws RepositoryAlreadyExistsException:
    :throws InterruptedException:
+   :throws DatabaseConnectException:
    :throws RepositoryConfigurationException:
    :throws InvalidRepositoryException:
    :throws FileNotFoundException:

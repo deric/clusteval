@@ -42,6 +42,8 @@
 
 .. java:import:: de.clusteval.framework.repository.config RepositoryConfigurationException
 
+.. java:import:: de.clusteval.framework.repository.db DatabaseConnectException
+
 .. java:import:: de.clusteval.framework.repository.db RunResultSQLCommunicator
 
 .. java:import:: de.clusteval.framework.repository.db SQLCommunicator

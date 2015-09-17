@@ -779,10 +779,12 @@ getTableStatisticsRunData
 initDB
 ^^^^^^
 
-.. java:method:: public void initDB()
+.. java:method:: public void initDB() throws DatabaseConnectException
    :outertype: SQLCommunicator
 
    Initializes the database: 1) establishes a connection 2) tells the database to delete this repository and all corresponding entries (cascading) and recreate a new and empty repository
+
+   :throws DatabaseConnectException:
 
 insert
 ^^^^^^

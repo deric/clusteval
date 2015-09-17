@@ -86,6 +86,8 @@
 
 .. java:import:: de.clusteval.framework.repository.config RepositoryConfigurationException
 
+.. java:import:: de.clusteval.framework.repository.db DatabaseConnectException
+
 .. java:import:: de.clusteval.framework.repository.parse Parser
 
 .. java:import:: de.clusteval.program NoOptimizableProgramParameterException

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Dependencies &mdash; Python  documentation</title>
+    <title>Download &amp; Installation &mdash; Python  documentation</title>
     
     <link rel="stylesheet" href="_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -49,10 +49,70 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="dependencies">
-<span id="download"></span><h1>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="download-installation">
+<span id="download"></span><h1>Download &amp; Installation<a class="headerlink" href="#download-installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="docker-docker-compose-os-x-and-linux-only">
+<h2>Docker &amp; Docker Compose (OS X and Linux only)<a class="headerlink" href="#docker-docker-compose-os-x-and-linux-only" title="Permalink to this headline">¶</a></h2>
+<p>ClustEval can be installed using <a class="reference external" href="https://www.docker.com/">Docker</a> and <a class="reference external" href="https://www.docker.com/docker-compose">Docker Compose</a> on OS X and Linux.</p>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://docs.docker.com/compose/install/">Install Docker &amp; Docker-Compose</a></li>
+<li>Check out <a class="reference external" href="https://github.com/wiwie/clustevalDocker">this</a> GitHub repository.</li>
+<li>Execute &#8220;docker-compose up&#8221; in the folder containing the docker-compose.yml from the checked out repository.</li>
+</ol>
+</div>
+<div class="section" id="virtualbox-image-windows-os-x-linux-solaris">
+<h2>VirtualBox Image (Windows, OS X, Linux, Solaris)<a class="headerlink" href="#virtualbox-image-windows-os-x-linux-solaris" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="download-set-up">
+<h3>Download &amp; Set-Up<a class="headerlink" href="#download-set-up" title="Permalink to this headline">¶</a></h3>
+<p>You can also install ClustEval by downloading one of our VirtualBox images. All VirtualBox images contain an installation of Ubuntu 14.04.3 and have the user <strong>clusteval</strong> preinstalled with password <strong>clusteval</strong>. The user has administrator rights.</p>
+<p>We provide two VirtualBox images:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="82%" />
+<col width="10%" />
+<col width="8%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Link</th>
+<th class="head">ClustEval Version</th>
+<th class="head">Date</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="http://clusteval.sdu.dk/ClustEval.vdi">ClustEval Complete</a></td>
+<td>1.3</td>
+<td>17.09.2015</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://clusteval.sdu.dk/ClustEval%20Full.vdi">ClustEval NetInstall</a></td>
+<td>Latest</td>
+<td><ul class="first last simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt><strong>ClustEval Complete</strong></dt>
+<dd>This image has ClustEval already installed and you can just start up backend, frontend and are ready to go.</dd>
+<dt><strong>ClustEval NetInstall</strong></dt>
+<dd>This image comes only with an installation script which downloads all necessary components from the web. it is thus smaller, but after download of the ClustEval VirtualBox an internet connection is required.</dd>
+</dl>
+<p>After downloading one of the above Virtualbox images, you need to create a Linux/Ubuntu VirtualBox host and add the image as hard disk. Make sure to allow sufficient RAM to the box. We recommend at least 2GB.</p>
+</div>
+<div class="section" id="start-up">
+<h3>Start-Up<a class="headerlink" href="#start-up" title="Permalink to this headline">¶</a></h3>
+<p>Both VirtualBox images come with Ubuntu 14.04.3 and have an active user clusteval with password clusteval.</p>
+<p>After creating a new VirtualBox host and adding one of the images as disk, to VirtualBox booting them up logging in The &#8220;ClustEval Complete&#8221; image has a shortcut on the desktop</p>
+</div>
+</div>
+<div class="section" id="manual-download-installation">
+<h2>Manual Download &amp; Installation<a class="headerlink" href="#manual-download-installation" title="Permalink to this headline">¶</a></h2>
+<p>We provide GitHub repositories for all individual components of ClustEval.</p>
+<div class="section" id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="backend">
-<h2>Backend<a class="headerlink" href="#backend" title="Permalink to this headline">¶</a></h2>
+<h4>Backend<a class="headerlink" href="#backend" title="Permalink to this headline">¶</a></h4>
 <p>In order to use the backend you need</p>
 <dl class="docutils">
 <dt><strong>Java</strong></dt>
@@ -62,7 +122,7 @@
 </dl>
 </div>
 <div class="section" id="frontend">
-<h2>Frontend<a class="headerlink" href="#frontend" title="Permalink to this headline">¶</a></h2>
+<h4>Frontend<a class="headerlink" href="#frontend" title="Permalink to this headline">¶</a></h4>
 <dl class="docutils">
 <dt><strong>Ruby &amp; Rails</strong></dt>
 <dd>To be able to execute the website</dd>
@@ -71,40 +131,6 @@
 </dl>
 </div>
 </div>
-<div class="section" id="download-installation">
-<h1>Download &amp; Installation<a class="headerlink" href="#download-installation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="docker-docker-compose">
-<h2>Docker &amp; Docker Compose<a class="headerlink" href="#docker-docker-compose" title="Permalink to this headline">¶</a></h2>
-<p>ClustEval can be installed using <a class="reference external" href="https://www.docker.com/">Docker</a> and <a class="reference external" href="https://www.docker.com/docker-compose">Docker Compose</a> on OS X and Linux.</p>
-<ol class="arabic simple">
-<li><a class="reference external" href="http://docs.docker.com/compose/install/">Install Docker &amp; Docker-Compose</a></li>
-<li>Check out <a class="reference external" href="https://github.com/wiwie/clustevalDocker">this</a> GitHub repository.</li>
-<li>Execute &#8220;docker-compose up&#8221; in the folder containing the docker-compose.yml from the checked out repository.</li>
-</ol>
-</div>
-<div class="section" id="virtualbox-image">
-<h2>VirtualBox Image<a class="headerlink" href="#virtualbox-image" title="Permalink to this headline">¶</a></h2>
-<p>We provide a VirtualBox Image containing a ClustEval backend and frontend installations. The VirtualBox image is based on a Debian installation which uses the above Docker Compose script to check out the newest version of ClustEval.</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="96%" />
-<col width="4%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Link</th>
-<th class="head">Version</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>TODO</td>
-<td>Latest</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="manual-download-installation">
-<h2>Manual Download &amp; Installation<a class="headerlink" href="#manual-download-installation" title="Permalink to this headline">¶</a></h2>
-<p>We provide GitHub repositories for all individual components of ClustEval.</p>
 <div class="section" id="download-backend-executables-client-server">
 <h3>Download Backend Executables (Client &amp; Server)<a class="headerlink" href="#download-backend-executables-client-server" title="Permalink to this headline">¶</a></h3>
 <p>The backend consists of a client and a server component. Both can be downloaded separately as a jar-executable. Also, all available dynamic components which can be loaded by the backend are available on GitHub as jars. It is sufficient to copy the &#8220;programs&#8221; and &#8220;supp&#8221; subfolders of the &#8220;repository&#8221; folder in the clustevalPackages GitHub repository into the local repository.</p>
@@ -195,15 +221,19 @@ For a detailed step-by-step installation guide for the frontend, please check ou
         <div class="sphinxsidebarwrapper">
   <h3><a href="contents.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Dependencies</a><ul>
+<li><a class="reference internal" href="#">Download &amp; Installation</a><ul>
+<li><a class="reference internal" href="#docker-docker-compose-os-x-and-linux-only">Docker &amp; Docker Compose (OS X and Linux only)</a></li>
+<li><a class="reference internal" href="#virtualbox-image-windows-os-x-linux-solaris">VirtualBox Image (Windows, OS X, Linux, Solaris)</a><ul>
+<li><a class="reference internal" href="#download-set-up">Download &amp; Set-Up</a></li>
+<li><a class="reference internal" href="#start-up">Start-Up</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#manual-download-installation">Manual Download &amp; Installation</a><ul>
+<li><a class="reference internal" href="#dependencies">Dependencies</a><ul>
 <li><a class="reference internal" href="#backend">Backend</a></li>
 <li><a class="reference internal" href="#frontend">Frontend</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#download-installation">Download &amp; Installation</a><ul>
-<li><a class="reference internal" href="#docker-docker-compose">Docker &amp; Docker Compose</a></li>
-<li><a class="reference internal" href="#virtualbox-image">VirtualBox Image</a></li>
-<li><a class="reference internal" href="#manual-download-installation">Manual Download &amp; Installation</a><ul>
 <li><a class="reference internal" href="#download-backend-executables-client-server">Download Backend Executables (Client &amp; Server)</a></li>
 <li><a class="reference internal" href="#download-example-repository">Download Example Repository</a></li>
 <li><a class="reference internal" href="#download-frontend-website-sql-db-structure">Download Frontend (Website &amp; SQL DB Structure)</a></li>

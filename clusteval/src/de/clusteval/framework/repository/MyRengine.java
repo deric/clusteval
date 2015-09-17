@@ -14,7 +14,7 @@
 package de.clusteval.framework.repository;
 
 import java.io.IOException;
-import java.nio.channels.InterruptedByTimeoutException;
+import java.net.SocketException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -189,10 +189,9 @@ public class MyRengine {
 	public REXP eval(String cmd) throws RserveException, InterruptedException {
 		if (interrupted)
 			throw new InterruptedException();
-		this.connection.assign(".tmp.", cmd);
-		REXP r;
 		try {
-			r = this.connection
+			this.connection.assign(".tmp.", cmd);
+			REXP r = this.connection
 					.eval("try(eval(parse(text=.tmp.)),silent=TRUE)");
 			if (r == null)
 				throw new RserveException(this.connection, "Evaluation error");
@@ -262,14 +261,6 @@ public class MyRengine {
 			return false;
 		}
 		return true;
-	}
-
-	public void detach() {
-		try {
-			this.connection.detach();
-		} catch (RserveException e) {
-			e.printStackTrace();
-		}
 	}
 
 	protected boolean shutdown() {

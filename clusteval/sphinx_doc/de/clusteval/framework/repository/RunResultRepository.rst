@@ -42,6 +42,8 @@
 
 .. java:import:: de.clusteval.framework.repository.config RepositoryConfigurationException
 
+.. java:import:: de.clusteval.framework.repository.db DatabaseConnectException
+
 .. java:import:: de.clusteval.framework.repository.db RunResultSQLCommunicator
 
 .. java:import:: de.clusteval.framework.repository.db SQLCommunicator
@@ -99,15 +101,16 @@ Constructors
 RunResultRepository
 ^^^^^^^^^^^^^^^^^^^
 
-.. java:constructor:: public RunResultRepository(String basePath, Repository parent) throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException, RepositoryConfigNotFoundException, RepositoryConfigurationException
+.. java:constructor:: public RunResultRepository(String basePath, Repository parent) throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException, RepositoryConfigNotFoundException, RepositoryConfigurationException, DatabaseConnectException
    :outertype: RunResultRepository
 
    :param basePath: The absolute path of the root directory of this repository.
    :param parent: The parent repository.
-   :throws InvalidRepositoryException:
-   :throws RepositoryAlreadyExistsException:
    :throws RepositoryConfigNotFoundException:
+   :throws RepositoryAlreadyExistsException:
    :throws RepositoryConfigurationException:
+   :throws DatabaseConnectException:
+   :throws InvalidRepositoryException:
    :throws FileNotFoundException:
 
 Methods
@@ -115,7 +118,7 @@ Methods
 createSQLCommunicator
 ^^^^^^^^^^^^^^^^^^^^^
 
-.. java:method:: @Override protected SQLCommunicator createSQLCommunicator()
+.. java:method:: @Override protected SQLCommunicator createSQLCommunicator() throws DatabaseConnectException
    :outertype: RunResultRepository
 
 createSupervisorThread

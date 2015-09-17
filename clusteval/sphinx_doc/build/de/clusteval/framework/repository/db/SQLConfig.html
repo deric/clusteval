@@ -99,6 +99,14 @@ protected <a class="reference external" href="http://docs.oracle.com/javase/6/do
 <dd></dd></dl>
 
 </div>
+<div class="section" id="usespassword">
+<h3>usesPassword<a class="headerlink" href="#usespassword" title="Permalink to this headline">¶</a></h3>
+<dl class="field">
+<dt id="de.clusteval.framework.repository.db.SQLConfig.usesPassword">
+protected boolean <code class="descname">usesPassword</code><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLConfig.usesPassword" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 <div class="section" id="usessql">
 <h3>usesSql<a class="headerlink" href="#usessql" title="Permalink to this headline">¶</a></h3>
 <dl class="field">
@@ -113,8 +121,8 @@ protected boolean <code class="descname">usesSql</code><a class="headerlink" hre
 <div class="section" id="id1">
 <h3>SQLConfig<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <dl class="constructor">
-<dt id="de.clusteval.framework.repository.db.SQLConfig.SQLConfig(boolean, DB_TYPE, String, String, String)">
-public <code class="descname">SQLConfig</code><span class="sig-paren">(</span>boolean<em> usesSql</em>, <a class="reference internal" href="SQLConfig-DB_TYPE.html#de.clusteval.framework.repository.db.SQLConfig.DB_TYPE" title="de.clusteval.framework.repository.db.SQLConfig.DB_TYPE">DB_TYPE</a><em> dbType</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> username</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> database</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> host</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLConfig.SQLConfig(boolean, DB_TYPE, String, String, String)" title="Permalink to this definition">¶</a></dt>
+<dt id="de.clusteval.framework.repository.db.SQLConfig.SQLConfig(boolean, DB_TYPE, String, String, String, boolean)">
+public <code class="descname">SQLConfig</code><span class="sig-paren">(</span>boolean<em> usesSql</em>, <a class="reference internal" href="SQLConfig-DB_TYPE.html#de.clusteval.framework.repository.db.SQLConfig.DB_TYPE" title="de.clusteval.framework.repository.db.SQLConfig.DB_TYPE">DB_TYPE</a><em> dbType</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> username</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> database</em>, <a class="reference external" href="http://docs.oracle.com/javase/6/docs/api/java/lang/String.html" title="java.lang.String">String</a><em> host</em>, boolean<em> usesPassword</em><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLConfig.SQLConfig(boolean, DB_TYPE, String, String, String, boolean)" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -125,6 +133,7 @@ public <code class="descname">SQLConfig</code><span class="sig-paren">(</span>bo
 <li><strong>username</strong> &#8211; </li>
 <li><strong>database</strong> &#8211; </li>
 <li><strong>host</strong> &#8211; </li>
+<li><strong>usesPassword</strong> &#8211; Whether the sql connection uses a password to connect and thus prompt for it when connecting.</li>
 </ul>
 </td>
 </tr>
@@ -209,7 +218,15 @@ public <a class="reference external" href="http://docs.oracle.com/javase/6/docs/
 
 </div>
 <div class="section" id="id2">
-<h3>usesSql<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h3>usesPassword<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<dl class="method">
+<dt id="de.clusteval.framework.repository.db.SQLConfig.usesPassword()">
+public boolean <code class="descname">usesPassword</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLConfig.usesPassword()" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h3>usesSql<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <dl class="method">
 <dt id="de.clusteval.framework.repository.db.SQLConfig.usesSql()">
 public boolean <code class="descname">usesSql</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.db.SQLConfig.usesSql()" title="Permalink to this definition">¶</a></dt>
@@ -242,6 +259,7 @@ public boolean <code class="descname">usesSql</code><span class="sig-paren">(</s
 <li><a class="reference internal" href="#dbtype">dbType</a></li>
 <li><a class="reference internal" href="#host">host</a></li>
 <li><a class="reference internal" href="#username">username</a></li>
+<li><a class="reference internal" href="#usespassword">usesPassword</a></li>
 <li><a class="reference internal" href="#usessql">usesSql</a></li>
 </ul>
 </li>
@@ -255,7 +273,8 @@ public boolean <code class="descname">usesSql</code><span class="sig-paren">(</s
 <li><a class="reference internal" href="#gethost">getHost</a></li>
 <li><a class="reference internal" href="#getpassword">getPassword</a></li>
 <li><a class="reference internal" href="#getusername">getUsername</a></li>
-<li><a class="reference internal" href="#id2">usesSql</a></li>
+<li><a class="reference internal" href="#id2">usesPassword</a></li>
+<li><a class="reference internal" href="#id3">usesSql</a></li>
 </ul>
 </li>
 </ul>

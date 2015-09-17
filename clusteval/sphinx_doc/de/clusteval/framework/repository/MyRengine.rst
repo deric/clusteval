@@ -1,6 +1,6 @@
 .. java:import:: java.io IOException
 
-.. java:import:: java.nio.channels InterruptedByTimeoutException
+.. java:import:: java.net SocketException
 
 .. java:import:: java.util HashSet
 
@@ -142,12 +142,6 @@ close
 ^^^^^
 
 .. java:method:: protected boolean close()
-   :outertype: MyRengine
-
-detach
-^^^^^^
-
-.. java:method:: public void detach()
    :outertype: MyRengine
 
 eval

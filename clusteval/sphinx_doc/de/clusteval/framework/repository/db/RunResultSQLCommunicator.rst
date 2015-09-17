@@ -27,11 +27,12 @@ Constructors
 RunResultSQLCommunicator
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. java:constructor:: public RunResultSQLCommunicator(Repository repository, SQLConfig mysqlConfig)
+.. java:constructor:: public RunResultSQLCommunicator(Repository repository, SQLConfig mysqlConfig) throws DatabaseConnectException
    :outertype: RunResultSQLCommunicator
 
    :param repository:
    :param mysqlConfig:
+   :throws DatabaseConnectException:
 
 Methods
 -------

@@ -323,10 +323,11 @@ public <code class="descname">Repository</code><span class="sig-paren">(</span><
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
-<li><strong>InvalidRepositoryException</strong> &#8211; </li>
-<li><strong>RepositoryAlreadyExistsException</strong> &#8211; </li>
 <li><strong>RepositoryConfigNotFoundException</strong> &#8211; </li>
+<li><strong>RepositoryAlreadyExistsException</strong> &#8211; </li>
 <li><strong>RepositoryConfigurationException</strong> &#8211; </li>
+<li><strong>DatabaseConnectException</strong> &#8211; </li>
+<li><strong>InvalidRepositoryException</strong> &#8211; </li>
 <li><strong>FileNotFoundException</strong> &#8211; </li>
 </ul>
 </td>
@@ -354,10 +355,11 @@ public <code class="descname">Repository</code><span class="sig-paren">(</span><
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first last simple">
-<li><strong>InvalidRepositoryException</strong> &#8211; </li>
-<li><strong>RepositoryAlreadyExistsException</strong> &#8211; </li>
 <li><strong>RepositoryConfigNotFoundException</strong> &#8211; </li>
+<li><strong>RepositoryAlreadyExistsException</strong> &#8211; </li>
 <li><strong>RepositoryConfigurationException</strong> &#8211; </li>
+<li><strong>DatabaseConnectException</strong> &#8211; </li>
+<li><strong>InvalidRepositoryException</strong> &#8211; </li>
 <li><strong>FileNotFoundException</strong> &#8211; </li>
 </ul>
 </td>
@@ -467,7 +469,13 @@ protected <a class="reference internal" href="db/SQLCommunicator.html#de.clustev
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A new instance of sql communicator.</td>
+<tr class="field-odd field"><th class="field-name">Throws:</th><td class="field-body"><ul class="first simple">
+<li><a class="reference internal" href="db/DatabaseConnectException.html#de.clusteval.framework.repository.db.DatabaseConnectException" title="de.clusteval.framework.repository.db.DatabaseConnectException"><strong>DatabaseConnectException</strong></a> &#8211; </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A new instance of sql communicator.</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1290,7 +1298,7 @@ protected void <code class="descname">initAttributes</code><span class="sig-pare
 <dl class="method">
 <dt id="de.clusteval.framework.repository.Repository.initialize()">
 public void <code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#de.clusteval.framework.repository.Repository.initialize()" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initializes this repository by creating a supervisor thread <a class="reference internal" href="RunResultRepository.html#de.clusteval.framework.repository.RunResultRepository.createSupervisorThread()" title="de.clusteval.framework.repository.RunResultRepository.createSupervisorThread()"><code class="xref java java-ref docutils literal"><span class="pre">createSupervisorThread()</span></code></a> and waiting until <a class="reference internal" href="RepositoryEntity.html#de.clusteval.framework.repository.RepositoryEntity.isInitialized()" title="de.clusteval.framework.repository.RepositoryEntity.isInitialized()"><code class="xref java java-ref docutils literal"><span class="pre">isInitialized()</span></code></a> returns true.</p>
+<dd><p>Initializes this repository by creating a supervisor thread <a class="reference internal" href="RunResultRepository.html#de.clusteval.framework.repository.RunResultRepository.createSupervisorThread()" title="de.clusteval.framework.repository.RunResultRepository.createSupervisorThread()"><code class="xref java java-ref docutils literal"><span class="pre">createSupervisorThread()</span></code></a> and waiting until <a class="reference internal" href="#de.clusteval.framework.repository.Repository.isInitialized()" title="de.clusteval.framework.repository.Repository.isInitialized()"><code class="xref java java-ref docutils literal"><span class="pre">isInitialized()</span></code></a> returns true.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

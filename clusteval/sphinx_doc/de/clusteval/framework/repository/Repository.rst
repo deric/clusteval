@@ -88,6 +88,8 @@
 
 .. java:import:: de.clusteval.framework.repository.config RepositoryConfigurationException
 
+.. java:import:: de.clusteval.framework.repository.db DatabaseConnectException
+
 .. java:import:: de.clusteval.framework.repository.db DefaultSQLCommunicator
 
 .. java:import:: de.clusteval.framework.repository.db RunResultSQLCommunicator
@@ -383,23 +385,24 @@ Constructors
 Repository
 ^^^^^^^^^^
 
-.. java:constructor:: public Repository(String basePath, Repository parent) throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException, RepositoryConfigNotFoundException, RepositoryConfigurationException
+.. java:constructor:: public Repository(String basePath, Repository parent) throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException, RepositoryConfigNotFoundException, RepositoryConfigurationException, DatabaseConnectException
    :outertype: Repository
 
    Instantiates a new repository.
 
    :param parent: Can be null, if this repository has no parent repository.
    :param basePath: The absolute path of the root of this repository.
-   :throws InvalidRepositoryException:
-   :throws RepositoryAlreadyExistsException:
    :throws RepositoryConfigNotFoundException:
+   :throws RepositoryAlreadyExistsException:
    :throws RepositoryConfigurationException:
+   :throws DatabaseConnectException:
+   :throws InvalidRepositoryException:
    :throws FileNotFoundException:
 
 Repository
 ^^^^^^^^^^
 
-.. java:constructor:: public Repository(String basePath, Repository parent, RepositoryConfig overrideConfig) throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException, RepositoryConfigNotFoundException, RepositoryConfigurationException
+.. java:constructor:: public Repository(String basePath, Repository parent, RepositoryConfig overrideConfig) throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException, RepositoryConfigNotFoundException, RepositoryConfigurationException, DatabaseConnectException
    :outertype: Repository
 
    Instantiates a new repository.
@@ -407,10 +410,11 @@ Repository
    :param parent: Can be null, if this repository has no parent repository.
    :param basePath: The absolute path of the root of this repository.
    :param overrideConfig: Set this parameter != null, if you want to override the repository.config file.
-   :throws InvalidRepositoryException:
-   :throws RepositoryAlreadyExistsException:
    :throws RepositoryConfigNotFoundException:
+   :throws RepositoryAlreadyExistsException:
    :throws RepositoryConfigurationException:
+   :throws DatabaseConnectException:
+   :throws InvalidRepositoryException:
    :throws FileNotFoundException:
 
 Methods
@@ -470,13 +474,14 @@ createAndAddStaticEntity
 createSQLCommunicator
 ^^^^^^^^^^^^^^^^^^^^^
 
-.. java:method:: protected SQLCommunicator createSQLCommunicator()
+.. java:method:: protected SQLCommunicator createSQLCommunicator() throws DatabaseConnectException
    :outertype: Repository
 
    This method creates a sql communicator for this repository depending on the fact, whether mysql should be used by this repository.
 
    Override this method in subclasses, if you want to change the type of sql communicator for your subtype. You can see an example in \ :java:ref:`RunResultRepository.createSQLCommunicator()`\ , where instead of \ :java:ref:`DefaultSQLCommunicator`\  a \ :java:ref:`RunResultSQLCommunicator`\  is created.
 
+   :throws DatabaseConnectException:
    :return: A new instance of sql communicator.
 
 createSupervisorThread

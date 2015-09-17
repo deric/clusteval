@@ -50,6 +50,12 @@ username
 .. java:field:: protected String username
    :outertype: SQLConfig
 
+usesPassword
+^^^^^^^^^^^^
+
+.. java:field:: protected boolean usesPassword
+   :outertype: SQLConfig
+
 usesSql
 ^^^^^^^
 
@@ -61,7 +67,7 @@ Constructors
 SQLConfig
 ^^^^^^^^^
 
-.. java:constructor:: public SQLConfig(boolean usesSql, DB_TYPE dbType, String username, String database, String host)
+.. java:constructor:: public SQLConfig(boolean usesSql, DB_TYPE dbType, String username, String database, String host, boolean usesPassword)
    :outertype: SQLConfig
 
    :param usesSql:
@@ -69,6 +75,7 @@ SQLConfig
    :param username:
    :param database:
    :param host:
+   :param usesPassword: Whether the sql connection uses a password to connect and thus prompt for it when connecting.
 
 Methods
 -------
@@ -109,6 +116,12 @@ getUsername
    :outertype: SQLConfig
 
    :return: The username used to connect to the sql database.
+
+usesPassword
+^^^^^^^^^^^^
+
+.. java:method:: public boolean usesPassword()
+   :outertype: SQLConfig
 
 usesSql
 ^^^^^^^

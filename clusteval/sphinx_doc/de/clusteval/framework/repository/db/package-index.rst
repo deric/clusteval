@@ -6,6 +6,7 @@ de.clusteval.framework.repository.db
 .. toctree::
    :maxdepth: 1
 
+   DatabaseConnectException
    DefaultSQLCommunicator
    DefaultSQLCommunicator_pg
    DummyQueryBuilder

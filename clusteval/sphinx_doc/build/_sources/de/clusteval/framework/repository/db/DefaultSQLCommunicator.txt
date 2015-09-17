@@ -131,11 +131,12 @@ Constructors
 DefaultSQLCommunicator
 ^^^^^^^^^^^^^^^^^^^^^^
 
-.. java:constructor:: public DefaultSQLCommunicator(Repository repository, SQLConfig sqlConfig)
+.. java:constructor:: public DefaultSQLCommunicator(Repository repository, SQLConfig sqlConfig) throws DatabaseConnectException
    :outertype: DefaultSQLCommunicator
 
    :param repository: The repository this communicator belongs to.
    :param sqlConfig: The sql configuration this communicator should use.
+   :throws DatabaseConnectException:
 
 Methods
 -------
