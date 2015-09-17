@@ -36,6 +36,7 @@ import de.clusteval.data.randomizer.DataRandomizer;
 import de.clusteval.data.statistics.DataStatistic;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.db.RunResultSQLCommunicator;
 import de.clusteval.framework.repository.db.SQLCommunicator;
 import de.clusteval.framework.repository.db.StubSQLCommunicator;
@@ -82,11 +83,12 @@ public class RunResultRepository extends Repository {
 	 * @throws InvalidRepositoryException
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
+	 * @throws DatabaseConnectException
 	 */
 	public RunResultRepository(String basePath, Repository parent)
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException {
+			RepositoryConfigurationException, DatabaseConnectException {
 		super(basePath, parent);
 	}
 
@@ -96,7 +98,8 @@ public class RunResultRepository extends Repository {
 	 * @see utils.Repository#createSQLCommunicator()
 	 */
 	@Override
-	protected SQLCommunicator createSQLCommunicator() {
+	protected SQLCommunicator createSQLCommunicator()
+			throws DatabaseConnectException {
 		if (this.parent.repositoryConfig.getMysqlConfig().usesSql())
 			return new RunResultSQLCommunicator(this,
 					this.parent.repositoryConfig.getMysqlConfig());

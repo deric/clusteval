@@ -1,0 +1,3 @@
+Self Organizing Maps
+====================
+Self Organizing Maps (SOMs) involve training a neural network, where each neuron represents one centroid. The number of centroids (or the grid size) is a user-given parameter reflecting the number of clusters. The SOM aims at finding a set of neurons/centroids and to assign each object to the neuron that approximates that object best while iteratively imposing a topographic ordering on the neurons by influencing neurons that are close by. The output is a set of neurons that implicate clusters (objects are assigned to the closest neuron/centroid).

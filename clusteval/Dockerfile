@@ -1,9 +1,6 @@
 FROM andreptb/oracle-java
 RUN apt-get update && apt-get -y install git
+USER clusteval
 RUN mkdir /clustevalBackend
 WORKDIR /clustevalBackend
 ADD ./packages /clustevalBackend
-WORKDIR /
-RUN git clone https://github.com/wiwie/clustevalPackages
-RUN rsync -a /clustevalPackages/clustevalPackages/repository/supp /clustevalRepository/
-RUN rsync -a /clustevalPackages/clustevalPackages/repository/programs /clustevalRepository/

@@ -30,6 +30,7 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 
 /**
  * @author Christian Wiwie
@@ -50,13 +51,14 @@ public class TestRepository {
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws NoSuchAlgorithmException
+	 * @throws DatabaseConnectException
 	 */
 	@Before
 	public void setUp() throws FileNotFoundException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			NoSuchAlgorithmException {
+			NoSuchAlgorithmException, DatabaseConnectException {
 		System.out.println("################## Testcase: "
 				+ this.getClass().getSimpleName() + "." + name.getMethodName());
 		parent = new Repository(
@@ -80,13 +82,14 @@ public class TestRepository {
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws NoSuchAlgorithmException
+	 * @throws DatabaseConnectException
 	 */
 	@Test(expected = InvalidRepositoryException.class)
 	public void test1() throws FileNotFoundException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			NoSuchAlgorithmException {
+			NoSuchAlgorithmException, DatabaseConnectException {
 		/*
 		 * Nested without parantal relationship not allowed
 		 */
@@ -103,13 +106,14 @@ public class TestRepository {
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws NoSuchAlgorithmException
+	 * @throws DatabaseConnectException
 	 */
 	@Test
 	public void test2() throws FileNotFoundException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			NoSuchAlgorithmException {
+			NoSuchAlgorithmException, DatabaseConnectException {
 		Repository child = new RunResultRepository(
 				"testCaseRepository/results/01_30_2013-21_31_25_tc_vs_DS1",
 				parent);
@@ -123,6 +127,7 @@ public class TestRepository {
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws NoSuchAlgorithmException
+	 * @throws DatabaseConnectException
 	 * 
 	 */
 	@Test
@@ -130,7 +135,7 @@ public class TestRepository {
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			NoSuchAlgorithmException {
+			NoSuchAlgorithmException, DatabaseConnectException {
 		File f = new File("repository2");
 		f.deleteOnExit();
 		Repository child = new Repository(f.getAbsolutePath(), null);

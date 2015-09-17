@@ -58,6 +58,7 @@ import de.clusteval.framework.repository.config.DefaultRepositoryConfig;
 import de.clusteval.framework.repository.config.RepositoryConfig;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.db.DefaultSQLCommunicator;
 import de.clusteval.framework.repository.db.RunResultSQLCommunicator;
 import de.clusteval.framework.repository.db.SQLCommunicator;
@@ -383,11 +384,12 @@ public class Repository {
 	 * @throws RepositoryAlreadyExistsException
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
+	 * @throws DatabaseConnectException
 	 */
 	public Repository(final String basePath, final Repository parent)
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException {
+			RepositoryConfigurationException, DatabaseConnectException {
 		this(basePath, parent, null);
 	}
 
@@ -406,12 +408,13 @@ public class Repository {
 	 * @throws RepositoryAlreadyExistsException
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
+	 * @throws DatabaseConnectException
 	 */
 	public Repository(final String basePath, final Repository parent,
 			final RepositoryConfig overrideConfig)
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException {
+			RepositoryConfigurationException, DatabaseConnectException {
 		super();
 
 		this.log = LoggerFactory.getLogger(this.getClass());
@@ -517,8 +520,10 @@ public class Repository {
 	 * created.
 	 * 
 	 * @return A new instance of sql communicator.
+	 * @throws DatabaseConnectException
 	 */
-	protected SQLCommunicator createSQLCommunicator() {
+	protected SQLCommunicator createSQLCommunicator()
+			throws DatabaseConnectException {
 		if (this.repositoryConfig.getMysqlConfig().usesSql())
 			return new DefaultSQLCommunicator(this,
 					this.repositoryConfig.getMysqlConfig());

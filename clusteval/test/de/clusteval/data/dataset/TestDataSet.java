@@ -65,6 +65,7 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.db.StubSQLCommunicator;
 import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
@@ -248,21 +249,25 @@ public class TestDataSet extends AbstractClustEvalTest {
 			UnknownRunStatisticException, UnknownRunDataStatisticException,
 			UnknownRunResultPostprocessorException,
 			UnknownDataRandomizerException {
-		Repository runResultRepository = new RunResultRepository(
-				new File(
-						"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1")
-						.getAbsolutePath(), getRepository());
-		runResultRepository.setSQLCommunicator(new StubSQLCommunicator(
-				runResultRepository));
-		runResultRepository.initialize();
 		try {
-			Parser.parseFromFile(
-					DataSet.class,
+			Repository runResultRepository = new RunResultRepository(
 					new File(
-							"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1/inputs/DS1/testCaseDataSetNotPresentInParent.txt")
-							.getAbsoluteFile());
-		} finally {
-			runResultRepository.terminateSupervisorThread();
+							"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1")
+							.getAbsolutePath(), getRepository());
+			runResultRepository.setSQLCommunicator(new StubSQLCommunicator(
+					runResultRepository));
+			runResultRepository.initialize();
+			try {
+				Parser.parseFromFile(
+						DataSet.class,
+						new File(
+								"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1/inputs/DS1/testCaseDataSetNotPresentInParent.txt")
+								.getAbsoluteFile());
+			} finally {
+				runResultRepository.terminateSupervisorThread();
+			}
+		} catch (DatabaseConnectException e) {
+			// cannot happen
 		}
 	}
 

@@ -1,0 +1,3 @@
+Fanny
+=====
+Fanny is a fuzzy clustering method requiring a distance matrix and the desired number of clusters as input. Fanny aims to find for each object the best membership vector describing the degree of membership of each object to each cluster by minimizing the sum of the average within-cluster distances weighted by the degree of the membership. This objective function is minimized numerically and the nearest crisp-clustering is reported as result.

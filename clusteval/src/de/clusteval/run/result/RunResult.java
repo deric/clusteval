@@ -53,6 +53,7 @@ import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.UnknownParameterType;
@@ -176,60 +177,67 @@ public abstract class RunResult extends RepositoryObject {
 			UnknownParameterType, InterruptedException,
 			UnknownRunResultPostprocessorException,
 			UnknownDataRandomizerException {
-
-		Logger log = LoggerFactory.getLogger(RunResult.class);
-		log.debug("Parsing run result from '" + runResultFolder + "'");
-		Repository childRepository = Repository
-				.getRepositoryForExactPath(runResultFolder.getAbsolutePath());
-		if (childRepository == null) {
-			childRepository = new RunResultRepository(
-					runResultFolder.getAbsolutePath(), parentRepository);
-		}
-		childRepository.initialize();
 		try {
-
-			File runFile = null;
-			File configFolder = new File(FileUtils.buildPath(
-					runResultFolder.getAbsolutePath(), "configs"));
-			if (!configFolder.exists())
-				return null;
-			for (File child : configFolder.listFiles())
-				if (child.getName().endsWith(".run")) {
-					runFile = child;
-					break;
-				}
-			if (runFile == null)
-				return null;
-			final Run run = Parser.parseRunFromFile(runFile);
-
-			if (run instanceof ClusteringRun) {
-				return ClusteringRunResult.parseFromRunResultFolder(
-						(ClusteringRun) run, childRepository, runResultFolder,
-						result, register);
-			} else if (run instanceof ParameterOptimizationRun) {
-				return ParameterOptimizationResult.parseFromRunResultFolder(
-						(ParameterOptimizationRun) run, childRepository,
-						runResultFolder, result, parseClusterings,
-						storeClusterings, register);
-			} else if (run instanceof DataAnalysisRun) {
-				DataAnalysisRunResult.parseFromRunResultFolder(
-						(DataAnalysisRun) run, childRepository,
-						runResultFolder, result, register);
-				return run;
-			} else if (run instanceof RunDataAnalysisRun) {
-				RunDataAnalysisRunResult.parseFromRunResultFolder(
-						(RunDataAnalysisRun) run, childRepository,
-						runResultFolder, result, register);
-				return run;
-			} else if (run instanceof RunAnalysisRun) {
-				RunAnalysisRunResult.parseFromRunResultFolder(
-						(RunAnalysisRun) run, childRepository, runResultFolder,
-						result, register);
-				return run;
+			Logger log = LoggerFactory.getLogger(RunResult.class);
+			log.debug("Parsing run result from '" + runResultFolder + "'");
+			Repository childRepository = Repository
+					.getRepositoryForExactPath(runResultFolder
+							.getAbsolutePath());
+			if (childRepository == null) {
+				childRepository = new RunResultRepository(
+						runResultFolder.getAbsolutePath(), parentRepository);
 			}
-			return run;
-		} finally {
-			childRepository.terminateSupervisorThread();
+			childRepository.initialize();
+			try {
+
+				File runFile = null;
+				File configFolder = new File(FileUtils.buildPath(
+						runResultFolder.getAbsolutePath(), "configs"));
+				if (!configFolder.exists())
+					return null;
+				for (File child : configFolder.listFiles())
+					if (child.getName().endsWith(".run")) {
+						runFile = child;
+						break;
+					}
+				if (runFile == null)
+					return null;
+				final Run run = Parser.parseRunFromFile(runFile);
+
+				if (run instanceof ClusteringRun) {
+					return ClusteringRunResult.parseFromRunResultFolder(
+							(ClusteringRun) run, childRepository,
+							runResultFolder, result, register);
+				} else if (run instanceof ParameterOptimizationRun) {
+					return ParameterOptimizationResult
+							.parseFromRunResultFolder(
+									(ParameterOptimizationRun) run,
+									childRepository, runResultFolder, result,
+									parseClusterings, storeClusterings,
+									register);
+				} else if (run instanceof DataAnalysisRun) {
+					DataAnalysisRunResult.parseFromRunResultFolder(
+							(DataAnalysisRun) run, childRepository,
+							runResultFolder, result, register);
+					return run;
+				} else if (run instanceof RunDataAnalysisRun) {
+					RunDataAnalysisRunResult.parseFromRunResultFolder(
+							(RunDataAnalysisRun) run, childRepository,
+							runResultFolder, result, register);
+					return run;
+				} else if (run instanceof RunAnalysisRun) {
+					RunAnalysisRunResult.parseFromRunResultFolder(
+							(RunAnalysisRun) run, childRepository,
+							runResultFolder, result, register);
+					return run;
+				}
+				return run;
+			} finally {
+				childRepository.terminateSupervisorThread();
+			}
+		} catch (DatabaseConnectException e) {
+			// cannot happen
+			return null;
 		}
 	}
 

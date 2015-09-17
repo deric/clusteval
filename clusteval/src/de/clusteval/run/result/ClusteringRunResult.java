@@ -53,6 +53,7 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.ParameterSet;
@@ -446,45 +447,51 @@ public class ClusteringRunResult extends ExecutionRunResult {
 			UnknownRunResultPostprocessorException,
 			UnknownDataRandomizerException {
 
-		Repository childRepository = new RunResultRepository(
-				runResultFolder.getAbsolutePath(), parentRepository);
-		childRepository.initialize();
+		Repository childRepository;
+		try {
+			childRepository = new RunResultRepository(
+					runResultFolder.getAbsolutePath(), parentRepository);
+			childRepository.initialize();
 
-		File runFile = null;
-		File configFolder = new File(FileUtils.buildPath(
-				runResultFolder.getAbsolutePath(), "configs"));
-		if (!configFolder.exists())
-			return null;
-		for (File child : configFolder.listFiles())
-			if (child.getName().endsWith(".run")) {
-				runFile = child;
-				break;
-			}
-		if (runFile == null)
-			return null;
-		final Run run = Parser.parseRunFromFile(runFile);
+			File runFile = null;
+			File configFolder = new File(FileUtils.buildPath(
+					runResultFolder.getAbsolutePath(), "configs"));
+			if (!configFolder.exists())
+				return null;
+			for (File child : configFolder.listFiles())
+				if (child.getName().endsWith(".run")) {
+					runFile = child;
+					break;
+				}
+			if (runFile == null)
+				return null;
+			final Run run = Parser.parseRunFromFile(runFile);
 
-		if (run instanceof ClusteringRun) {
-			final ClusteringRun paramRun = (ClusteringRun) run;
+			if (run instanceof ClusteringRun) {
+				final ClusteringRun paramRun = (ClusteringRun) run;
 
-			File clusterFolder = new File(FileUtils.buildPath(
-					runResultFolder.getAbsolutePath(), "clusters"));
-			for (final DataConfig dataConfig : paramRun.getDataConfigs()) {
-				for (final ProgramConfig programConfig : paramRun
-						.getProgramConfigs()) {
-					final File completeFile = new File(FileUtils.buildPath(
-							clusterFolder.getAbsolutePath(),
-							programConfig.toString() + "_" + dataConfig
-									+ ".results.qual.complete"));
-					final ClusteringRunResult tmpResult = parseFromRunResultCompleteFile(
-							parentRepository, paramRun, dataConfig,
-							programConfig, completeFile, register);
-					if (tmpResult != null)
-						result.add(tmpResult);
+				File clusterFolder = new File(FileUtils.buildPath(
+						runResultFolder.getAbsolutePath(), "clusters"));
+				for (final DataConfig dataConfig : paramRun.getDataConfigs()) {
+					for (final ProgramConfig programConfig : paramRun
+							.getProgramConfigs()) {
+						final File completeFile = new File(FileUtils.buildPath(
+								clusterFolder.getAbsolutePath(),
+								programConfig.toString() + "_" + dataConfig
+										+ ".results.qual.complete"));
+						final ClusteringRunResult tmpResult = parseFromRunResultCompleteFile(
+								parentRepository, paramRun, dataConfig,
+								programConfig, completeFile, register);
+						if (tmpResult != null)
+							result.add(tmpResult);
+					}
 				}
 			}
+			return run;
+		} catch (DatabaseConnectException e) {
+			// cannot happen
+			return null;
 		}
-		return run;
 	}
 
 	/*

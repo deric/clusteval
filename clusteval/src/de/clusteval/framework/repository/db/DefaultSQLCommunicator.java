@@ -92,9 +92,10 @@ public class DefaultSQLCommunicator extends SQLCommunicator {
 	 *            The repository this communicator belongs to.
 	 * @param sqlConfig
 	 *            The sql configuration this communicator should use.
+	 * @throws DatabaseConnectException
 	 */
 	public DefaultSQLCommunicator(Repository repository,
-			final SQLConfig sqlConfig) {
+			final SQLConfig sqlConfig) throws DatabaseConnectException {
 		super(repository, sqlConfig);
 
 		initDB();

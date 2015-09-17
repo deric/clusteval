@@ -32,6 +32,7 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.serverclient.BackendClient;
 
 /**
@@ -58,13 +59,15 @@ public class TestClusteringEvalFramework {
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws ParseException
 	 * @throws NoSuchAlgorithmException
+	 * @throws DatabaseConnectException
 	 */
 	@BeforeClass
 	public static void setUp() throws FileNotFoundException, ConnectException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			ParseException, NoSuchAlgorithmException, InterruptedException {
+			ParseException, NoSuchAlgorithmException, InterruptedException,
+			DatabaseConnectException {
 		ClustevalBackendServer.logLevel(Level.INFO);
 		framework = new ClustevalBackendServer(new Repository(new File(
 				"testCaseRepository").getAbsolutePath(), null), false);

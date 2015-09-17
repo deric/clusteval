@@ -33,6 +33,7 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.db.SQLConfig;
 import de.clusteval.framework.repository.db.StubSQLCommunicator;
 import de.clusteval.utils.AbstractClustEvalTest;
@@ -104,19 +105,23 @@ public class TestGoldStandard extends AbstractClustEvalTest {
 			GoldStandardNotFoundException, RegisterException,
 			NoSuchAlgorithmException, InterruptedException {
 		getRepository().initialize();
-		Repository runResultRepository = new RunResultRepository(
-				new File(
-						"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1")
-						.getAbsolutePath(), getRepository());
-		runResultRepository.setSQLCommunicator(new StubSQLCommunicator(
-				runResultRepository));
-		runResultRepository.initialize();
 		try {
-			GoldStandard
-					.parseFromFile(new File(
-							"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1/goldstandards/DS1/testCaseGoldstandardNotPresentInParentRepository.txt"));
-		} finally {
-			runResultRepository.terminateSupervisorThread();
+			Repository runResultRepository = new RunResultRepository(
+					new File(
+							"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1")
+							.getAbsolutePath(), getRepository());
+			runResultRepository.setSQLCommunicator(new StubSQLCommunicator(
+					runResultRepository));
+			runResultRepository.initialize();
+			try {
+				GoldStandard
+						.parseFromFile(new File(
+								"testCaseRepository/results/12_04_2012-14_05_42_tc_vs_DS1/goldstandards/DS1/testCaseGoldstandardNotPresentInParentRepository.txt"));
+			} finally {
+				runResultRepository.terminateSupervisorThread();
+			}
+		} catch (DatabaseConnectException e) {
+			// cannot happen
 		}
 	}
 

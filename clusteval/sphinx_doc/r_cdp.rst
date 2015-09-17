@@ -1,0 +1,3 @@
+clusterdp
+=========
+Clusterdp is a recently published tool based on the idea that centroids are characterized by a higher local density (rho) than their neighbors and by a comparably high distance from objects with higher density. Rodriguez and Laio claim that the number of clusters arises intuitively and that clusters are recognized regardless of their shape and dimensionality of the space in which they are embedded.

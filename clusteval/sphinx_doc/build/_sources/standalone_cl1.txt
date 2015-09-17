@@ -1,0 +1,3 @@
+clusterONE
+==========
+Clustering with Overlapping Neighborhood Expansion (ClusterONE) is a recently developed clustering method designed for detecting overlapping protein complexes in a given protein-protein interaction network. The primary concept behind the algorithm is the so-called cohesiveness measure, which is a combination of the number of reliable interactions within a cluster and the separation of the cluster from the rest of the network. We may apply ClusterONE to arbitrary data sets by transforming a given similarity matrix into a weighted similarity graph.

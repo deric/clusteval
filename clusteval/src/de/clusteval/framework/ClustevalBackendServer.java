@@ -95,6 +95,7 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.framework.threading.SupervisorThread;
 import de.clusteval.program.NoOptimizableProgramParameterException;
@@ -299,11 +300,13 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws InterruptedException
+	 * @throws DatabaseConnectException
 	 */
 	public ClustevalBackendServer(final String absRepositoryPath)
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, InterruptedException {
+			RepositoryConfigurationException, InterruptedException,
+			DatabaseConnectException {
 		this(new Repository(absRepositoryPath, null));
 	}
 
@@ -409,11 +412,13 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * @throws RepositoryConfigurationException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws InterruptedException
+	 * @throws DatabaseConnectException
 	 */
 	public static void main(String[] args) throws FileNotFoundException,
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, InterruptedException {
+			RepositoryConfigurationException, InterruptedException,
+			DatabaseConnectException {
 
 		// bugfix for log4j warning
 		org.apache.log4j.Logger.getRootLogger().setLevel(

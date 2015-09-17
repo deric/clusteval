@@ -42,6 +42,7 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.ProgramParameter;
@@ -139,6 +140,7 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 	 * @throws UnknownRunDataStatisticException
 	 * @throws UnknownRunStatisticException
 	 * @throws UnknownDataStatisticException
+	 * @throws DatabaseConnectException
 	 */
 	@Test
 	public void testNewParser() throws UnknownDataSetFormatException,
@@ -165,7 +167,7 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 			RepositoryConfigurationException, UnknownDataStatisticException,
 			UnknownRunStatisticException, UnknownRunDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownDataRandomizerException {
+			UnknownDataRandomizerException, DatabaseConnectException {
 		ParameterOptimizationRun run = Parser.parseFromFile(
 				ParameterOptimizationRun.class, new File(
 						"testCaseRepository/runs/baechler2003.run")

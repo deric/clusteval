@@ -1,0 +1,3 @@
+Spectral Clustering
+===================
+Spectral clustering computes the second largest eigenvalue of the Laplacian of the similarity matrix to decide where to partition the similarity matrix. The resulting clusters may then be re-partitioned in order to generate a hierarchy. Efficient numeric algorithms solve the underlying linear algebra problems to facilitate spectral clustering on large datasets.

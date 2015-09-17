@@ -1,0 +1,3 @@
+MCODE
+=====
+Molecular COmplex DEtection (MCODE) is a graph based clustering method. In a first step the 'cliquishness'-score of all nodes is measured by taking into account the number of vertices and edges in the direct neighborhood. In a second step, clusters are built by starting at the vertex with the highest score followed by a recursive growing of these clusters by adding all neighboring nodes exceeding a certain score. MCODE may become extremely slow on large connected components in the similarity graph.

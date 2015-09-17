@@ -40,6 +40,7 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.UnknownParameterType;
@@ -99,6 +100,7 @@ public class TestClusteringRun extends AbstractClustEvalTest {
 	 * @throws NoOptimizableProgramParameterException
 	 * @throws UnknownParameterOptimizationMethodException
 	 * @throws IncompatibleParameterOptimizationMethodException
+	 * @throws DatabaseConnectException
 	 */
 	@Test
 	public void testNewParser() throws InterruptedException,
@@ -127,7 +129,7 @@ public class TestClusteringRun extends AbstractClustEvalTest {
 			UnknownDataStatisticException, UnknownRunStatisticException,
 			UnknownRunDataStatisticException,
 			UnknownRunResultPostprocessorException,
-			UnknownDataRandomizerException {
+			UnknownDataRandomizerException, DatabaseConnectException {
 		ClusteringRun run = Parser.parseFromFile(ClusteringRun.class, new File(
 				"testCaseRepository/runs/all_vs_DS1_clustering.run")
 				.getAbsoluteFile());

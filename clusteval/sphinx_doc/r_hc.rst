@@ -1,0 +1,3 @@
+Hierarchical Clustering
+=======================
+Hierarchical clustering creates a tree from a given set of objects. Each node in the tree represents a cluster. Agglomerative algorithms initially assign all objects to singleton clusters, which are merged based on their similarity (bottom-up). Divisive algorithms start with one big cluster, which is decomposed into smaller clusters along the tree (top-down). A linkage function determines the distance between two clusters. As linkage function, we use the Unweighted Pair Group Method using arithmetic Averages (known as UPGMA or average linking), which is probably the most popular algorithm for hierarchical clustering in computational biology.

@@ -33,6 +33,7 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.db.SQLCommunicator;
 import de.clusteval.framework.repository.db.StubSQLCommunicator;
 import de.clusteval.framework.threading.RepositorySupervisorThread;
@@ -80,7 +81,8 @@ public class TestRunResultFinder {
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			InterruptedException, NoSuchAlgorithmException {
+			InterruptedException, NoSuchAlgorithmException,
+			DatabaseConnectException {
 
 		TestRepository repository = new TestRepository(new File(
 				"testCaseRepository").getAbsolutePath(), null);
@@ -104,7 +106,8 @@ public class TestRunResultFinder {
 			RepositoryAlreadyExistsException, InvalidRepositoryException,
 			RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			InterruptedException, NoSuchAlgorithmException {
+			InterruptedException, NoSuchAlgorithmException,
+			DatabaseConnectException {
 
 		TestRepository repository = new TestRepository(new File(
 				"testCaseRepository").getAbsolutePath(), null);
@@ -139,12 +142,13 @@ class TestRepository extends Repository {
 	 * @throws RepositoryConfigurationException
 	 * @throws NoRepositoryFoundException
 	 * @throws NoSuchAlgorithmException
+	 * @throws DatabaseConnectException
 	 */
 	public TestRepository(String basePath, Repository parent)
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			NoSuchAlgorithmException {
+			NoSuchAlgorithmException, DatabaseConnectException {
 		super(basePath, parent);
 	}
 

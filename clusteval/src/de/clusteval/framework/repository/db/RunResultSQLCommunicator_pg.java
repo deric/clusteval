@@ -31,9 +31,10 @@ public class RunResultSQLCommunicator_pg extends DefaultSQLCommunicator {
 	/**
 	 * @param repository
 	 * @param mysqlConfig
+	 * @throws DatabaseConnectException
 	 */
 	public RunResultSQLCommunicator_pg(Repository repository,
-			final SQLConfig mysqlConfig) {
+			final SQLConfig mysqlConfig) throws DatabaseConnectException {
 		super(repository, mysqlConfig);
 		this.objectIds = repository.getParent().getSqlCommunicator().objectIds;
 	}

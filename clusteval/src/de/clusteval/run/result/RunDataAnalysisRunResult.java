@@ -55,6 +55,7 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.UnknownParameterType;
@@ -243,45 +244,51 @@ public class RunDataAnalysisRunResult
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
 			UnknownParameterType, InterruptedException,
-			UnknownRunResultPostprocessorException, UnknownDataRandomizerException {
-		Repository childRepository = new RunResultRepository(
-				runResultFolder.getAbsolutePath(), parentRepository);
-		childRepository.initialize();
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
+		try {
+			Repository childRepository = new RunResultRepository(
+					runResultFolder.getAbsolutePath(), parentRepository);
+			childRepository.initialize();
 
-		File runFile = null;
-		File configFolder = new File(FileUtils.buildPath(
-				runResultFolder.getAbsolutePath(), "configs"));
-		if (!configFolder.exists())
-			return null;
-		for (File child : configFolder.listFiles())
-			if (child.getName().endsWith(".run")) {
-				runFile = child;
-				break;
+			File runFile = null;
+			File configFolder = new File(FileUtils.buildPath(
+					runResultFolder.getAbsolutePath(), "configs"));
+			if (!configFolder.exists())
+				return null;
+			for (File child : configFolder.listFiles())
+				if (child.getName().endsWith(".run")) {
+					runFile = child;
+					break;
+				}
+			if (runFile == null)
+				return null;
+			final Run run = Parser.parseRunFromFile(runFile);
+
+			RunDataAnalysisRunResult analysisResult = null;
+
+			if (run instanceof RunDataAnalysisRun) {
+				final RunDataAnalysisRun runDataRun = (RunDataAnalysisRun) run;
+
+				File analysesFolder = new File(FileUtils.buildPath(
+						runResultFolder.getAbsolutePath(), "analyses"));
+
+				analysisResult = new RunDataAnalysisRunResult(parentRepository,
+						analysesFolder.lastModified(), analysesFolder,
+						analysesFolder.getParentFile().getName(), runDataRun);
+
+				analysisResult.loadIntoMemory();
+				try {
+					analysisResult.register();
+				} finally {
+					analysisResult.unloadFromMemory();
+				}
 			}
-		if (runFile == null)
+			return analysisResult;
+		} catch (DatabaseConnectException e) {
+			// cannot happen
 			return null;
-		final Run run = Parser.parseRunFromFile(runFile);
-
-		RunDataAnalysisRunResult analysisResult = null;
-
-		if (run instanceof RunDataAnalysisRun) {
-			final RunDataAnalysisRun runDataRun = (RunDataAnalysisRun) run;
-
-			File analysesFolder = new File(FileUtils.buildPath(
-					runResultFolder.getAbsolutePath(), "analyses"));
-
-			analysisResult = new RunDataAnalysisRunResult(parentRepository,
-					analysesFolder.lastModified(), analysesFolder,
-					analysesFolder.getParentFile().getName(), runDataRun);
-
-			analysisResult.loadIntoMemory();
-			try {
-				analysisResult.register();
-			} finally {
-				analysisResult.unloadFromMemory();
-			}
 		}
-		return analysisResult;
 	}
 
 	/*

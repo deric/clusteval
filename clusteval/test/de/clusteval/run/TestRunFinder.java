@@ -39,6 +39,7 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.StaticRepositoryEntity;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.db.StubSQLCommunicator;
 import de.clusteval.framework.threading.RepositorySupervisorThread;
 import de.clusteval.framework.threading.SupervisorThread;
@@ -93,6 +94,7 @@ public class TestRunFinder {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 * @throws NoSuchAlgorithmException
+	 * @throws DatabaseConnectException
 	 */
 	@SuppressWarnings("unused")
 	@Test
@@ -100,7 +102,7 @@ public class TestRunFinder {
 			throws RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, NoRepositoryFoundException,
-			IOException, InterruptedException, NoSuchAlgorithmException {
+			IOException, InterruptedException, NoSuchAlgorithmException, DatabaseConnectException {
 		String base = new File("testCaseRepository").getAbsolutePath();
 		TestRepository repo = new TestRepository(base, null);
 		repo.setSQLCommunicator(new StubSQLCommunicator(repo));
@@ -169,11 +171,12 @@ class TestRepository extends Repository {
 	 * @throws InvalidRepositoryException
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws RepositoryConfigurationException
+	 * @throws DatabaseConnectException
 	 */
 	public TestRepository(String basePath, Repository parent)
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException {
+			RepositoryConfigurationException, DatabaseConnectException {
 		super(basePath, parent);
 
 		this.staticRepositoryEntities.put(

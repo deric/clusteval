@@ -71,6 +71,7 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.ProgramConfig;
@@ -134,7 +135,7 @@ public class ClustQualityEval {
 			IncompatibleContextException, InvalidDataSetFormatVersionException,
 			RNotAvailableException, FormatConversionException,
 			UnknownRunResultPostprocessorException,
-			UnknownDataRandomizerException {
+			UnknownDataRandomizerException, DatabaseConnectException {
 		super();
 		ClustevalBackendServer.logLevel(Level.INFO);
 		ClustevalBackendServer.getBackendServerConfiguration().setNoDatabase(
@@ -521,7 +522,7 @@ public class ClustQualityEval {
 			IncompatibleContextException, InvalidDataSetFormatVersionException,
 			RNotAvailableException, FormatConversionException,
 			UnknownRunResultPostprocessorException,
-			UnknownDataRandomizerException {
+			UnknownDataRandomizerException, DatabaseConnectException {
 		new ClustQualityEval(args[0], args[1], Arrays.copyOfRange(args, 2,
 				args.length));
 	}

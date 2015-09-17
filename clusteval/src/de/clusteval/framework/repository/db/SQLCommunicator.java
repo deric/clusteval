@@ -758,8 +758,10 @@ public abstract class SQLCommunicator {
 	 * Initializes the database: 1) establishes a connection 2) tells the
 	 * database to delete this repository and all corresponding entries
 	 * (cascading) and recreate a new and empty repository
+	 * 
+	 * @throws DatabaseConnectException
 	 */
-	public void initDB() {
+	public void initDB() throws DatabaseConnectException {
 		try {
 			// SQLException lastException = null;
 			boolean hasPassword = sqlConfig.usesPassword();
@@ -779,23 +781,32 @@ public abstract class SQLCommunicator {
 					conn.setAutoCommit(false);
 				} catch (SQLException e) {
 					this.exceptionHandler.handleException(e);
-					if (e instanceof CommunicationsException
-							&& e.getCause() instanceof ConnectException) {
-						this.log.warn("Could not connect to the database server. Retrying in "
-								+ Formatter.formatMsToDuration(5000));
-						try {
-							Thread.sleep(5000);
-						} catch (InterruptedException e1) {
+					// mysql
+					if (this.sqlConfig.getDatabaseType().equals(DB_TYPE.MYSQL)) {
+						if (e instanceof CommunicationsException
+								&& e.getCause() instanceof ConnectException) {
+							this.log.warn("Could not connect to the database server. Retrying in "
+									+ Formatter.formatMsToDuration(5000));
+							try {
+								Thread.sleep(5000);
+							} catch (InterruptedException e1) {
+							}
+							continue;
 						}
-						continue;
+						switch (e.getErrorCode()) {
+						// wrong password
+							case 1045 :
+								password = getDBPassword();
+								break;
+							default :
+								throw e;
+						}
 					}
-					switch (e.getErrorCode()) {
-					// wrong password
-						case 1045 :
-							password = getDBPassword();
-							break;
-						default :
-							throw e;
+					// postgresql
+					else if (this.sqlConfig.getDatabaseType().equals(
+							DB_TYPE.POSTGRESQL)) {
+						this.log.warn("Could not connect to the database server.");
+						throw new DatabaseConnectException(e.getMessage());
 					}
 				}
 			}

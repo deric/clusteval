@@ -1,0 +1,3 @@
+Markov Clustering
+=================
+In Markov Clustering the input similarities are interpret as a graph on which densely connected areas are identified by simulating random walks. The clustering processes itself is performed by repeatedly alternating so-called expansion steps and inflation steps. The expansion steps allow simulated walks of long distances while the inflation steps sharpen the emerging local cluster structure.

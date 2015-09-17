@@ -56,6 +56,7 @@ import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.RunResultRepository;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
+import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.UnknownParameterType;
@@ -231,63 +232,71 @@ public class DataAnalysisRunResult
 			IncompatibleDataSetConfigPreprocessorException,
 			UnknownContextException, IncompatibleContextException,
 			UnknownParameterType, InterruptedException,
-			UnknownRunResultPostprocessorException, UnknownDataRandomizerException {
-		Repository childRepository = new RunResultRepository(
-				runResultFolder.getAbsolutePath(), parentRepository);
-		childRepository.initialize();
+			UnknownRunResultPostprocessorException,
+			UnknownDataRandomizerException {
+		try {
+			Repository childRepository = new RunResultRepository(
+					runResultFolder.getAbsolutePath(), parentRepository);
+			childRepository.initialize();
 
-		File runFile = null;
-		File configFolder = new File(FileUtils.buildPath(
-				runResultFolder.getAbsolutePath(), "configs"));
-		if (!configFolder.exists())
-			return null;
-		for (File child : configFolder.listFiles())
-			if (child.getName().endsWith(".run")) {
-				runFile = child;
-				break;
-			}
-		if (runFile == null)
-			return null;
-		final Run object = Parser.parseRunFromFile(runFile);
-
-		DataAnalysisRunResult analysisResult = null;
-
-		if (object instanceof DataAnalysisRun) {
-			final DataAnalysisRun run = (DataAnalysisRun) object;
-
-			File analysesFolder = new File(FileUtils.buildPath(
-					runResultFolder.getAbsolutePath(), "analyses"));
-
-			analysisResult = new DataAnalysisRunResult(parentRepository,
-					analysesFolder.lastModified(), analysesFolder,
-					analysesFolder.getParentFile().getName(), run);
-
-			for (final DataConfig dataConfig : run.getDataConfigs()) {
-
-				List<DataStatistic> statistics = new ArrayList<DataStatistic>();
-				for (final Statistic dataStatistic : run.getStatistics()) {
-					final File completeFile = new File(FileUtils.buildPath(
-							analysesFolder.getAbsolutePath(),
-							dataConfig.toString() + "_"
-									+ dataStatistic.getIdentifier() + ".txt"));
-					if (!completeFile.exists())
-						throw new AnalysisRunResultException(
-								"The result file of (" + dataConfig + ","
-										+ dataStatistic.getIdentifier()
-										+ ") could not be found: "
-										+ completeFile);
-					final String fileContents = FileUtils
-							.readStringFromFile(completeFile.getAbsolutePath());
-
-					dataStatistic.parseFromString(fileContents);
-					statistics.add((DataStatistic) dataStatistic);
-
+			File runFile = null;
+			File configFolder = new File(FileUtils.buildPath(
+					runResultFolder.getAbsolutePath(), "configs"));
+			if (!configFolder.exists())
+				return null;
+			for (File child : configFolder.listFiles())
+				if (child.getName().endsWith(".run")) {
+					runFile = child;
+					break;
 				}
-				analysisResult.put(dataConfig, statistics);
+			if (runFile == null)
+				return null;
+			final Run object = Parser.parseRunFromFile(runFile);
+
+			DataAnalysisRunResult analysisResult = null;
+
+			if (object instanceof DataAnalysisRun) {
+				final DataAnalysisRun run = (DataAnalysisRun) object;
+
+				File analysesFolder = new File(FileUtils.buildPath(
+						runResultFolder.getAbsolutePath(), "analyses"));
+
+				analysisResult = new DataAnalysisRunResult(parentRepository,
+						analysesFolder.lastModified(), analysesFolder,
+						analysesFolder.getParentFile().getName(), run);
+
+				for (final DataConfig dataConfig : run.getDataConfigs()) {
+
+					List<DataStatistic> statistics = new ArrayList<DataStatistic>();
+					for (final Statistic dataStatistic : run.getStatistics()) {
+						final File completeFile = new File(FileUtils.buildPath(
+								analysesFolder.getAbsolutePath(),
+								dataConfig.toString() + "_"
+										+ dataStatistic.getIdentifier()
+										+ ".txt"));
+						if (!completeFile.exists())
+							throw new AnalysisRunResultException(
+									"The result file of (" + dataConfig + ","
+											+ dataStatistic.getIdentifier()
+											+ ") could not be found: "
+											+ completeFile);
+						final String fileContents = FileUtils
+								.readStringFromFile(completeFile
+										.getAbsolutePath());
+
+						dataStatistic.parseFromString(fileContents);
+						statistics.add((DataStatistic) dataStatistic);
+
+					}
+					analysisResult.put(dataConfig, statistics);
+				}
+				analysisResult.register();
 			}
-			analysisResult.register();
+			return analysisResult;
+		} catch (DatabaseConnectException e) {
+			// cannot happen
+			return null;
 		}
-		return analysisResult;
 	}
 
 	/**
