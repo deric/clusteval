@@ -1,3 +1,5 @@
+.. _basicusage:
+
 Basic Usage
 -----------
 The backend server and client are distributed as two Java executables which can be simply started with a single command in the command line. Both can be invoked with different
@@ -8,14 +10,14 @@ Here we assume, that you have cloned the
 * **clusteval** GitHub repository to /home/clusteval/clusteval
 * **clustevalWebsite** GitHub repository to /home/clusteval/clustevalWebsite
 
-1. Check out a Minimal Repository
+Check out a Minimal Repository
 ^^^^^^^^^^^^^^^^^^^^^^
 We provide a ready to use repository on GitHub. You can check it out using the git command line tool::
 
   git clone https://github.com/wiwie/clustevalDockerRepository /home/clusteval/clustevalDockerRepository
 
 
-2. Do you need the Website?
+Do you need the Website?
 ^^^^^^^^^^^^^^^^^^^^^^^^
 First you should be clear about whether you need the database + website. If yes you can continue with step 3. Otherwise, you can edit the repository configuration file under::
 
@@ -23,7 +25,9 @@ First you should be clear about whether you need the database + website. If yes 
   
 and remove the postgreSQL section. ClustEval will now not connect to a database.
 
-3. Start the Backend Server
+.. _startbackendserver:
+
+Start the Backend Server
 ^^^^^^^^^^^^^^^^^^^^^^^^
 As mentioned above, the backend server is a Java executable (jar) and has several parameters. The parameters are described :ref:`here <server_cli>`. We use the repository from the previous step::
 
@@ -33,8 +37,9 @@ If you are using a database at this point, you will be prompted for the credenti
 
 ClustEval will now start parsing the contents of the repository and will show you status messages in the terminal. Once it is finished, it will inform you that the server is now listening for clients commands.
 
+.. _startbackendclient:
 
-4. Start the Backend Client
+Start the Backend Client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The client is a Java executable as well and can be started as follows::
 
@@ -50,7 +55,7 @@ Afterwards you can perform one of those runs by entering::
   
 ClustEval will now cluster the bone_marrow data set with DBSCAN, Fanny, KMedoids, K-means, Transitivity Clustering, Hierarchical Clustering, Affinity Propagation, Markov Clustering, Self Organizing Maps, Spectral Clustering, clusterdp, clusterONE and MCODE and 1000 parameter sets each. For each of the resulting clusterings it will evaluate the clustering quality measures which are specified in the run file (bonemarrow.run).
 
-5. Getting the Status of the Run Execution
+Getting the Status of the Run Execution
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 To track the progress of your run, you can either follow the status messages on the server terminal or use the client::
 
@@ -62,13 +67,13 @@ Since we are executing a run of type parameter optimization, we can also use the
 
   getOptRunStatus <RESULTID>
   
-6. Terminating a Run
+Terminating a Run
 ^^^^^^^^^^^^^^^^^^^^
 If the run takes too long or you want to decrease the number of parameter sets (iterations) per clustering method, you first want to stop the running job, before editing the files and starting it again::
 
   terminateRun <RESULTID>
   
-7. Inspecting the Results
+Inspecting the Results
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 The results of a run can be either inspected using the client, the result files itself or the website (if the database and website have been set up and the repository.config contained a configuration for the database).
 

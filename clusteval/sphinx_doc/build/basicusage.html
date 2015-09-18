@@ -50,7 +50,7 @@
           <div class="body" role="main">
             
   <div class="section" id="basic-usage">
-<h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h1>
+<span id="basicusage"></span><h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h1>
 <p>The backend server and client are distributed as two Java executables which can be simply started with a single command in the command line. Both can be invoked with different
 command line parameters, which are explained <a class="reference internal" href="backend.html#backend"><span>here</span></a>. For the following scenarios we assume, that you have followed the instructions under <a class="reference internal" href="download.html#download"><span>Download &amp; Installation</span></a>.</p>
 <p>Here we assume, that you have cloned the</p>
@@ -59,14 +59,14 @@ command line parameters, which are explained <a class="reference internal" href=
 <li><strong>clustevalWebsite</strong> GitHub repository to /home/clusteval/clustevalWebsite</li>
 </ul>
 <div class="section" id="check-out-a-minimal-repository">
-<h2>1. Check out a Minimal Repository<a class="headerlink" href="#check-out-a-minimal-repository" title="Permalink to this headline">¶</a></h2>
+<h2>Check out a Minimal Repository<a class="headerlink" href="#check-out-a-minimal-repository" title="Permalink to this headline">¶</a></h2>
 <p>We provide a ready to use repository on GitHub. You can check it out using the git command line tool:</p>
 <div class="highlight-python"><div class="highlight"><pre>git clone https://github.com/wiwie/clustevalDockerRepository /home/clusteval/clustevalDockerRepository
 </pre></div>
 </div>
 </div>
 <div class="section" id="do-you-need-the-website">
-<h2>2. Do you need the Website?<a class="headerlink" href="#do-you-need-the-website" title="Permalink to this headline">¶</a></h2>
+<h2>Do you need the Website?<a class="headerlink" href="#do-you-need-the-website" title="Permalink to this headline">¶</a></h2>
 <p>First you should be clear about whether you need the database + website. If yes you can continue with step 3. Otherwise, you can edit the repository configuration file under:</p>
 <div class="highlight-python"><div class="highlight"><pre>/home/clusteval/clustevalDockerRepository/repository.config
 </pre></div>
@@ -74,7 +74,7 @@ command line parameters, which are explained <a class="reference internal" href=
 <p>and remove the postgreSQL section. ClustEval will now not connect to a database.</p>
 </div>
 <div class="section" id="start-the-backend-server">
-<h2>3. Start the Backend Server<a class="headerlink" href="#start-the-backend-server" title="Permalink to this headline">¶</a></h2>
+<span id="startbackendserver"></span><h2>Start the Backend Server<a class="headerlink" href="#start-the-backend-server" title="Permalink to this headline">¶</a></h2>
 <p>As mentioned above, the backend server is a Java executable (jar) and has several parameters. The parameters are described <a class="reference internal" href="backend.html#server-cli"><span>here</span></a>. We use the repository from the previous step:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">clusteval</span><span class="o">/</span><span class="n">clusteval</span><span class="o">/</span><span class="n">clusteval</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">clustevalBackendServer</span><span class="o">.</span><span class="n">jar</span> <span class="o">--</span><span class="n">absRepoPath</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">clusteval</span><span class="o">/</span><span class="n">clustevalDockerRepository</span>
 </pre></div>
@@ -83,7 +83,7 @@ command line parameters, which are explained <a class="reference internal" href=
 <p>ClustEval will now start parsing the contents of the repository and will show you status messages in the terminal. Once it is finished, it will inform you that the server is now listening for clients commands.</p>
 </div>
 <div class="section" id="start-the-backend-client">
-<h2>4. Start the Backend Client<a class="headerlink" href="#start-the-backend-client" title="Permalink to this headline">¶</a></h2>
+<span id="startbackendclient"></span><h2>Start the Backend Client<a class="headerlink" href="#start-the-backend-client" title="Permalink to this headline">¶</a></h2>
 <p>The client is a Java executable as well and can be started as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">java</span> <span class="o">-</span><span class="n">jar</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">clusteval</span><span class="o">/</span><span class="n">clusteval</span><span class="o">/</span><span class="n">clusteval</span><span class="o">/</span><span class="n">packages</span><span class="o">/</span><span class="n">clustevalBackendClient</span><span class="o">.</span><span class="n">jar</span>
 </pre></div>
@@ -99,7 +99,7 @@ command line parameters, which are explained <a class="reference internal" href=
 <p>ClustEval will now cluster the bone_marrow data set with DBSCAN, Fanny, KMedoids, K-means, Transitivity Clustering, Hierarchical Clustering, Affinity Propagation, Markov Clustering, Self Organizing Maps, Spectral Clustering, clusterdp, clusterONE and MCODE and 1000 parameter sets each. For each of the resulting clusterings it will evaluate the clustering quality measures which are specified in the run file (bonemarrow.run).</p>
 </div>
 <div class="section" id="getting-the-status-of-the-run-execution">
-<h2>5. Getting the Status of the Run Execution<a class="headerlink" href="#getting-the-status-of-the-run-execution" title="Permalink to this headline">¶</a></h2>
+<h2>Getting the Status of the Run Execution<a class="headerlink" href="#getting-the-status-of-the-run-execution" title="Permalink to this headline">¶</a></h2>
 <p>To track the progress of your run, you can either follow the status messages on the server terminal or use the client:</p>
 <div class="highlight-python"><div class="highlight"><pre>getRunStatus &lt;RESULTID&gt;
 </pre></div>
@@ -111,14 +111,14 @@ command line parameters, which are explained <a class="reference internal" href=
 </div>
 </div>
 <div class="section" id="terminating-a-run">
-<h2>6. Terminating a Run<a class="headerlink" href="#terminating-a-run" title="Permalink to this headline">¶</a></h2>
+<h2>Terminating a Run<a class="headerlink" href="#terminating-a-run" title="Permalink to this headline">¶</a></h2>
 <p>If the run takes too long or you want to decrease the number of parameter sets (iterations) per clustering method, you first want to stop the running job, before editing the files and starting it again:</p>
 <div class="highlight-python"><div class="highlight"><pre>terminateRun &lt;RESULTID&gt;
 </pre></div>
 </div>
 </div>
 <div class="section" id="inspecting-the-results">
-<h2>7. Inspecting the Results<a class="headerlink" href="#inspecting-the-results" title="Permalink to this headline">¶</a></h2>
+<h2>Inspecting the Results<a class="headerlink" href="#inspecting-the-results" title="Permalink to this headline">¶</a></h2>
 <p>The results of a run can be either inspected using the client, the result files itself or the website (if the database and website have been set up and the repository.config contained a configuration for the database).</p>
 <div class="section" id="using-the-client">
 <h3>Using the Client<a class="headerlink" href="#using-the-client" title="Permalink to this headline">¶</a></h3>
@@ -165,13 +165,13 @@ command line parameters, which are explained <a class="reference internal" href=
   <h3><a href="contents.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Basic Usage</a><ul>
-<li><a class="reference internal" href="#check-out-a-minimal-repository">1. Check out a Minimal Repository</a></li>
-<li><a class="reference internal" href="#do-you-need-the-website">2. Do you need the Website?</a></li>
-<li><a class="reference internal" href="#start-the-backend-server">3. Start the Backend Server</a></li>
-<li><a class="reference internal" href="#start-the-backend-client">4. Start the Backend Client</a></li>
-<li><a class="reference internal" href="#getting-the-status-of-the-run-execution">5. Getting the Status of the Run Execution</a></li>
-<li><a class="reference internal" href="#terminating-a-run">6. Terminating a Run</a></li>
-<li><a class="reference internal" href="#inspecting-the-results">7. Inspecting the Results</a><ul>
+<li><a class="reference internal" href="#check-out-a-minimal-repository">Check out a Minimal Repository</a></li>
+<li><a class="reference internal" href="#do-you-need-the-website">Do you need the Website?</a></li>
+<li><a class="reference internal" href="#start-the-backend-server">Start the Backend Server</a></li>
+<li><a class="reference internal" href="#start-the-backend-client">Start the Backend Client</a></li>
+<li><a class="reference internal" href="#getting-the-status-of-the-run-execution">Getting the Status of the Run Execution</a></li>
+<li><a class="reference internal" href="#terminating-a-run">Terminating a Run</a></li>
+<li><a class="reference internal" href="#inspecting-the-results">Inspecting the Results</a><ul>
 <li><a class="reference internal" href="#using-the-client">Using the Client</a></li>
 <li><a class="reference internal" href="#on-the-file-system">On the File-System</a></li>
 <li><a class="reference internal" href="#on-the-website">On the Website</a></li>
