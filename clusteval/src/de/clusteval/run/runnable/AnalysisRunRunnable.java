@@ -93,7 +93,7 @@ public abstract class AnalysisRunRunnable<S extends Statistic, R extends RunResu
 			List<S> statistics, final boolean isResume) {
 		super(run, runIdentString, isResume);
 		this.statistics = statistics;
-		this.progress = new ProgressPrinter(100, false);
+		this.progress = new ProgressPrinter(10000, false);
 	}
 
 	/*

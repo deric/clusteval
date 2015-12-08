@@ -249,7 +249,7 @@ public abstract class ExecutionRun extends Run {
 	@Override
 	protected long getUpperLimitProgress() {
 		// we set the number of steps of this run to 100% for every run pair.
-		return getRunPairs().size() * 100;
+		return getRunPairs().size() * 10000;
 	}
 
 	/**

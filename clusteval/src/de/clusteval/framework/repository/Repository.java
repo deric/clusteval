@@ -138,14 +138,11 @@ public class Repository {
 	 *         repository-hierarchy.
 	 * @throws NoRepositoryFoundException
 	 */
-	public static Repository getRepositoryForPath(final String absFilePath)
-			throws NoRepositoryFoundException {
+	public static Repository getRepositoryForPath(final String absFilePath) throws NoRepositoryFoundException {
 		String resultPath = null;
 		for (String repoPath : Repository.repositories.keySet())
-			if (absFilePath.startsWith(repoPath
-					+ System.getProperty("file.separator")))
-				if (resultPath == null
-						|| repoPath.length() > resultPath.length())
+			if (absFilePath.startsWith(repoPath + System.getProperty("file.separator")))
+				if (resultPath == null || repoPath.length() > resultPath.length())
 					resultPath = repoPath;
 		if (resultPath == null)
 			throw new NoRepositoryFoundException(absFilePath);
@@ -189,8 +186,7 @@ public class Repository {
 		if (other.basePath.equals(repository.basePath))
 			throw new RepositoryAlreadyExistsException(other.basePath);
 		if (repository.parent == null || !repository.parent.equals(other))
-			throw new InvalidRepositoryException(
-					"Repositories must not be nested without parental relationship");
+			throw new InvalidRepositoryException("Repositories must not be nested without parental relationship");
 		return Repository.repositories.put(repository.basePath, repository);
 	}
 
@@ -306,8 +302,7 @@ public class Repository {
 	 * The pattern that is used to scan a string ofr internal attribute
 	 * placeholders in {@link #isInternalAttribute(String)}.
 	 */
-	protected static Pattern internalAttributePattern = Pattern
-			.compile("\\$\\([^\\$)]*\\)");
+	protected static Pattern internalAttributePattern = Pattern.compile("\\$\\([^\\$)]*\\)");
 
 	/**
 	 * This map holds all available internal float attributes, which can be used
@@ -387,9 +382,8 @@ public class Repository {
 	 * @throws DatabaseConnectException
 	 */
 	public Repository(final String basePath, final Repository parent)
-			throws FileNotFoundException, RepositoryAlreadyExistsException,
-			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, DatabaseConnectException {
+			throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException,
+			RepositoryConfigNotFoundException, RepositoryConfigurationException, DatabaseConnectException {
 		this(basePath, parent, null);
 	}
 
@@ -410,21 +404,18 @@ public class Repository {
 	 * @throws RepositoryConfigNotFoundException
 	 * @throws DatabaseConnectException
 	 */
-	public Repository(final String basePath, final Repository parent,
-			final RepositoryConfig overrideConfig)
-			throws FileNotFoundException, RepositoryAlreadyExistsException,
-			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, DatabaseConnectException {
+	public Repository(final String basePath, final Repository parent, final RepositoryConfig overrideConfig)
+			throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException,
+			RepositoryConfigNotFoundException, RepositoryConfigurationException, DatabaseConnectException {
 		super();
 
 		this.log = LoggerFactory.getLogger(this.getClass());
 
 		this.basePath = basePath;
 		// remove trailing file separator
-		if (this.basePath.length() > 1
-				&& this.basePath.endsWith(System.getProperty("file.separator")))
-			this.basePath = this.basePath.substring(0, this.basePath.length()
-					- System.getProperty("file.separator").length());
+		if (this.basePath.length() > 1 && this.basePath.endsWith(System.getProperty("file.separator")))
+			this.basePath = this.basePath.substring(0,
+					this.basePath.length() - System.getProperty("file.separator").length());
 		this.parent = parent;
 		this.missingRLibraries = new ConcurrentHashMap<String, Set<RLibraryNotLoadedException>>();
 
@@ -436,8 +427,7 @@ public class Repository {
 
 		this.pathToRepositoryObject = new ConcurrentHashMap<File, RepositoryObject>();
 
-		File repositoryConfigFile = new File(FileUtils.buildPath(this.basePath,
-				"repository.config"));
+		File repositoryConfigFile = new File(FileUtils.buildPath(this.basePath, "repository.config"));
 
 		Repository.register(this);
 
@@ -447,10 +437,8 @@ public class Repository {
 			/*
 			 * Parsing the configuration file (if it exists)
 			 */
-			this.repositoryConfig = RepositoryConfig
-					.parseFromFile(repositoryConfigFile);
-			this.log.debug("Using repository configuration: "
-					+ repositoryConfigFile);
+			this.repositoryConfig = RepositoryConfig.parseFromFile(repositoryConfigFile);
+			this.log.debug("Using repository configuration: " + repositoryConfigFile);
 		} else {
 			this.repositoryConfig = new DefaultRepositoryConfig();
 			this.log.debug("Using default repository configuration");
@@ -475,10 +463,8 @@ public class Repository {
 	 */
 	public boolean addMissingRLibraryException(RLibraryNotLoadedException e) {
 		if (!(this.missingRLibraries.containsKey(e.getClassName())))
-			this.missingRLibraries
-					.put(e.getClassName(),
-							Collections
-									.synchronizedSet(new HashSet<RLibraryNotLoadedException>()));
+			this.missingRLibraries.put(e.getClassName(),
+					Collections.synchronizedSet(new HashSet<RLibraryNotLoadedException>()));
 		return this.missingRLibraries.get(e.getClassName()).add(e);
 	}
 
@@ -491,8 +477,7 @@ public class Repository {
 	 *            libraries.
 	 * @return The old exceptions that were present for this class.
 	 */
-	public Set<RLibraryNotLoadedException> clearMissingRLibraries(
-			String className) {
+	public Set<RLibraryNotLoadedException> clearMissingRLibraries(String className) {
 		return this.missingRLibraries.remove(className);
 	}
 
@@ -522,11 +507,9 @@ public class Repository {
 	 * @return A new instance of sql communicator.
 	 * @throws DatabaseConnectException
 	 */
-	protected SQLCommunicator createSQLCommunicator()
-			throws DatabaseConnectException {
+	protected SQLCommunicator createSQLCommunicator() throws DatabaseConnectException {
 		if (this.repositoryConfig.getMysqlConfig().usesSql())
-			return new DefaultSQLCommunicator(this,
-					this.repositoryConfig.getMysqlConfig());
+			return new DefaultSQLCommunicator(this, this.repositoryConfig.getMysqlConfig());
 
 		return new StubSQLCommunicator(this);
 	}
@@ -544,10 +527,8 @@ public class Repository {
 	 * @return
 	 */
 	protected SupervisorThread createSupervisorThread() {
-		return new RepositorySupervisorThread(this,
-				this.repositoryConfig.getThreadSleepTimes(), false,
-				ClustevalBackendServer.getBackendServerConfiguration()
-						.getCheckForRunResults());
+		return new RepositorySupervisorThread(this, this.repositoryConfig.getThreadSleepTimes(), false,
+				ClustevalBackendServer.getBackendServerConfiguration().getCheckForRunResults());
 	}
 
 	/**
@@ -559,16 +540,14 @@ public class Repository {
 	 * @return true, if successful
 	 * @throws FileNotFoundException
 	 */
-	private boolean ensureFolder(final String absFolderPath)
-			throws FileNotFoundException {
+	private boolean ensureFolder(final String absFolderPath) throws FileNotFoundException {
 		final File folder = new File(absFolderPath);
 		if (!(folder.exists())) {
 			folder.mkdirs();
 			this.info("Recreating repository folder " + folder);
 		}
 		if (!(folder.exists()))
-			throw new FileNotFoundException("Could not create folder "
-					+ folder.getAbsolutePath());
+			throw new FileNotFoundException("Could not create folder " + folder.getAbsolutePath());
 		return true;
 	}
 
@@ -579,7 +558,8 @@ public class Repository {
 	 * 
 	 * <p>
 	 * A helper method of
-	 * {@link #Repository(String, Repository, long, long, long, long, long, long, long)}.
+	 * {@link #Repository(String, Repository, long, long, long, long, long, long, long)}
+	 * .
 	 * 
 	 * @return true, if successful
 	 * @throws FileNotFoundException
@@ -646,12 +626,10 @@ public class Repository {
 	 * @return The parameter value with evaluated placeholders.
 	 * @throws InternalAttributeException
 	 */
-	public String evaluateInternalAttributes(final String old,
-			final DataConfig dataConfig, final ProgramConfig programConfig)
-			throws InternalAttributeException {
+	public String evaluateInternalAttributes(final String old, final DataConfig dataConfig,
+			final ProgramConfig programConfig) throws InternalAttributeException {
 
-		final String extended = extendInternalAttributes(old, dataConfig,
-				programConfig);
+		final String extended = extendInternalAttributes(old, dataConfig, programConfig);
 
 		StringBuilder result = new StringBuilder(extended);
 		int pos = -1;
@@ -661,18 +639,13 @@ public class Repository {
 			String attributeName = result.substring(pos + 2, endPos);
 			String replaceValue;
 			if (this.internalDoubleAttributes.containsKey(attributeName)) {
-				replaceValue = this.internalDoubleAttributes.get(attributeName)
-						+ "";
-			} else if (this.internalIntegerAttributes
-					.containsKey(attributeName)) {
-				replaceValue = this.internalIntegerAttributes
-						.get(attributeName) + "";
+				replaceValue = this.internalDoubleAttributes.get(attributeName) + "";
+			} else if (this.internalIntegerAttributes.containsKey(attributeName)) {
+				replaceValue = this.internalIntegerAttributes.get(attributeName) + "";
 			} else if (this.internalStringAttributes.containsKey(attributeName)) {
-				replaceValue = this.internalStringAttributes.get(attributeName)
-						+ "";
+				replaceValue = this.internalStringAttributes.get(attributeName) + "";
 			} else {
-				throw new InternalAttributeException("The internal attribute "
-						+ attributeName + " does not exist.");
+				throw new InternalAttributeException("The internal attribute " + attributeName + " does not exist.");
 			}
 			result.replace(pos, endPos + 1, replaceValue);
 		}
@@ -696,16 +669,13 @@ public class Repository {
 	 * @return The evaluated expression.
 	 * @throws ScriptException
 	 */
-	public String evaluateJavaScript(final String script)
-			throws ScriptException {
+	public String evaluateJavaScript(final String script) throws ScriptException {
 		ScriptEngineManager mgr = new ScriptEngineManager();
 		ScriptEngine engine = mgr.getEngineByName("JavaScript");
 		// define min function
-		engine.eval("function min(n1,n2) {" + "if(n1 <= n2) return n1; "
-				+ "  else return n2; " + "};");
+		engine.eval("function min(n1,n2) {" + "if(n1 <= n2) return n1; " + "  else return n2; " + "};");
 		// define max function
-		engine.eval("function max(n1,n2) {" + "if(n1 >= n2) return n1; "
-				+ "  else return n2; " + "};");
+		engine.eval("function max(n1,n2) {" + "if(n1 >= n2) return n1; " + "  else return n2; " + "};");
 		return engine.eval(script) + "";
 	}
 
@@ -730,24 +700,20 @@ public class Repository {
 	 * @return The parameter value with extended placeholders.
 	 */
 	@SuppressWarnings("unused")
-	private String extendInternalAttributes(final String old,
-			final DataConfig dataConfig, final ProgramConfig programConfig) {
-		String result = old.replaceAll("\\$\\(minSimilarity\\)", "\\$\\("
-				+ dataConfig.getDatasetConfig().getDataSet()
-						.getOriginalDataSet().getAbsolutePath()
-				+ ":minSimilarity\\)");
-		result = result.replaceAll("\\$\\(maxSimilarity\\)", "\\$\\("
-				+ dataConfig.getDatasetConfig().getDataSet()
-						.getOriginalDataSet().getAbsolutePath()
-				+ ":maxSimilarity\\)");
-		result = result.replaceAll("\\$\\(meanSimilarity\\)", "\\$\\("
-				+ dataConfig.getDatasetConfig().getDataSet()
-						.getOriginalDataSet().getAbsolutePath()
-				+ ":meanSimilarity\\)");
-		result = result.replaceAll("\\$\\(numberOfElements\\)", "\\$\\("
-				+ dataConfig.getDatasetConfig().getDataSet()
-						.getOriginalDataSet().getAbsolutePath()
-				+ ":numberOfElements\\)");
+	private String extendInternalAttributes(final String old, final DataConfig dataConfig,
+			final ProgramConfig programConfig) {
+		String result = old.replaceAll("\\$\\(minSimilarity\\)",
+				"\\$\\(" + dataConfig.getDatasetConfig().getDataSet().getOriginalDataSet().getAbsolutePath()
+						+ ":minSimilarity\\)");
+		result = result.replaceAll("\\$\\(maxSimilarity\\)",
+				"\\$\\(" + dataConfig.getDatasetConfig().getDataSet().getOriginalDataSet().getAbsolutePath()
+						+ ":maxSimilarity\\)");
+		result = result.replaceAll("\\$\\(meanSimilarity\\)",
+				"\\$\\(" + dataConfig.getDatasetConfig().getDataSet().getOriginalDataSet().getAbsolutePath()
+						+ ":meanSimilarity\\)");
+		result = result.replaceAll("\\$\\(numberOfElements\\)",
+				"\\$\\(" + dataConfig.getDatasetConfig().getDataSet().getOriginalDataSet().getAbsolutePath()
+						+ ":numberOfElements\\)");
 		return result;
 	}
 
@@ -758,8 +724,7 @@ public class Repository {
 		this.terminateSupervisorThread(false);
 	}
 
-	public void terminateSupervisorThread(final boolean closeRengines)
-			throws InterruptedException {
+	public void terminateSupervisorThread(final boolean closeRengines) throws InterruptedException {
 		if (closeRengines) {
 			// close Rengine pool
 			// this.rEngineForLibraryInstalledChecks.close();
@@ -790,13 +755,11 @@ public class Repository {
 		return this.dynamicRepositoryEntities.get(c).getBasePath();
 	}
 
-	public <T extends RepositoryObject> Collection<T> getCollectionStaticEntities(
-			final Class<T> c) {
+	public <T extends RepositoryObject> Collection<T> getCollectionStaticEntities(final Class<T> c) {
 		return this.staticRepositoryEntities.get(c).asCollection();
 	}
 
-	public <T extends RepositoryObject> T getStaticObjectWithName(
-			final Class<T> c, final String name) {
+	public <T extends RepositoryObject> T getStaticObjectWithName(final Class<T> c, final String name) {
 		return this.staticRepositoryEntities.get(c).findByString(name);
 	}
 
@@ -810,53 +773,45 @@ public class Repository {
 		return this.getRegisteredObject(object, true);
 	}
 
-	public <T extends RepositoryObject> T getRegisteredObject(final T object,
-			final boolean ignoreChangeDate) {
+	public <T extends RepositoryObject> T getRegisteredObject(final T object, final boolean ignoreChangeDate) {
 		@SuppressWarnings("unchecked")
 		Class<T> c = (Class<T>) object.getClass();
 		return this.getRegisteredObject(c, object, ignoreChangeDate);
 	}
 
-	public <T extends RepositoryObject, S extends T> S getRegisteredObject(
-			final Class<T> c, final S object, final boolean ignoreChangeDate) {
+	public <T extends RepositoryObject, S extends T> S getRegisteredObject(final Class<T> c, final S object,
+			final boolean ignoreChangeDate) {
 		boolean staticEntityFound = false;
 		boolean dynamicEntityFound = false;
-		if (!((staticEntityFound = this.staticRepositoryEntities.containsKey(c)) || (dynamicEntityFound = this.dynamicRepositoryEntities
-				.containsKey(c)))
+		if (!((staticEntityFound = this.staticRepositoryEntities.containsKey(c))
+				|| (dynamicEntityFound = this.dynamicRepositoryEntities.containsKey(c)))
 				&& object.getClass().getSuperclass() != null
 				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
-			return this.getRegisteredObject(
-					(Class<? extends RepositoryObject>) c.getSuperclass(),
-					object, ignoreChangeDate);
+			return this.getRegisteredObject((Class<? extends RepositoryObject>) c.getSuperclass(), object,
+					ignoreChangeDate);
 		}
 		if (staticEntityFound)
-			return this.staticRepositoryEntities.get(c).getRegisteredObject(
-					object, ignoreChangeDate);
+			return this.staticRepositoryEntities.get(c).getRegisteredObject(object, ignoreChangeDate);
 		else if (dynamicEntityFound)
-			return this.dynamicRepositoryEntities.get(c).getRegisteredObject(
-					object, ignoreChangeDate);
+			return this.dynamicRepositoryEntities.get(c).getRegisteredObject(object, ignoreChangeDate);
 		return null;
 	}
 
-	public <T extends RepositoryObject, S extends T> boolean unregister(
-			final S object) {
+	public <T extends RepositoryObject, S extends T> boolean unregister(final S object) {
 		@SuppressWarnings("unchecked")
 		Class<S> c = (Class<S>) object.getClass();
 		return this.unregister(c, object);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends RepositoryObject, S extends T> boolean unregister(
-			final Class<T> c, final S object) {
+	public <T extends RepositoryObject, S extends T> boolean unregister(final Class<T> c, final S object) {
 		boolean staticEntityFound = false;
 		boolean dynamicEntityFound = false;
-		if (!((staticEntityFound = this.staticRepositoryEntities.containsKey(c)) || (dynamicEntityFound = this.dynamicRepositoryEntities
-				.containsKey(c)))
+		if (!((staticEntityFound = this.staticRepositoryEntities.containsKey(c))
+				|| (dynamicEntityFound = this.dynamicRepositoryEntities.containsKey(c)))
 				&& object.getClass().getSuperclass() != null
 				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
-			return this.unregister(
-					(Class<? extends RepositoryObject>) c.getSuperclass(),
-					object);
+			return this.unregister((Class<? extends RepositoryObject>) c.getSuperclass(), object);
 		}
 
 		if (staticEntityFound)
@@ -867,25 +822,22 @@ public class Repository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends RepositoryObject, S extends T> boolean register(
-			final S object) throws RegisterException {
+	public <T extends RepositoryObject, S extends T> boolean register(final S object) throws RegisterException {
 		Class<S> c = (Class<S>) object.getClass();
 		return this.register(c, object);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends RepositoryObject, S extends T> boolean register(
-			final Class<T> c, final S object) throws RegisterException {
+	public <T extends RepositoryObject, S extends T> boolean register(final Class<T> c, final S object)
+			throws RegisterException {
 		boolean staticEntityFound = false;
 		boolean dynamicEntityFound = false;
-		if (!((staticEntityFound = this.staticRepositoryEntities.containsKey(c)) || (dynamicEntityFound = this.dynamicRepositoryEntities
-				.containsKey(c)))
+		if (!((staticEntityFound = this.staticRepositoryEntities.containsKey(c))
+				|| (dynamicEntityFound = this.dynamicRepositoryEntities.containsKey(c)))
 				&& object.getClass().getSuperclass() != null
 				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
 			// we only return, if we found the right class
-			return this.register(
-					(Class<? extends RepositoryObject>) c.getSuperclass(),
-					object);
+			return this.register((Class<? extends RepositoryObject>) c.getSuperclass(), object);
 		}
 
 		if (staticEntityFound)
@@ -902,43 +854,30 @@ public class Repository {
 			this.dynamicRepositoryEntities.get(c).setInitialized();
 	}
 
-	public <T extends RepositoryObject> boolean isClassRegistered(
-			final Class<T> c) {
+	public <T extends RepositoryObject> boolean isClassRegistered(final Class<T> c) {
 		return this.isClassRegistered(c, c.getSimpleName());
 	}
 
-	public <T extends RepositoryObject> boolean isClassRegistered(
-			final String classFullName) {
+	public <T extends RepositoryObject> boolean isClassRegistered(final String classFullName) {
 		return DynamicRepositoryEntity.isClassAvailable(classFullName);
 	}
 
-	public <T extends RepositoryObject> boolean isClassRegistered(
-			final Class<T> base, final String classSimpleName) {
-		if (!this.dynamicRepositoryEntities.containsKey(base)
-				&& base.getSuperclass() != null
-				&& RepositoryObject.class
-						.isAssignableFrom(base.getSuperclass())) {
-			return this.isClassRegistered(
-					(Class<? extends RepositoryObject>) base.getSuperclass(),
-					classSimpleName);
+	public <T extends RepositoryObject> boolean isClassRegistered(final Class<T> base, final String classSimpleName) {
+		if (!this.dynamicRepositoryEntities.containsKey(base) && base.getSuperclass() != null
+				&& RepositoryObject.class.isAssignableFrom(base.getSuperclass())) {
+			return this.isClassRegistered((Class<? extends RepositoryObject>) base.getSuperclass(), classSimpleName);
 		}
-		return this.dynamicRepositoryEntities.get(base).isClassRegistered(
-				classSimpleName);
+		return this.dynamicRepositoryEntities.get(base).isClassRegistered(classSimpleName);
 	}
 
 	public <T extends RepositoryObject> boolean registerClass(final Class<T> c) {
 		return this.registerClass(c, c);
 	}
 
-	public <T extends RepositoryObject, S extends T> boolean registerClass(
-			final Class<T> base, final Class<S> c) {
-		if (!this.dynamicRepositoryEntities.containsKey(base)
-				&& base.getSuperclass() != null
-				&& RepositoryObject.class
-						.isAssignableFrom(base.getSuperclass())) {
-			return this
-					.registerClass((Class<? extends RepositoryObject>) base
-							.getSuperclass(), c);
+	public <T extends RepositoryObject, S extends T> boolean registerClass(final Class<T> base, final Class<S> c) {
+		if (!this.dynamicRepositoryEntities.containsKey(base) && base.getSuperclass() != null
+				&& RepositoryObject.class.isAssignableFrom(base.getSuperclass())) {
+			return this.registerClass((Class<? extends RepositoryObject>) base.getSuperclass(), c);
 		}
 		return this.dynamicRepositoryEntities.get(base).registerClass(c);
 	}
@@ -948,84 +887,71 @@ public class Repository {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends RepositoryObject, S extends T> boolean unregisterClass(
-			final Class<T> base, final Class<S> c) {
-		if (!this.dynamicRepositoryEntities.containsKey(base)
-				&& base.getSuperclass() != null
-				&& RepositoryObject.class
-						.isAssignableFrom(base.getSuperclass())) {
-			return this
-					.unregisterClass((Class<? extends RepositoryObject>) base
-							.getSuperclass(), c);
+	public <T extends RepositoryObject, S extends T> boolean unregisterClass(final Class<T> base, final Class<S> c) {
+		if (!this.dynamicRepositoryEntities.containsKey(base) && base.getSuperclass() != null
+				&& RepositoryObject.class.isAssignableFrom(base.getSuperclass())) {
+			return this.unregisterClass((Class<? extends RepositoryObject>) base.getSuperclass(), c);
 		}
 		return this.dynamicRepositoryEntities.get(base).unregisterClass(c);
 	}
 
-	public <T extends RepositoryObject> Class<? extends T> getRegisteredClass(
-			final Class<T> c, final String className) {
-		return this.dynamicRepositoryEntities.get(c).getRegisteredClass(
-				className);
+	public <T extends RepositoryObject> Class<? extends T> getRegisteredClass(final Class<T> c,
+			final String className) {
+		return this.dynamicRepositoryEntities.get(c).getRegisteredClass(className);
 	}
 
-	public <T extends RepositoryObject> Collection<Class<? extends T>> getClasses(
-			Class<T> c) {
+	public <T extends RepositoryObject> Collection<Class<? extends T>> getClasses(Class<T> c) {
 		return this.dynamicRepositoryEntities.get(c).getClasses();
 	}
 
 	public String getAnalysisResultsBasePath() {
-		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
-				.get(RunResult.class)).getAnalysisResultsBasePath();
+		return ((RunResultRepositoryEntity) this.staticRepositoryEntities.get(RunResult.class))
+				.getAnalysisResultsBasePath();
 	}
 
 	public String getClusterResultsBasePath() {
-		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
-				.get(RunResult.class)).getClusterResultsBasePath();
+		return ((RunResultRepositoryEntity) this.staticRepositoryEntities.get(RunResult.class))
+				.getClusterResultsBasePath();
 	}
 
 	public String getClusterResultsQualityBasePath() {
-		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
-				.get(RunResult.class)).getClusterResultsQualityBasePath();
+		return ((RunResultRepositoryEntity) this.staticRepositoryEntities.get(RunResult.class))
+				.getClusterResultsQualityBasePath();
 	}
 
 	public boolean registerDataStatisticCalculator(
 			Class<? extends DataStatisticCalculator<? extends DataStatistic>> dataStatisticCalculator) {
-		return ((DataStatisticRepositoryEntity) this.dynamicRepositoryEntities
-				.get(DataStatistic.class))
+		return ((DataStatisticRepositoryEntity) this.dynamicRepositoryEntities.get(DataStatistic.class))
 				.registerDataStatisticCalculator(dataStatisticCalculator);
 	}
 
 	public boolean registerRunDataStatisticCalculator(
 			Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>> runDataStatisticCalculator) {
-		return ((RunDataStatisticRepositoryEntity) this.dynamicRepositoryEntities
-				.get(RunDataStatistic.class))
+		return ((RunDataStatisticRepositoryEntity) this.dynamicRepositoryEntities.get(RunDataStatistic.class))
 				.registerRunDataStatisticCalculator(runDataStatisticCalculator);
 	}
 
 	public boolean registerRunStatisticCalculator(
 			Class<? extends RunStatisticCalculator<? extends RunStatistic>> runStatisticCalculator) {
-		return ((RunStatisticRepositoryEntity) this.dynamicRepositoryEntities
-				.get(RunStatistic.class))
+		return ((RunStatisticRepositoryEntity) this.dynamicRepositoryEntities.get(RunStatistic.class))
 				.registerRunStatisticCalculator(runStatisticCalculator);
 	}
 
 	public Class<? extends DataStatisticCalculator<? extends DataStatistic>> getDataStatisticCalculator(
 			final String dataStatisticClassName) {
-		return ((DataStatisticRepositoryEntity) this.dynamicRepositoryEntities
-				.get(DataStatistic.class))
+		return ((DataStatisticRepositoryEntity) this.dynamicRepositoryEntities.get(DataStatistic.class))
 				.getDataStatisticCalculator(dataStatisticClassName);
 	}
 
 	public Class<? extends RunDataStatisticCalculator<? extends RunDataStatistic>> getRunDataStatisticCalculator(
 			final String runDataStatisticClassName) {
-		return ((RunDataStatisticRepositoryEntity) this.dynamicRepositoryEntities
-				.get(RunDataStatistic.class))
+		return ((RunDataStatisticRepositoryEntity) this.dynamicRepositoryEntities.get(RunDataStatistic.class))
 				.getRunDataStatisticCalculator(runDataStatisticClassName);
 	}
 
 	public Class<? extends RunStatisticCalculator<? extends RunStatistic>> getRunStatisticCalculator(
 			final String runStatisticClassName) {
-		return ((RunStatisticRepositoryEntity) this.dynamicRepositoryEntities
-				.get(RunStatistic.class))
+		return ((RunStatisticRepositoryEntity) this.dynamicRepositoryEntities.get(RunStatistic.class))
 				.getRunStatisticCalculator(runStatisticClassName);
 	}
 
@@ -1042,10 +968,8 @@ public class Repository {
 	 * @return The current version for the given dataset format class.
 	 * @throws UnknownDataSetFormatException
 	 */
-	public int getCurrentDataSetFormatVersion(final String formatClass)
-			throws UnknownDataSetFormatException {
-		return ((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities
-				.get(DataSetFormat.class))
+	public int getCurrentDataSetFormatVersion(final String formatClass) throws UnknownDataSetFormatException {
+		return ((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities.get(DataSetFormat.class))
 				.getCurrentDataSetFormatVersion(formatClass);
 	}
 
@@ -1056,11 +980,9 @@ public class Repository {
 	 * @param version
 	 *            The new version of the dataset format class.
 	 */
-	public void putCurrentDataSetFormatVersion(final String formatClass,
-			final int version) {
-		((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities
-				.get(DataSetFormat.class)).putCurrentDataSetFormatVersion(
-				formatClass, version);
+	public void putCurrentDataSetFormatVersion(final String formatClass, final int version) {
+		((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities.get(DataSetFormat.class))
+				.putCurrentDataSetFormatVersion(formatClass, version);
 	}
 
 	/**
@@ -1072,10 +994,8 @@ public class Repository {
 	 * @return The class of the dataset format parser with the given name or
 	 *         null, if it does not exist.
 	 */
-	public Class<? extends DataSetFormatParser> getDataSetFormatParser(
-			final String dataSetFormatName) {
-		return ((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities
-				.get(DataSetFormat.class))
+	public Class<? extends DataSetFormatParser> getDataSetFormatParser(final String dataSetFormatName) {
+		return ((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities.get(DataSetFormat.class))
 				.getDataSetFormatParser(dataSetFormatName);
 	}
 
@@ -1093,8 +1013,7 @@ public class Repository {
 		if (!isInternalAttribute(value)) {
 			return null;
 		}
-		NamedDoubleAttribute result = this.internalDoubleAttributes.get(value
-				.substring(2, value.length() - 1));
+		NamedDoubleAttribute result = this.internalDoubleAttributes.get(value.substring(2, value.length() - 1));
 		if (result == null && parent != null)
 			result = parent.getInternalDoubleAttribute(value);
 		return result;
@@ -1114,8 +1033,7 @@ public class Repository {
 		if (!isInternalAttribute(value)) {
 			return null;
 		}
-		NamedIntegerAttribute result = this.internalIntegerAttributes.get(value
-				.substring(2, value.length() - 1));
+		NamedIntegerAttribute result = this.internalIntegerAttributes.get(value.substring(2, value.length() - 1));
 		if (result == null && parent != null)
 			result = parent.getInternalIntegerAttribute(value);
 		return result;
@@ -1135,8 +1053,7 @@ public class Repository {
 		if (!isInternalAttribute(value)) {
 			return null;
 		}
-		NamedStringAttribute result = this.internalStringAttributes.get(value
-				.substring(2, value.length() - 1));
+		NamedStringAttribute result = this.internalStringAttributes.get(value.substring(2, value.length() - 1));
 		if (result == null && parent != null)
 			result = parent.getInternalStringAttribute(value);
 		return result;
@@ -1148,8 +1065,7 @@ public class Repository {
 	 *         stored.
 	 */
 	public String getLogBasePath() {
-		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
-				.get(RunResult.class)).getResultLogBasePath();
+		return ((RunResultRepositoryEntity) this.staticRepositoryEntities.get(RunResult.class)).getResultLogBasePath();
 	}
 
 	/**
@@ -1198,10 +1114,8 @@ public class Repository {
 	 *            object.
 	 * @return The registered object equal to the passed object.
 	 */
-	public NamedDoubleAttribute getRegisteredObject(
-			final NamedDoubleAttribute object) {
-		NamedDoubleAttribute other = this.internalDoubleAttributes.get(object
-				.getName());
+	public NamedDoubleAttribute getRegisteredObject(final NamedDoubleAttribute object) {
+		NamedDoubleAttribute other = this.internalDoubleAttributes.get(object.getName());
 		if (other == null && parent != null)
 			return parent.getRegisteredObject(object);
 		return other;
@@ -1231,10 +1145,8 @@ public class Repository {
 	 *            object.
 	 * @return The registered object equal to the passed object.
 	 */
-	public NamedIntegerAttribute getRegisteredObject(
-			final NamedIntegerAttribute object) {
-		NamedIntegerAttribute other = this.internalIntegerAttributes.get(object
-				.getName());
+	public NamedIntegerAttribute getRegisteredObject(final NamedIntegerAttribute object) {
+		NamedIntegerAttribute other = this.internalIntegerAttributes.get(object.getName());
 		if (other == null && parent != null)
 			return parent.getRegisteredObject(object);
 		return other;
@@ -1264,10 +1176,8 @@ public class Repository {
 	 *            object.
 	 * @return The registered object equal to the passed object.
 	 */
-	public NamedStringAttribute getRegisteredObject(
-			final NamedStringAttribute object) {
-		NamedStringAttribute other = this.internalStringAttributes.get(object
-				.getName());
+	public NamedStringAttribute getRegisteredObject(final NamedStringAttribute object) {
+		NamedStringAttribute other = this.internalStringAttributes.get(object.getName());
 		if (other == null && parent != null)
 			return parent.getRegisteredObject(object);
 		return other;
@@ -1282,8 +1192,8 @@ public class Repository {
 	 * @return The runresult with the given identifier.
 	 */
 	public RunResult getRegisteredRunResult(final String runIdentifier) {
-		return ((RunResultRepositoryEntity) this.staticRepositoryEntities
-				.get(RunResult.class)).runResultIdentifier.get(runIdentifier);
+		return ((RunResultRepositoryEntity) this.staticRepositoryEntities.get(RunResult.class)).runResultIdentifier
+				.get(runIdentifier);
 	}
 
 	/**
@@ -1303,10 +1213,8 @@ public class Repository {
 	 * @return The runresult format parser for the given runresult format name,
 	 *         or null if it does not exist.
 	 */
-	public Class<? extends RunResultFormatParser> getRunResultFormatParser(
-			final String runResultFormatName) {
-		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities
-				.get(RunResultFormat.class))
+	public Class<? extends RunResultFormatParser> getRunResultFormatParser(final String runResultFormatName) {
+		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities.get(RunResultFormat.class))
 				.getRunResultFormatParser(runResultFormatName);
 	}
 
@@ -1319,11 +1227,9 @@ public class Repository {
 	public Collection<String> getRunResultIdentifier() {
 		Collection<String> result = new HashSet<String>();
 
-		for (File resultDir : new File(this.getBasePath(RunResult.class))
-				.listFiles()) {
+		for (File resultDir : new File(this.getBasePath(RunResult.class)).listFiles()) {
 			if (resultDir.isDirectory()) {
-				File clustersDir = new File(FileUtils.buildPath(
-						resultDir.getAbsolutePath(), "clusters"));
+				File clustersDir = new File(FileUtils.buildPath(resultDir.getAbsolutePath(), "clusters"));
 				if (clustersDir.exists() && clustersDir.isDirectory()) {
 					/*
 					 * Take only those, that contain at least one *.complete
@@ -1350,8 +1256,7 @@ public class Repository {
 	public Collection<String> getRunResumes() {
 		Collection<String> result = new HashSet<String>();
 
-		for (File resultDir : new File(this.getBasePath(RunResult.class))
-				.listFiles()) {
+		for (File resultDir : new File(this.getBasePath(RunResult.class)).listFiles()) {
 			if (resultDir.isDirectory()) {
 				result.add(resultDir.getName());
 			}
@@ -1419,20 +1324,14 @@ public class Repository {
 		this.log.info(message);
 	}
 
-	protected <T extends RepositoryObject> void createAndAddStaticEntity(
-			final Class<T> c, final String basePath) {
-		this.staticRepositoryEntities.put(c, new StaticRepositoryEntity<T>(
-				this, this.parent != null
-						? this.parent.staticRepositoryEntities.get(c)
-						: null, basePath));
+	protected <T extends RepositoryObject> void createAndAddStaticEntity(final Class<T> c, final String basePath) {
+		this.staticRepositoryEntities.put(c, new StaticRepositoryEntity<T>(this,
+				this.parent != null ? this.parent.staticRepositoryEntities.get(c) : null, basePath));
 	}
 
-	protected <T extends RepositoryObject> void createAndAddDynamicEntity(
-			final Class<T> c, final String basePath) {
-		this.dynamicRepositoryEntities.put(c, new DynamicRepositoryEntity<T>(
-				this, this.parent != null
-						? this.parent.dynamicRepositoryEntities.get(c)
-						: null, basePath));
+	protected <T extends RepositoryObject> void createAndAddDynamicEntity(final Class<T> c, final String basePath) {
+		this.dynamicRepositoryEntities.put(c, new DynamicRepositoryEntity<T>(this,
+				this.parent != null ? this.parent.dynamicRepositoryEntities.get(c) : null, basePath));
 	}
 
 	/**
@@ -1441,7 +1340,8 @@ public class Repository {
 	 * 
 	 * <p>
 	 * A helper method for and invoked by
-	 * {@link #Repository(String, Repository, long, long, long, long, long, long, long)}.
+	 * {@link #Repository(String, Repository, long, long, long, long, long, long, long)}
+	 * .
 	 */
 	protected void initAttributes() {
 
@@ -1449,155 +1349,110 @@ public class Repository {
 
 		this.dynamicRepositoryEntities = new DynamicRepositoryEntityMap();
 
-		this.createAndAddStaticEntity(DataSet.class,
-				FileUtils.buildPath(this.basePath, "data", "datasets"));
-		this.createAndAddStaticEntity(DataSetConfig.class, FileUtils.buildPath(
-				this.basePath, "data", "datasets", "configs"));
-		this.createAndAddStaticEntity(GoldStandard.class,
-				FileUtils.buildPath(this.basePath, "data", "goldstandards"));
-		this.createAndAddStaticEntity(GoldStandardConfig.class, FileUtils
-				.buildPath(this.basePath, "data", "goldstandards", "configs"));
-		this.createAndAddStaticEntity(DataConfig.class,
-				FileUtils.buildPath(this.basePath, "data", "configs"));
-		this.createAndAddStaticEntity(Run.class,
-				FileUtils.buildPath(this.basePath, "runs"));
-		this.createAndAddStaticEntity(ProgramConfig.class,
-				FileUtils.buildPath(this.basePath, "programs", "configs"));
-		this.createAndAddStaticEntity(Program.class,
-				FileUtils.buildPath(this.basePath, "programs"));
+		this.createAndAddStaticEntity(DataSet.class, FileUtils.buildPath(this.basePath, "data", "datasets"));
+		this.createAndAddStaticEntity(DataSetConfig.class,
+				FileUtils.buildPath(this.basePath, "data", "datasets", "configs"));
+		this.createAndAddStaticEntity(GoldStandard.class, FileUtils.buildPath(this.basePath, "data", "goldstandards"));
+		this.createAndAddStaticEntity(GoldStandardConfig.class,
+				FileUtils.buildPath(this.basePath, "data", "goldstandards", "configs"));
+		this.createAndAddStaticEntity(DataConfig.class, FileUtils.buildPath(this.basePath, "data", "configs"));
+		this.createAndAddStaticEntity(Run.class, FileUtils.buildPath(this.basePath, "runs"));
+		this.createAndAddStaticEntity(ProgramConfig.class, FileUtils.buildPath(this.basePath, "programs", "configs"));
+		this.createAndAddStaticEntity(Program.class, FileUtils.buildPath(this.basePath, "programs"));
 		// this.createAndAddStaticEntity(Clustering.class,
 		// FileUtils.buildPath(this.basePath, "results"));
 
-		this.staticRepositoryEntities.put(
-				Clustering.class,
-				new ClusteringRepositoryEntity(this, this.parent != null
-						? this.parent.staticRepositoryEntities
-								.get(Clustering.class) : null, FileUtils
-						.buildPath(this.basePath, "results")));
+		this.staticRepositoryEntities.put(Clustering.class,
+				new ClusteringRepositoryEntity(this,
+						this.parent != null ? this.parent.staticRepositoryEntities.get(Clustering.class) : null,
+						FileUtils.buildPath(this.basePath, "results")));
 
-		this.staticRepositoryEntities.put(
-				RunResult.class,
-				new RunResultRepositoryEntity(this, this.parent != null
-						? this.parent.staticRepositoryEntities
-								.get(RunResult.class) : null, FileUtils
-						.buildPath(this.basePath, "results")));
+		this.staticRepositoryEntities.put(RunResult.class,
+				new RunResultRepositoryEntity(this,
+						this.parent != null ? this.parent.staticRepositoryEntities.get(RunResult.class) : null,
+						FileUtils.buildPath(this.basePath, "results")));
 
-		this.staticRepositoryEntities.put(
-				Finder.class,
-				new FinderRepositoryEntity(this, this.parent != null
-						? this.parent.staticRepositoryEntities
-								.get(Finder.class) : null, null));
+		this.staticRepositoryEntities.put(Finder.class, new FinderRepositoryEntity(this,
+				this.parent != null ? this.parent.staticRepositoryEntities.get(Finder.class) : null, null));
 
-		this.staticRepositoryEntities.put(
-				DoubleProgramParameter.class,
-				new ProgramParameterRepositoryEntity<DoubleProgramParameter>(
-						this, this.parent != null
-								? this.parent.staticRepositoryEntities
-										.get(DoubleProgramParameter.class)
-								: null, null));
-		this.staticRepositoryEntities.put(
-				IntegerProgramParameter.class,
-				new ProgramParameterRepositoryEntity<IntegerProgramParameter>(
-						this, this.parent != null
-								? this.parent.staticRepositoryEntities
-										.get(IntegerProgramParameter.class)
-								: null, null));
-		this.staticRepositoryEntities.put(
-				StringProgramParameter.class,
-				new ProgramParameterRepositoryEntity<StringProgramParameter>(
-						this, this.parent != null
-								? this.parent.staticRepositoryEntities
-										.get(StringProgramParameter.class)
-								: null, null));
-
-		this.createAndAddDynamicEntity(DistanceMeasure.class, FileUtils
-				.buildPath(this.supplementaryBasePath, "distanceMeasures"));
-
-		this.dynamicRepositoryEntities
-				.put(DataStatistic.class,
-						new DataStatisticRepositoryEntity(
-								this,
+		this.staticRepositoryEntities
+				.put(DoubleProgramParameter.class,
+						new ProgramParameterRepositoryEntity<DoubleProgramParameter>(this,
 								this.parent != null
-										? (DataStatisticRepositoryEntity) this.parent.dynamicRepositoryEntities
-												.get(DataStatistic.class)
-										: null, FileUtils.buildPath(
-										this.supplementaryBasePath,
-										"statistics", "data")));
-
-		this.dynamicRepositoryEntities
-				.put(RunStatistic.class,
-						new RunStatisticRepositoryEntity(
-								this,
+										? this.parent.staticRepositoryEntities.get(DoubleProgramParameter.class)
+										: null,
+								null));
+		this.staticRepositoryEntities.put(IntegerProgramParameter.class,
+				new ProgramParameterRepositoryEntity<IntegerProgramParameter>(this,
+						this.parent != null
+								? this.parent.staticRepositoryEntities.get(IntegerProgramParameter.class)
+								: null,
+						null));
+		this.staticRepositoryEntities
+				.put(StringProgramParameter.class,
+						new ProgramParameterRepositoryEntity<StringProgramParameter>(this,
 								this.parent != null
-										? (RunStatisticRepositoryEntity) this.parent.dynamicRepositoryEntities
-												.get(RunStatistic.class) : null,
-								FileUtils.buildPath(this.supplementaryBasePath,
-										"statistics", "run")));
+										? this.parent.staticRepositoryEntities.get(StringProgramParameter.class)
+										: null,
+								null));
 
-		this.dynamicRepositoryEntities
-				.put(RunDataStatistic.class,
-						new RunDataStatisticRepositoryEntity(
-								this,
-								this.parent != null
-										? (RunDataStatisticRepositoryEntity) this.parent.dynamicRepositoryEntities
-												.get(RunDataStatistic.class)
-										: null, FileUtils.buildPath(
-										this.supplementaryBasePath,
-										"statistics", "rundata")));
+		this.createAndAddDynamicEntity(DistanceMeasure.class,
+				FileUtils.buildPath(this.supplementaryBasePath, "distanceMeasures"));
 
-		this.createAndAddDynamicEntity(DataSetGenerator.class,
-				FileUtils.buildPath(this.generatorBasePath, "dataset"));
-		this.createAndAddDynamicEntity(DataRandomizer.class,
-				FileUtils.buildPath(this.randomizerBasePath, "data"));
-		this.createAndAddDynamicEntity(DataPreprocessor.class, FileUtils
-				.buildPath(this.supplementaryBasePath, "preprocessing"));
-		this.createAndAddDynamicEntity(RunResultPostprocessor.class, FileUtils
-				.buildPath(this.supplementaryBasePath, "postprocessing"));
+		this.dynamicRepositoryEntities.put(DataStatistic.class,
+				new DataStatisticRepositoryEntity(this, this.parent != null
+						? (DataStatisticRepositoryEntity) this.parent.dynamicRepositoryEntities.get(DataStatistic.class)
+						: null, FileUtils.buildPath(this.supplementaryBasePath, "statistics", "data")));
 
-		this.dynamicRepositoryEntities
-				.put(RProgram.class,
-						new RProgramRepositoryEntity(
-								this,
-								this.staticRepositoryEntities
-										.get(Program.class),
-								this.parent != null
-										? (RProgramRepositoryEntity) this.parent.dynamicRepositoryEntities
-												.get(RProgram.class) : null,
-								this.getBasePath(Program.class)));
+		this.dynamicRepositoryEntities.put(RunStatistic.class,
+				new RunStatisticRepositoryEntity(this, this.parent != null
+						? (RunStatisticRepositoryEntity) this.parent.dynamicRepositoryEntities.get(RunStatistic.class)
+						: null, FileUtils.buildPath(this.supplementaryBasePath, "statistics", "run")));
+
+		this.dynamicRepositoryEntities.put(RunDataStatistic.class,
+				new RunDataStatisticRepositoryEntity(this,
+						this.parent != null
+								? (RunDataStatisticRepositoryEntity) this.parent.dynamicRepositoryEntities
+										.get(RunDataStatistic.class)
+								: null,
+						FileUtils.buildPath(this.supplementaryBasePath, "statistics", "rundata")));
+
+		this.createAndAddDynamicEntity(DataSetGenerator.class, FileUtils.buildPath(this.generatorBasePath, "dataset"));
+		this.createAndAddDynamicEntity(DataRandomizer.class, FileUtils.buildPath(this.randomizerBasePath, "data"));
+		this.createAndAddDynamicEntity(DataPreprocessor.class,
+				FileUtils.buildPath(this.supplementaryBasePath, "preprocessing"));
+		this.createAndAddDynamicEntity(RunResultPostprocessor.class,
+				FileUtils.buildPath(this.supplementaryBasePath, "postprocessing"));
+
+		this.dynamicRepositoryEntities.put(RProgram.class,
+				new RProgramRepositoryEntity(this, this.staticRepositoryEntities.get(Program.class),
+						this.parent != null
+								? (RProgramRepositoryEntity) this.parent.dynamicRepositoryEntities.get(RProgram.class)
+								: null,
+						this.getBasePath(Program.class)));
 
 		this.createAndAddDynamicEntity(ClusteringQualityMeasure.class,
-				FileUtils.buildPath(this.suppClusteringBasePath,
-						"qualityMeasures"));
+				FileUtils.buildPath(this.suppClusteringBasePath, "qualityMeasures"));
 
-		this.createAndAddDynamicEntity(Context.class,
-				FileUtils.buildPath(this.supplementaryBasePath, "contexts"));
+		this.createAndAddDynamicEntity(Context.class, FileUtils.buildPath(this.supplementaryBasePath, "contexts"));
 
 		this.createAndAddDynamicEntity(ParameterOptimizationMethod.class,
-				FileUtils.buildPath(this.suppClusteringBasePath,
-						"paramOptimization"));
+				FileUtils.buildPath(this.suppClusteringBasePath, "paramOptimization"));
 
-		this.createAndAddDynamicEntity(DataSetType.class,
-				FileUtils.buildPath(this.typesBasePath, "dataset"));
+		this.createAndAddDynamicEntity(DataSetType.class, FileUtils.buildPath(this.typesBasePath, "dataset"));
 
-		this.dynamicRepositoryEntities
-				.put(DataSetFormat.class,
-						new DataSetFormatRepositoryEntity(
-								this,
-								this.parent != null
-										? (DataSetFormatRepositoryEntity) this.parent.dynamicRepositoryEntities
-												.get(DataSetFormat.class)
-										: null, FileUtils.buildPath(
-										this.formatsBasePath, "dataset")));
+		this.dynamicRepositoryEntities.put(DataSetFormat.class,
+				new DataSetFormatRepositoryEntity(this, this.parent != null
+						? (DataSetFormatRepositoryEntity) this.parent.dynamicRepositoryEntities.get(DataSetFormat.class)
+						: null, FileUtils.buildPath(this.formatsBasePath, "dataset")));
 
-		this.dynamicRepositoryEntities
-				.put(RunResultFormat.class,
-						new RunResultFormatRepositoryEntity(
-								this,
-								this.parent != null
-										? (RunResultFormatRepositoryEntity) this.parent.dynamicRepositoryEntities
-												.get(RunResultFormat.class)
-										: null, FileUtils.buildPath(
-										this.formatsBasePath, "runresult")));
+		this.dynamicRepositoryEntities.put(RunResultFormat.class,
+				new RunResultFormatRepositoryEntity(this,
+						this.parent != null
+								? (RunResultFormatRepositoryEntity) this.parent.dynamicRepositoryEntities
+										.get(RunResultFormat.class)
+								: null,
+						FileUtils.buildPath(this.formatsBasePath, "runresult")));
 
 		this.goldStandardFormats = new ConcurrentHashMap<GoldStandardFormat, GoldStandardFormat>();
 
@@ -1643,16 +1498,26 @@ public class Repository {
 		 */
 		if (ClustevalBackendServer.isRAvailable()) {
 			if (this.missingRLibraries.size() > 0) {
-				this.warn("The following R library dependencies are not satisified (the corresponding class has not been loaded):");
+				this.warn(
+						"The following R library dependencies are not satisified (the corresponding class has not been loaded):");
 				this.warn("Please ensure that those libraries are installed in your R installation:");
+
+				StringBuilder sb = new StringBuilder();
+				sb.append("install.packages(c(");
+
+				for (String className : this.missingRLibraries.keySet())
+					for (RLibraryNotLoadedException e : this.missingRLibraries.get(className)) {
+						this.warn("Class '" + e.getClassName() + "' requires the unavailable R library '"
+								+ e.getRLibrary() + "'");
+						sb.append(String.format("\"%s\",", e.getRLibrary()));
+					}
+				sb.deleteCharAt(sb.length() - 1);
+
+				sb.append("))");
+
+				this.warn("You can use the following command to install them in R:");
+				this.warn(sb.toString());
 			}
-			for (String className : this.missingRLibraries.keySet())
-				for (RLibraryNotLoadedException e : this.missingRLibraries
-						.get(className)) {
-					this.warn("Class '" + e.getClassName()
-							+ "' requires the unavailable R library '"
-							+ e.getRLibrary() + "'");
-				}
 		}
 	}
 
@@ -1665,7 +1530,8 @@ public class Repository {
 	 * does not create or ensure any folder structure.
 	 * <p>
 	 * A helper method of
-	 * {@link #Repository(String, Repository, long, long, long, long, long, long, long)}.
+	 * {@link #Repository(String, Repository, long, long, long, long, long, long, long)}
+	 * .
 	 * 
 	 * @throws InvalidRepositoryException
 	 * 
@@ -1673,16 +1539,11 @@ public class Repository {
 	@SuppressWarnings("unused")
 	protected void initializePaths() throws InvalidRepositoryException {
 		this.supplementaryBasePath = FileUtils.buildPath(this.basePath, "supp");
-		this.suppClusteringBasePath = FileUtils.buildPath(
-				this.supplementaryBasePath, "clustering");
-		this.formatsBasePath = FileUtils.buildPath(this.supplementaryBasePath,
-				"formats");
-		this.generatorBasePath = FileUtils.buildPath(
-				this.supplementaryBasePath, "generators");
-		this.randomizerBasePath = FileUtils.buildPath(
-				this.supplementaryBasePath, "randomizers");
-		this.typesBasePath = FileUtils.buildPath(this.supplementaryBasePath,
-				"types");
+		this.suppClusteringBasePath = FileUtils.buildPath(this.supplementaryBasePath, "clustering");
+		this.formatsBasePath = FileUtils.buildPath(this.supplementaryBasePath, "formats");
+		this.generatorBasePath = FileUtils.buildPath(this.supplementaryBasePath, "generators");
+		this.randomizerBasePath = FileUtils.buildPath(this.supplementaryBasePath, "randomizers");
+		this.typesBasePath = FileUtils.buildPath(this.supplementaryBasePath, "types");
 	}
 
 	/**
@@ -1712,24 +1573,15 @@ public class Repository {
 	 */
 	public boolean isInitialized() {
 		// TODO: for loop?
-		return isInitialized(DataSetFormat.class)
-				&& isInitialized(DataSetType.class)
-				&& isInitialized(DataStatistic.class)
-				&& isInitialized(RunStatistic.class)
-				&& isInitialized(RunDataStatistic.class)
-				&& isInitialized(RunResultFormat.class)
-				&& isInitialized(ClusteringQualityMeasure.class)
-				&& isInitialized(ParameterOptimizationMethod.class)
-				&& isInitialized(Run.class) && isInitialized(RProgram.class)
-				&& isInitialized(DataSetConfig.class)
-				&& isInitialized(DataSet.class)
-				&& isInitialized(GoldStandardConfig.class)
-				&& isInitialized(DataConfig.class)
-				&& isInitialized(ProgramConfig.class)
-				&& isInitialized(DataSetGenerator.class)
-				&& isInitialized(Context.class)
-				&& isInitialized(DataPreprocessor.class)
-				&& isInitialized(DistanceMeasure.class);
+		return isInitialized(DataSetFormat.class) && isInitialized(DataSetType.class)
+				&& isInitialized(DataStatistic.class) && isInitialized(RunStatistic.class)
+				&& isInitialized(RunDataStatistic.class) && isInitialized(RunResultFormat.class)
+				&& isInitialized(ClusteringQualityMeasure.class) && isInitialized(ParameterOptimizationMethod.class)
+				&& isInitialized(Run.class) && isInitialized(RProgram.class) && isInitialized(DataSetConfig.class)
+				&& isInitialized(DataSet.class) && isInitialized(GoldStandardConfig.class)
+				&& isInitialized(DataConfig.class) && isInitialized(ProgramConfig.class)
+				&& isInitialized(DataSetGenerator.class) && isInitialized(Context.class)
+				&& isInitialized(DataPreprocessor.class) && isInitialized(DistanceMeasure.class);
 	}
 
 	/**
@@ -1741,10 +1593,8 @@ public class Repository {
 	 *            registered.
 	 * @return True, if the parser has been registered.
 	 */
-	public boolean isRegisteredForRunResultFormat(
-			final Class<? extends RunResultFormat> runResultFormat) {
-		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities
-				.get(RunResultFormat.class))
+	public boolean isRegisteredForRunResultFormat(final Class<? extends RunResultFormat> runResultFormat) {
+		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities.get(RunResultFormat.class))
 				.isRegisteredForRunResultFormat(runResultFormat);
 	}
 
@@ -1757,10 +1607,8 @@ public class Repository {
 	 *            registered.
 	 * @return True, if the parser has been registered.
 	 */
-	public boolean isRegisteredForRunResultFormat(
-			final String runResultFormatName) {
-		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities
-				.get(RunResultFormat.class))
+	public boolean isRegisteredForRunResultFormat(final String runResultFormatName) {
+		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities.get(RunResultFormat.class))
 				.isRegisteredForRunResultFormat(runResultFormatName);
 	}
 
@@ -1858,10 +1706,8 @@ public class Repository {
 	 *            The dataset format parser to register.
 	 * @return True, if the dataset format parser replaced an old object.
 	 */
-	public boolean registerDataSetFormatParser(
-			final Class<? extends DataSetFormatParser> dsFormatParser) {
-		return ((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities
-				.get(DataSetFormat.class))
+	public boolean registerDataSetFormatParser(final Class<? extends DataSetFormatParser> dsFormatParser) {
+		return ((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities.get(DataSetFormat.class))
 				.registerDataSetFormatParser(dsFormatParser);
 	}
 
@@ -1874,10 +1720,8 @@ public class Repository {
 	 *            registered.
 	 * @return True, if the parser has been registered.
 	 */
-	public boolean isRegisteredForDataSetFormat(
-			final Class<? extends DataSetFormat> dsFormat) {
-		return ((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities
-				.get(DataSetFormat.class))
+	public boolean isRegisteredForDataSetFormat(final Class<? extends DataSetFormat> dsFormat) {
+		return ((DataSetFormatRepositoryEntity) this.dynamicRepositoryEntities.get(DataSetFormat.class))
 				.isRegisteredForDataSetFormat(dsFormat);
 	}
 
@@ -1888,10 +1732,8 @@ public class Repository {
 	 *            The new class to register.
 	 * @return True, if the new class replaced an old one.
 	 */
-	public boolean registerRunResultFormatParser(
-			final Class<? extends RunResultFormatParser> runResultFormatParser) {
-		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities
-				.get(RunResultFormat.class))
+	public boolean registerRunResultFormatParser(final Class<? extends RunResultFormatParser> runResultFormatParser) {
+		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities.get(RunResultFormat.class))
 				.registerRunResultFormatParser(runResultFormatParser);
 	}
 
@@ -1953,10 +1795,8 @@ public class Repository {
 	 *            The object to be removed.
 	 * @return True, if the object was remved successfully
 	 */
-	public boolean unregisterRunResultFormatParser(
-			final Class<? extends RunResultFormatParser> object) {
-		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities
-				.get(RunResultFormat.class))
+	public boolean unregisterRunResultFormatParser(final Class<? extends RunResultFormatParser> object) {
+		return ((RunResultFormatRepositoryEntity) this.dynamicRepositoryEntities.get(RunResultFormat.class))
 				.unregisterRunResultFormatParser(object);
 	}
 

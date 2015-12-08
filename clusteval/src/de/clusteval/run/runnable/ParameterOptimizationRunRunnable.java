@@ -194,7 +194,7 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 				int iterationPercent = Math.min(
 						(int) (this.optimizationMethod.getFinishedCount()
 								/ (double) this.optimizationMethod
-										.getTotalIterationCount() * 100), 100);
+										.getTotalIterationCount() * 10000), 10000);
 				this.progress.update(iterationPercent);
 			}
 		} catch (ParameterOptimizationException e) {
@@ -326,14 +326,6 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 		try {
 			super.doRunIteration(iterationWrapper);
 		} finally {
-			synchronized (this) {
-				// changed 25.01.2013
-				int iterationPercent = Math.min(
-						(int) (this.optimizationMethod.getFinishedCount()
-								/ (double) this.optimizationMethod
-										.getTotalIterationCount() * 100), 100);
-				this.progress.update(iterationPercent);
-			}
 		}
 	}
 
@@ -408,5 +400,13 @@ public class ParameterOptimizationRunRunnable extends ExecutionRunRunnable {
 		this.optimizationMethod.giveQualityFeedback(paramSet, qualities.get(0)
 				.getSecond());
 		super.writeQualitiesToFile(qualities);
+
+		synchronized (this) {
+			// changed 25.01.2013
+			int iterationPercent = Math.min((int) (this.optimizationMethod.getFinishedCount()
+					/ (double) this.optimizationMethod.getTotalIterationCount() * 10000),
+					10000);
+			this.progress.update(iterationPercent);
+		}
 	}
 }

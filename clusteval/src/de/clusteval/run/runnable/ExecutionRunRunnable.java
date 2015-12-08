@@ -89,9 +89,7 @@ import format.Formatter;
  * @author Christian Wiwie
  * 
  */
-public abstract class ExecutionRunRunnable
-		extends
-			RunRunnable<ExecutionIterationRunnable, ExecutionIterationWrapper> {
+public abstract class ExecutionRunRunnable extends RunRunnable<ExecutionIterationRunnable, ExecutionIterationWrapper> {
 
 	/**
 	 * The program configuration this thread combines with a data configuration.
@@ -135,9 +133,8 @@ public abstract class ExecutionRunRunnable
 	 *            True, if this run is a resumption of a previous execution or a
 	 *            completely new execution.
 	 */
-	public ExecutionRunRunnable(Run run, ProgramConfig programConfig,
-			DataConfig dataConfig, String runIdentString, boolean isResume,
-			Map<ProgramParameter<?>, String> runParams) {
+	public ExecutionRunRunnable(Run run, ProgramConfig programConfig, DataConfig dataConfig, String runIdentString,
+			boolean isResume, Map<ProgramParameter<?>, String> runParams) {
 		super(run, runIdentString, isResume);
 
 		this.programConfig = programConfig;
@@ -163,21 +160,18 @@ public abstract class ExecutionRunRunnable
 	 * If at all, then this method is invoked by {@link #beginRun()} before
 	 * anything has been executed by the runnable.
 	 */
-	protected void writeHeaderIntoCompleteFile(
-			final String completeQualityOutput) {
+	protected void writeHeaderIntoCompleteFile(final String completeQualityOutput) {
 		StringBuilder sb = new StringBuilder();
 		// 04.04.2013: adding iteration numbers into complete file
 		sb.append("iteration\t");
 		for (int p = 0; p < programConfig.getOptimizableParams().size(); p++) {
-			ProgramParameter<?> param = programConfig.getOptimizableParams()
-					.get(p);
+			ProgramParameter<?> param = programConfig.getOptimizableParams().get(p);
 			if (p > 0)
 				sb.append(",");
 			sb.append(param);
 		}
 		sb.append("\t");
-		for (ClusteringQualityMeasure measure : this.getRun()
-				.getQualityMeasures()) {
+		for (ClusteringQualityMeasure measure : this.getRun().getQualityMeasures()) {
 			sb.append(measure.getClass().getSimpleName());
 			sb.append("\t");
 		}
@@ -199,51 +193,41 @@ public abstract class ExecutionRunRunnable
 	protected boolean preprocessAndCheckCompatibleDataSetFormat()
 			throws IOException, RegisterException, InterruptedException {
 
-		ConversionInputToStandardConfiguration configInputToStandard = dataConfig
-				.getDatasetConfig().getConversionInputToStandardConfiguration();
-		ConversionStandardToInputConfiguration configStandardToInput = dataConfig
-				.getDatasetConfig().getConversionStandardToInputConfiguration();
+		ConversionInputToStandardConfiguration configInputToStandard = dataConfig.getDatasetConfig()
+				.getConversionInputToStandardConfiguration();
+		ConversionStandardToInputConfiguration configStandardToInput = dataConfig.getDatasetConfig()
+				.getConversionStandardToInputConfiguration();
 
 		/*
 		 * Added 18.09.2012: only one conversion operation per dataset at a
 		 * time. otherwise we can have problems
 		 */
-		File datasetFile = ClustevalBackendServer.getCommonFile(new File(
-				dataConfig.getDatasetConfig().getDataSet().getAbsolutePath()));
+		File datasetFile = ClustevalBackendServer
+				.getCommonFile(new File(dataConfig.getDatasetConfig().getDataSet().getAbsolutePath()));
 		synchronized (datasetFile) {
 			/*
 			 * Check, whether this program can be applied to this dataset, i.e.
 			 * either they are directly compatible or the dataset can be
 			 * converted to another compatible DataSetFormat.
 			 */
-			List<DataSetFormat> compatibleDsFormats = programConfig
-					.getCompatibleDataSetFormats();
+			List<DataSetFormat> compatibleDsFormats = programConfig.getCompatibleDataSetFormats();
 			boolean found = false;
 			// try to find a compatible format we can use and convert
 			for (DataSetFormat compFormat : compatibleDsFormats) {
 				try {
-					DataSet ds = dataConfig
-							.getDatasetConfig()
-							.getDataSet()
-							.preprocessAndConvertTo(this.run.getContext(),
-									compFormat, configInputToStandard,
-									configStandardToInput);
+					DataSet ds = dataConfig.getDatasetConfig().getDataSet().preprocessAndConvertTo(
+							this.run.getContext(), compFormat, configInputToStandard, configStandardToInput);
 
 					// added 23.01.2013: rename the new dataset, unique for the
 					// program configuration
 					int indexOfLastExt = ds.getAbsolutePath().lastIndexOf(".");
 					if (indexOfLastExt == -1)
 						indexOfLastExt = ds.getAbsolutePath().length();
-					String newFileName = ds.getAbsolutePath().substring(0,
-							indexOfLastExt)
-							+ "_"
-							+ programConfig.getName()
-							+ ds.getAbsolutePath().substring(indexOfLastExt);
+					String newFileName = ds.getAbsolutePath().substring(0, indexOfLastExt) + "_"
+							+ programConfig.getName() + ds.getAbsolutePath().substring(indexOfLastExt);
 					// if the new dataset file is the same file as the old one,
 					// we copy it instead of moving
-					if (ds.getAbsolutePath().equals(
-							dataConfig.getDatasetConfig().getDataSet()
-									.getAbsolutePath())) {
+					if (ds.getAbsolutePath().equals(dataConfig.getDatasetConfig().getDataSet().getAbsolutePath())) {
 						ds.copyTo(new File(newFileName), false, true);
 					} else
 						ds.moveTo(new File(newFileName), false);
@@ -281,18 +265,15 @@ public abstract class ExecutionRunRunnable
 	 * @throws InvalidDataSetFormatVersionException
 	 * @throws IllegalArgumentException
 	 */
-	protected void checkCompatibilityDataSetGoldStandard(
-			DataSetConfig dataSetConfig, GoldStandardConfig goldStandardConfig)
-			throws UnknownGoldStandardFormatException,
-			IncompleteGoldStandardException, IllegalArgumentException {
+	protected void checkCompatibilityDataSetGoldStandard(DataSetConfig dataSetConfig,
+			GoldStandardConfig goldStandardConfig) throws UnknownGoldStandardFormatException,
+					IncompleteGoldStandardException, IllegalArgumentException {
 		this.log.debug("Checking compatibility of goldstandard and dataset ...");
 		DataSet dataSet = dataSetConfig.getDataSet().getInStandardFormat();
-		File dataSetFile = ClustevalBackendServer.getCommonFile(new File(
-				dataSet.getAbsolutePath()));
+		File dataSetFile = ClustevalBackendServer.getCommonFile(new File(dataSet.getAbsolutePath()));
 		synchronized (dataSetFile) {
 			GoldStandard goldStandard = goldStandardConfig.getGoldstandard();
-			File goldStandardFile = ClustevalBackendServer
-					.getCommonFile(new File(goldStandard.getAbsolutePath()));
+			File goldStandardFile = ClustevalBackendServer.getCommonFile(new File(goldStandard.getAbsolutePath()));
 			synchronized (goldStandardFile) {
 
 				/*
@@ -303,8 +284,7 @@ public abstract class ExecutionRunRunnable
 				goldStandard.loadIntoMemory();
 
 				final Set<String> ids = new HashSet<String>(dataSet.getIds());
-				final Set<ClusterItem> gsItems = goldStandard.getClustering()
-						.getClusterItems();
+				final Set<ClusterItem> gsItems = goldStandard.getClustering().getClusterItems();
 				final Set<String> gsIds = new HashSet<String>();
 				for (ClusterItem item : gsItems)
 					gsIds.add(item.getId());
@@ -347,11 +327,9 @@ public abstract class ExecutionRunRunnable
 	protected String getInvocationFormat() {
 		// added 16.01.2013
 		if (programConfig.getProgram() instanceof RProgram) {
-			return ((RProgram) programConfig.getProgram())
-					.getInvocationFormat();
+			return ((RProgram) programConfig.getProgram()).getInvocationFormat();
 		}
-		return programConfig.getInvocationFormat(!dataConfig
-				.hasGoldStandardConfig());
+		return programConfig.getInvocationFormat(!dataConfig.hasGoldStandardConfig());
 	}
 
 	/**
@@ -369,13 +347,11 @@ public abstract class ExecutionRunRunnable
 	 *            executable path.
 	 * @return The invocation line with replaced executable parameter.
 	 */
-	protected String[] parseExecutable(final String[] invocation,
-			final Map<String, String> internalParams) {
+	protected String[] parseExecutable(final String[] invocation, final Map<String, String> internalParams) {
 		internalParams.put("e", programConfig.getProgram().getExecutable());
 		String[] parsed = invocation.clone();
 		for (int i = 0; i < parsed.length; i++)
-			parsed[i] = parsed[i].replace("%e%", programConfig.getProgram()
-					.getExecutable());
+			parsed[i] = parsed[i].replace("%e%", programConfig.getProgram().getExecutable());
 		return parsed;
 	}
 
@@ -394,14 +370,11 @@ public abstract class ExecutionRunRunnable
 	 *            path.
 	 * @return The invocation line with replaced input parameter.
 	 */
-	protected String[] parseInput(final String[] invocation,
-			final Map<String, String> internalParams) {
-		internalParams.put("i", dataConfig.getDatasetConfig().getDataSet()
-				.getAbsolutePath());
+	protected String[] parseInput(final String[] invocation, final Map<String, String> internalParams) {
+		internalParams.put("i", dataConfig.getDatasetConfig().getDataSet().getAbsolutePath());
 		String[] parsed = invocation.clone();
 		for (int i = 0; i < parsed.length; i++)
-			parsed[i] = parsed[i].replace("%i%", dataConfig.getDatasetConfig()
-					.getDataSet().getAbsolutePath());
+			parsed[i] = parsed[i].replace("%i%", dataConfig.getDatasetConfig().getDataSet().getAbsolutePath());
 		return parsed;
 	}
 
@@ -420,17 +393,14 @@ public abstract class ExecutionRunRunnable
 	 *            goldstandard path.
 	 * @return The invocation line with replaced goldstandard parameter.
 	 */
-	protected String[] parseGoldStandard(final String[] invocation,
-			final Map<String, String> internalParams) {
+	protected String[] parseGoldStandard(final String[] invocation, final Map<String, String> internalParams) {
 		if (!dataConfig.hasGoldStandardConfig())
 			return invocation;
-		internalParams.put("gs", dataConfig.getGoldstandardConfig()
-				.getGoldstandard().getAbsolutePath());
+		internalParams.put("gs", dataConfig.getGoldstandardConfig().getGoldstandard().getAbsolutePath());
 		String[] parsed = invocation.clone();
 		for (int i = 0; i < parsed.length; i++)
-			parsed[i] = parsed[i].replace("%gs%", dataConfig
-					.getGoldstandardConfig().getGoldstandard()
-					.getAbsolutePath());
+			parsed[i] = parsed[i].replace("%gs%",
+					dataConfig.getGoldstandardConfig().getGoldstandard().getAbsolutePath());
 		return parsed;
 	}
 
@@ -449,8 +419,7 @@ public abstract class ExecutionRunRunnable
 	 *            file path.
 	 * @return The invocation line with replaced output parameter.
 	 */
-	protected String[] parseOutput(final String clusteringOutput,
-			final String qualityOutput, final String[] invocation,
+	protected String[] parseOutput(final String clusteringOutput, final String qualityOutput, final String[] invocation,
 			final Map<String, String> internalParams) {
 		internalParams.put("o", clusteringOutput);
 		internalParams.put("q", qualityOutput);
@@ -492,15 +461,11 @@ public abstract class ExecutionRunRunnable
 	 *             was not already evaluated before.
 	 * 
 	 */
-	protected String[] parseInvocationLineAndEffectiveParameters(
-			final ExecutionIterationWrapper iterationWrapper)
-			throws InternalAttributeException, RegisterException,
-			NoParameterSetFoundException {
+	protected String[] parseInvocationLineAndEffectiveParameters(final ExecutionIterationWrapper iterationWrapper)
+			throws InternalAttributeException, RegisterException, NoParameterSetFoundException {
 
-		final Map<String, String> internalParams = iterationWrapper
-				.getInternalParams();
-		final Map<String, String> effectiveParams = iterationWrapper
-				.getEffectiveParams();
+		final Map<String, String> internalParams = iterationWrapper.getInternalParams();
+		final Map<String, String> effectiveParams = iterationWrapper.getEffectiveParams();
 
 		/*
 		 * We take the invocation line from the ProgramConfig and replace the
@@ -528,9 +493,8 @@ public abstract class ExecutionRunRunnable
 		/*
 		 * output %o%
 		 */
-		invocation = parseOutput(iterationWrapper.getClusteringResultFile()
-				.getAbsolutePath(), iterationWrapper.getResultQualityFile()
-				.getAbsolutePath(), invocation, internalParams);
+		invocation = parseOutput(iterationWrapper.getClusteringResultFile().getAbsolutePath(),
+				iterationWrapper.getResultQualityFile().getAbsolutePath(), invocation, internalParams);
 
 		invocation = replaceRunParameters(invocation, effectiveParams);
 
@@ -558,8 +522,7 @@ public abstract class ExecutionRunRunnable
 	 * @throws MissingParameterValueException
 	 * @throws InternalAttributeException
 	 */
-	protected String[] replaceDefaultParameters(String[] invocation,
-			final Map<String, String> effectiveParams)
+	protected String[] replaceDefaultParameters(String[] invocation, final Map<String, String> effectiveParams)
 			throws MissingParameterValueException, InternalAttributeException {
 		String[] parsed = invocation.clone();
 		for (int i = 0; i < parsed.length; i++) {
@@ -571,16 +534,13 @@ public abstract class ExecutionRunRunnable
 					endPos = parsed[i].length();
 
 				String param = parsed[i].substring(pos + 1, endPos);
-				ProgramParameter<?> pa = programConfig
-						.getParameterForName(param);
+				ProgramParameter<?> pa = programConfig.getParameterForName(param);
 				int arrPos = programConfig.getParams().indexOf(pa);
 				if (arrPos < 0) {
-					throw new MissingParameterValueException(
-							"No value for parameter \"" + param + "\" given");
+					throw new MissingParameterValueException("No value for parameter \"" + param + "\" given");
 				}
 
-				String def = programConfig.getParams().get(arrPos)
-						.evaluateDefaultValue(dataConfig, programConfig)
+				String def = programConfig.getParams().get(arrPos).evaluateDefaultValue(dataConfig, programConfig)
 						.toString();
 				parsed[i] = parsed[i].replace("%" + param + "%", def);
 
@@ -607,10 +567,8 @@ public abstract class ExecutionRunRunnable
 	 *             was not already evaluated before.
 	 */
 	@SuppressWarnings("unused")
-	protected String[] replaceRunParameters(String[] invocation,
-			final Map<String, String> effectiveParams)
-			throws InternalAttributeException, RegisterException,
-			NoParameterSetFoundException {
+	protected String[] replaceRunParameters(String[] invocation, final Map<String, String> effectiveParams)
+			throws InternalAttributeException, RegisterException, NoParameterSetFoundException {
 		/*
 		 * Now, replace the remaining parameters given in the run configuration.
 		 */
@@ -618,8 +576,7 @@ public abstract class ExecutionRunRunnable
 		String[] parsed = invocation.clone();
 		for (int i = 0; i < parsed.length; i++)
 			for (ProgramParameter<?> param : runParams.keySet()) {
-				parsed[i] = parsed[i].replace("%" + param.getName() + "%",
-						runParams.get(param));
+				parsed[i] = parsed[i].replace("%" + param.getName() + "%", runParams.get(param));
 				effectiveParams.put(param.getName(), runParams.get(param));
 			}
 		return parsed;
@@ -638,13 +595,11 @@ public abstract class ExecutionRunRunnable
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * de.clusteval.run.runnable.RunRunnable#decorateIterationWrapper(de.clusteval
-	 * .run.runnable.IterationWrapper, int)
+	 * @see de.clusteval.run.runnable.RunRunnable#decorateIterationWrapper(de.
+	 * clusteval .run.runnable.IterationWrapper, int)
 	 */
 	@Override
-	protected void decorateIterationWrapper(
-			ExecutionIterationWrapper iterationWrapper, int currentPos)
+	protected void decorateIterationWrapper(ExecutionIterationWrapper iterationWrapper, int currentPos)
 			throws RunIterationException {
 		try {
 			super.decorateIterationWrapper(iterationWrapper, currentPos);
@@ -654,8 +609,7 @@ public abstract class ExecutionRunRunnable
 
 			this.initAndEnsureIterationFilesAndFolders(iterationWrapper);
 
-			final String[] invocation = this
-					.parseInvocationLineAndEffectiveParameters(iterationWrapper);
+			final String[] invocation = this.parseInvocationLineAndEffectiveParameters(iterationWrapper);
 			iterationWrapper.setInvocation(invocation);
 
 			/*
@@ -663,12 +617,10 @@ public abstract class ExecutionRunRunnable
 			 * execution of this runnable. The runnable is responsible for
 			 * adding new results to this object during the execution.
 			 */
-			iterationWrapper.setClusteringRunResult(new ClusteringRunResult(
-					this.getRun().getRepository(), System.currentTimeMillis(),
-					iterationWrapper.getClusteringResultFile(),
-					iterationWrapper.getDataConfig(), iterationWrapper
-							.getProgramConfig(), format, runThreadIdentString,
-					run));
+			iterationWrapper.setClusteringRunResult(
+					new ClusteringRunResult(this.getRun().getRepository(), System.currentTimeMillis(),
+							iterationWrapper.getClusteringResultFile(), iterationWrapper.getDataConfig(),
+							iterationWrapper.getProgramConfig(), format, runThreadIdentString, run));
 		} catch (Exception e) {
 			throw new RunIterationException(e);
 		}
@@ -713,14 +665,11 @@ public abstract class ExecutionRunRunnable
 	 * 
 	 */
 	@Override
-	protected void doRunIteration(
-			final ExecutionIterationWrapper iterationWrapper)
-			throws RunIterationException {
+	protected void doRunIteration(final ExecutionIterationWrapper iterationWrapper) throws RunIterationException {
 		try {
 			if (this.isPaused()) {
 				log.info("Pausing...");
-				this.runningTime += System.currentTimeMillis()
-						- this.lastStartTime;
+				this.runningTime += System.currentTimeMillis() - this.lastStartTime;
 				while (this.isPaused()) {
 					try {
 						Thread.sleep(1000);
@@ -756,8 +705,7 @@ public abstract class ExecutionRunRunnable
 				else if (prevItRunnable.getrNotAvailableException() != null)
 					throw prevItRunnable.getrNotAvailableException();
 
-			ExecutionIterationRunnable iterationRunnable = this
-					.createIterationRunnable(iterationWrapper);
+			ExecutionIterationRunnable iterationRunnable = this.createIterationRunnable(iterationWrapper);
 
 			this.submitIterationRunnable(iterationRunnable);
 		} catch (Exception e) {
@@ -768,13 +716,11 @@ public abstract class ExecutionRunRunnable
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * de.clusteval.run.runnable.RunRunnable#createIterationRunnable(de.clusteval
-	 * .run.runnable.IterationWrapper)
+	 * @see de.clusteval.run.runnable.RunRunnable#createIterationRunnable(de.
+	 * clusteval .run.runnable.IterationWrapper)
 	 */
 	@Override
-	protected ExecutionIterationRunnable createIterationRunnable(
-			ExecutionIterationWrapper iterationWrapper) {
+	protected ExecutionIterationRunnable createIterationRunnable(ExecutionIterationWrapper iterationWrapper) {
 
 		return new ExecutionIterationRunnable(iterationWrapper) {
 
@@ -785,73 +731,44 @@ public abstract class ExecutionRunRunnable
 						if (isInterrupted())
 							return;
 
-						ProgramConfig programConfig = iterationWrapper
-								.getProgramConfig();
-						DataConfig dataConfig = iterationWrapper
-								.getDataConfig();
+						ProgramConfig programConfig = iterationWrapper.getProgramConfig();
+						DataConfig dataConfig = iterationWrapper.getDataConfig();
 
-						this.log.info(String.format(
-								"%s (%s,%s, Iteration %d) %s", getRun(),
-								programConfig, dataConfig,
-								iterationWrapper.getOptId(),
-								iterationWrapper.getEffectiveParams()));
+						this.log.info(String.format("%s (%s,%s, Iteration %d) %s", getRun(), programConfig, dataConfig,
+								iterationWrapper.getOptId(), iterationWrapper.getEffectiveParams()));
 
-						this.log.debug(getRun()
-								+ " ("
-								+ programConfig
-								+ ","
-								+ dataConfig
-								+ ") Invoking command line: "
-								+ StringExt.paste(" ",
-										iterationWrapper.getInvocation()));
-						this.log.debug(getRun()
-								+ " ("
-								+ programConfig
-								+ ","
-								+ dataConfig
-								+ ") Log-File is located at: \""
-								+ iterationWrapper.getLogfile()
-										.getAbsolutePath() + "\"");
+						this.log.debug(getRun() + " (" + programConfig + "," + dataConfig + ") Invoking command line: "
+								+ StringExt.paste(" ", iterationWrapper.getInvocation()));
+						this.log.debug(
+								getRun() + " (" + programConfig + "," + dataConfig + ") Log-File is located at: \""
+										+ iterationWrapper.getLogfile().getAbsolutePath() + "\"");
 
-						final BufferedWriter bw = new BufferedWriter(
-								new FileWriter(iterationWrapper.getLogfile()));
+						final BufferedWriter bw = new BufferedWriter(new FileWriter(iterationWrapper.getLogfile()));
 
 						this.log = LoggerFactory.getLogger(this.getClass());
 						try {
-							proc = programConfig.getProgram().exec(dataConfig,
-									programConfig,
-									iterationWrapper.getInvocation(),
-									iterationWrapper.getEffectiveParams(),
+							proc = programConfig.getProgram().exec(dataConfig, programConfig,
+									iterationWrapper.getInvocation(), iterationWrapper.getEffectiveParams(),
 									iterationWrapper.getInternalParams());
 
 							if (proc != null) {
 								if (proc instanceof RProcess) {
 								} else {
-									new StreamGobbler(proc.getInputStream(), bw)
-											.start();
-									new StreamGobbler(proc.getErrorStream(), bw)
-											.start();
+									new StreamGobbler(proc.getInputStream(), bw).start();
+									new StreamGobbler(proc.getErrorStream(), bw).start();
 								}
 								try {
-									int maxExecTime = getRun()
-											.hasMaxExecutionTime(programConfig)
-											? getRun().getMaxExecutionTime(
-													programConfig)
-											: programConfig
-													.getMaxExecutionTimeMinutes();
+									int maxExecTime = getRun().hasMaxExecutionTime(programConfig)
+											? getRun().getMaxExecutionTime(programConfig)
+											: programConfig.getMaxExecutionTimeMinutes();
 									if (maxExecTime == -1) {
 										proc.waitFor();
-									} else if (!proc.waitFor(maxExecTime,
-											TimeUnit.MINUTES)) {
+									} else if (!proc.waitFor(maxExecTime, TimeUnit.MINUTES)) {
 										// still running
-										this.log.info(String
-												.format("%s (%s,%s, Iteration %d) Going to terminate clustering method as it has been running longer than "
+										this.log.info(String.format(
+												"%s (%s,%s, Iteration %d) Going to terminate clustering method as it has been running longer than "
 														+ maxExecTime + "mins.",
-														getRun(),
-														programConfig,
-														dataConfig,
-														iterationWrapper
-																.getOptId()));
+												getRun(), programConfig, dataConfig, iterationWrapper.getOptId()));
 										proc.destroyForcibly();
 										proc.waitFor();
 									}
@@ -867,84 +784,56 @@ public abstract class ExecutionRunRunnable
 							if (checkForInterrupted())
 								throw new InterruptedException();
 
-							iterationWrapper
-									.setConvertedClusteringRunResult(convertResult(
-											iterationWrapper
-													.getClusteringRunResult(),
-											iterationWrapper
-													.getEffectiveParams(),
-											iterationWrapper
-													.getInternalParams()));
+							iterationWrapper.setConvertedClusteringRunResult(convertResult(
+									iterationWrapper.getClusteringRunResult(), iterationWrapper.getEffectiveParams(),
+									iterationWrapper.getInternalParams()));
 
-							if (iterationWrapper
-									.getConvertedClusteringRunResult() != null) {
-								this.log.debug(getRun() + " (" + programConfig
-										+ "," + dataConfig
+							if (iterationWrapper.getConvertedClusteringRunResult() != null) {
+								this.log.debug(getRun() + " (" + programConfig + "," + dataConfig
 										+ ") Finished converting result files");
 
 								// execute runresult postprocessors
 								ExecutionRun run = (ExecutionRun) this.iterationWrapper.runnable.run;
-								ClusteringRunResult tmpResult = iterationWrapper
-										.getConvertedClusteringRunResult();
-								for (RunResultPostprocessor postprocessor : run
-										.getPostProcessors()) {
+								ClusteringRunResult tmpResult = iterationWrapper.getConvertedClusteringRunResult();
+								for (RunResultPostprocessor postprocessor : run.getPostProcessors()) {
 									try {
 										tmpResult.loadIntoMemory();
 
 										final Clustering cl = postprocessor
-												.postprocess(tmpResult
-														.getClustering()
-														.getSecond());
+												.postprocess(tmpResult.getClustering().getSecond());
 										tmpResult.unloadFromMemory();
 
-										String targetFile = tmpResult
-												.getAbsolutePath()
-												+ "."
-												+ postprocessor.getClass()
-														.getSimpleName();
+										String targetFile = tmpResult.getAbsolutePath() + "."
+												+ postprocessor.getClass().getSimpleName();
 
-										TextFileParser p = new TextFileParser(
-												tmpResult.getAbsolutePath(),
-												new int[0], new int[0],
-												targetFile, OUTPUT_MODE.STREAM) {
+										TextFileParser p = new TextFileParser(tmpResult.getAbsolutePath(), new int[0],
+												new int[0], targetFile, OUTPUT_MODE.STREAM) {
 
 											@Override
-											protected void processLine(
-													String[] key, String[] value) {
+											protected void processLine(String[] key, String[] value) {
 											}
 
 											@Override
-											protected String getLineOutput(
-													String[] key, String[] value) {
+											protected String getLineOutput(String[] key, String[] value) {
 												if (currentLine == 0)
-													return this
-															.combineColumns(value)
-															+ "\n";
-												return String.format(
-														"%s%s%s\n", value[0],
-														this.inSplit,
+													return this.combineColumns(value) + "\n";
+												return String.format("%s%s%s\n", value[0], this.inSplit,
 														cl.toFormattedString());
 											};
 										};
 										p.process();
 
-										tmpResult = new ClusteringRunResult(
-												tmpResult.getRepository(),
-												System.currentTimeMillis(),
-												new File(targetFile),
-												tmpResult.getDataConfig(),
-												tmpResult.getProgramConfig(),
-												format,
+										tmpResult = new ClusteringRunResult(tmpResult.getRepository(),
+												System.currentTimeMillis(), new File(targetFile),
+												tmpResult.getDataConfig(), tmpResult.getProgramConfig(), format,
 												tmpResult.getIdentifier(), run);
 									} catch (Exception e) {
 										throw new RunResultConversionException(
-												"An error occurred when applying postprocessor "
-														+ postprocessor);
+												"An error occurred when applying postprocessor " + postprocessor);
 									}
 								}
 
-								iterationWrapper
-										.setConvertedClusteringRunResult(tmpResult);
+								iterationWrapper.setConvertedClusteringRunResult(tmpResult);
 
 								/*
 								 * We check from time to time, whether this run
@@ -954,28 +843,18 @@ public abstract class ExecutionRunRunnable
 									throw new InterruptedException();
 
 								List<Pair<ParameterSet, ClusteringQualitySet>> qualities = assessQualities(
-										iterationWrapper
-												.getConvertedClusteringRunResult(),
+										iterationWrapper.getConvertedClusteringRunResult(),
 										iterationWrapper.getInternalParams());
 								for (Pair<ParameterSet, ClusteringQualitySet> clustSet : qualities)
-									this.log.info(String.format(
-											"%s (%s,%s, Iteration %d) %s",
-											getRun(), programConfig,
-											dataConfig,
-											iterationWrapper.getOptId(),
-											clustSet.getSecond().toString()));
+									this.log.info(String.format("%s (%s,%s, Iteration %d) %s", getRun(), programConfig,
+											dataConfig, iterationWrapper.getOptId(), clustSet.getSecond().toString()));
 								synchronized (completeQualityOutput) {
 									// 04.04.2013: adding iteration number to
 									// qualities
 									List<Triple<ParameterSet, ClusteringQualitySet, Long>> qualitiesWithIterations = new ArrayList<Triple<ParameterSet, ClusteringQualitySet, Long>>();
 									for (Pair<ParameterSet, ClusteringQualitySet> pair : qualities)
-										qualitiesWithIterations
-												.add(Triple.getTriple(
-														pair.getFirst(),
-														pair.getSecond(),
-														new Long(
-																iterationWrapper
-																		.getOptId())));
+										qualitiesWithIterations.add(Triple.getTriple(pair.getFirst(), pair.getSecond(),
+												new Long(iterationWrapper.getOptId())));
 
 									writeQualitiesToFile(qualitiesWithIterations);
 								}
@@ -997,9 +876,7 @@ public abstract class ExecutionRunRunnable
 								// not
 								// converted
 								// result
-								getRun().getResults()
-										.add(iterationWrapper
-												.getConvertedClusteringRunResult());
+								getRun().getResults().add(iterationWrapper.getConvertedClusteringRunResult());
 							}
 						} catch (RunResultNotFoundException e) {
 							handleMissingRunResult(iterationWrapper);
@@ -1012,11 +889,9 @@ public abstract class ExecutionRunRunnable
 						} finally {
 							if (programConfig.getProgram() instanceof RProgram) {
 								synchronized (bw) {
-									if (((RProgram) (programConfig.getProgram()))
-											.getRengine() != null)
-										bw.append(((RProgram) (programConfig
-												.getProgram())).getRengine()
-												.getLastError());
+									if (((RProgram) (programConfig.getProgram())).getRengine() != null)
+										bw.append(
+												((RProgram) (programConfig.getProgram())).getRengine().getLastError());
 									bw.close();
 								}
 							}
@@ -1055,37 +930,32 @@ public abstract class ExecutionRunRunnable
 	 * @throws InvalidDataSetFormatVersionException
 	 * @throws RunResultNotFoundException
 	 */
-	private List<Pair<ParameterSet, ClusteringQualitySet>> assessQualities(
-			final ClusteringRunResult convertedResult,
-			final Map<String, String> internalParams)
-			throws RunResultNotFoundException {
-		this.log.debug(this.getRun() + " (" + this.programConfig + ","
-				+ this.dataConfig + ") Assessing quality of results...");
+	private List<Pair<ParameterSet, ClusteringQualitySet>> assessQualities(final ClusteringRunResult convertedResult,
+			final Map<String, String> internalParams) throws RunResultNotFoundException {
+		this.log.debug(this.getRun() + " (" + this.programConfig + "," + this.dataConfig
+				+ ") Assessing quality of results...");
 		List<Pair<ParameterSet, ClusteringQualitySet>> qualities = new ArrayList<Pair<ParameterSet, ClusteringQualitySet>>();
 		try {
 			final String qualityFile = internalParams.get("q");
 			convertedResult.loadIntoMemory();
 			try {
-				final Pair<ParameterSet, Clustering> pair = convertedResult
-						.getClustering();
-				ClusteringQualitySet quals = pair.getSecond().assessQuality(
-						dataConfig, this.getRun().getQualityMeasures());
+				final Pair<ParameterSet, Clustering> pair = convertedResult.getClustering();
+				ClusteringQualitySet quals = pair.getSecond().assessQuality(dataConfig,
+						this.getRun().getQualityMeasures());
 				qualities.add(Pair.getPair(pair.getFirst(), quals));
 				for (ClusteringQualityMeasure qualityMeasure : quals.keySet()) {
 					FileUtils.appendStringToFile(qualityFile,
-							qualityMeasure.getClass().getSimpleName() + "\t"
-									+ quals.get(qualityMeasure) + "\n");
+							qualityMeasure.getClass().getSimpleName() + "\t" + quals.get(qualityMeasure) + "\n");
 				}
 			} finally {
 				convertedResult.unloadFromMemory();
 			}
 
-			this.log.debug(this.getRun() + " (" + this.programConfig + ","
-					+ this.dataConfig + ") Finished quality calculations");
+			this.log.debug(this.getRun() + " (" + this.programConfig + "," + this.dataConfig
+					+ ") Finished quality calculations");
 			return qualities;
 		} catch (Exception e) {
-			throw new RunResultNotFoundException("The result file "
-					+ convertedResult.getAbsolutePath()
+			throw new RunResultNotFoundException("The result file " + convertedResult.getAbsolutePath()
 					+ " does not exist or could not been parsed!");
 		}
 	}
@@ -1098,8 +968,7 @@ public abstract class ExecutionRunRunnable
 	 *            A list containing pairs of parameter sets and corresponding
 	 *            clustering qualities of different measures.
 	 */
-	protected void writeQualitiesToFile(
-			List<Triple<ParameterSet, ClusteringQualitySet, Long>> qualities) {
+	protected void writeQualitiesToFile(List<Triple<ParameterSet, ClusteringQualitySet, Long>> qualities) {
 		// 04.04.2013: adding iteration number into first column
 		/*
 		 * Write the qualities into the complete file
@@ -1109,15 +978,13 @@ public abstract class ExecutionRunRunnable
 			sb.append(clustSet.getThird());
 			sb.append("\t");
 			for (int p = 0; p < programConfig.getOptimizableParams().size(); p++) {
-				ProgramParameter<?> param = programConfig
-						.getOptimizableParams().get(p);
+				ProgramParameter<?> param = programConfig.getOptimizableParams().get(p);
 				if (p > 0)
 					sb.append(",");
 				sb.append(clustSet.getFirst().get(param.getName()));
 			}
 			sb.append("\t");
-			for (ClusteringQualityMeasure measure : this.getRun()
-					.getQualityMeasures()) {
+			for (ClusteringQualityMeasure measure : this.getRun().getQualityMeasures()) {
 				sb.append(clustSet.getSecond().get(measure));
 				sb.append("\t");
 			}
@@ -1139,21 +1006,17 @@ public abstract class ExecutionRunRunnable
 	 * @throws SecurityException
 	 * @throws RunResultConversionException
 	 */
-	protected ClusteringRunResult convertResult(
-			final ClusteringRunResult result,
-			final Map<String, String> effectiveParams,
-			final Map<String, String> internalParams)
-			throws NoRunResultFormatParserException,
-			RunResultNotFoundException, RunResultConversionException {
+	protected ClusteringRunResult convertResult(final ClusteringRunResult result,
+			final Map<String, String> effectiveParams, final Map<String, String> internalParams)
+					throws NoRunResultFormatParserException, RunResultNotFoundException, RunResultConversionException {
 		/*
 		 * Converting and Quality of result
 		 */
-		this.log.debug(this.getRun() + " (" + this.programConfig + ","
-				+ this.dataConfig + ") Converting result files...");
+		this.log.debug(
+				this.getRun() + " (" + this.programConfig + "," + this.dataConfig + ") Converting result files...");
 
 		try {
-			ClusteringRunResult convertedResult = result.convertTo(this
-					.getRun().getContext().getStandardOutputFormat(),
+			ClusteringRunResult convertedResult = result.convertTo(this.getRun().getContext().getStandardOutputFormat(),
 					internalParams, effectiveParams);
 			synchronized (this.getRun().getResults()) {
 				this.getRun().getResults().add(convertedResult);
@@ -1164,8 +1027,7 @@ public abstract class ExecutionRunRunnable
 		} catch (RunResultNotFoundException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new RunResultConversionException(
-					"The runresult could not be converted");
+			throw new RunResultConversionException("The runresult could not be converted");
 		}
 	}
 
@@ -1179,8 +1041,7 @@ public abstract class ExecutionRunRunnable
 	 * used throughout the process: {@link #logFile},
 	 * {@link #clusteringResultFile} and {@link #resultQualityFile}.
 	 */
-	protected void initAndEnsureIterationFilesAndFolders(
-			final ExecutionIterationWrapper iterationWrapper) {
+	protected void initAndEnsureIterationFilesAndFolders(final ExecutionIterationWrapper iterationWrapper) {
 
 		int optId = iterationWrapper.getOptId();
 		/*
@@ -1190,54 +1051,37 @@ public abstract class ExecutionRunRunnable
 		 */
 		String clusteringOutput;
 		if (!isResume)
-			clusteringOutput = FileUtils
-					.buildPath(
-							this.getRun()
-									.getRepository()
-									.getClusterResultsBasePath()
-									.replace("%RUNIDENTSTRING",
-											runThreadIdentString),
-							programConfig + "_" + dataConfig + "." + optId
-									+ ".results");
+			clusteringOutput = FileUtils.buildPath(this.getRun().getRepository().getClusterResultsBasePath()
+					.replace("%RUNIDENTSTRING", runThreadIdentString),
+					programConfig + "_" + dataConfig + "." + optId + ".results");
 		else
 			clusteringOutput = FileUtils
 					.buildPath(
-							this.getRun()
-									.getRepository()
-									.getParent()
-									.getClusterResultsBasePath()
-									.replace("%RUNIDENTSTRING",
-											runThreadIdentString),
-							programConfig + "_" + dataConfig + "." + optId
-									+ ".results");
+							this.getRun().getRepository().getParent().getClusterResultsBasePath()
+									.replace("%RUNIDENTSTRING", runThreadIdentString),
+							programConfig + "_" + dataConfig + "." + optId + ".results");
 
 		String qualityOutput;
 		if (!isResume)
-			qualityOutput = FileUtils.buildPath(
-					this.getRun().getRepository()
-							.getClusterResultsQualityBasePath()
-							.replace("%RUNIDENTSTRING", runThreadIdentString),
-					programConfig + "_" + dataConfig + "." + optId
-							+ ".results.qual");
+			qualityOutput = FileUtils
+					.buildPath(
+							this.getRun().getRepository().getClusterResultsQualityBasePath().replace("%RUNIDENTSTRING",
+									runThreadIdentString),
+					programConfig + "_" + dataConfig + "." + optId + ".results.qual");
 		else
 			qualityOutput = FileUtils.buildPath(
-					this.getRun().getRepository().getParent()
-							.getClusterResultsQualityBasePath()
+					this.getRun().getRepository().getParent().getClusterResultsQualityBasePath()
 							.replace("%RUNIDENTSTRING", runThreadIdentString),
-					programConfig + "_" + dataConfig + "." + optId
-							+ ".results.qual");
+					programConfig + "_" + dataConfig + "." + optId + ".results.qual");
 
 		String logOutput;
 		if (!isResume)
 			logOutput = FileUtils.buildPath(
-					this.getRun().getRepository().getLogBasePath()
-							.replace("%RUNIDENTSTRING", runThreadIdentString),
+					this.getRun().getRepository().getLogBasePath().replace("%RUNIDENTSTRING", runThreadIdentString),
 					programConfig + "_" + dataConfig + "." + optId + ".log");
 		else
-			logOutput = FileUtils.buildPath(
-					this.getRun().getRepository().getParent().getLogBasePath()
-							.replace("%RUNIDENTSTRING", runThreadIdentString),
-					programConfig + "_" + dataConfig + "." + optId + ".log");
+			logOutput = FileUtils.buildPath(this.getRun().getRepository().getParent().getLogBasePath().replace(
+					"%RUNIDENTSTRING", runThreadIdentString), programConfig + "_" + dataConfig + "." + optId + ".log");
 
 		/*
 		 * if the output already exists, delete it to avoid complications safety
@@ -1266,12 +1110,9 @@ public abstract class ExecutionRunRunnable
 	 * This can comprise actions ensuring that further iterations can be
 	 * executed smoothly.
 	 */
-	protected void handleMissingRunResult(
-			final ExecutionIterationWrapper iterationWrapper) {
-		final Map<String, String> effectiveParams = iterationWrapper
-				.getEffectiveParams();
-		final Map<String, String> internalParams = iterationWrapper
-				.getInternalParams();
+	protected void handleMissingRunResult(final ExecutionIterationWrapper iterationWrapper) {
+		final Map<String, String> effectiveParams = iterationWrapper.getEffectiveParams();
+		final Map<String, String> internalParams = iterationWrapper.getInternalParams();
 		final int optId = iterationWrapper.getOptId();
 		/*
 		 * There is no results file
@@ -1283,8 +1124,7 @@ public abstract class ExecutionRunRunnable
 		sb.append(optId);
 		sb.append("\t");
 		for (int p = 0; p < programConfig.getOptimizableParams().size(); p++) {
-			ProgramParameter<?> param = programConfig.getOptimizableParams()
-					.get(p);
+			ProgramParameter<?> param = programConfig.getOptimizableParams().get(p);
 			if (p > 0)
 				sb.append(",");
 			sb.append(effectiveParams.get(param.getName()));
@@ -1342,46 +1182,29 @@ public abstract class ExecutionRunRunnable
 	protected void setInternalAttributes() throws IllegalArgumentException {
 		// TODO; make use of inheritance! (relative and absolute datasets)
 		// TODO: move to place, where dataset is loaded?
-		DataSet ds = this.dataConfig.getDatasetConfig().getDataSet()
-				.getInStandardFormat();
+		DataSet ds = this.dataConfig.getDatasetConfig().getDataSet().getInStandardFormat();
 
 		if (ds instanceof RelativeDataSet) {
 			RelativeDataSet dataSet = (RelativeDataSet) ds;
-			this.dataConfig
-					.getRepository()
-					.getInternalDoubleAttribute(
-							"$("
-									+ this.dataConfig.getDatasetConfig()
-											.getDataSet().getOriginalDataSet()
-											.getAbsolutePath()
-									+ ":minSimilarity)")
+			this.dataConfig.getRepository()
+					.getInternalDoubleAttribute("$("
+							+ this.dataConfig.getDatasetConfig().getDataSet().getOriginalDataSet().getAbsolutePath()
+							+ ":minSimilarity)")
 					.setValue(dataSet.getDataSetContent().getMinValue());
-			this.dataConfig
-					.getRepository()
-					.getInternalDoubleAttribute(
-							"$("
-									+ this.dataConfig.getDatasetConfig()
-											.getDataSet().getOriginalDataSet()
-											.getAbsolutePath()
-									+ ":maxSimilarity)")
+			this.dataConfig.getRepository()
+					.getInternalDoubleAttribute("$("
+							+ this.dataConfig.getDatasetConfig().getDataSet().getOriginalDataSet().getAbsolutePath()
+							+ ":maxSimilarity)")
 					.setValue(dataSet.getDataSetContent().getMaxValue());
-			this.dataConfig
-					.getRepository()
-					.getInternalDoubleAttribute(
-							"$("
-									+ this.dataConfig.getDatasetConfig()
-											.getDataSet().getOriginalDataSet()
-											.getAbsolutePath()
-									+ ":meanSimilarity)")
+			this.dataConfig.getRepository()
+					.getInternalDoubleAttribute("$("
+							+ this.dataConfig.getDatasetConfig().getDataSet().getOriginalDataSet().getAbsolutePath()
+							+ ":meanSimilarity)")
 					.setValue(dataSet.getDataSetContent().getMean());
 		}
-		this.dataConfig
-				.getRepository()
+		this.dataConfig.getRepository()
 				.getInternalIntegerAttribute(
-						"$("
-								+ this.dataConfig.getDatasetConfig()
-										.getDataSet().getOriginalDataSet()
-										.getAbsolutePath()
+						"$(" + this.dataConfig.getDatasetConfig().getDataSet().getOriginalDataSet().getAbsolutePath()
 								+ ":numberOfElements)")
 				.setValue(ds.getIds().size());
 	}
@@ -1393,32 +1216,22 @@ public abstract class ExecutionRunRunnable
 	 */
 	@SuppressWarnings("unused")
 	@Override
-	protected void beforeRun() throws UnknownDataSetFormatException,
-			InvalidDataSetFormatVersionException, IllegalArgumentException,
-			IOException, RegisterException, InternalAttributeException,
-			IncompatibleDataSetFormatException,
-			UnknownGoldStandardFormatException,
-			IncompleteGoldStandardException, InterruptedException {
-		this.log.info("Run " + this.getRun() + " (" + this.programConfig + ","
-				+ this.dataConfig + ") " + (!isResume ? "started" : "RESUMED")
-				+ " (asynchronously)");
+	protected void beforeRun()
+			throws UnknownDataSetFormatException, InvalidDataSetFormatVersionException, IllegalArgumentException,
+			IOException, RegisterException, InternalAttributeException, IncompatibleDataSetFormatException,
+			UnknownGoldStandardFormatException, IncompleteGoldStandardException, InterruptedException {
+		this.log.info("Run " + this.getRun() + " (" + this.programConfig + "," + this.dataConfig + ") "
+				+ (!isResume ? "started" : "RESUMED") + " (asynchronously)");
 
 		if (checkForInterrupted())
 			throw new InterruptedException();
 
 		lastStartTime = System.currentTimeMillis();
 
-		FileUtils.appendStringToFile(
-				this.getRun().getLogFilePath(),
-				Formatter.currentTimeAsString(true, "MM_dd_yyyy-HH_mm_ss",
-						Locale.UK)
-						+ "\tStarting runThread \""
-						+ this.getRun()
-						+ " ("
-						+ this.programConfig
-						+ ","
-						+ this.dataConfig
-						+ ")\"" + System.getProperty("line.separator"));
+		FileUtils.appendStringToFile(this.getRun().getLogFilePath(),
+				Formatter.currentTimeAsString(true, "MM_dd_yyyy-HH_mm_ss", Locale.UK) + "\tStarting runThread \""
+						+ this.getRun() + " (" + this.programConfig + "," + this.dataConfig + ")\""
+						+ System.getProperty("line.separator"));
 
 		this.format = programConfig.getOutputFormat();
 
@@ -1427,11 +1240,8 @@ public abstract class ExecutionRunRunnable
 		boolean found = preprocessAndCheckCompatibleDataSetFormat();
 		if (!found) {
 			IncompatibleDataSetFormatException ex = new IncompatibleDataSetFormatException(
-					"The program \""
-							+ programConfig.getProgram()
-							+ "\" cannot be run with the dataset format \""
-							+ dataConfig.getDatasetConfig().getDataSet()
-									.getDataSetFormat() + "\"");
+					"The program \"" + programConfig.getProgram() + "\" cannot be run with the dataset format \""
+							+ dataConfig.getDatasetConfig().getDataSet().getDataSetFormat() + "\"");
 			// otherwise throw exception
 			throw ex;
 		}
@@ -1442,15 +1252,12 @@ public abstract class ExecutionRunRunnable
 		try {
 			this.log.debug("Loading the input similarities into memory ...");
 			// Load the dataset into memory
-			DataSet dataSet = this.dataConfig.getDatasetConfig().getDataSet()
-					.getInStandardFormat();
-			dataSet.loadIntoMemory(this.dataConfig.getDatasetConfig()
-					.getConversionInputToStandardConfiguration()
+			DataSet dataSet = this.dataConfig.getDatasetConfig().getDataSet().getInStandardFormat();
+			dataSet.loadIntoMemory(this.dataConfig.getDatasetConfig().getConversionInputToStandardConfiguration()
 					.getSimilarityPrecision());
 			// if the original dataset is an absolute dataset, load it into
 			// memory as well
-			dataSet = this.dataConfig.getDatasetConfig().getDataSet()
-					.getOriginalDataSet();
+			dataSet = this.dataConfig.getDatasetConfig().getDataSet().getOriginalDataSet();
 			if (dataSet instanceof AbsoluteDataSet) {
 				this.log.debug("Loading the input coordinates into memory ...");
 				dataSet.loadIntoMemory();
@@ -1463,13 +1270,11 @@ public abstract class ExecutionRunRunnable
 			 * Check compatibility of dataset with goldstandard
 			 */
 			if (this.dataConfig.hasGoldStandardConfig())
-				checkCompatibilityDataSetGoldStandard(
-						this.dataConfig.getDatasetConfig(),
+				checkCompatibilityDataSetGoldStandard(this.dataConfig.getDatasetConfig(),
 						this.dataConfig.getGoldstandardConfig());
 
-			assert !this.dataConfig.hasGoldStandardConfig()
-					|| this.dataConfig.getGoldstandardConfig()
-							.getGoldstandard().isInMemory();
+			assert!this.dataConfig.hasGoldStandardConfig()
+					|| this.dataConfig.getGoldstandardConfig().getGoldstandard().isInMemory();
 		} catch (IncompleteGoldStandardException e1) {
 			// this.exceptions.add(e1);
 			// 15.11.2012: missing entries in the goldstandard is no longer
@@ -1496,8 +1301,7 @@ public abstract class ExecutionRunRunnable
 		wrapper.setRunnable(this);
 		wrapper.setOptId(-1);
 
-		ExecutionIterationRunnable iterationRunnable = new ExecutionIterationRunnable(
-				wrapper) {
+		ExecutionIterationRunnable iterationRunnable = new ExecutionIterationRunnable(wrapper) {
 
 			@Override
 			public void doRun() {
@@ -1506,8 +1310,7 @@ public abstract class ExecutionRunRunnable
 				if (repo instanceof RunResultRepository)
 					repo = repo.getParent();
 				scheduler = repo.getSupervisorThread().getRunScheduler();
-				scheduler.informOnStartedIterationRunnable(
-						Thread.currentThread(), this);
+				scheduler.informOnStartedIterationRunnable(Thread.currentThread(), this);
 
 				try {
 					this.log.debug("Assessing isoMDS coordinates of dataset samples ...");
@@ -1515,8 +1318,7 @@ public abstract class ExecutionRunRunnable
 				} catch (Throwable e) {
 					e.printStackTrace();
 				} finally {
-					scheduler.informOnFinishedIterationRunnable(
-							Thread.currentThread(), this);
+					scheduler.informOnFinishedIterationRunnable(Thread.currentThread(), this);
 				}
 			}
 		};
@@ -1544,8 +1346,7 @@ public abstract class ExecutionRunRunnable
 				if (repo instanceof RunResultRepository)
 					repo = repo.getParent();
 				scheduler = repo.getSupervisorThread().getRunScheduler();
-				scheduler.informOnStartedIterationRunnable(
-						Thread.currentThread(), this);
+				scheduler.informOnStartedIterationRunnable(Thread.currentThread(), this);
 
 				try {
 					this.log.debug("Assessing PCA coordinates of dataset samples ...");
@@ -1553,8 +1354,7 @@ public abstract class ExecutionRunRunnable
 				} catch (Throwable e) {
 					e.printStackTrace();
 				} finally {
-					scheduler.informOnFinishedIterationRunnable(
-							Thread.currentThread(), this);
+					scheduler.informOnFinishedIterationRunnable(Thread.currentThread(), this);
 				}
 			}
 		};
@@ -1567,38 +1367,24 @@ public abstract class ExecutionRunRunnable
 		 * Ensure that the target directory exists
 		 */
 		if (!isResume)
-			new File(this.getRun().getRepository()
-					.getClusterResultsQualityBasePath()
-					.replace("%RUNIDENTSTRING", runThreadIdentString)).mkdirs();
+			new File(this.getRun().getRepository().getClusterResultsQualityBasePath().replace("%RUNIDENTSTRING",
+					runThreadIdentString)).mkdirs();
 		else
-			new File(this.getRun().getRepository().getParent()
-					.getClusterResultsQualityBasePath()
+			new File(this.getRun().getRepository().getParent().getClusterResultsQualityBasePath()
 					.replace("%RUNIDENTSTRING", runThreadIdentString)).mkdirs();
 
 		/*
 		 * Writing all the qualities of the optimization process into one file
 		 */
 		if (!isResume)
-			completeQualityOutput = FileUtils
-					.buildPath(
-							this.getRun()
-									.getRepository()
-									.getClusterResultsQualityBasePath()
-									.replace("%RUNIDENTSTRING",
-											runThreadIdentString),
-							programConfig + "_" + dataConfig
-									+ ".results.qual.complete");
+			completeQualityOutput = FileUtils.buildPath(this.getRun().getRepository().getClusterResultsQualityBasePath()
+					.replace("%RUNIDENTSTRING", runThreadIdentString),
+					programConfig + "_" + dataConfig + ".results.qual.complete");
 		else
-			completeQualityOutput = FileUtils
-					.buildPath(
-							this.getRun()
-									.getRepository()
-									.getParent()
-									.getClusterResultsQualityBasePath()
-									.replace("%RUNIDENTSTRING",
-											runThreadIdentString),
-							programConfig + "_" + dataConfig
-									+ ".results.qual.complete");
+			completeQualityOutput = FileUtils.buildPath(
+					this.getRun().getRepository().getParent().getClusterResultsQualityBasePath()
+							.replace("%RUNIDENTSTRING", runThreadIdentString),
+					programConfig + "_" + dataConfig + ".results.qual.complete");
 	}
 
 	// /**
@@ -1632,39 +1418,26 @@ public abstract class ExecutionRunRunnable
 			super.afterRun();
 		} finally {
 			// unload the dataset from memory
-			DataSet dataSet = this.dataConfig.getDatasetConfig().getDataSet()
-					.getInStandardFormat();
+			DataSet dataSet = this.dataConfig.getDatasetConfig().getDataSet().getInStandardFormat();
 			if (dataSet != null)
 				dataSet.unloadFromMemory();
 			// if the original dataset is an absolute dataset, unload it from
 			// memory
 			// as well
-			dataSet = this.dataConfig.getDatasetConfig().getDataSet()
-					.getOriginalDataSet();
+			dataSet = this.dataConfig.getDatasetConfig().getDataSet().getOriginalDataSet();
 			if (dataSet != null && dataSet instanceof AbsoluteDataSet)
 				dataSet.unloadFromMemory();
 
 			if (dataConfig.hasGoldStandardConfig())
-				dataConfig.getGoldstandardConfig().getGoldstandard()
-						.unloadFromMemory();
+				dataConfig.getGoldstandardConfig().getGoldstandard().unloadFromMemory();
 		}
 
-		FileUtils.appendStringToFile(
-				this.getRun().getLogFilePath(),
-				Formatter.currentTimeAsString(true, "MM_dd_yyyy-HH_mm_ss",
-						Locale.UK)
-						+ "\tFinished runThread \""
-						+ this.getRun()
-						+ " ("
-						+ this.programConfig
-						+ ","
-						+ this.dataConfig
-						+ ")\" (Duration "
-						+ Formatter.formatMsToDuration(runningTime
-								+ (System.currentTimeMillis() - lastStartTime))
-						+ ")" + System.getProperty("line.separator"));
+		FileUtils.appendStringToFile(this.getRun().getLogFilePath(),
+				Formatter.currentTimeAsString(true, "MM_dd_yyyy-HH_mm_ss", Locale.UK) + "\tFinished runThread \""
+						+ this.getRun() + " (" + this.programConfig + "," + this.dataConfig + ")\" (Duration "
+						+ Formatter.formatMsToDuration(runningTime + (System.currentTimeMillis() - lastStartTime)) + ")"
+						+ System.getProperty("line.separator"));
 
-		this.log.info("Run " + this.getRun() + " (" + this.programConfig + ","
-				+ this.dataConfig + ") finished");
+		this.log.info("Run " + this.getRun() + " (" + this.programConfig + "," + this.dataConfig + ") finished");
 	}
 }

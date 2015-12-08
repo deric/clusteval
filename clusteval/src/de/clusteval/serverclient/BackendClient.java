@@ -640,7 +640,7 @@ public class BackendClient extends Thread {
 						percent = status.get(runName).getSecond();
 						System.out.println();
 						System.out
-								.print("\r" + newStatus + " " + percent + "%");
+								.print("\r" + newStatus + " " + String.format("%.3f", percent) + "%");
 					}
 					System.out.println();
 				} catch (ConnectException e2) {
@@ -673,7 +673,7 @@ public class BackendClient extends Thread {
 						percent = optStatus.get(runName).getFirst().getSecond();
 						System.out.println();
 						System.out.println("\r Status:\t" + newStatus + " "
-								+ percent + "%");
+								+ String.format("%.3f", percent) + "%");
 						Map<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>> qualities = optStatus
 								.get(runName).getSecond();
 

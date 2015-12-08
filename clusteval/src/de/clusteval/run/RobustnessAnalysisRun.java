@@ -738,7 +738,7 @@ public class RobustnessAnalysisRun extends ClusteringRun {
 		RobustnessAnalysisRunRunnable r = new RobustnessAnalysisRunRunnable(
 				runScheduler, run, programConfig, dataConfig, runIdentString,
 				isResume, runParams);
-		run.progress.addSubProgress(r.getProgressPrinter(), 100);
+		run.progress.addSubProgress(r.getProgressPrinter(), 10000);
 		return r;
 	}
 

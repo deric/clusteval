@@ -173,7 +173,7 @@ public abstract class RunRunnable<IR extends IterationRunnable, IW extends Itera
 		this.futures = new ArrayList<Future<?>>();
 		this.futureToIterationRunnable = new HashMap<Future<?>, Runnable>();
 		this.log = LoggerFactory.getLogger(this.getClass());
-		this.progress = new ProgressPrinter(100, false);
+		this.progress = new ProgressPrinter(10000, false);
 	}
 
 	/**
@@ -322,7 +322,7 @@ public abstract class RunRunnable<IR extends IterationRunnable, IW extends Itera
 					this.log.warn("|--> " + split[i]);
 			}
 		}
-		this.progress.update(100);
+		this.progress.update(10000);
 	}
 
 	/**

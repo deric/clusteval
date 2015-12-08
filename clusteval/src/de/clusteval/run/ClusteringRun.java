@@ -133,7 +133,7 @@ public class ClusteringRun extends ExecutionRun {
 			Map<ProgramParameter<?>, String> runParams) {
 		ClusteringRunRunnable r = new ClusteringRunRunnable(runScheduler, run,
 				programConfig, dataConfig, runIdentString, isResume, runParams);
-		run.progress.addSubProgress(r.getProgressPrinter(), 100);
+		run.progress.addSubProgress(r.getProgressPrinter(), 10000);
 		return r;
 	}
 }
