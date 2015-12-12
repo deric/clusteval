@@ -93,6 +93,7 @@ import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
+import de.clusteval.framework.repository.RepositoryObjectDumpException;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.framework.repository.db.DatabaseConnectException;
@@ -178,10 +179,8 @@ public class ClustevalBackendServer implements IBackendServer {
 		InputStream stream = loader.getResourceAsStream("server.date");
 		try {
 			prop.load(stream);
-			VERSION = "Jar built: " + prop.getProperty("buildtime")
-					+ "\nGit:\n\tCommit: " + prop.getProperty("gitrev")
-					+ "\n\tBranch: " + prop.getProperty("gitbranch")
-					+ "\n\tRepository: " + prop.getProperty("gitrepo");
+			VERSION = "Jar built: " + prop.getProperty("buildtime") + "\nGit:\n\tCommit: " + prop.getProperty("gitrev")
+					+ "\n\tBranch: " + prop.getProperty("gitbranch") + "\n\tRepository: " + prop.getProperty("gitrepo");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -209,37 +208,34 @@ public class ClustevalBackendServer implements IBackendServer {
 
 		OptionBuilder.withArgName("level");
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("The verbosity this server should use during the logging process. 0=ALL, 1=TRACE, 2=DEBUG, 3=INFO, 4=WARN, 5=ERROR, 6=OFF");
+		OptionBuilder.withDescription(
+				"The verbosity this server should use during the logging process. 0=ALL, 1=TRACE, 2=DEBUG, 3=INFO, 4=WARN, 5=ERROR, 6=OFF");
 		OptionBuilder.withType(Integer.class);
 		Option optionLogLevel = OptionBuilder.create("logLevel");
 		serverCLIOptions.addOption(optionLogLevel);
 
 		OptionBuilder.withArgName("number");
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("The maximal number of threads that should be created in parallel when executing runs.");
+		OptionBuilder.withDescription(
+				"The maximal number of threads that should be created in parallel when executing runs.");
 		OptionBuilder.withType(Integer.class);
 		Option optionNoOfThreads = OptionBuilder.create("numberOfThreads");
 		serverCLIOptions.addOption(optionNoOfThreads);
 
 		OptionBuilder.withArgName("check");
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("Indicates, whether this server should check for run results in its repository.");
+		OptionBuilder.withDescription("Indicates, whether this server should check for run results in its repository.");
 		OptionBuilder.withType(Boolean.class);
 		Option checkForRunResults = OptionBuilder.create("checkForRunResults");
 		serverCLIOptions.addOption(checkForRunResults);
 
-		OptionBuilder
-				.withDescription("Indicates, whether this server should connect to a database.");
+		OptionBuilder.withDescription("Indicates, whether this server should connect to a database.");
 		Option noDatabase = OptionBuilder.create("noDatabase");
 		serverCLIOptions.addOption(noDatabase);
 
 		OptionBuilder.withArgName("rServeHost");
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("The address on which Rserve is listening.");
+		OptionBuilder.withDescription("The address on which Rserve is listening.");
 		OptionBuilder.withType(String.class);
 		Option rServeHost = OptionBuilder.create("rServeHost");
 		serverCLIOptions.addOption(rServeHost);
@@ -302,11 +298,9 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * @throws InterruptedException
 	 * @throws DatabaseConnectException
 	 */
-	public ClustevalBackendServer(final String absRepositoryPath)
-			throws FileNotFoundException, RepositoryAlreadyExistsException,
-			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, InterruptedException,
-			DatabaseConnectException {
+	public ClustevalBackendServer(final String absRepositoryPath) throws FileNotFoundException,
+			RepositoryAlreadyExistsException, InvalidRepositoryException, RepositoryConfigNotFoundException,
+			RepositoryConfigurationException, InterruptedException, DatabaseConnectException {
 		this(new Repository(absRepositoryPath, null));
 	}
 
@@ -318,8 +312,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	 *            The repository used by this server.
 	 * @throws InterruptedException
 	 */
-	public ClustevalBackendServer(final Repository repository)
-			throws InterruptedException {
+	public ClustevalBackendServer(final Repository repository) throws InterruptedException {
 		this(repository, true);
 	}
 
@@ -328,16 +321,15 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * @param registerServer
 	 * @throws InterruptedException
 	 */
-	public ClustevalBackendServer(final Repository repository,
-			final boolean registerServer) throws InterruptedException {
+	public ClustevalBackendServer(final Repository repository, final boolean registerServer)
+			throws InterruptedException {
 		super();
 
 		this.log = LoggerFactory.getLogger(this.getClass());
 
 		this.repository = repository;
 
-		this.log.info("Using repository at '" + this.repository.getBasePath()
-				+ "'");
+		this.log.info("Using repository at '" + this.repository.getBasePath() + "'");
 
 		if (!registerServer || ClustevalBackendServer.registerServer(this)) {
 			/*
@@ -368,17 +360,14 @@ public class ClustevalBackendServer implements IBackendServer {
 	 */
 	@Override
 	public boolean performRun(final String clientId, final String runId) {
-		boolean result = this.repository.getSupervisorThread()
-				.getRunScheduler().schedule(clientId, runId);
+		boolean result = this.repository.getSupervisorThread().getRunScheduler().schedule(clientId, runId);
 		return result;
 	}
 
 	@Override
-	public boolean resumeRun(final String clientId,
-			final String uniqueRunIdentifier) {
-		boolean result = this.repository.getSupervisorThread()
-				.getRunScheduler()
-				.scheduleResume(clientId, uniqueRunIdentifier);
+	public boolean resumeRun(final String clientId, final String uniqueRunIdentifier) {
+		boolean result = this.repository.getSupervisorThread().getRunScheduler().scheduleResume(clientId,
+				uniqueRunIdentifier);
 		return result;
 	}
 
@@ -390,8 +379,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	 */
 	@Override
 	public boolean terminateRun(final String clientId, final String runId) {
-		boolean result = this.repository.getSupervisorThread()
-				.getRunScheduler().terminate(clientId, runId);
+		boolean result = this.repository.getSupervisorThread().getRunScheduler().terminate(clientId, runId);
 		return result;
 	}
 
@@ -414,19 +402,14 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * @throws InterruptedException
 	 * @throws DatabaseConnectException
 	 */
-	public static void main(String[] args) throws FileNotFoundException,
-			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, InterruptedException,
-			DatabaseConnectException {
+	public static void main(String[] args) throws FileNotFoundException, RepositoryAlreadyExistsException,
+			InvalidRepositoryException, RepositoryConfigNotFoundException, RepositoryConfigurationException,
+			InterruptedException, DatabaseConnectException {
 
 		// bugfix for log4j warning
-		org.apache.log4j.Logger.getRootLogger().setLevel(
-				org.apache.log4j.Level.OFF);
+		org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.OFF);
 		org.apache.log4j.Logger.getRootLogger().addAppender(
-				new org.apache.log4j.ConsoleAppender(
-						new org.apache.log4j.PatternLayout(
-								"%d %-5p %c - %F:%L - %m%n")));
+				new org.apache.log4j.ConsoleAppender(new org.apache.log4j.PatternLayout("%d %-5p %c - %F:%L - %m%n")));
 
 		CommandLineParser parser = new PosixParser();
 		try {
@@ -434,9 +417,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 			if (cmd.hasOption("help")) {
 				HelpFormatter formatter = new HelpFormatter();
-				formatter.printHelp("clustevalServer",
-						"clusteval backend server " + VERSION,
-						serverCLIOptions, "");
+				formatter.printHelp("clustevalServer", "clusteval backend server " + VERSION, serverCLIOptions, "");
 				System.exit(0);
 			}
 
@@ -446,8 +427,7 @@ public class ClustevalBackendServer implements IBackendServer {
 			}
 
 			if (cmd.getArgList().size() > 0)
-				throw new ParseException("Unknown parameters: "
-						+ Arrays.toString(cmd.getArgs()));
+				throw new ParseException("Unknown parameters: " + Arrays.toString(cmd.getArgs()));
 
 			if (cmd.hasOption("port"))
 				port = Integer.parseInt(cmd.getOptionValue("port"));
@@ -457,12 +437,10 @@ public class ClustevalBackendServer implements IBackendServer {
 			initLogging(cmd);
 
 			if (cmd.hasOption("numberOfThreads"))
-				config.numberOfThreads = Integer.parseInt(cmd
-						.getOptionValue("numberOfThreads"));
+				config.numberOfThreads = Integer.parseInt(cmd.getOptionValue("numberOfThreads"));
 
 			if (cmd.hasOption("checkForRunResults"))
-				config.setCheckForRunResults(Boolean.parseBoolean(cmd
-						.getOptionValue("checkForRunResults")));
+				config.setCheckForRunResults(Boolean.parseBoolean(cmd.getOptionValue("checkForRunResults")));
 
 			if (cmd.hasOption("noDatabase"))
 				config.setNoDatabase(true);
@@ -471,8 +449,7 @@ public class ClustevalBackendServer implements IBackendServer {
 				config.rServeHost = cmd.getOptionValue("rServeHost");
 
 			if (cmd.hasOption("rServePort"))
-				config.rServePort = Integer.parseInt(cmd
-						.getOptionValue("rServePort"));
+				config.rServePort = Integer.parseInt(cmd.getOptionValue("rServePort"));
 
 			Logger log = LoggerFactory.getLogger(ClustevalBackendServer.class);
 
@@ -482,36 +459,30 @@ public class ClustevalBackendServer implements IBackendServer {
 
 			try {
 				// try to establish a connection to R
-				log.info("Attempting connection to Rserve on "
-						+ config.rServeHost + ":" + config.rServePort);
+				log.info("Attempting connection to Rserve on " + config.rServeHost + ":" + config.rServePort);
 				@SuppressWarnings("unused")
 				MyRengine myRengine = new MyRengine("");
 				log.info("Success");
 				isRAvailable = true;
 			} catch (RserveException e) {
 				log.error("Connection to Rserve could not be established, "
-						+ "please ensure that your Rserve instance is "
-						+ "running before starting this framework.");
-				log.error("Functionality that requires R will not be available"
-						+ " until Rserve has been started.");
+						+ "please ensure that your Rserve instance is " + "running before starting this framework.");
+				log.error("Functionality that requires R will not be available" + " until Rserve has been started.");
 				isRAvailable = false;
 			}
 
 			@SuppressWarnings("unused")
 			ClustevalBackendServer clusteringEvalFramework;
 			if (cmd.hasOption("absRepoPath"))
-				clusteringEvalFramework = new ClustevalBackendServer(
-						cmd.getOptionValue("absRepoPath"));
+				clusteringEvalFramework = new ClustevalBackendServer(cmd.getOptionValue("absRepoPath"));
 			else
-				clusteringEvalFramework = new ClustevalBackendServer(new File(
-						"repository").getAbsolutePath());
+				clusteringEvalFramework = new ClustevalBackendServer(new File("repository").getAbsolutePath());
 
 		} catch (ParseException e1) {
 			System.err.println("Parsing failed.  Reason: " + e1.getMessage());
 
 			HelpFormatter formatter = new HelpFormatter();
-			formatter.printHelp("clustevalServer", "clusteval backend server "
-					+ VERSION, serverCLIOptions, "");
+			formatter.printHelp("clustevalServer", "clusteval backend server " + VERSION, serverCLIOptions, "");
 		}
 	}
 
@@ -569,8 +540,7 @@ public class ClustevalBackendServer implements IBackendServer {
 					logLevel = Level.OFF;
 					break;
 				default :
-					throw new ParseException(
-							"The logLevel argument requires one of the value of [0,1,2,3,4,5,6]");
+					throw new ParseException("The logLevel argument requires one of the value of [0,1,2,3,4,5,6]");
 			}
 		} else {
 			logLevel = Level.INFO;
@@ -580,17 +550,14 @@ public class ClustevalBackendServer implements IBackendServer {
 				.getLogger(Logger.ROOT_LOGGER_NAME));
 		logger.setLevel(logLevel);
 
-		ConsoleAppender<ILoggingEvent> consoleApp = (ConsoleAppender<ILoggingEvent>) logger
-				.iteratorForAppenders().next();
-		consoleApp
-				.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
+		ConsoleAppender<ILoggingEvent> consoleApp = (ConsoleAppender<ILoggingEvent>) logger.iteratorForAppenders()
+				.next();
+		consoleApp.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
 		consoleApp.setEncoder(new PatternLayoutEncoder());
 		consoleApp.setWithJansi(true);
 		PatternLayout layout = new PatternLayout();
-		layout.getDefaultConverterMap().put("highlight",
-				MyHighlightingCompositeConverter.class.getName());
-		layout.setPattern("@localhost:"
-				+ port
+		layout.getDefaultConverterMap().put("highlight", MyHighlightingCompositeConverter.class.getName());
+		layout.setPattern("@localhost:" + port
 				+ " %date{dd MMM yyyy HH:mm:ss.SSS} %highlight([%thread] %-5level %logger{35} - %msg) %n");
 		layout.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
 		layout.start();
@@ -601,17 +568,15 @@ public class ClustevalBackendServer implements IBackendServer {
 		// file appender for clustevalServer.log plaintext file
 		FileAppender<ILoggingEvent> fileApp = new FileAppender<ILoggingEvent>();
 		fileApp.setName("serverLogFile");
-		String logFilePath = FileUtils.buildPath(
-				System.getProperty("user.dir"), "clustevalServer.log");
+		String logFilePath = FileUtils.buildPath(System.getProperty("user.dir"), "clustevalServer.log");
 		fileApp.setFile(logFilePath);
 
 		fileApp.setAppend(true);
 		fileApp.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
 		fileApp.setEncoder(new PatternLayoutEncoder());
 		layout = new PatternLayout();
-		layout.setPattern("@localhost:"
-				+ port
-				+ " %date{dd MMM yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n");
+		layout.setPattern(
+				"@localhost:" + port + " %date{dd MMM yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg%n");
 		layout.setContext((LoggerContext) LoggerFactory.getILoggerFactory());
 		layout.start();
 		fileApp.setLayout(layout);
@@ -653,8 +618,7 @@ public class ClustevalBackendServer implements IBackendServer {
 		try {
 			LocateRegistry.createRegistry(port);
 
-			IBackendServer stub = (IBackendServer) UnicastRemoteObject
-					.exportObject(framework, port);
+			IBackendServer stub = (IBackendServer) UnicastRemoteObject.exportObject(framework, port);
 			Registry registry = LocateRegistry.getRegistry(port);
 			registry.bind("EvalServer", stub);
 			log.info("Framework up and listening on port " + port);
@@ -728,18 +692,15 @@ public class ClustevalBackendServer implements IBackendServer {
 	 */
 	@SuppressWarnings("unused")
 	@Override
-	public Map<String, Pair<RUN_STATUS, Float>> getRunStatusForClientId(
-			String clientId) throws RemoteException {
-		return this.repository.getSupervisorThread().getRunScheduler()
-				.getRunStatusForClientId(clientId);
+	public Map<String, Pair<RUN_STATUS, Float>> getRunStatusForClientId(String clientId) throws RemoteException {
+		return this.repository.getSupervisorThread().getRunScheduler().getRunStatusForClientId(clientId);
 	}
 
 	// TODO
 	@Override
 	public Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>>>> getOptimizationRunStatusForClientId(
 			String clientId) throws RemoteException {
-		return this.repository.getSupervisorThread().getRunScheduler()
-				.getOptimizationRunStatusForClientId(clientId);
+		return this.repository.getSupervisorThread().getRunScheduler().getOptimizationRunStatusForClientId(clientId);
 	}
 
 	/*
@@ -763,8 +724,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	@Override
 	public Collection<String> getDataSets() {
 		Collection<String> result = new HashSet<String>();
-		for (DataSet dataSet : this.repository
-				.getCollectionStaticEntities(DataSet.class))
+		for (DataSet dataSet : this.repository.getCollectionStaticEntities(DataSet.class))
 			result.add(dataSet.getFullName());
 		return result;
 	}
@@ -777,8 +737,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	@Override
 	public Collection<String> getPrograms() {
 		Collection<String> result = new HashSet<String>();
-		for (Program program : this.repository
-				.getCollectionStaticEntities(Program.class))
+		for (Program program : this.repository.getCollectionStaticEntities(Program.class))
 			result.add(program.getMajorName());
 		return result;
 	}
@@ -811,16 +770,14 @@ public class ClustevalBackendServer implements IBackendServer {
 	@SuppressWarnings("unused")
 	@Override
 	public Collection<String> getRunResumes() throws RemoteException {
-		Collection<String> result = new HashSet<String>(
-				this.repository.getRunResumes());
+		Collection<String> result = new HashSet<String>(this.repository.getRunResumes());
 		return result;
 	}
 
 	@SuppressWarnings("unused")
 	@Override
 	public Collection<String> getRunResults() throws RemoteException {
-		Collection<String> result = new HashSet<String>(
-				this.repository.getRunResultIdentifier());
+		Collection<String> result = new HashSet<String>(this.repository.getRunResultIdentifier());
 		return result;
 	}
 
@@ -832,31 +789,24 @@ public class ClustevalBackendServer implements IBackendServer {
 	 */
 	@SuppressWarnings("unused")
 	@Override
-	public Map<Pair<String, String>, Map<String, Double>> getRunResults(
-			String uniqueRunIdentifier) throws RemoteException {
+	public Map<Pair<String, String>, Map<String, Double>> getRunResults(String uniqueRunIdentifier)
+			throws RemoteException {
 		Map<Pair<String, String>, Map<String, Double>> result = new HashMap<Pair<String, String>, Map<String, Double>>();
 
 		List<ParameterOptimizationResult> list = new ArrayList<ParameterOptimizationResult>();
 		try {
-			ParameterOptimizationResult.parseFromRunResultFolder(
-					repository,
-					new File(FileUtils.buildPath(
-							repository.getBasePath(RunResult.class),
-							uniqueRunIdentifier)), list, false, false, false);
+			ParameterOptimizationResult.parseFromRunResultFolder(repository,
+					new File(FileUtils.buildPath(repository.getBasePath(RunResult.class), uniqueRunIdentifier)), list,
+					false, false, false);
 			for (ParameterOptimizationResult r : list) {
 				String dataConfig = r.getMethod().getDataConfig().getName();
-				String programConfig = r.getMethod().getProgramConfig()
-						.getName();
+				String programConfig = r.getMethod().getProgramConfig().getName();
 				Map<String, Double> measureToOptimalQuality = new HashMap<String, Double>();
-				for (ClusteringQualityMeasure measure : r
-						.getOptimalParameterSets().keySet()) {
-					measureToOptimalQuality.put(measure.getClass()
-							.getSimpleName(),
-							r.get(r.getOptimalParameterSets().get(measure))
-									.get(measure).getValue());
+				for (ClusteringQualityMeasure measure : r.getOptimalParameterSets().keySet()) {
+					measureToOptimalQuality.put(measure.getClass().getSimpleName(),
+							r.get(r.getOptimalParameterSets().get(measure)).get(measure).getValue());
 				}
-				result.put(Pair.getPair(dataConfig, programConfig),
-						measureToOptimalQuality);
+				result.put(Pair.getPair(dataConfig, programConfig), measureToOptimalQuality);
 			}
 		} catch (GoldStandardConfigurationException e) {
 			e.printStackTrace();
@@ -964,8 +914,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	@SuppressWarnings("unused")
 	@Override
 	public void setLogLevel(Level logLevel) throws RemoteException {
-		((ch.qos.logback.classic.Logger) LoggerFactory
-				.getLogger(Logger.ROOT_LOGGER_NAME)).setLevel(logLevel);
+		((ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME)).setLevel(logLevel);
 	}
 
 	/**
@@ -975,8 +924,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	 *            The new log level
 	 */
 	public static void logLevel(Level logLevel) {
-		((ch.qos.logback.classic.Logger) LoggerFactory
-				.getLogger(Logger.ROOT_LOGGER_NAME)).setLevel(logLevel);
+		((ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME)).setLevel(logLevel);
 	}
 
 	/*
@@ -1006,8 +954,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	public Collection<String> getDataRandomizers() {
 		Collection<String> result = new HashSet<String>();
 
-		Collection<Class<? extends DataRandomizer>> dataRandomizers = this.repository
-				.getClasses(DataRandomizer.class);
+		Collection<Class<? extends DataRandomizer>> dataRandomizers = this.repository.getClasses(DataRandomizer.class);
 
 		for (Class<? extends DataRandomizer> randomizerClass : dataRandomizers)
 			result.add(randomizerClass.getSimpleName());
@@ -1018,16 +965,14 @@ public class ClustevalBackendServer implements IBackendServer {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * serverclient.IBackendServer#getOptionsForDataSetGenerator(java.lang.String
-	 * )
+	 * @see serverclient.IBackendServer#getOptionsForDataSetGenerator(java.lang.
+	 * String )
 	 */
 	@Override
 	public Options getOptionsForDataSetGenerator(String generatorName) {
 		try {
 
-			DataSetGenerator generator = DataSetGenerator.parseFromString(
-					repository, generatorName);
+			DataSetGenerator generator = DataSetGenerator.parseFromString(repository, generatorName);
 			return generator.getAllOptions();
 		} catch (SecurityException e) {
 			e.printStackTrace();
@@ -1047,11 +992,9 @@ public class ClustevalBackendServer implements IBackendServer {
 	 */
 	@SuppressWarnings("unused")
 	@Override
-	public boolean generateDataSet(String generatorName, String[] args)
-			throws RemoteException {
+	public boolean generateDataSet(String generatorName, String[] args) throws RemoteException {
 		try {
-			DataSetGenerator generator = DataSetGenerator.parseFromString(
-					this.repository, generatorName);
+			DataSetGenerator generator = DataSetGenerator.parseFromString(this.repository, generatorName);
 			generator.generate(args);
 		} catch (UnknownDataSetGeneratorException e) {
 			e.printStackTrace();
@@ -1062,6 +1005,12 @@ public class ClustevalBackendServer implements IBackendServer {
 		} catch (GoldStandardGenerationException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (RepositoryObjectDumpException e) {
+			e.printStackTrace();
+		} catch (RegisterException e) {
+			e.printStackTrace();
+		} catch (UnknownDistanceMeasureException e) {
 			e.printStackTrace();
 		}
 		return false;
@@ -1075,8 +1024,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	@SuppressWarnings("unused")
 	@Override
 	public Collection<String> getQueue() throws RemoteException {
-		final Collection<String> result = this.repository.getSupervisorThread()
-				.getRunScheduler().getQueue();
+		final Collection<String> result = this.repository.getSupervisorThread().getRunScheduler().getQueue();
 		return result;
 	}
 
@@ -1086,43 +1034,30 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * @see de.clusteval.serverclient.IBackendServer#getActiveThreads()
 	 */
 	@Override
-	public Map<String, Triple<String, String, Long>> getActiveThreads()
-			throws RemoteException {
+	public Map<String, Triple<String, String, Long>> getActiveThreads() throws RemoteException {
 		Map<String, Triple<String, String, Long>> result = new HashMap<String, Triple<String, String, Long>>();
 
-		RunSchedulerThread scheduler = this.getRepository()
-				.getSupervisorThread().getRunScheduler();
-		Map<Thread, IterationRunnable<? extends IterationWrapper>> map = scheduler
-				.getActiveIterationRunnables();
-		for (Map.Entry<Thread, IterationRunnable<? extends IterationWrapper>> e : map
-				.entrySet()) {
+		RunSchedulerThread scheduler = this.getRepository().getSupervisorThread().getRunScheduler();
+		Map<Thread, IterationRunnable<? extends IterationWrapper>> map = scheduler.getActiveIterationRunnables();
+		for (Map.Entry<Thread, IterationRunnable<? extends IterationWrapper>> e : map.entrySet()) {
 			long startTime = e.getValue().getStartTime();
 
 			String name = "";
 			String status = "";
 			if (e.getValue() instanceof ExecutionIterationRunnable) {
-				ExecutionRunRunnable r = (ExecutionRunRunnable) (e.getValue()
-						.getParentRunnable());
-				status = ((ExecutionIterationRunnable) e.getValue())
-						.getIterationNumber() + "";
-				name = r.getRun().getName() + ": " + r.getProgramConfig() + ","
-						+ r.getDataConfig();
+				ExecutionRunRunnable r = (ExecutionRunRunnable) (e.getValue().getParentRunnable());
+				status = ((ExecutionIterationRunnable) e.getValue()).getIterationNumber() + "";
+				name = r.getRun().getName() + ": " + r.getProgramConfig() + "," + r.getDataConfig();
 			} else if (e.getValue() instanceof DataAnalysisIterationRunnable) {
-				DataAnalysisRunRunnable r = (DataAnalysisRunRunnable) (e
-						.getValue().getParentRunnable());
+				DataAnalysisRunRunnable r = (DataAnalysisRunRunnable) (e.getValue().getParentRunnable());
 
-				status = ((AnalysisIterationRunnable) e.getValue())
-						.getStatistic().getAlias();
-				name = r.getRun().getName() + ": " + status + ","
-						+ r.getDataConfig();
+				status = ((AnalysisIterationRunnable) e.getValue()).getStatistic().getAlias();
+				name = r.getRun().getName() + ": " + status + "," + r.getDataConfig();
 			} else if (e.getValue() instanceof RunAnalysisIterationRunnable) {
-				RunAnalysisRunRunnable r = (RunAnalysisRunRunnable) (e
-						.getValue().getParentRunnable());
+				RunAnalysisRunRunnable r = (RunAnalysisRunRunnable) (e.getValue().getParentRunnable());
 
-				status = ((AnalysisIterationRunnable) e.getValue())
-						.getStatistic().getAlias();
-				name = r.getRun().getName() + ": " + status + ","
-						+ r.getRunIdentifier();
+				status = ((AnalysisIterationRunnable) e.getValue()).getStatistic().getAlias();
+				name = r.getRun().getName() + ": " + status + "," + r.getRunIdentifier();
 			}
 			// TODO
 			// else if (e.getValue() instanceof
@@ -1135,8 +1070,7 @@ public class ClustevalBackendServer implements IBackendServer {
 			// name = r.getRun().getName() + ": " + r.get;
 			// }
 
-			result.put(e.getKey().getName(),
-					Triple.getTriple(name, "", startTime));
+			result.put(e.getKey().getName(), Triple.getTriple(name, "", startTime));
 		}
 		return result;
 	}
@@ -1152,8 +1086,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	public Options getOptionsForDataRandomizer(String randomizerName) {
 		try {
 
-			DataRandomizer randomizer = DataRandomizer.parseFromString(
-					repository, randomizerName);
+			DataRandomizer randomizer = DataRandomizer.parseFromString(repository, randomizerName);
 			return randomizer.getAllOptions();
 		} catch (SecurityException e) {
 			e.printStackTrace();
@@ -1173,11 +1106,9 @@ public class ClustevalBackendServer implements IBackendServer {
 	 */
 	@SuppressWarnings("unused")
 	@Override
-	public boolean randomizeDataConfig(String randomizerName, String[] args)
-			throws RemoteException {
+	public boolean randomizeDataConfig(String randomizerName, String[] args) throws RemoteException {
 		try {
-			DataRandomizer randomizer = DataRandomizer.parseFromString(
-					this.repository, randomizerName);
+			DataRandomizer randomizer = DataRandomizer.parseFromString(this.repository, randomizerName);
 			randomizer.randomize(args);
 		} catch (UnknownDataRandomizerException e) {
 			e.printStackTrace();
@@ -1194,7 +1125,6 @@ public class ClustevalBackendServer implements IBackendServer {
 	 */
 	@Override
 	public void setThreadNumber(int threadNumber) throws RemoteException {
-		this.repository.getSupervisorThread().getRunScheduler()
-				.updateThreadPoolSize(threadNumber);
+		this.repository.getSupervisorThread().getRunScheduler().updateThreadPoolSize(threadNumber);
 	}
 }

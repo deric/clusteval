@@ -24,11 +24,15 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
 
+import de.clusteval.data.DataConfig;
+import de.clusteval.data.dataset.AbstractDataSetProvider;
 import de.clusteval.data.dataset.DataSet;
+import de.clusteval.data.distance.UnknownDistanceMeasureException;
 import de.clusteval.data.goldstandard.GoldStandard;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
+import de.clusteval.framework.repository.RepositoryObjectDumpException;
 import de.clusteval.program.r.RLibraryInferior;
 import file.FileUtils;
 
@@ -63,9 +67,7 @@ import file.FileUtils;
  * @author Christian Wiwie
  * 
  */
-public abstract class DataSetGenerator extends RepositoryObject
-		implements
-			RLibraryInferior {
+public abstract class DataSetGenerator extends AbstractDataSetProvider implements RLibraryInferior {
 
 	/**
 	 * This attribute corresponds to the name of the folder located in
@@ -93,8 +95,8 @@ public abstract class DataSetGenerator extends RepositoryObject
 	 * @param absPath
 	 * @throws RegisterException
 	 */
-	public DataSetGenerator(Repository repository, boolean register,
-			long changeDate, File absPath) throws RegisterException {
+	public DataSetGenerator(Repository repository, boolean register, long changeDate, File absPath)
+			throws RegisterException {
 		super(repository, register, changeDate, absPath);
 	}
 
@@ -117,8 +119,7 @@ public abstract class DataSetGenerator extends RepositoryObject
 	@Override
 	public RepositoryObject clone() {
 		try {
-			return this.getClass().getConstructor(this.getClass())
-					.newInstance(this);
+			return this.getClass().getConstructor(this.getClass()).newInstance(this);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -132,8 +133,7 @@ public abstract class DataSetGenerator extends RepositoryObject
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 		}
-		this.log.warn("Cloning instance of class "
-				+ this.getClass().getSimpleName() + " failed");
+		this.log.warn("Cloning instance of class " + this.getClass().getSimpleName() + " failed");
 		return null;
 	}
 
@@ -188,10 +188,13 @@ public abstract class DataSetGenerator extends RepositoryObject
 	 * @throws DataSetGenerationException
 	 * @throws GoldStandardGenerationException
 	 * @throws InterruptedException
+	 * @throws UnknownDistanceMeasureException
+	 * @throws RegisterException
+	 * @throws RepositoryObjectDumpException
 	 */
-	public DataSet generate(final String[] cliArguments) throws ParseException,
-			DataSetGenerationException, GoldStandardGenerationException,
-			InterruptedException {
+	public DataSet generate(final String[] cliArguments)
+			throws ParseException, DataSetGenerationException, GoldStandardGenerationException, InterruptedException,
+			RepositoryObjectDumpException, RegisterException, UnknownDistanceMeasureException {
 		CommandLineParser parser = new PosixParser();
 
 		Options options = this.getAllOptions();
@@ -205,30 +208,30 @@ public abstract class DataSetGenerator extends RepositoryObject
 		this.handleOptions(cmd);
 
 		// Ensure, that the dataset target file does not exist yet
-		File targetFile = new File(FileUtils.buildPath(
-				this.repository.getBasePath(DataSet.class), this.folderName,
-				this.fileName));
+		File targetFile = new File(
+				FileUtils.buildPath(this.repository.getBasePath(DataSet.class), this.folderName, this.fileName));
 
 		if (targetFile.exists())
-			throw new ParseException(
-					"A dataset with the given name does already exist!");
+			throw new ParseException("A dataset with the given name does already exist!");
 		targetFile.getParentFile().mkdirs();
 
 		DataSet dataSet = generateDataSet();
+		GoldStandard gs = null;
 
 		if (this.generatesGoldStandard()) {
 			// Ensure, that the goldstandard target file does not exist yet
-			targetFile = new File(FileUtils.buildPath(
-					this.repository.getBasePath(GoldStandard.class),
-					this.folderName, this.fileName));
+			targetFile = new File(FileUtils.buildPath(this.repository.getBasePath(GoldStandard.class), this.folderName,
+					this.fileName));
 
 			if (targetFile.exists())
-				throw new ParseException(
-						"A goldstandard with the given name does already exist!");
+				throw new ParseException("A goldstandard with the given name does already exist!");
 			targetFile.getParentFile().mkdirs();
 
-			generateGoldStandard();
+			gs = generateGoldStandard();
 		}
+
+		DataConfig dataConfig = this.writeConfigFiles(dataSet, gs, fileName);
+
 		return dataSet;
 	}
 
@@ -244,16 +247,14 @@ public abstract class DataSetGenerator extends RepositoryObject
 		OptionBuilder.withArgName("folderName");
 		OptionBuilder.isRequired();
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("The name of the folder to store this dataset in.");
+		OptionBuilder.withDescription("The name of the folder to store this dataset in.");
 		Option option = OptionBuilder.create("folderName");
 		options.addOption(option);
 
 		OptionBuilder.withArgName("fileName");
 		OptionBuilder.isRequired();
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("The name of the dataset file to generate.");
+		OptionBuilder.withDescription("The name of the dataset file to generate.");
 		option = OptionBuilder.create("fileName");
 		options.addOption(option);
 
@@ -277,8 +278,7 @@ public abstract class DataSetGenerator extends RepositoryObject
 	 *            A wrapper object for the arguments passed to this generator.
 	 * @throws ParseException
 	 */
-	protected abstract void handleOptions(final CommandLine cmd)
-			throws ParseException;
+	protected abstract void handleOptions(final CommandLine cmd) throws ParseException;
 
 	protected String getFileName() {
 		return this.fileName;
@@ -304,8 +304,7 @@ public abstract class DataSetGenerator extends RepositoryObject
 	 *             exception is thrown.
 	 * @throws InterruptedException
 	 */
-	protected abstract DataSet generateDataSet()
-			throws DataSetGenerationException, InterruptedException;
+	protected abstract DataSet generateDataSet() throws DataSetGenerationException, InterruptedException;
 
 	/**
 	 * This method needs to be implemented in subclasses and is a helper method
@@ -319,8 +318,7 @@ public abstract class DataSetGenerator extends RepositoryObject
 	 *             If something goes wrong during the generation process, this
 	 *             exception is thrown.
 	 */
-	protected abstract GoldStandard generateGoldStandard()
-			throws GoldStandardGenerationException;
+	protected abstract GoldStandard generateGoldStandard() throws GoldStandardGenerationException;
 
 	/**
 	 * Parses a dataset generator from string.
@@ -332,17 +330,14 @@ public abstract class DataSetGenerator extends RepositoryObject
 	 * @return the clustering quality measure
 	 * @throws UnknownDataSetGeneratorException
 	 */
-	public static DataSetGenerator parseFromString(final Repository repository,
-			String dataSetGenerator) throws UnknownDataSetGeneratorException {
+	public static DataSetGenerator parseFromString(final Repository repository, String dataSetGenerator)
+			throws UnknownDataSetGeneratorException {
 
-		Class<? extends DataSetGenerator> c = repository.getRegisteredClass(
-				DataSetGenerator.class, "de.clusteval.data.dataset.generator."
-						+ dataSetGenerator);
+		Class<? extends DataSetGenerator> c = repository.getRegisteredClass(DataSetGenerator.class,
+				"de.clusteval.data.dataset.generator." + dataSetGenerator);
 		try {
-			DataSetGenerator generator = c.getConstructor(Repository.class,
-					boolean.class, long.class, File.class).newInstance(
-					repository, false, System.currentTimeMillis(),
-					new File(dataSetGenerator));
+			DataSetGenerator generator = c.getConstructor(Repository.class, boolean.class, long.class, File.class)
+					.newInstance(repository, false, System.currentTimeMillis(), new File(dataSetGenerator));
 			return generator;
 
 		} catch (InstantiationException e) {
@@ -360,7 +355,6 @@ public abstract class DataSetGenerator extends RepositoryObject
 		} catch (NoSuchMethodException e1) {
 			e1.printStackTrace();
 		}
-		throw new UnknownDataSetGeneratorException("\"" + dataSetGenerator
-				+ "\" is not a known dataset generator.");
+		throw new UnknownDataSetGeneratorException("\"" + dataSetGenerator + "\" is not a known dataset generator.");
 	}
 }

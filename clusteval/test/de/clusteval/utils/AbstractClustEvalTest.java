@@ -27,6 +27,8 @@ import de.clusteval.context.Context;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
+import de.clusteval.framework.repository.config.DefaultRepositoryConfig;
+import de.clusteval.framework.repository.db.SQLConfig;
 import de.clusteval.framework.repository.db.StubSQLCommunicator;
 import de.clusteval.run.result.RunResult;
 
@@ -41,6 +43,22 @@ public abstract class AbstractClustEvalTest {
 	private Repository repository;
 	protected RepositoryObject repositoryObject;
 	protected Context context;
+	protected boolean useDatabase;
+
+	/**
+	 * 
+	 */
+	public AbstractClustEvalTest() {
+		this(false);
+	}
+
+	/**
+	 * 
+	 */
+	public AbstractClustEvalTest(final boolean useDatabase) {
+		super();
+		this.useDatabase = useDatabase;
+	}
 
 	/**
 	 * @throws java.lang.Exception
@@ -62,25 +80,27 @@ public abstract class AbstractClustEvalTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		System.out.println("################## Testcase: "
-				+ this.getClass().getSimpleName() + "." + name.getMethodName());
-		this.repository = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
-		getRepository().setSQLCommunicator(
-				new StubSQLCommunicator(getRepository()));
+		System.out.println(
+				"################## Testcase: " + this.getClass().getSimpleName() + "." + name.getMethodName());
+		if (this.useDatabase) {
+			this.repository = new Repository(new File("testCaseRepository").getAbsolutePath(), null);
+		} else {
+			this.repository = new Repository(new File("testCaseRepository").getAbsolutePath(), null,
+					new DefaultRepositoryConfig());
+			//getRepository().setSQLCommunicator(new StubSQLCommunicator(getRepository()));
+		}
 		// ClustevalBackendServer.getBackendServerConfiguration()
 		// .setCheckForRunResults(false);
 		getRepository().initialize();
 
-		if (ClustevalBackendServer.getBackendServerConfiguration()
-				.getCheckForRunResults()) {
+		if (ClustevalBackendServer.getBackendServerConfiguration().getCheckForRunResults()) {
 			while (!getRepository().isInitialized(RunResult.class)) {
 				Thread.sleep(100);
 			}
 		}
 
-		repositoryObject = new StubRepositoryObject(this.getRepository(),
-				false, System.currentTimeMillis(), new File("test"));
+		repositoryObject = new StubRepositoryObject(this.getRepository(), false, System.currentTimeMillis(),
+				new File("test"));
 		context = Context.parseFromString(getRepository(), "ClusteringContext");
 	}
 
