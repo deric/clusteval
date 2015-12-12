@@ -55,7 +55,7 @@ import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
 import de.clusteval.run.statistics.RunDataStatistic;
 import de.clusteval.run.statistics.RunStatistic;
 import de.clusteval.utils.Finder;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * A runresult repository corresponds to a runresult directory in the results
@@ -95,7 +95,7 @@ public class RunResultRepository extends Repository {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Repository#createSQLCommunicator()
+	 * @see de.wiwie.wiutils.utils.Repository#createSQLCommunicator()
 	 */
 	@Override
 	protected SQLCommunicator createSQLCommunicator()
@@ -109,7 +109,7 @@ public class RunResultRepository extends Repository {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Repository#initAttributes()
+	 * @see de.wiwie.wiutils.utils.Repository#initAttributes()
 	 */
 	@Override
 	protected void initAttributes() {
@@ -267,7 +267,7 @@ public class RunResultRepository extends Repository {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Repository#initializePaths()
+	 * @see de.wiwie.wiutils.utils.Repository#initializePaths()
 	 */
 	@Override
 	protected void initializePaths() throws InvalidRepositoryException {
@@ -285,7 +285,7 @@ public class RunResultRepository extends Repository {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Repository#log(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.Repository#log(java.lang.String)
 	 */
 	@Override
 	protected void info(String message) {
@@ -307,7 +307,7 @@ public class RunResultRepository extends Repository {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Repository#createSupervisorThread()
+	 * @see de.wiwie.wiutils.utils.Repository#createSupervisorThread()
 	 */
 	@Override
 	protected SupervisorThread createSupervisorThread() {

@@ -26,7 +26,7 @@ import org.rosuda.REngine.REXPMismatchException;
 import org.rosuda.REngine.REngineException;
 import org.rosuda.REngine.Rserve.RserveException;
 
-import utils.StringExt;
+import de.wiwie.wiutils.utils.StringExt;
 import de.clusteval.cluster.Clustering;
 import de.clusteval.data.DataConfig;
 import de.clusteval.data.dataset.format.DataSetFormat;

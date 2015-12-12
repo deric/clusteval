@@ -49,7 +49,7 @@ public class NamedDoubleAttribute extends NamedAttribute<Double> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.NamedAttribute#cloneValue(java.lang.Object)
+	 * @see de.wiwie.wiutils.utils.NamedAttribute#cloneValue(java.lang.Object)
 	 */
 	@Override
 	protected Double cloneValue(Double value) {

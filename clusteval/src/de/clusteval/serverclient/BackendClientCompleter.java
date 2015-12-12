@@ -24,8 +24,8 @@ import jline.console.completer.Completer;
 
 import org.apache.commons.cli.ParseException;
 
-import utils.ArraysExt;
-import utils.Pair;
+import de.wiwie.wiutils.utils.ArraysExt;
+import de.wiwie.wiutils.utils.Pair;
 import de.clusteval.run.RUN_STATUS;
 
 /**

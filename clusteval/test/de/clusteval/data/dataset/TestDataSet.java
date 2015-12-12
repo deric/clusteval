@@ -26,8 +26,8 @@ import junit.framework.Assert;
 import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Test;
 
-import utils.SimilarityMatrix;
-import utils.SimilarityMatrix.NUMBER_PRECISION;
+import de.wiwie.wiutils.utils.SimilarityMatrix;
+import de.wiwie.wiutils.utils.SimilarityMatrix.NUMBER_PRECISION;
 import ch.qos.logback.classic.Level;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;

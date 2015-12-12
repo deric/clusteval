@@ -16,7 +16,7 @@ import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 
-import utils.SimilarityMatrix.NUMBER_PRECISION;
+import de.wiwie.wiutils.utils.SimilarityMatrix.NUMBER_PRECISION;
 import de.clusteval.context.Context;
 import de.clusteval.data.dataset.format.AbsoluteDataSetFormat;
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
@@ -296,7 +296,7 @@ public abstract class DataSet extends RepositoryObject {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.RepositoryObject#copyTo(java.io.File, boolean)
+	 * @see de.wiwie.wiutils.utils.RepositoryObject#copyTo(java.io.File, boolean)
 	 */
 	@Override
 	public boolean copyTo(File copyDestination, final boolean overwrite) {
@@ -318,7 +318,7 @@ public abstract class DataSet extends RepositoryObject {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.RepositoryObject#copyToFolder(java.io.File, boolean)
+	 * @see de.wiwie.wiutils.utils.RepositoryObject#copyToFolder(java.io.File, boolean)
 	 */
 	@Override
 	public boolean copyToFolder(File copyFolderDestination,
@@ -664,7 +664,7 @@ public abstract class DataSet extends RepositoryObject {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.RepositoryObject#notify(utils.RepositoryEvent)
+	 * @see de.wiwie.wiutils.utils.RepositoryObject#notify(utils.RepositoryEvent)
 	 */
 	@Override
 	public void notify(RepositoryEvent e) throws RegisterException {

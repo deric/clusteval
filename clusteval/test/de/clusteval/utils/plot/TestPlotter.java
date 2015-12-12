@@ -22,7 +22,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.rosuda.REngine.REngineException;
 
-import utils.SimilarityMatrix.NUMBER_PRECISION;
+import de.wiwie.wiutils.utils.SimilarityMatrix.NUMBER_PRECISION;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
 import de.clusteval.cluster.paramOptimization.UnknownParameterOptimizationMethodException;

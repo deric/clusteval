@@ -13,7 +13,7 @@ package de.clusteval.run;
 import java.io.File;
 import java.util.Iterator;
 
-import utils.ArrayIterator;
+import de.wiwie.wiutils.utils.ArrayIterator;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.parse.Parser;
@@ -43,7 +43,7 @@ public class RunFinder extends FileFinder<Run> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#checkFile(java.io.File)
+	 * @see de.wiwie.wiutils.utils.Finder#checkFile(java.io.File)
 	 */
 	@Override
 	protected boolean checkFile(File file) {
@@ -53,7 +53,7 @@ public class RunFinder extends FileFinder<Run> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#getIterator()
+	 * @see de.wiwie.wiutils.utils.Finder#getIterator()
 	 */
 	@Override
 	protected Iterator<File> getIterator() {
@@ -63,7 +63,7 @@ public class RunFinder extends FileFinder<Run> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FileFinder#parseObjectFromFile(java.io.File)
+	 * @see de.wiwie.wiutils.utils.FileFinder#parseObjectFromFile(java.io.File)
 	 */
 	@Override
 	protected Run parseObjectFromFile(File file) throws Exception {

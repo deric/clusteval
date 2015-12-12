@@ -25,8 +25,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-import utils.Pair;
-import utils.SimilarityMatrix;
+import de.wiwie.wiutils.utils.Pair;
+import de.wiwie.wiutils.utils.SimilarityMatrix;
 
 /**
  * @author Christian Wiwie

@@ -17,7 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import utils.ProgressPrinter;
+import de.wiwie.wiutils.utils.ProgressPrinter;
 import de.clusteval.data.statistics.DataStatistic;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
@@ -25,7 +25,7 @@ import de.clusteval.run.AnalysisRun;
 import de.clusteval.run.Run;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.utils.Statistic;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * A type of a runnable, that corresponds to {@link AnalysisRun} and is

@@ -46,7 +46,7 @@ public abstract class FileFinder<T extends RepositoryObject> extends Finder<T> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#doOnFileFound(java.io.File)
+	 * @see de.wiwie.wiutils.utils.Finder#doOnFileFound(java.io.File)
 	 */
 	@Override
 	protected void doOnFileFound(File file) throws InterruptedException,
@@ -145,7 +145,7 @@ public abstract class FileFinder<T extends RepositoryObject> extends Finder<T> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#findAndRegisterObjects()
+	 * @see de.wiwie.wiutils.utils.Finder#findAndRegisterObjects()
 	 */
 	@Override
 	public void findAndRegisterObjects() throws RegisterException,

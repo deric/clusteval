@@ -21,7 +21,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import utils.SimilarityMatrix.NUMBER_PRECISION;
+import de.wiwie.wiutils.utils.SimilarityMatrix.NUMBER_PRECISION;
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;

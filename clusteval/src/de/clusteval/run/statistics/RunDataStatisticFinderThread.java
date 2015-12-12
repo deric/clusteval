@@ -57,7 +57,7 @@ public class RunDataStatisticFinderThread
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#getFinder()
+	 * @see de.wiwie.wiutils.utils.FinderThread#getFinder()
 	 */
 	@Override
 	protected RunDataStatisticFinder getFinder() throws RegisterException {

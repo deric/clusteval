@@ -28,9 +28,9 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utils.ProgressPrinter;
-import utils.parse.TextFileParser;
-import utils.parse.TextFileParser.OUTPUT_MODE;
+import de.wiwie.wiutils.utils.ProgressPrinter;
+import de.wiwie.wiutils.utils.parse.TextFileParser;
+import de.wiwie.wiutils.utils.parse.TextFileParser.OUTPUT_MODE;
 import ch.qos.logback.classic.Level;
 import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
@@ -91,7 +91,7 @@ import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.InvalidConfigurationFileException;
 import de.clusteval.utils.RNotAvailableException;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * @author Christian Wiwie
@@ -342,7 +342,7 @@ public class ClustQualityEval {
 							 * (non-Javadoc)
 							 * 
 							 * @see
-							 * utils.parse.TextFileParser#processLine(java.lang.
+							 * de.wiwie.wiutils.utils.parse.TextFileParser#processLine(java.lang.
 							 * String[], java.lang.String[])
 							 */
 							@Override
@@ -354,7 +354,7 @@ public class ClustQualityEval {
 							 * (non-Javadoc)
 							 * 
 							 * @see
-							 * utils.parse.TextFileParser#getLineOutput(java
+							 * de.wiwie.wiutils.utils.parse.TextFileParser#getLineOutput(java
 							 * .lang .String[], java.lang.String[])
 							 */
 							@Override
@@ -459,7 +459,7 @@ public class ClustQualityEval {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see utils.parse.TextFileParser#processLine(java.lang.String[],
+			 * @see de.wiwie.wiutils.utils.parse.TextFileParser#processLine(java.lang.String[],
 			 * java.lang.String[])
 			 */
 			@Override
@@ -469,7 +469,7 @@ public class ClustQualityEval {
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see utils.parse.TextFileParser#getLineOutput(java.lang.String[],
+			 * @see de.wiwie.wiutils.utils.parse.TextFileParser#getLineOutput(java.lang.String[],
 			 * java.lang.String[])
 			 */
 			@Override
@@ -541,7 +541,7 @@ class MyProgressPrinter extends ProgressPrinter {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.ProgressPrinter#log(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.ProgressPrinter#log(java.lang.String)
 	 */
 	@Override
 	protected void log(String message) {

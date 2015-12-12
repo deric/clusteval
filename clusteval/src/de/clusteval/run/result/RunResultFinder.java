@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import utils.ArrayIterator;
+import de.wiwie.wiutils.utils.ArrayIterator;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
@@ -51,7 +51,7 @@ public class RunResultFinder extends FileFinder<RunResult> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FileFinder#parseObjectFromFile(java.io.File)
+	 * @see de.wiwie.wiutils.utils.FileFinder#parseObjectFromFile(java.io.File)
 	 */
 	@Override
 	protected RunResult parseObjectFromFile(File file) throws Exception {
@@ -67,7 +67,7 @@ public class RunResultFinder extends FileFinder<RunResult> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#getIterator()
+	 * @see de.wiwie.wiutils.utils.Finder#getIterator()
 	 */
 	@Override
 	protected Iterator<File> getIterator() {
@@ -78,7 +78,7 @@ public class RunResultFinder extends FileFinder<RunResult> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#checkFile(java.io.File)
+	 * @see de.wiwie.wiutils.utils.Finder#checkFile(java.io.File)
 	 */
 	@Override
 	// Fixed 17.03.2014: changed !isRunning(file.getName()) to

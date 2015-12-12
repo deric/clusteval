@@ -31,10 +31,10 @@ import org.junit.rules.TestName;
 
 import de.clusteval.data.dataset.DataSetAttributeFilterer;
 
-import utils.SimilarityMatrix;
-import utils.parse.SimFileMatrixParser;
-import utils.parse.SimFileParser.SIM_FILE_FORMAT;
-import utils.parse.TextFileParser.OUTPUT_MODE;
+import de.wiwie.wiutils.utils.SimilarityMatrix;
+import de.wiwie.wiutils.utils.parse.SimFileMatrixParser;
+import de.wiwie.wiutils.utils.parse.SimFileParser.SIM_FILE_FORMAT;
+import de.wiwie.wiutils.utils.parse.TextFileParser.OUTPUT_MODE;
 
 /**
  * @author Christian Wiwie

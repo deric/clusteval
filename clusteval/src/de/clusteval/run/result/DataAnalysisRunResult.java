@@ -73,7 +73,7 @@ import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.InvalidConfigurationFileException;
 import de.clusteval.utils.Statistic;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * @author Christian Wiwie

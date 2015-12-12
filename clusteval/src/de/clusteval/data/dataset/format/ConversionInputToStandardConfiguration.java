@@ -16,7 +16,7 @@ package de.clusteval.data.dataset.format;
 import java.util.ArrayList;
 import java.util.List;
 
-import utils.SimilarityMatrix.NUMBER_PRECISION;
+import de.wiwie.wiutils.utils.SimilarityMatrix.NUMBER_PRECISION;
 
 import de.clusteval.data.distance.DistanceMeasure;
 import de.clusteval.data.preprocessing.DataPreprocessor;

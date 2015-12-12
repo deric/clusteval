@@ -71,7 +71,7 @@ public class RunResultRunFinderThread extends RunFinderThread {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#beforeFind()
+	 * @see de.wiwie.wiutils.utils.FinderThread#beforeFind()
 	 */
 	@Override
 	protected void beforeFind() {

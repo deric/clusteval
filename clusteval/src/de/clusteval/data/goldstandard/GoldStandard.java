@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import utils.text.TextFileMapParser;
+import de.wiwie.wiutils.utils.text.TextFileMapParser;
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;

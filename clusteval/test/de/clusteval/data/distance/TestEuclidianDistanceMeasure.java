@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import utils.SimilarityMatrix.NUMBER_PRECISION;
+import de.wiwie.wiutils.utils.SimilarityMatrix.NUMBER_PRECISION;
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
 import de.clusteval.data.preprocessing.DataPreprocessor;
 import de.clusteval.utils.AbstractClustEvalTest;

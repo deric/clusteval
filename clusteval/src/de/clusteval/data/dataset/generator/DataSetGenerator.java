@@ -34,7 +34,7 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.RepositoryObjectDumpException;
 import de.clusteval.program.r.RLibraryInferior;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * 

@@ -20,8 +20,8 @@ import java.util.Map;
 
 import org.apache.commons.cli.Options;
 
-import utils.Pair;
-import utils.Triple;
+import de.wiwie.wiutils.utils.Pair;
+import de.wiwie.wiutils.utils.Triple;
 import ch.qos.logback.classic.Level;
 import de.clusteval.run.RUN_STATUS;
 

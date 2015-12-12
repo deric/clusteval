@@ -23,7 +23,7 @@ import org.apache.commons.configuration.HierarchicalINIConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utils.SimilarityMatrix.NUMBER_PRECISION;
+import de.wiwie.wiutils.utils.SimilarityMatrix.NUMBER_PRECISION;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
@@ -106,7 +106,7 @@ import de.clusteval.run.statistics.RunDataStatistic;
 import de.clusteval.run.statistics.RunStatistic;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * @author Christian Wiwie

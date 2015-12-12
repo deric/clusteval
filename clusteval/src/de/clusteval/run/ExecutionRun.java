@@ -24,7 +24,7 @@ import java.util.Set;
 
 import org.junit.runners.model.RunnerScheduler;
 
-import utils.Pair;
+import de.wiwie.wiutils.utils.Pair;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.context.Context;
 import de.clusteval.data.DataConfig;
@@ -41,7 +41,7 @@ import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
 import de.clusteval.run.runnable.ExecutionRunRunnable;
 import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.runnable.RunRunnableInitializationException;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * An abstract class for all run types, that involve execution of clustering
@@ -744,7 +744,7 @@ public abstract class ExecutionRun extends Run {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.RepositoryObject#notify(utils.RepositoryEvent)
+	 * @see de.wiwie.wiutils.utils.RepositoryObject#notify(utils.RepositoryEvent)
 	 */
 	@Override
 	public void notify(RepositoryEvent e) throws RegisterException {

@@ -24,7 +24,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * A {@link RepositoryObject} provides integrated functionalities in terms of
@@ -455,7 +455,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.RepositoryListener#notify(utils.RepositoryEvent)
+	 * @see de.wiwie.wiutils.utils.RepositoryListener#notify(utils.RepositoryEvent)
 	 */
 	@Override
 	public void notify(RepositoryEvent e) throws RegisterException {

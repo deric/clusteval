@@ -28,7 +28,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utils.Formatter;
+import de.wiwie.wiutils.utils.Formatter;
 
 import com.mysql.jdbc.exceptions.jdbc4.CommunicationsException;
 

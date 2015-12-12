@@ -12,7 +12,7 @@ import de.clusteval.data.statistics.DataStatistic;
 import de.clusteval.data.statistics.DataStatisticCalculator;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.utils.StatisticCalculator;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * @author Christian Wiwie

@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import utils.StringExt;
-import utils.parse.TextFileParser;
+import de.wiwie.wiutils.utils.StringExt;
+import de.wiwie.wiutils.utils.parse.TextFileParser;
 import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.ClusteringParseException;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
@@ -31,7 +31,7 @@ import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.ParameterOptimizationRun;
 import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * @author Christian Wiwie
@@ -240,7 +240,7 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.parse.TextFileParser#split(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.parse.TextFileParser#split(java.lang.String)
 	 */
 	@Override
 	protected String[] split(String line) {

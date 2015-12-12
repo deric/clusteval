@@ -57,7 +57,7 @@ public class DataSetGeneratorFinderThread
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#getFinder()
+	 * @see de.wiwie.wiutils.utils.FinderThread#getFinder()
 	 */
 	@Override
 	protected DataSetGeneratorFinder getFinder() throws RegisterException {

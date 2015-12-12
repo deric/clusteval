@@ -43,7 +43,7 @@ public class ContextFinder extends JARFinder<Context> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#checkFile(java.io.File)
+	 * @see de.wiwie.wiutils.utils.Finder#checkFile(java.io.File)
 	 */
 	@Override
 	protected boolean checkFile(File file) {
@@ -53,7 +53,7 @@ public class ContextFinder extends JARFinder<Context> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.JARFinder#classNameForJARFile(java.io.File)
+	 * @see de.wiwie.wiutils.utils.JARFinder#classNameForJARFile(java.io.File)
 	 */
 	@Override
 	protected String[] classNamesForJARFile(File f) {
@@ -64,7 +64,7 @@ public class ContextFinder extends JARFinder<Context> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#getIterator()
+	 * @see de.wiwie.wiutils.utils.Finder#getIterator()
 	 */
 	@Override
 	protected Iterator<File> getIterator() {
@@ -74,7 +74,7 @@ public class ContextFinder extends JARFinder<Context> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.JARFinder#isJARLoaded(java.io.File)
+	 * @see de.wiwie.wiutils.utils.JARFinder#isJARLoaded(java.io.File)
 	 */
 	@Override
 	protected boolean isJARLoaded(File f) {
@@ -88,7 +88,7 @@ public class ContextFinder extends JARFinder<Context> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.JARFinder#getURLClassLoader(java.io.File)
+	 * @see de.wiwie.wiutils.utils.JARFinder#getURLClassLoader(java.io.File)
 	 */
 	@Override
 	protected URLClassLoader getURLClassLoader0(File f, final ClassLoader parent)

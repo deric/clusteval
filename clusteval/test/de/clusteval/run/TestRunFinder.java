@@ -43,7 +43,7 @@ import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.db.StubSQLCommunicator;
 import de.clusteval.framework.threading.RepositorySupervisorThread;
 import de.clusteval.framework.threading.SupervisorThread;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * @author Christian Wiwie

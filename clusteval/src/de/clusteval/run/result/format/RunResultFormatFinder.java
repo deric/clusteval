@@ -46,7 +46,7 @@ public class RunResultFormatFinder extends JARFinder<RunResultFormat> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.JARFinder#getURLClassLoader(java.io.File)
+	 * @see de.wiwie.wiutils.utils.JARFinder#getURLClassLoader(java.io.File)
 	 */
 	@SuppressWarnings("unused")
 	@Override
@@ -74,7 +74,7 @@ public class RunResultFormatFinder extends JARFinder<RunResultFormat> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#checkFile(java.io.File)
+	 * @see de.wiwie.wiutils.utils.Finder#checkFile(java.io.File)
 	 */
 	@Override
 	protected boolean checkFile(File file) {
@@ -84,7 +84,7 @@ public class RunResultFormatFinder extends JARFinder<RunResultFormat> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#getIterator()
+	 * @see de.wiwie.wiutils.utils.Finder#getIterator()
 	 */
 	@Override
 	protected Iterator<File> getIterator() {
@@ -94,7 +94,7 @@ public class RunResultFormatFinder extends JARFinder<RunResultFormat> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.JARFinder#isJARLoaded(java.io.File)
+	 * @see de.wiwie.wiutils.utils.JARFinder#isJARLoaded(java.io.File)
 	 */
 	@Override
 	protected boolean isJARLoaded(File f) {
@@ -106,7 +106,7 @@ public class RunResultFormatFinder extends JARFinder<RunResultFormat> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.JARFinder#classNamesForJARFile(java.io.File)
+	 * @see de.wiwie.wiutils.utils.JARFinder#classNamesForJARFile(java.io.File)
 	 */
 	@Override
 	protected String[] classNamesForJARFile(File f) {

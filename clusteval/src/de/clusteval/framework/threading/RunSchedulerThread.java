@@ -30,8 +30,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utils.Pair;
-import utils.Triple;
+import de.wiwie.wiutils.utils.Pair;
+import de.wiwie.wiutils.utils.Triple;
 import de.clusteval.framework.ClustevalBackendServer;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.run.MissingParameterValueException;
@@ -45,7 +45,7 @@ import de.clusteval.run.runnable.IterationRunnable;
 import de.clusteval.run.runnable.IterationWrapper;
 import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.runnable.RunRunnableInitializationException;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * Threads of this class are responsible for scheduling, creating, starting and

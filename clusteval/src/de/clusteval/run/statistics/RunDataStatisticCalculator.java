@@ -135,7 +135,7 @@ public abstract class RunDataStatisticCalculator<T extends RunDataStatistic>
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.StatisticCalculator#clone()
+	 * @see de.wiwie.wiutils.utils.StatisticCalculator#clone()
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -165,7 +165,7 @@ public abstract class RunDataStatisticCalculator<T extends RunDataStatistic>
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.StatisticCalculator#calculate()
+	 * @see de.wiwie.wiutils.utils.StatisticCalculator#calculate()
 	 */
 	@Override
 	public T calculate() throws StatisticCalculateException {
@@ -175,7 +175,7 @@ public abstract class RunDataStatisticCalculator<T extends RunDataStatistic>
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.StatisticCalculator#calculateResult()
+	 * @see de.wiwie.wiutils.utils.StatisticCalculator#calculateResult()
 	 */
 	@Override
 	protected abstract T calculateResult()
@@ -184,7 +184,7 @@ public abstract class RunDataStatisticCalculator<T extends RunDataStatistic>
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.StatisticCalculator#getStatistic()
+	 * @see de.wiwie.wiutils.utils.StatisticCalculator#getStatistic()
 	 */
 	@Override
 	public abstract T getStatistic();

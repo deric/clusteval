@@ -26,7 +26,7 @@ import java.util.Map;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * @author Christian Wiwie
@@ -64,7 +64,7 @@ public abstract class JARFinder<T extends RepositoryObject> extends Finder<T> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#doOnFileFound(java.io.File)
+	 * @see de.wiwie.wiutils.utils.Finder#doOnFileFound(java.io.File)
 	 */
 	@Override
 	protected void doOnFileFound(File file) throws Exception {
@@ -243,7 +243,7 @@ public abstract class JARFinder<T extends RepositoryObject> extends Finder<T> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#findAndRegisterObjects()
+	 * @see de.wiwie.wiutils.utils.Finder#findAndRegisterObjects()
 	 */
 	@Override
 	public void findAndRegisterObjects() throws RegisterException,

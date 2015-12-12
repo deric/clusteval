@@ -8,7 +8,6 @@
 	<classpathentry kind="lib" path="lib/logback/log4j-1.2.16.jar"/>
 	<classpathentry kind="lib" path="lib/logback/logback-access-1.0.9.jar" sourcepath="lib/logback/logback-access-1.0.9-sources.jar"/>
 	<classpathentry kind="lib" path="lib/junit-addons-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/Wiutils.jar" sourcepath="/Wiutils/src"/>
 	<classpathentry kind="lib" path="lib/transclust/TransClust.jar"/>
 	<classpathentry kind="lib" path="lib/apacheCommons/commons-configuration-1.8.jar" sourcepath="lib/apacheCommons/commons-configuration-1.8-sources.jar">
 		<attributes>
@@ -30,6 +29,7 @@
 	<classpathentry kind="lib" path="lib/apacheCommons/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/apacheCommons/commons-logging-adapters-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/apacheCommons/commons-logging-api-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/Wiutils.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-8-oracle"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

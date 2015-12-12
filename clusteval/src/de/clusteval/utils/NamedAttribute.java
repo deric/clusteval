@@ -67,7 +67,7 @@ public abstract class NamedAttribute<T> extends RepositoryObject {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.RepositoryObject#equals(java.lang.Object)
+	 * @see de.wiwie.wiutils.utils.RepositoryObject#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {

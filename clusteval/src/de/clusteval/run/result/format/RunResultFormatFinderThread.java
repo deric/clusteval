@@ -53,7 +53,7 @@ public class RunResultFormatFinderThread extends FinderThread<RunResultFormat> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#getFinder()
+	 * @see de.wiwie.wiutils.utils.FinderThread#getFinder()
 	 */
 	@Override
 	protected RunResultFormatFinder getFinder() throws RegisterException {

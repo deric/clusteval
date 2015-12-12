@@ -21,13 +21,13 @@ import java.util.List;
 
 import org.slf4j.LoggerFactory;
 
-import utils.SimilarityMatrix.NUMBER_PRECISION;
+import de.wiwie.wiutils.utils.SimilarityMatrix.NUMBER_PRECISION;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.utils.RNotAvailableException;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * Datasets can have different formats. For all kinds of operations the

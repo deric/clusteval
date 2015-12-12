@@ -16,7 +16,7 @@ package de.clusteval.run.result.format;
 import java.io.IOException;
 import java.util.Map;
 
-import utils.parse.TextFileParser;
+import de.wiwie.wiutils.utils.parse.TextFileParser;
 import de.clusteval.run.result.ClusteringRunResult;
 
 /**

@@ -65,7 +65,7 @@ public class DataSetConfigFinderThread extends FinderThread<DataSetConfig> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#beforeFind()
+	 * @see de.wiwie.wiutils.utils.FinderThread#beforeFind()
 	 */
 	@Override
 	protected void beforeFind() {
@@ -86,7 +86,7 @@ public class DataSetConfigFinderThread extends FinderThread<DataSetConfig> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#getFinder()
+	 * @see de.wiwie.wiutils.utils.FinderThread#getFinder()
 	 */
 	@Override
 	protected Finder<DataSetConfig> getFinder() throws RegisterException {

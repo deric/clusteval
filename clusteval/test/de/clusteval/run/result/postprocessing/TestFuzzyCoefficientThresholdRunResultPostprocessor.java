@@ -20,7 +20,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import utils.Pair;
+import de.wiwie.wiutils.utils.Pair;
 import de.clusteval.cluster.Cluster;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;

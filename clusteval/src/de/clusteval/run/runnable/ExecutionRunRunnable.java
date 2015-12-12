@@ -29,11 +29,11 @@ import org.rosuda.REngine.REXPMismatchException;
 import org.rosuda.REngine.REngineException;
 import org.slf4j.LoggerFactory;
 
-import utils.Pair;
-import utils.StringExt;
-import utils.Triple;
-import utils.parse.TextFileParser;
-import utils.parse.TextFileParser.OUTPUT_MODE;
+import de.wiwie.wiutils.utils.Pair;
+import de.wiwie.wiutils.utils.StringExt;
+import de.wiwie.wiutils.utils.Triple;
+import de.wiwie.wiutils.utils.parse.TextFileParser;
+import de.wiwie.wiutils.utils.parse.TextFileParser.OUTPUT_MODE;
 import de.clusteval.cluster.ClusterItem;
 import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.NoParameterSetFoundException;
@@ -78,8 +78,8 @@ import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.InternalAttributeException;
 import de.clusteval.utils.RNotAvailableException;
 import de.clusteval.utils.plot.Plotter;
-import file.FileUtils;
-import format.Formatter;
+import de.wiwie.wiutils.file.FileUtils;
+import de.wiwie.wiutils.format.Formatter;
 
 /**
  * A type of a runnable, that corresponds to {@link ExecutionRun}s and is

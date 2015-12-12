@@ -66,7 +66,7 @@ public class ParameterOptimizationMethodFinderThread
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#getFinder()
+	 * @see de.wiwie.wiutils.utils.FinderThread#getFinder()
 	 */
 	@Override
 	protected ParameterOptimizationMethodFinder getFinder()

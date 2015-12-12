@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import utils.parse.TextFileParser;
+import de.wiwie.wiutils.utils.parse.TextFileParser;
 
 /**
  * @author Christian Wiwie
@@ -53,7 +53,7 @@ public class DataSetAttributeParser extends TextFileParser {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.parse.TextFileParser#processLine(java.lang.String[],
+	 * @see de.wiwie.wiutils.utils.parse.TextFileParser#processLine(java.lang.String[],
 	 * java.lang.String[])
 	 */
 	@SuppressWarnings("unused")

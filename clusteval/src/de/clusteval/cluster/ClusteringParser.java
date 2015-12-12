@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import utils.Pair;
-import utils.parse.TextFileParser;
-import utils.text.TextFileMapParser;
+import de.wiwie.wiutils.utils.Pair;
+import de.wiwie.wiutils.utils.parse.TextFileParser;
+import de.wiwie.wiutils.utils.text.TextFileMapParser;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.cluster.quality.ClusteringQualityMeasureParameters;
 import de.clusteval.cluster.quality.ClusteringQualityMeasureValue;
@@ -78,7 +78,7 @@ public class ClusteringParser extends TextFileParser {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.parse.TextFileParser#processLine(java.lang.String[],
+	 * @see de.wiwie.wiutils.utils.parse.TextFileParser#processLine(java.lang.String[],
 	 * java.lang.String[])
 	 */
 	@Override
@@ -121,7 +121,7 @@ public class ClusteringParser extends TextFileParser {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.parse.TextFileParser#finishProcess()
+	 * @see de.wiwie.wiutils.utils.parse.TextFileParser#finishProcess()
 	 */
 	@Override
 	public void finishProcess() {

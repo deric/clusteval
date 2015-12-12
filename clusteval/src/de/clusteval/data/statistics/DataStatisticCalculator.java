@@ -95,7 +95,7 @@ public abstract class DataStatisticCalculator<T extends DataStatistic>
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.StatisticCalculator#calculate()
+	 * @see de.wiwie.wiutils.utils.StatisticCalculator#calculate()
 	 */
 	@Override
 	public T calculate() throws StatisticCalculateException {
@@ -105,7 +105,7 @@ public abstract class DataStatisticCalculator<T extends DataStatistic>
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.StatisticCalculator#calculate()
+	 * @see de.wiwie.wiutils.utils.StatisticCalculator#calculate()
 	 */
 	@Override
 	protected abstract T calculateResult()

@@ -39,7 +39,7 @@ import de.clusteval.run.RunInitializationException;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.runnable.RunRunnableInitializationException;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * @author Christian Wiwie

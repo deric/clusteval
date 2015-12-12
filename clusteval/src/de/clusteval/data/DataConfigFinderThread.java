@@ -63,7 +63,7 @@ public class DataConfigFinderThread extends FinderThread<DataConfig> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#beforeFind()
+	 * @see de.wiwie.wiutils.utils.FinderThread#beforeFind()
 	 */
 	@Override
 	protected void beforeFind() {
@@ -80,7 +80,7 @@ public class DataConfigFinderThread extends FinderThread<DataConfig> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#getFinder()
+	 * @see de.wiwie.wiutils.utils.FinderThread#getFinder()
 	 */
 	@Override
 	protected Finder<DataConfig> getFinder() throws RegisterException {

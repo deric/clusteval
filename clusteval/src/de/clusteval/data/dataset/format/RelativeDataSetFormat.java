@@ -13,8 +13,8 @@ package de.clusteval.data.dataset.format;
 import java.io.File;
 import java.io.IOException;
 
-import utils.SimilarityMatrix;
-import utils.SimilarityMatrix.NUMBER_PRECISION;
+import de.wiwie.wiutils.utils.SimilarityMatrix;
+import de.wiwie.wiutils.utils.SimilarityMatrix.NUMBER_PRECISION;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;

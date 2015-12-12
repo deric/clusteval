@@ -20,7 +20,7 @@ import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.RNotAvailableException;
 import de.clusteval.utils.Statistic;
 import de.clusteval.utils.StatisticCalculator;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * @author Christian Wiwie

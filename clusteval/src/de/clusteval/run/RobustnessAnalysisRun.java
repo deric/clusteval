@@ -15,7 +15,7 @@ import java.util.Set;
 import org.apache.commons.cli.Options;
 import org.apache.commons.configuration.ConfigurationException;
 
-import utils.Triple;
+import de.wiwie.wiutils.utils.Triple;
 import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
@@ -78,7 +78,7 @@ import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.InvalidConfigurationFileException;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * @author Christian Wiwie

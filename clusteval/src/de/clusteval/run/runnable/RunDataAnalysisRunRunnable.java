@@ -16,7 +16,7 @@ package de.clusteval.run.runnable;
 import java.io.File;
 import java.util.List;
 
-import utils.Pair;
+import de.wiwie.wiutils.utils.Pair;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.run.Run;

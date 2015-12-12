@@ -19,7 +19,7 @@ import java.util.Map;
 
 import org.apache.commons.configuration.ConfigurationException;
 
-import utils.Pair;
+import de.wiwie.wiutils.utils.Pair;
 import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
@@ -74,7 +74,7 @@ import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorExcep
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.InvalidConfigurationFileException;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * The Class ClusteringResult.

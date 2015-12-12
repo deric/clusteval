@@ -22,7 +22,7 @@ import java.security.InvalidParameterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utils.SimilarityMatrix.NUMBER_PRECISION;
+import de.wiwie.wiutils.utils.SimilarityMatrix.NUMBER_PRECISION;
 import de.clusteval.data.dataset.DataSet;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.utils.RNotAvailableException;

@@ -53,7 +53,7 @@ public class DataStatisticFinderThread extends FinderThread<DataStatistic> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#getFinder()
+	 * @see de.wiwie.wiutils.utils.FinderThread#getFinder()
 	 */
 	@Override
 	protected DataStatisticFinder getFinder() throws RegisterException {

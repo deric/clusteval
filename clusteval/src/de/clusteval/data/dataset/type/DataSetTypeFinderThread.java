@@ -52,7 +52,7 @@ public class DataSetTypeFinderThread extends FinderThread<DataSetType> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#beforeFind()
+	 * @see de.wiwie.wiutils.utils.FinderThread#beforeFind()
 	 */
 	@Override
 	protected void beforeFind() {
@@ -62,7 +62,7 @@ public class DataSetTypeFinderThread extends FinderThread<DataSetType> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#afterFind()
+	 * @see de.wiwie.wiutils.utils.FinderThread#afterFind()
 	 */
 	@Override
 	protected void afterFind() {
@@ -72,7 +72,7 @@ public class DataSetTypeFinderThread extends FinderThread<DataSetType> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#getFinder()
+	 * @see de.wiwie.wiutils.utils.FinderThread#getFinder()
 	 */
 	@Override
 	protected DataSetTypeFinder getFinder() throws RegisterException {

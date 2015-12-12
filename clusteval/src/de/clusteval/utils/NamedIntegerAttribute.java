@@ -49,7 +49,7 @@ public class NamedIntegerAttribute extends NamedAttribute<Integer> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.NamedAttribute#cloneValue(java.lang.Object)
+	 * @see de.wiwie.wiutils.utils.NamedAttribute#cloneValue(java.lang.Object)
 	 */
 	@Override
 	protected Integer cloneValue(Integer value) {

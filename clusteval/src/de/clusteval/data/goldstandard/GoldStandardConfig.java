@@ -120,7 +120,7 @@ public class GoldStandardConfig extends DumpableRepositoryObject {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.RepositoryObject#notify(utils.RepositoryEvent)
+	 * @see de.wiwie.wiutils.utils.RepositoryObject#notify(utils.RepositoryEvent)
 	 */
 	@Override
 	public void notify(RepositoryEvent e) throws RegisterException {

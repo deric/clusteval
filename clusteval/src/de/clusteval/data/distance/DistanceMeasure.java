@@ -16,7 +16,7 @@ package de.clusteval.data.distance;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
-import utils.SimilarityMatrix;
+import de.wiwie.wiutils.utils.SimilarityMatrix;
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;

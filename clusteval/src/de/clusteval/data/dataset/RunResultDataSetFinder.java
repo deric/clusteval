@@ -42,7 +42,7 @@ public class RunResultDataSetFinder extends DataSetFinder {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#getIterator()
+	 * @see de.wiwie.wiutils.utils.Finder#getIterator()
 	 */
 	@Override
 	protected Iterator<File> getIterator() {

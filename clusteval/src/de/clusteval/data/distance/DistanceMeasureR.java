@@ -19,7 +19,7 @@ import org.rosuda.REngine.REXPMismatchException;
 import org.rosuda.REngine.REngineException;
 import org.rosuda.REngine.Rserve.RserveException;
 
-import utils.SimilarityMatrix;
+import de.wiwie.wiutils.utils.SimilarityMatrix;
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
 import de.clusteval.framework.repository.MyRengine;
 import de.clusteval.framework.repository.RException;

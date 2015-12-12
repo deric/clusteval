@@ -4,7 +4,7 @@
 package de.clusteval.framework.repository;
 
 import de.clusteval.run.result.RunResult;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * @author Christian Wiwie

@@ -31,7 +31,7 @@ import java.util.concurrent.Future;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utils.ProgressPrinter;
+import de.wiwie.wiutils.utils.ProgressPrinter;
 import de.clusteval.data.dataset.format.IncompatibleDataSetFormatException;
 import de.clusteval.data.dataset.format.InvalidDataSetFormatVersionException;
 import de.clusteval.data.dataset.format.UnknownDataSetFormatException;

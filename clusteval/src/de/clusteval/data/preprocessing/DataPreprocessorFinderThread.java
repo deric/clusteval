@@ -57,7 +57,7 @@ public class DataPreprocessorFinderThread
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#getFinder()
+	 * @see de.wiwie.wiutils.utils.FinderThread#getFinder()
 	 */
 	@Override
 	protected DataPreprocessorFinder getFinder() throws RegisterException {

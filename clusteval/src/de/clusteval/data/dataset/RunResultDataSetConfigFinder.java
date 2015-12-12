@@ -13,7 +13,7 @@ package de.clusteval.data.dataset;
 import java.io.File;
 import java.util.Iterator;
 
-import utils.ArrayIterator;
+import de.wiwie.wiutils.utils.ArrayIterator;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.utils.FileFinder;
@@ -43,7 +43,7 @@ public class RunResultDataSetConfigFinder extends FileFinder<DataSetConfig> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#checkFile(java.io.File)
+	 * @see de.wiwie.wiutils.utils.Finder#checkFile(java.io.File)
 	 */
 	@Override
 	protected boolean checkFile(File file) {
@@ -53,7 +53,7 @@ public class RunResultDataSetConfigFinder extends FileFinder<DataSetConfig> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#getIterator()
+	 * @see de.wiwie.wiutils.utils.Finder#getIterator()
 	 */
 	@Override
 	protected Iterator<File> getIterator() {

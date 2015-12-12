@@ -18,8 +18,8 @@ import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryObject;
 import de.clusteval.framework.repository.RepositoryObjectDumpException;
-import file.FileUtils;
-import utils.SimilarityMatrix.NUMBER_PRECISION;
+import de.wiwie.wiutils.file.FileUtils;
+import de.wiwie.wiutils.utils.SimilarityMatrix.NUMBER_PRECISION;
 
 /**
  * Subclasses of this abstract class correspond to objects, that provide in some

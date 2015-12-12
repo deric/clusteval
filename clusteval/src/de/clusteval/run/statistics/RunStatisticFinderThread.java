@@ -52,7 +52,7 @@ public class RunStatisticFinderThread extends FinderThread<RunStatistic> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#getFinder()
+	 * @see de.wiwie.wiutils.utils.FinderThread#getFinder()
 	 */
 	@Override
 	protected RunStatisticFinder getFinder() throws RegisterException {

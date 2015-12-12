@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import utils.Pair;
+import de.wiwie.wiutils.utils.Pair;
 import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
@@ -107,7 +107,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getServer()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getServer()
 	 */
 	@Override
 	protected String getServer() {
@@ -117,7 +117,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getDatabase()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getDatabase()
 	 */
 	@Override
 	protected String getDatabase() {
@@ -127,7 +127,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getDBUsername()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getDBUsername()
 	 */
 	@Override
 	protected String getDBUsername() {
@@ -137,7 +137,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getDBPassword()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getDBPassword()
 	 */
 	@Override
 	protected String getDBPassword() {
@@ -147,7 +147,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRepositories()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRepositories()
 	 */
 	@Override
 	protected String getTableRepositories() {
@@ -187,7 +187,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableClusteringQualityMeasures()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableClusteringQualityMeasures()
 	 */
 	@Override
 	protected String getTableClusteringQualityMeasures() {
@@ -197,7 +197,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableDataConfigs()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableDataConfigs()
 	 */
 	@Override
 	protected String getTableDataConfigs() {
@@ -207,7 +207,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableDataets()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableDataets()
 	 */
 	@Override
 	protected String getTableDatasets() {
@@ -217,7 +217,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableDataSetConfigs()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableDataSetConfigs()
 	 */
 	@Override
 	protected String getTableDataSetConfigs() {
@@ -227,7 +227,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableDataSetFormats()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableDataSetFormats()
 	 */
 	@Override
 	protected String getTableDataSetFormats() {
@@ -237,7 +237,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableGoldStandardConfigs()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableGoldStandardConfigs()
 	 */
 	@Override
 	protected String getTableGoldStandardConfigs() {
@@ -247,7 +247,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableGoldStandards()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableGoldStandards()
 	 */
 	@Override
 	protected String getTableGoldStandards() {
@@ -257,7 +257,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableOptimizableProgramParameters()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableOptimizableProgramParameters()
 	 */
 	@Override
 	protected String getTableOptimizableProgramParameters() {
@@ -267,7 +267,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableParameterOptimizationMethod()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableParameterOptimizationMethod()
 	 */
 	@Override
 	protected String getTableParameterOptimizationMethods() {
@@ -277,7 +277,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableProgramConfigs()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableProgramConfigs()
 	 */
 	@Override
 	protected String getTableProgramConfigs() {
@@ -287,7 +287,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableProgramParameter()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableProgramParameter()
 	 */
 	@Override
 	protected String getTableProgramParameter() {
@@ -297,7 +297,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTablePrograms()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTablePrograms()
 	 */
 	@Override
 	protected String getTablePrograms() {
@@ -307,7 +307,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableProgramsCompatibleDataSetFormats()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableProgramsCompatibleDataSetFormats()
 	 */
 	@Override
 	protected String getTableProgramConfigsCompatibleDataSetFormats() {
@@ -317,7 +317,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsAnalysis()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsAnalysis()
 	 */
 	@Override
 	protected String getTableRunsAnalysis() {
@@ -327,7 +327,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsAnalysisData()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsAnalysisData()
 	 */
 	@Override
 	protected String getTableRunsAnalysisData() {
@@ -337,7 +337,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsAnalysisDataDataIdentifiers()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsAnalysisDataDataIdentifiers()
 	 */
 	@Override
 	protected String getTableRunsAnalysisDataDataIdentifiers() {
@@ -347,7 +347,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsAnalysisRun()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsAnalysisRun()
 	 */
 	@Override
 	protected String getTableRunsAnalysisRun() {
@@ -357,7 +357,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsAnalysisRunRunIdentifiers()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsAnalysisRunRunIdentifiers()
 	 */
 	@Override
 	protected String getTableRunsAnalysisRunRunIdentifiers() {
@@ -367,7 +367,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsAnalysisRunData()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsAnalysisRunData()
 	 */
 	@Override
 	protected String getTableRunsAnalysisRunData() {
@@ -377,7 +377,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsAnalysisStatistics()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsAnalysisStatistics()
 	 */
 	@Override
 	protected String getTableRunsAnalysisStatistics() {
@@ -387,7 +387,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsClustering()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsClustering()
 	 */
 	@Override
 	protected String getTableRunsClustering() {
@@ -397,7 +397,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsExecution()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsExecution()
 	 */
 	@Override
 	protected String getTableRunsExecution() {
@@ -407,7 +407,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsExecutionDataConfigs()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsExecutionDataConfigs()
 	 */
 	@Override
 	protected String getTableRunsExecutionDataConfigs() {
@@ -417,7 +417,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsExecutionParameterValues()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsExecutionParameterValues()
 	 */
 	@Override
 	protected String getTableRunsExecutionParameterValues() {
@@ -427,7 +427,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsExecutionProgramConfigs()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsExecutionProgramConfigs()
 	 */
 	@Override
 	protected String getTableRunsExecutionProgramConfigs() {
@@ -437,7 +437,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsExecutionQualityMeasures()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsExecutionQualityMeasures()
 	 */
 	@Override
 	protected String getTableRunsExecutionQualityMeasures() {
@@ -447,7 +447,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsInternalParameterOptimization()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsInternalParameterOptimization()
 	 */
 	@Override
 	protected String getTableRunsInternalParameterOptimization() {
@@ -457,7 +457,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsParameterOptimization()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsParameterOptimization()
 	 */
 	@Override
 	protected String getTableRunsParameterOptimization() {
@@ -467,7 +467,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsParameterOptimizationMethods()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsParameterOptimizationMethods()
 	 */
 	@Override
 	protected String getTableRunsParameterOptimizationMethods() {
@@ -488,7 +488,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunsParameterOptimizationParameters()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunsParameterOptimizationParameters()
 	 */
 	@Override
 	protected String getTableRunsParameterOptimizationParameters() {
@@ -498,7 +498,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunResultExecution()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunResultExecution()
 	 */
 	@Override
 	protected String getTableRunResultsExecution() {
@@ -508,7 +508,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunResultFormats()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunResultFormats()
 	 */
 	@Override
 	protected String getTableRunResultFormats() {
@@ -518,7 +518,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunResultsClustering()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunResultsClustering()
 	 */
 	@Override
 	protected String getTableRunResultsClustering() {
@@ -528,7 +528,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunResultParameterOptimization()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunResultParameterOptimization()
 	 */
 	@Override
 	protected String getTableRunResultsParameterOptimization() {
@@ -594,7 +594,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunResults()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunResults()
 	 */
 	@Override
 	protected String getTableRunResults() {
@@ -604,7 +604,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunResultsDataAnalysis()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunResultsDataAnalysis()
 	 */
 	@Override
 	protected String getTableRunResultsDataAnalysis() {
@@ -614,7 +614,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunResultsRunAnalysis()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunResultsRunAnalysis()
 	 */
 	@Override
 	protected String getTableRunResultsRunAnalysis() {
@@ -624,7 +624,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunResultsRunDataAnalysis()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunResultsRunDataAnalysis()
 	 */
 	@Override
 	protected String getTableRunResultsRunDataAnalysis() {
@@ -634,7 +634,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRuns()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRuns()
 	 */
 	@Override
 	protected String getTableRuns() {
@@ -644,7 +644,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRunTypes()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRunTypes()
 	 */
 	@Override
 	protected String getTableRunTypes() {
@@ -654,7 +654,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableStatistics()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableStatistics()
 	 */
 	@Override
 	protected String getTableStatistics() {
@@ -664,7 +664,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableStatisticsData()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableStatisticsData()
 	 */
 	@Override
 	protected String getTableStatisticsData() {
@@ -674,7 +674,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableStatisticsRun()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableStatisticsRun()
 	 */
 	@Override
 	protected String getTableStatisticsRun() {
@@ -684,7 +684,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableStatisticsRunData()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableStatisticsRunData()
 	 */
 	@Override
 	protected String getTableStatisticsRunData() {
@@ -694,7 +694,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#registerRunResultFormat(java.lang.Class)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#registerRunResultFormat(java.lang.Class)
 	 */
 	@Override
 	protected boolean registerRunResultFormatClass(
@@ -715,7 +715,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#register(run.config.Run)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#register(run.config.Run)
 	 */
 	@Override
 	protected boolean register(Run object, final boolean updateOnly) {
@@ -1180,7 +1180,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	// /*
 	// * (non-Javadoc)
 	// *
-	// * @see utils.SQLCommunicator#register(run.Run)
+	// * @see de.wiwie.wiutils.utils.SQLCommunicator#register(run.Run)
 	// */
 	// @Override
 	// protected boolean register(Run object, final boolean updateOnly) {
@@ -1256,7 +1256,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#register(program.ProgramConfig)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#register(program.ProgramConfig)
 	 */
 	@Override
 	protected int register(ProgramConfig object, final boolean updateOnly) {
@@ -1383,7 +1383,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getRunId(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getRunId(java.lang.String)
 	 */
 	@Override
 	protected int getRunId(final Run run) throws SQLException {
@@ -1524,7 +1524,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getRunTypeId(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getRunTypeId(java.lang.String)
 	 */
 	@Override
 	protected int getRunTypeId(String name) throws SQLException {
@@ -1535,7 +1535,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getRepositoryId(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getRepositoryId(java.lang.String)
 	 */
 	@Override
 	protected int getRepositoryId(String absPath) throws SQLException {
@@ -1593,7 +1593,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#register(program.Program)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#register(program.Program)
 	 */
 	@Override
 	protected int register(Program object, final boolean updateOnly) {
@@ -1618,7 +1618,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#register(data.goldstandard.GoldStandardConfig)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#register(data.goldstandard.GoldStandardConfig)
 	 */
 	@Override
 	protected int register(GoldStandardConfig object, final boolean updateOnly) {
@@ -1671,7 +1671,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#register(data.goldstandard.GoldStandard)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#register(data.goldstandard.GoldStandard)
 	 */
 	@Override
 	protected int register(GoldStandard object, final boolean updateOnly) {
@@ -1713,7 +1713,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#registerDataSetFormat(java.lang.Class)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#registerDataSetFormat(java.lang.Class)
 	 */
 	@Override
 	protected boolean registerDataSetFormatClass(
@@ -1749,7 +1749,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#registerDataSetFormat(java.lang.Class)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#registerDataSetFormat(java.lang.Class)
 	 */
 	@Override
 	protected boolean registerDataSetTypeClass(
@@ -1798,7 +1798,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * utils.SQLCommunicator#registerClusteringQualityMeasure(java.lang.Class)
+	 * de.wiwie.wiutils.utils.SQLCommunicator#registerClusteringQualityMeasure(java.lang.Class)
 	 */
 	@Override
 	protected boolean registerClusteringQualityMeasureClass(
@@ -1845,7 +1845,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * utils.SQLCommunicator#registerParameterOptimizationMethod(java.lang.Class
+	 * de.wiwie.wiutils.utils.SQLCommunicator#registerParameterOptimizationMethod(java.lang.Class
 	 * )
 	 */
 	@Override
@@ -1914,7 +1914,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#registerRunStatistic(java.lang.Class)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#registerRunStatistic(java.lang.Class)
 	 */
 	@Override
 	protected boolean registerRunStatisticClass(
@@ -1965,7 +1965,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#registerRunDataStatistic(java.lang.Class)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#registerRunDataStatistic(java.lang.Class)
 	 */
 	@Override
 	protected boolean registerRunDataStatisticClass(
@@ -2014,7 +2014,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#register(program.DoubleProgramParameter)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#register(program.DoubleProgramParameter)
 	 */
 	@Override
 	protected int register(DoubleProgramParameter object) {
@@ -2052,7 +2052,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#register(program.IntegerProgramParameter)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#register(program.IntegerProgramParameter)
 	 */
 	@Override
 	protected int register(IntegerProgramParameter object) {
@@ -2089,7 +2089,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#register(program.StringProgramParameter)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#register(program.StringProgramParameter)
 	 */
 	@Override
 	protected int register(StringProgramParameter object) {
@@ -2126,7 +2126,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#register(data.dataset.DataSet)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#register(data.dataset.DataSet)
 	 */
 	@Override
 	protected int register(DataSet object, final boolean updateOnly) {
@@ -2228,7 +2228,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#register(data.DataConfig)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#register(data.DataConfig)
 	 */
 	@Override
 	protected int register(DataConfig object, final boolean updateOnly) {
@@ -2320,7 +2320,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#register(data.dataset.DataSetConfig)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#register(data.dataset.DataSetConfig)
 	 */
 	@Override
 	protected int register(DataSetConfig object, final boolean updateOnly) {
@@ -2373,7 +2373,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#unregisterRunResultFormat(java.lang.Class)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#unregisterRunResultFormat(java.lang.Class)
 	 */
 	@Override
 	protected boolean unregisterRunResultFormat(
@@ -2393,7 +2393,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#unregister(program.ProgramConfig)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#unregister(program.ProgramConfig)
 	 */
 	@Override
 	protected int unregister(ProgramConfig object) {
@@ -2423,7 +2423,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#unregister(program.Program)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#unregister(program.Program)
 	 */
 	@Override
 	protected int unregister(Program object) {
@@ -2442,7 +2442,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * utils.SQLCommunicator#unregister(data.goldstandard.GoldStandardConfig)
+	 * de.wiwie.wiutils.utils.SQLCommunicator#unregister(data.goldstandard.GoldStandardConfig)
 	 */
 	@Override
 	protected int unregister(GoldStandardConfig object) {
@@ -2461,7 +2461,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#unregister(data.goldstandard.GoldStandard)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#unregister(data.goldstandard.GoldStandard)
 	 */
 	@Override
 	protected int unregister(GoldStandard object) {
@@ -2479,7 +2479,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#unregisterDataSetFormat(java.lang.Class)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#unregisterDataSetFormat(java.lang.Class)
 	 */
 	@Override
 	protected boolean unregisterDataSetFormatClass(
@@ -2500,7 +2500,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#unregister(data.dataset.DataSet)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#unregister(data.dataset.DataSet)
 	 */
 	@Override
 	protected int unregister(DataSet object) {
@@ -2518,7 +2518,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#unregister(data.DataConfig)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#unregister(data.DataConfig)
 	 */
 	@Override
 	protected int unregister(DataConfig object) {
@@ -2536,7 +2536,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#unregister(data.dataset.DataSetConfig)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#unregister(data.dataset.DataSetConfig)
 	 */
 	@Override
 	protected int unregister(DataSetConfig object) {
@@ -2554,7 +2554,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#updateStatusOfRun(java.lang.String,
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#updateStatusOfRun(java.lang.String,
 	 * java.lang.String)
 	 */
 	@Override
@@ -2578,7 +2578,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#register(run.result.RunResult)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#register(run.result.RunResult)
 	 */
 	@Override
 	public int register(RunResult object) {
@@ -2663,7 +2663,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#register(run.result.ClusteringRunResult)
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#register(run.result.ClusteringRunResult)
 	 */
 	@Override
 	public int register(ClusteringRunResult object) {
@@ -2738,7 +2738,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * utils.SQLCommunicator#register(run.result.ParameterOptimizationResult)
+	 * de.wiwie.wiutils.utils.SQLCommunicator#register(run.result.ParameterOptimizationResult)
 	 */
 	@Override
 	public int register(ParameterOptimizationResult object) {
@@ -2977,7 +2977,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * utils.SQLCommunicator#register(run.result.ParameterOptimizationResult)
+	 * de.wiwie.wiutils.utils.SQLCommunicator#register(run.result.ParameterOptimizationResult)
 	 */
 	@Override
 	public int register(DataAnalysisRunResult object) {
@@ -3004,7 +3004,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableRepositoryTypes()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableRepositoryTypes()
 	 */
 	@Override
 	protected String getTableRepositoryTypes() {
@@ -3183,7 +3183,7 @@ public class DefaultSQLCommunicator_pg extends SQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.SQLCommunicator#getTableDataSetFormats()
+	 * @see de.wiwie.wiutils.utils.SQLCommunicator#getTableDataSetFormats()
 	 */
 	@Override
 	protected String getTableDataSetTypes() {

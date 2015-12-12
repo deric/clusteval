@@ -69,8 +69,8 @@ import de.clusteval.run.result.format.UnknownRunResultFormatException;
 import de.clusteval.run.result.postprocessing.UnknownRunResultPostprocessorException;
 import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
-import file.FileUtils;
-import utils.Pair;
+import de.wiwie.wiutils.file.FileUtils;
+import de.wiwie.wiutils.utils.Pair;
 
 /**
  * <p>

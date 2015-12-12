@@ -87,7 +87,7 @@ import de.clusteval.utils.InternalAttributeException;
 import de.clusteval.utils.NamedDoubleAttribute;
 import de.clusteval.utils.NamedIntegerAttribute;
 import de.clusteval.utils.NamedStringAttribute;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * The repository is the central object of the backend, where objects are

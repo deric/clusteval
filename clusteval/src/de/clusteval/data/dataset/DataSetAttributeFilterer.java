@@ -15,7 +15,7 @@ package de.clusteval.data.dataset;
 
 import java.io.IOException;
 
-import utils.parse.TextFileParser;
+import de.wiwie.wiutils.utils.parse.TextFileParser;
 
 /**
  * @author Christian Wiwie
@@ -36,7 +36,7 @@ public class DataSetAttributeFilterer extends TextFileParser {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.parse.TextFileParser#isLockingTargetFile()
+	 * @see de.wiwie.wiutils.utils.parse.TextFileParser#isLockingTargetFile()
 	 */
 	@Override
 	public boolean isLockingTargetFile() {
@@ -46,7 +46,7 @@ public class DataSetAttributeFilterer extends TextFileParser {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.parse.TextFileParser#processLine(java.lang.String[],
+	 * @see de.wiwie.wiutils.utils.parse.TextFileParser#processLine(java.lang.String[],
 	 * java.lang.String[])
 	 */
 	@SuppressWarnings("unused")
@@ -58,7 +58,7 @@ public class DataSetAttributeFilterer extends TextFileParser {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.parse.TextFileParser#checkLine(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.parse.TextFileParser#checkLine(java.lang.String)
 	 */
 	@Override
 	protected boolean checkLine(String line) {
@@ -69,7 +69,7 @@ public class DataSetAttributeFilterer extends TextFileParser {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.parse.TextFileParser#getLineOutput(java.lang.String[],
+	 * @see de.wiwie.wiutils.utils.parse.TextFileParser#getLineOutput(java.lang.String[],
 	 * java.lang.String[])
 	 */
 	@SuppressWarnings("unused")

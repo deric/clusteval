@@ -61,7 +61,7 @@ public abstract class DoubleValueDataStatistic extends DataStatistic {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Statistic#parseFromString(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.Statistic#parseFromString(java.lang.String)
 	 */
 	@Override
 	public void parseFromString(String contents) {

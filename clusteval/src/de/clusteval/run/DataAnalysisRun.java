@@ -25,7 +25,7 @@ import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.threading.RunSchedulerThread;
 import de.clusteval.run.runnable.DataAnalysisRunRunnable;
 import de.clusteval.run.runnable.RunRunnable;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * A type of analysis run that conducts analyses of data inputs encapsulated by

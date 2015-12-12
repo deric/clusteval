@@ -25,7 +25,7 @@ import junitx.framework.ArrayAssert;
 
 import org.junit.Test;
 
-import utils.Pair;
+import de.wiwie.wiutils.utils.Pair;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.program.ParameterSet;
 import de.clusteval.utils.AbstractClustEvalTest;

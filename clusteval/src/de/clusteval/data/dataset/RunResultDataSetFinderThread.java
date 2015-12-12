@@ -56,7 +56,7 @@ public class RunResultDataSetFinderThread extends DataSetFinderThread {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#getFinder()
+	 * @see de.wiwie.wiutils.utils.FinderThread#getFinder()
 	 */
 	@Override
 	protected RunResultDataSetFinder getFinder() throws RegisterException {
@@ -66,7 +66,7 @@ public class RunResultDataSetFinderThread extends DataSetFinderThread {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#afterFind()
+	 * @see de.wiwie.wiutils.utils.FinderThread#afterFind()
 	 */
 	@Override
 	protected void afterFind() {
@@ -76,7 +76,7 @@ public class RunResultDataSetFinderThread extends DataSetFinderThread {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#beforeFind()
+	 * @see de.wiwie.wiutils.utils.FinderThread#beforeFind()
 	 */
 	@Override
 	protected void beforeFind() {

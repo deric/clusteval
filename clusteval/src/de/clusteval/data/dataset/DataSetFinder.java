@@ -42,7 +42,7 @@ public class DataSetFinder extends FileFinder<DataSet> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#checkFile(java.io.File)
+	 * @see de.wiwie.wiutils.utils.Finder#checkFile(java.io.File)
 	 */
 	@Override
 	protected boolean checkFile(File file) {
@@ -63,7 +63,7 @@ public class DataSetFinder extends FileFinder<DataSet> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.Finder#getIterator()
+	 * @see de.wiwie.wiutils.utils.Finder#getIterator()
 	 */
 	@Override
 	protected Iterator<File> getIterator() {

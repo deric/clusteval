@@ -119,18 +119,18 @@ public class TestClusteringEvalFramework {
 		 */
 		for (String programDataPair : programDataPairs) {
 			for (int i = 1; i <= 10; i++) {
-				Assert.assertTrue(new File(file.FileUtils.buildPath(
+				Assert.assertTrue(new File(de.wiwie.wiutils.file.FileUtils.buildPath(
 						resultsDirectory, programDataPair + "." + i
 								+ ".results")).exists());
-				Assert.assertTrue(new File(file.FileUtils.buildPath(
+				Assert.assertTrue(new File(de.wiwie.wiutils.file.FileUtils.buildPath(
 						resultsDirectory, programDataPair + "." + i
 								+ ".results.conv")).exists());
-				Assert.assertTrue(new File(file.FileUtils.buildPath(
+				Assert.assertTrue(new File(de.wiwie.wiutils.file.FileUtils.buildPath(
 						resultsDirectory, programDataPair + "." + i
 								+ ".results.qual")).exists());
 			}
 
-			Assert.assertTrue(new File(file.FileUtils.buildPath(
+			Assert.assertTrue(new File(de.wiwie.wiutils.file.FileUtils.buildPath(
 					resultsDirectory, programDataPair
 							+ ".results.qual.complete")).exists());
 		}
@@ -165,26 +165,26 @@ public class TestClusteringEvalFramework {
 		for (String programDataPair : programDataPairs) {
 			for (int i = 1; i <= 10; i++) {
 				Assert.assertTrue(
-						file.FileUtils.buildPath(resultsDirectory,
+						de.wiwie.wiutils.file.FileUtils.buildPath(resultsDirectory,
 								programDataPair + "." + i + ".results"),
-						new File(file.FileUtils.buildPath(resultsDirectory,
+						new File(de.wiwie.wiutils.file.FileUtils.buildPath(resultsDirectory,
 								programDataPair + "." + i + ".results"))
 								.exists());
 				Assert.assertTrue(
-						file.FileUtils.buildPath(resultsDirectory,
+						de.wiwie.wiutils.file.FileUtils.buildPath(resultsDirectory,
 								programDataPair + "." + i + ".results.conv"),
-						new File(file.FileUtils.buildPath(resultsDirectory,
+						new File(de.wiwie.wiutils.file.FileUtils.buildPath(resultsDirectory,
 								programDataPair + "." + i + ".results.conv"))
 								.exists());
 				Assert.assertTrue(
-						file.FileUtils.buildPath(resultsDirectory,
+						de.wiwie.wiutils.file.FileUtils.buildPath(resultsDirectory,
 								programDataPair + "." + i + ".results.qual"),
-						new File(file.FileUtils.buildPath(resultsDirectory,
+						new File(de.wiwie.wiutils.file.FileUtils.buildPath(resultsDirectory,
 								programDataPair + "." + i + ".results.qual"))
 								.exists());
 			}
 
-			Assert.assertTrue(new File(file.FileUtils.buildPath(
+			Assert.assertTrue(new File(de.wiwie.wiutils.file.FileUtils.buildPath(
 					resultsDirectory, programDataPair
 							+ ".results.qual.complete")).exists());
 		}
@@ -218,18 +218,18 @@ public class TestClusteringEvalFramework {
 		 */
 		for (String programDataPair : programDataPairs) {
 			for (int i = 1; i <= 1; i++) {
-				Assert.assertTrue(new File(file.FileUtils.buildPath(
+				Assert.assertTrue(new File(de.wiwie.wiutils.file.FileUtils.buildPath(
 						resultsDirectory, programDataPair + "." + i
 								+ ".results")).exists());
-				Assert.assertTrue(new File(file.FileUtils.buildPath(
+				Assert.assertTrue(new File(de.wiwie.wiutils.file.FileUtils.buildPath(
 						resultsDirectory, programDataPair + "." + i
 								+ ".results.conv")).exists());
-				Assert.assertTrue(new File(file.FileUtils.buildPath(
+				Assert.assertTrue(new File(de.wiwie.wiutils.file.FileUtils.buildPath(
 						resultsDirectory, programDataPair + "." + i
 								+ ".results.qual")).exists());
 			}
 
-			Assert.assertTrue(new File(file.FileUtils.buildPath(
+			Assert.assertTrue(new File(de.wiwie.wiutils.file.FileUtils.buildPath(
 					resultsDirectory, programDataPair
 							+ ".results.qual.complete")).exists());
 		}
@@ -264,18 +264,18 @@ public class TestClusteringEvalFramework {
 		 */
 		for (String programDataPair : programDataPairs) {
 			for (int i = 1; i <= 1; i++) {
-				Assert.assertTrue(new File(file.FileUtils.buildPath(
+				Assert.assertTrue(new File(de.wiwie.wiutils.file.FileUtils.buildPath(
 						resultsDirectory, programDataPair + "." + i
 								+ ".results")).exists());
-				Assert.assertTrue(new File(file.FileUtils.buildPath(
+				Assert.assertTrue(new File(de.wiwie.wiutils.file.FileUtils.buildPath(
 						resultsDirectory, programDataPair + "." + i
 								+ ".results.conv")).exists());
-				Assert.assertTrue(new File(file.FileUtils.buildPath(
+				Assert.assertTrue(new File(de.wiwie.wiutils.file.FileUtils.buildPath(
 						resultsDirectory, programDataPair + "." + i
 								+ ".results.qual")).exists());
 			}
 
-			Assert.assertTrue(new File(file.FileUtils.buildPath(
+			Assert.assertTrue(new File(de.wiwie.wiutils.file.FileUtils.buildPath(
 					resultsDirectory, programDataPair
 							+ ".results.qual.complete")).exists());
 		}

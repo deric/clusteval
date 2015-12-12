@@ -43,7 +43,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * utils.DefaultSQLCommunicator#getParameterOptimizationMethodId(java.lang
+	 * de.wiwie.wiutils.utils.DefaultSQLCommunicator#getParameterOptimizationMethodId(java.lang
 	 * .String)
 	 */
 	@Override
@@ -56,7 +56,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.DefaultSQLCommunicator#getDataSetFormatId(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.DefaultSQLCommunicator#getDataSetFormatId(java.lang.String)
 	 */
 	@Override
 	protected int getDataSetFormatId(String dataSetFormatClassSimpleName)
@@ -133,7 +133,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.DefaultSQLCommunicator#register(program.ProgramConfig)
+	 * @see de.wiwie.wiutils.utils.DefaultSQLCommunicator#register(program.ProgramConfig)
 	 */
 	@Override
 	protected int register(ProgramConfig object, final boolean updateOnly) {
@@ -143,7 +143,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.DefaultSQLCommunicator#getRunAnalysisId(int)
+	 * @see de.wiwie.wiutils.utils.DefaultSQLCommunicator#getRunAnalysisId(int)
 	 */
 	@Override
 	protected int getRunAnalysisId(int runId) throws SQLException {
@@ -159,7 +159,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.DefaultSQLCommunicator#getRunExecutionId(int)
+	 * @see de.wiwie.wiutils.utils.DefaultSQLCommunicator#getRunExecutionId(int)
 	 */
 	@Override
 	protected int getRunExecutionId(int runId) throws SQLException {
@@ -175,7 +175,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.DefaultSQLCommunicator#getRunId(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.DefaultSQLCommunicator#getRunId(java.lang.String)
 	 */
 	@Override
 	protected int getRunId(final Run run) throws SQLException {
@@ -191,7 +191,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.DefaultSQLCommunicator#getRunResultExecutionId(int)
+	 * @see de.wiwie.wiutils.utils.DefaultSQLCommunicator#getRunResultExecutionId(int)
 	 */
 	@Override
 	protected int getRunResultExecutionId(int runResultId) throws SQLException {
@@ -202,7 +202,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.DefaultSQLCommunicator#getRunResultFormatId(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.DefaultSQLCommunicator#getRunResultFormatId(java.lang.String)
 	 */
 	@Override
 	protected int getRunResultFormatId(String runResultFormatSimpleName)
@@ -214,7 +214,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.DefaultSQLCommunicator#getRunResultId(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.DefaultSQLCommunicator#getRunResultId(java.lang.String)
 	 */
 	@Override
 	protected int getRunResultId(String uniqueRunIdentifier)
@@ -226,7 +226,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.DefaultSQLCommunicator#getRunTypeId(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.DefaultSQLCommunicator#getRunTypeId(java.lang.String)
 	 */
 	@Override
 	protected int getRunTypeId(String name) throws SQLException {
@@ -237,7 +237,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.DefaultSQLCommunicator#getStatisticId(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.DefaultSQLCommunicator#getStatisticId(java.lang.String)
 	 */
 	@Override
 	protected int getStatisticId(String statisticsName) throws SQLException {
@@ -248,7 +248,7 @@ public class RunResultSQLCommunicator extends DefaultSQLCommunicator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.DefaultSQLCommunicator#getDataSetFormatId(java.lang.String)
+	 * @see de.wiwie.wiutils.utils.DefaultSQLCommunicator#getDataSetFormatId(java.lang.String)
 	 */
 	@Override
 	protected int getDataSetTypeId(String dataSetTypeClassSimpleName)

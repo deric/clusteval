@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import utils.SimilarityMatrix.NUMBER_PRECISION;
+import de.wiwie.wiutils.utils.SimilarityMatrix.NUMBER_PRECISION;
 import de.clusteval.data.dataset.format.ConversionInputToStandardConfiguration;
 import de.clusteval.data.dataset.format.ConversionStandardToInputConfiguration;
 import de.clusteval.data.preprocessing.DataPreprocessor;
@@ -158,7 +158,7 @@ public class DataSetConfig extends DumpableRepositoryObject {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.RepositoryObject#notify(utils.RepositoryEvent)
+	 * @see de.wiwie.wiutils.utils.RepositoryObject#notify(utils.RepositoryEvent)
 	 */
 	@Override
 	public void notify(RepositoryEvent e) throws RegisterException {

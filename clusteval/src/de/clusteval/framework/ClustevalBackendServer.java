@@ -47,8 +47,8 @@ import org.rosuda.REngine.Rserve.RserveException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utils.Pair;
-import utils.Triple;
+import de.wiwie.wiutils.utils.Pair;
+import de.wiwie.wiutils.utils.Triple;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.PatternLayout;
@@ -129,7 +129,7 @@ import de.clusteval.serverclient.BackendClient;
 import de.clusteval.serverclient.IBackendServer;
 import de.clusteval.utils.InvalidConfigurationFileException;
 import de.clusteval.utils.MyHighlightingCompositeConverter;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * This class represents the server of the backend of the framework. The server

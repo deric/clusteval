@@ -9,7 +9,7 @@ import java.util.Map;
 
 import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.result.RunResult;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * @author Christian Wiwie

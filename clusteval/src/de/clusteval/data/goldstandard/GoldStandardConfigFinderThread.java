@@ -65,7 +65,7 @@ public class GoldStandardConfigFinderThread
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#getFinder()
+	 * @see de.wiwie.wiutils.utils.FinderThread#getFinder()
 	 */
 	@Override
 	protected Finder<GoldStandardConfig> getFinder() throws RegisterException {

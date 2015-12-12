@@ -49,7 +49,7 @@ public class NamedStringAttribute extends NamedAttribute<String> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.NamedAttribute#cloneValue(java.lang.Object)
+	 * @see de.wiwie.wiutils.utils.NamedAttribute#cloneValue(java.lang.Object)
 	 */
 	@Override
 	protected String cloneValue(String value) {

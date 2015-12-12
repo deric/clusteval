@@ -51,7 +51,7 @@ public class DistanceMeasureFinderThread extends FinderThread<DistanceMeasure> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see utils.FinderThread#getFinder()
+	 * @see de.wiwie.wiutils.utils.FinderThread#getFinder()
 	 */
 	@Override
 	protected DistanceMeasureFinder getFinder() throws RegisterException {

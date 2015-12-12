@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import utils.Triple;
+import de.wiwie.wiutils.utils.Triple;
 import de.clusteval.cluster.paramOptimization.IDivergingParameterOptimizationMethod;
 import de.clusteval.cluster.paramOptimization.NoParameterSetFoundException;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationException;
@@ -44,7 +44,7 @@ import de.clusteval.run.result.ParameterOptimizationResult;
 import de.clusteval.run.result.RunResultParseException;
 import de.clusteval.utils.InternalAttributeException;
 import de.clusteval.utils.plot.Plotter;
-import file.FileUtils;
+import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * A type of an execution runnable, that corresponds to
