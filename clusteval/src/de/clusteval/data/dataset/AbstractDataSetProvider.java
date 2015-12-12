@@ -73,14 +73,19 @@ public abstract class AbstractDataSetProvider extends RepositoryObject {
 
 		dsConfig.dumpToFile();
 
-		File gsConfigFile = new File(
-				FileUtils.buildPath(repository.getBasePath(GoldStandardConfig.class), configFileName + ".gsconfig"));
+		GoldStandardConfig gsConfig = null;
 
-		// write goldstandard config file
-		GoldStandardConfig gsConfig = new GoldStandardConfig(this.repository, System.currentTimeMillis(), gsConfigFile,
-				newGoldStandard);
+		if (newGoldStandard != null) {
 
-		gsConfig.dumpToFile();
+			File gsConfigFile = new File(FileUtils.buildPath(repository.getBasePath(GoldStandardConfig.class),
+					configFileName + ".gsconfig"));
+
+			// write goldstandard config file
+			gsConfig = new GoldStandardConfig(this.repository, System.currentTimeMillis(), gsConfigFile,
+					newGoldStandard);
+
+			gsConfig.dumpToFile();
+		}
 
 		// write data config file
 		File dataConfigFile = new File(
