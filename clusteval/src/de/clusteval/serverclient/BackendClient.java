@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -28,9 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
-import jline.console.ConsoleReader;
-import jline.console.completer.Completer;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -43,9 +41,6 @@ import org.apache.commons.cli.PosixParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.wiwie.wiutils.utils.ArraysExt;
-import de.wiwie.wiutils.utils.Pair;
-import de.wiwie.wiutils.utils.Triple;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.PatternLayout;
@@ -55,6 +50,11 @@ import ch.qos.logback.core.FileAppender;
 import de.clusteval.run.RUN_STATUS;
 import de.wiwie.wiutils.file.FileUtils;
 import de.wiwie.wiutils.format.Formatter;
+import de.wiwie.wiutils.utils.ArraysExt;
+import de.wiwie.wiutils.utils.Pair;
+import de.wiwie.wiutils.utils.Triple;
+import jline.console.ConsoleReader;
+import jline.console.completer.Completer;
 
 /**
  * A backend client can give commands to the backend server (see
@@ -79,18 +79,16 @@ public class BackendClient extends Thread {
 		InputStream stream = loader.getResourceAsStream("client.date");
 		try {
 			prop.load(stream);
-			VERSION = "Jar built: " + prop.getProperty("buildtime")
-					+ "\nGit:\n\tCommit: " + prop.getProperty("gitrev")
-					+ "\n\tBranch: " + prop.getProperty("gitbranch")
-					+ "\n\tRepository: " + prop.getProperty("gitrepo");
+			VERSION = "Jar built: " + prop.getProperty("buildtime") + "\nGit:\n\tCommit: " + prop.getProperty("gitrev")
+					+ "\n\tBranch: " + prop.getProperty("gitbranch") + "\n\tRepository: " + prop.getProperty("gitrepo");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		OptionBuilder.withArgName("level");
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("The verbosity this client should use during its execution. 0=ALL, 1=TRACE, 2=DEBUG, 3=INFO, 4=WARN, 5=ERROR, 6=OFF");
+		OptionBuilder.withDescription(
+				"The verbosity this client should use during its execution. 0=ALL, 1=TRACE, 2=DEBUG, 3=INFO, 4=WARN, 5=ERROR, 6=OFF");
 		OptionBuilder.withType(Integer.class);
 		Option option = OptionBuilder.create("logLevel");
 		clientCLIOptions.addOption(option);
@@ -106,47 +104,39 @@ public class BackendClient extends Thread {
 		// init valid command line options
 		OptionBuilder.withArgName("ip");
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("The ip address of the backend server to connect to.");
+		OptionBuilder.withDescription("The ip address of the backend server to connect to.");
 		option = OptionBuilder.create("ip");
 		clientCLIOptions.addOption(option);
 
 		OptionBuilder.withArgName("port");
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("The port number of the backend server to connect to.");
+		OptionBuilder.withDescription("The port number of the backend server to connect to.");
 		option = OptionBuilder.create("port");
 		clientCLIOptions.addOption(option);
 
 		OptionBuilder.withArgName("id");
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("The client id for identification purposes of this client with the server.");
+		OptionBuilder.withDescription("The client id for identification purposes of this client with the server.");
 		option = OptionBuilder.create("clientId");
 		clientCLIOptions.addOption(option);
 
-		OptionBuilder
-				.withDescription("Queries the available datasets from the server.");
+		OptionBuilder.withDescription("Queries the available datasets from the server.");
 		option = OptionBuilder.create("getDataSets");
 		clientCLIOptions.addOption(option);
 
-		OptionBuilder
-				.withDescription("Queries the available programs from the server.");
+		OptionBuilder.withDescription("Queries the available programs from the server.");
 		option = OptionBuilder.create("getPrograms");
 		clientCLIOptions.addOption(option);
 
-		OptionBuilder
-				.withDescription("Queries the available runs from the server.");
+		OptionBuilder.withDescription("Queries the available runs from the server.");
 		option = OptionBuilder.create("getRuns");
 		clientCLIOptions.addOption(option);
 
-		OptionBuilder
-				.withDescription("Queries the available run resumes from the server.");
+		OptionBuilder.withDescription("Queries the available run resumes from the server.");
 		option = OptionBuilder.create("getRunResumes");
 		clientCLIOptions.addOption(option);
 
-		OptionBuilder
-				.withDescription("Queries the available run results from the server.");
+		OptionBuilder.withDescription("Queries the available run results from the server.");
 		option = OptionBuilder.create("getRunResults");
 		clientCLIOptions.addOption(option);
 
@@ -158,46 +148,40 @@ public class BackendClient extends Thread {
 
 		OptionBuilder.withArgName("runName");
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("Queries the optimization status of a certain run");
+		OptionBuilder.withDescription("Queries the optimization status of a certain run");
 		option = OptionBuilder.create("getOptRunStatus");
 		clientCLIOptions.addOption(option);
 
-		OptionBuilder
-				.withDescription("Gets the enqueued runs and run resumes of the backend server");
+		OptionBuilder.withDescription("Gets the enqueued runs and run resumes of the backend server");
 		option = OptionBuilder.create("getQueue");
 		clientCLIOptions.addOption(option);
 
-		OptionBuilder
-				.withDescription("Gets the currently active threads and the corresponding iterations which they perform");
+		OptionBuilder.withDescription(
+				"Gets the currently active threads and the corresponding iterations which they perform");
 		option = OptionBuilder.create("getActiveThreads");
 		clientCLIOptions.addOption(option);
 
 		OptionBuilder.withArgName("threadNumber");
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("Sets the maximal number of parallel threads.");
+		OptionBuilder.withDescription("Sets the maximal number of parallel threads.");
 		option = OptionBuilder.create("setThreadNumber");
 		clientCLIOptions.addOption(option);
 
 		OptionBuilder.withArgName("runName");
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("Performs a certain run (if not already running)");
+		OptionBuilder.withDescription("Performs a certain run (if not already running)");
 		option = OptionBuilder.create("performRun");
 		clientCLIOptions.addOption(option);
 
 		OptionBuilder.withArgName("runName");
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("Resumes a certain run that was started and terminated earlier.");
+		OptionBuilder.withDescription("Resumes a certain run that was started and terminated earlier.");
 		option = OptionBuilder.create("resumeRun");
 		clientCLIOptions.addOption(option);
 
 		OptionBuilder.withArgName("runName");
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("Terminates a certain run that was started earlier.");
+		OptionBuilder.withDescription("Terminates a certain run that was started earlier.");
 		option = OptionBuilder.create("terminateRun");
 		clientCLIOptions.addOption(option);
 
@@ -205,28 +189,23 @@ public class BackendClient extends Thread {
 		option = OptionBuilder.create("shutdown");
 		clientCLIOptions.addOption(option);
 
-		OptionBuilder
-				.withDescription("The client will wait until all runs that this client started are finished.");
+		OptionBuilder.withDescription("The client will wait until all runs that this client started are finished.");
 		option = OptionBuilder.create("waitForRuns");
 		clientCLIOptions.addOption(option);
 
 		OptionBuilder.withArgName("generatorName");
 		OptionBuilder.hasArg();
 		OptionBuilder
-				.withDescription("Generates a dataset using the generator "
-						+ "with the given name. Parameters for "
-						+ "this generator can be specified after "
-						+ "this command has been executed.");
+				.withDescription("Generates a dataset using the generator " + "with the given name. Parameters for "
+						+ "this generator can be specified after " + "this command has been executed.");
 		option = OptionBuilder.create("generateDataSet");
 		clientCLIOptions.addOption(option);
 
 		OptionBuilder.withArgName("randomizerName");
 		OptionBuilder.hasArg();
-		OptionBuilder
-				.withDescription("Randomizes a dataconfig using the randomizer "
-						+ "with the given name. Parameters for "
-						+ "this randomizer can be specified after "
-						+ "this command has been executed.");
+		OptionBuilder.withDescription(
+				"Randomizes a dataconfig using the randomizer " + "with the given name. Parameters for "
+						+ "this randomizer can be specified after " + "this command has been executed.");
 		option = OptionBuilder.create("randomizeDataConfig");
 		clientCLIOptions.addOption(option);
 	}
@@ -279,7 +258,8 @@ public class BackendClient extends Thread {
 	 * runs of the server.</li>
 	 * <li><b>getRunResumes</b>: This tells the client to get and print all the
 	 * run result directories contained in the repository of this server. Those
-	 * run result directories can be resumed, if they were terminated before.</li>
+	 * run result directories can be resumed, if they were terminated before.
+	 * </li>
 	 * <li><b>getRunResults</b>: This tells the client to get and print all the
 	 * run result directories contained in the repository of this server, that
 	 * contain a clusters subfolder and at least one *.complete file containing
@@ -292,7 +272,8 @@ public class BackendClient extends Thread {
 	 * previously performed identified by its run result identifier.</li>
 	 * <li><b>terminateRun XXXX</b>: This tells the client to terminate the
 	 * execution of a run with a certain name.</li>
-	 * <li><b>shutdown</b>: This tells the client to shutdown the framework.</li>
+	 * <li><b>shutdown</b>: This tells the client to shutdown the framework.
+	 * </li>
 	 * <li><b>waitForRuns</b>: This option can be used together with
 	 * getRunStatus, in order to cause the client to wait until the run has
 	 * finished its execution.</li>
@@ -326,8 +307,7 @@ public class BackendClient extends Thread {
 	 * @throws ConnectException
 	 * @throws ParseException
 	 */
-	public BackendClient(final String[] params) throws ConnectException,
-			ParseException {
+	public BackendClient(final String[] params) throws ConnectException, ParseException {
 		super();
 
 		this.log = LoggerFactory.getLogger(this.getClass());
@@ -337,8 +317,7 @@ public class BackendClient extends Thread {
 		} catch (ParseException e) {
 
 			HelpFormatter formatter = new HelpFormatter();
-			formatter.printHelp("ClustEvalBackendClient.jar", "",
-					clientCLIOptions, "Available commands are:", false);
+			formatter.printHelp("ClustEvalBackendClient.jar", "", clientCLIOptions, "Available commands are:", false);
 
 			throw e;
 		}
@@ -356,8 +335,7 @@ public class BackendClient extends Thread {
 			else
 				raw = s;
 
-			if (this.params.getArgList().contains(raw)
-					|| this.params.getArgList().contains(s))
+			if (this.params.getArgList().contains(raw) || this.params.getArgList().contains(s))
 				notParsedArgs.add(s);
 		}
 		this.args = notParsedArgs.toArray(new String[0]);
@@ -373,16 +351,13 @@ public class BackendClient extends Thread {
 		try {
 			Registry registry;
 			if (this.ip == null)
-				registry = LocateRegistry.getRegistry(null,
-						Integer.parseInt(this.port));
+				registry = LocateRegistry.getRegistry(null, Integer.parseInt(this.port));
 			else
-				registry = LocateRegistry.getRegistry(this.ip,
-						Integer.parseInt(this.port));
+				registry = LocateRegistry.getRegistry(this.ip, Integer.parseInt(this.port));
 			server = (IBackendServer) registry.lookup("EvalServer");
 			if (this.clientId == null)
 				this.clientId = server.getClientId();
-			this.log.debug("Connected to server using ClientId="
-					+ this.clientId);
+			this.log.debug("Connected to server using ClientId=" + this.clientId);
 		} catch (ConnectException e) {
 			this.log.error("Could not connect to server");
 			throw e;
@@ -406,12 +381,10 @@ public class BackendClient extends Thread {
 	 * @return A wrapper object containing the parsed and valid parameters.
 	 * @throws ParseException
 	 */
-	private static CommandLine parseParams(String[] params,
-			boolean stopAtNonOptions) throws ParseException {
+	private static CommandLine parseParams(String[] params, boolean stopAtNonOptions) throws ParseException {
 
 		CommandLineParser parser = new PosixParser();
-		CommandLine cmd = parser.parse(clientCLIOptions, params,
-				stopAtNonOptions);
+		CommandLine cmd = parser.parse(clientCLIOptions, params, stopAtNonOptions);
 
 		Level logLevel;
 		if (cmd.hasOption("logLevel")) {
@@ -438,14 +411,12 @@ public class BackendClient extends Thread {
 					logLevel = Level.OFF;
 					break;
 				default :
-					throw new ParseException(
-							"The logLevel argument requires one of the value of [0,1,2,3,4,5,6]");
+					throw new ParseException("The logLevel argument requires one of the value of [0,1,2,3,4,5,6]");
 			}
 		} else {
 			logLevel = Level.INFO;
 		}
-		((ch.qos.logback.classic.Logger) LoggerFactory
-				.getLogger(Logger.ROOT_LOGGER_NAME)).setLevel(logLevel);
+		((ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME)).setLevel(logLevel);
 
 		return cmd;
 	}
@@ -479,67 +450,38 @@ public class BackendClient extends Thread {
 				System.out.println("Queue: " + this.getQueue());
 			}
 			if (params.hasOption("getActiveThreads")) {
-				Map<String, Triple<String, String, Long>> activeThreads = this.server
-						.getActiveThreads();
+				Map<String, Triple<String, String, Long>> activeThreads = this.server.getActiveThreads();
 				if (activeThreads.isEmpty())
 					System.out.println("No active threads");
 				else {
 					System.out.println("Active threads:");
-					System.out.format("%10s%20s%50s%30s%40s%10s%20s\n",
-							"Thread #", "Thread", "Run", "ProgramConfig",
+					System.out.format("%10s%20s%50s%30s%40s%10s%20s\n", "Thread #", "Thread", "Run", "ProgramConfig",
 							"DataConfig", "Iteration", "Running time");
-					List<String> threadNames = new ArrayList<String>(
-							activeThreads.keySet());
+					List<String> threadNames = new ArrayList<String>(activeThreads.keySet());
 					Collections.sort(threadNames);
 					int i = 1;
 					for (String t : threadNames) {
-						Triple<String, String, Long> value = activeThreads
-								.get(t);
+						Triple<String, String, Long> value = activeThreads.get(t);
 						String[] split1 = value.getFirst().split(": ");
 						String[] split2 = split1[1].split(",");
 
 						if (value.getSecond().equals("-1")) {
-							System.out.format(
-									"%10d%20s%50s%30s%40s%10s%20s\n",
-									i++,
-									t,
-									split1[0],
-									split2[0],
-									split2[1],
+							System.out.format("%10d%20s%50s%30s%40s%10s%20s\n", i++, t, split1[0], split2[0], split2[1],
 									"isoMDS",
-									Formatter.formatMsToDuration(
-											System.currentTimeMillis()
-													- value.getThird(), false));
+									Formatter.formatMsToDuration(System.currentTimeMillis() - value.getThird(), false));
 						} else if (value.getSecond().equals("-2")) {
-							System.out.format(
-									"%10d%20s%50s%30s%40s%10s%20s\n",
-									i++,
-									t,
-									split1[0],
-									split2[0],
-									split2[1],
+							System.out.format("%10d%20s%50s%30s%40s%10s%20s\n", i++, t, split1[0], split2[0], split2[1],
 									"PCA",
-									Formatter.formatMsToDuration(
-											System.currentTimeMillis()
-													- value.getThird(), false));
+									Formatter.formatMsToDuration(System.currentTimeMillis() - value.getThird(), false));
 						} else
-							System.out.format(
-									"%10d%20s%50s%30s%40s%10s%20s\n",
-									i++,
-									t,
-									split1[0],
-									split2[0],
-									split2[1],
+							System.out.format("%10d%20s%50s%30s%40s%10s%20s\n", i++, t, split1[0], split2[0], split2[1],
 									value.getSecond(),
-									Formatter.formatMsToDuration(
-											System.currentTimeMillis()
-													- value.getThird(), false));
+									Formatter.formatMsToDuration(System.currentTimeMillis() - value.getThird(), false));
 					}
 				}
 			}
 			if (params.hasOption("setThreadNumber")) {
-				this.server.setThreadNumber(Integer.valueOf(params
-						.getOptionValue("setThreadNumber")));
+				this.server.setThreadNumber(Integer.valueOf(params.getOptionValue("setThreadNumber")));
 			}
 			if (params.hasOption("getRunResults")) {
 				Map<Pair<String, String>, Map<String, Double>> result = this
@@ -553,8 +495,7 @@ public class BackendClient extends Thread {
 						}
 						System.out.println();
 					}
-					System.out.format("%-30s",
-							"(" + p.getFirst() + "," + p.getSecond() + ")");
+					System.out.format("%-30s", "(" + p.getFirst() + "," + p.getSecond() + ")");
 					for (String m : result.get(p).keySet()) {
 						System.out.println("\t" + result.get(p).get(m));
 					}
@@ -577,30 +518,10 @@ public class BackendClient extends Thread {
 				this.shutdownFramework();
 			}
 			if (params.hasOption("generateDataSet")) {
-				String generatorName = params.getOptionValue("generateDataSet");
-
-				CommandLineParser parser = new PosixParser();
-				Options options = getOptionsForDataSetGenerator(generatorName);
-
-				try {
-					parser.parse(options, this.args);
-					this.server.generateDataSet(generatorName, this.args);
-				} catch (ParseException e1) {
-					try {
-						reader.println();
-						HelpFormatter formatter = new HelpFormatter();
-						formatter.setOptionComparator(new MyOptionComparator());
-						formatter.printHelp("generateDataSet " + generatorName,
-								options, true);
-						reader.println();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+				this.generateDataSet();
 			}
 			if (params.hasOption("randomizeDataConfig")) {
-				String randomizerName = params
-						.getOptionValue("randomizeDataConfig");
+				String randomizerName = params.getOptionValue("randomizeDataConfig");
 
 				CommandLineParser parser = new PosixParser();
 				Options options = getOptionsForDataRandomizer(randomizerName);
@@ -613,8 +534,7 @@ public class BackendClient extends Thread {
 						reader.println();
 						HelpFormatter formatter = new HelpFormatter();
 						formatter.setOptionComparator(new MyOptionComparator());
-						formatter.printHelp("randomizeDataConfig "
-								+ randomizerName, options, true);
+						formatter.printHelp("randomizeDataConfig " + randomizerName, options, true);
 						reader.println();
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -627,20 +547,17 @@ public class BackendClient extends Thread {
 					String runName = params.getOptionValue("getRunStatus");
 
 					Map<String, Pair<RUN_STATUS, Float>> status = null;
-					if ((status = this.getMyRunStatus()) != null
-							&& status.size() > 0) {
+					if ((status = this.getMyRunStatus()) != null && status.size() > 0) {
 						RUN_STATUS newStatus;
 						Float percent;
 						if (!status.containsKey(runName)) {
-							log.info("No run with name " + runName
-									+ " running.");
+							log.info("No run with name " + runName + " running.");
 							return;
 						}
 						newStatus = status.get(runName).getFirst();
 						percent = status.get(runName).getSecond();
 						System.out.println();
-						System.out
-								.print("\r" + newStatus + " " + String.format("%.3f", percent) + "%");
+						System.out.print("\r" + newStatus + " " + String.format("%.3f", percent) + "%");
 					}
 					System.out.println();
 				} catch (ConnectException e2) {
@@ -658,29 +575,24 @@ public class BackendClient extends Thread {
 					// runId ->
 					// ((Status,%),(ProgramConfig,DataConfig)->(QualityMeasure->(ParameterSet->Quality)))
 					Map<String, Pair<Pair<RUN_STATUS, Float>, Map<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>>>> optStatus = null;
-					if ((optStatus = this.getMyOptimizationRunStatus()) != null
-							&& optStatus.size() > 0) {
+					if ((optStatus = this.getMyOptimizationRunStatus()) != null && optStatus.size() > 0) {
 						RUN_STATUS newStatus;
 						Float percent;
 
 						if (!optStatus.containsKey(runName)) {
-							log.info("No run with name " + runName
-									+ " running.");
+							log.info("No run with name " + runName + " running.");
 							return;
 						}
-						newStatus = optStatus.get(runName).getFirst()
-								.getFirst();
+						newStatus = optStatus.get(runName).getFirst().getFirst();
 						percent = optStatus.get(runName).getFirst().getSecond();
 						System.out.println();
-						System.out.println("\r Status:\t" + newStatus + " "
-								+ String.format("%.3f", percent) + "%");
+						System.out.println("\r Status:\t" + newStatus + " " + String.format("%.3f", percent) + "%");
 						Map<Pair<String, String>, Pair<Double, Map<String, Pair<Map<String, String>, String>>>> qualities = optStatus
 								.get(runName).getSecond();
 
 						// print the quality measures; just take them from the
 						// first pair of programConfig and dataConfig (runnable)
-						String[] qualityMeasures = qualities.values()
-								.iterator().next().getSecond().keySet()
+						String[] qualityMeasures = qualities.values().iterator().next().getSecond().keySet()
 								.toArray(new String[0]);
 						Arrays.sort(qualityMeasures);
 						int pos = 0;
@@ -688,8 +600,7 @@ public class BackendClient extends Thread {
 							boolean foundMeasure = false;
 							for (String measure : qualityMeasures) {
 								if (pos < measure.length()) {
-									System.out.printf("\t%s",
-											measure.charAt(pos));
+									System.out.printf("\t%s", measure.charAt(pos));
 									foundMeasure = true;
 								} else
 									System.out.print("\t");
@@ -713,34 +624,25 @@ public class BackendClient extends Thread {
 						for (String programConfig : programConfigs) {
 							System.out.printf("%s:\n", programConfig);
 							for (String dataConfig : dataConfigs) {
-								Pair<String, String> pcDcPair = Pair.getPair(
-										programConfig, dataConfig);
-								Map<String, Pair<Map<String, String>, String>> qualitiesPcDc = qualities
-										.get(pcDcPair).getSecond();
-								System.out.printf(
-										"-- %s:\t\t\tStatus:\t%.1f%%\n",
-										dataConfig, qualities.get(pcDcPair)
-												.getFirst());
+								Pair<String, String> pcDcPair = Pair.getPair(programConfig, dataConfig);
+								Map<String, Pair<Map<String, String>, String>> qualitiesPcDc = qualities.get(pcDcPair)
+										.getSecond();
+								System.out.printf("-- %s:\t\t\tStatus:\t%.1f%%\n", dataConfig,
+										qualities.get(pcDcPair).getFirst());
 								for (String measure : qualityMeasures) {
 									if (!qualitiesPcDc.containsKey(measure)) {
 										System.out.print("\t");
 										continue;
 									}
-									String quality = qualitiesPcDc.get(measure)
-											.getSecond();
+									String quality = qualitiesPcDc.get(measure).getSecond();
 									if (quality.equals("NT"))
 										System.out.print("\tNT");
 									else {
-										double qualityDouble = Double
-												.valueOf(quality);
+										double qualityDouble = Double.valueOf(quality);
 										if (Double.isInfinite(qualityDouble))
-											System.out.printf("\t%s%s",
-													qualityDouble < 0
-															? "-"
-															: "", "Inf");
+											System.out.printf("\t%s%s", qualityDouble < 0 ? "-" : "", "Inf");
 										else
-											System.out.printf("\t%.4f",
-													qualityDouble);
+											System.out.printf("\t%.4f", qualityDouble);
 									}
 								}
 								System.out.println();
@@ -757,6 +659,159 @@ public class BackendClient extends Thread {
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * @throws RemoteException
+	 * 
+	 */
+	private void generateDataSet() throws RemoteException {
+		String generatorName = params.getOptionValue("generateDataSet");
+
+		CommandLineParser parser = new PosixParser();
+		Options options = getOptionsForDataSetGenerator(generatorName);
+
+		List<String[]> parameterSets = splitParameterValues(options, this.args);
+
+		try {
+			for (String[] vals : parameterSets) {
+				parser.parse(options, vals);
+				this.server.generateDataSet(generatorName, vals);
+			}
+		} catch (ParseException e1) {
+			try {
+				reader.println();
+				HelpFormatter formatter = new HelpFormatter();
+				formatter.setOptionComparator(new MyOptionComparator());
+				formatter.printHelp("generateDataSet " + generatorName, options, true);
+				reader.println();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	/**
+	 * This method takes the original parameters, where one parameter value can
+	 * contain semicolon separated values. It then creates one parameter set for
+	 * each possible combination of parameter value. <br>
+	 * We assume parameter values to be separated by semicolon. And we assume
+	 * parameter names in the fileName and alias to contain placeholders of the
+	 * form %paramName%. <br>
+	 * The fileName and alias parameters have to contain all parameter names,
+	 * such that the resulting names are unique.
+	 * 
+	 * @param args2
+	 * @return
+	 */
+	private List<String[]> splitParameterValues(final Options options, final String[] args2) {
+		Map<String, String[]> splitValues = new HashMap<String, String[]>();
+
+		Set<String> paramsRequiredInName = new HashSet<String>();
+
+		String currParam = null;
+
+		for (int i = 0; i < args2.length; i++) {
+			String origVal = args2[i];
+
+			if (origVal.startsWith("-")) {
+				// if it is a switch parameter, we can denote it with a ; at the
+				// end to indicate,
+				// that we want to treat it as present and non present.
+				String[] s = origVal.substring(1).split(";");
+
+				currParam = s[0];
+
+				// switch parameter
+				if (!(options.getOption(currParam).hasArg())) {
+					if (origVal.contains(";")) {
+						splitValues.put(currParam, new String[]{"true", "false"});
+						paramsRequiredInName.add(currParam);
+					} else
+						splitValues.put(currParam, new String[]{"true"});
+				}
+			} else {
+				String[] valSplit = origVal.split(";");
+				splitValues.put(currParam, valSplit);
+				if (valSplit.length > 1)
+					paramsRequiredInName.add(currParam);
+			}
+		}
+
+		// check, that the fileName and alias parameter contain all
+		// parameters with more than 1 value;
+		String fileName = splitValues.get("fileName")[0];
+		String alias = splitValues.get("alias")[0];
+
+		for (String requiredParamInName : paramsRequiredInName) {
+			if (!fileName.contains(String.format("%%%s%%", requiredParamInName)))
+				throw new IllegalArgumentException(String.format(
+						"The fileName has to contain a placeholder for the %s parameter, because it has more than 1 value.",
+						requiredParamInName));
+			if (!alias.contains(String.format("%%%s%%", requiredParamInName)))
+				throw new IllegalArgumentException(String.format(
+						"The alias has to contain a placeholder for the %s parameter, because it has more than 1 value.",
+						requiredParamInName));
+		}
+
+		List<String[]> result = new ArrayList<String[]>();
+		// storing a mapping from parameter to replacement value; to replace the
+		// parameter placeholders in fileName and alias
+		List<Map<String, String>> paramValueMaps = new ArrayList<Map<String, String>>();
+		result.add(new String[0]);
+		paramValueMaps.add(new HashMap<String, String>());
+
+		for (String paramName : splitValues.keySet()) {
+			if (paramName.equals("fileName") || paramName.equals("alias"))
+				continue;
+			boolean isSwitch = !options.getOption(paramName).hasArg();
+			List<String[]> newParamSets = new ArrayList<String[]>();
+			List<Map<String, String>> newParamValueMaps = new ArrayList<Map<String, String>>();
+			for (int i = 0; i < result.size(); i++) {
+				String[] incompleteParams = result.get(i);
+				Map<String, String> incompleteParamMap = paramValueMaps.get(i);
+				for (String paramValue : splitValues.get(paramName)) {
+
+					// switch parameter
+					if (isSwitch) {
+						if (paramValue.equals("true")) {
+							newParamSets.add(ArraysExt.merge(incompleteParams, new String[]{"-" + paramName}));
+							Map<String, String> newParamMap = new HashMap<String, String>(incompleteParamMap);
+							newParamMap.put(paramName, paramName + "_true");
+							newParamValueMaps.add(newParamMap);
+						} else {
+							newParamSets.add(incompleteParams);
+							Map<String, String> newParamMap = new HashMap<String, String>(incompleteParamMap);
+							newParamMap.put(paramName, paramName + "_false");
+							newParamValueMaps.add(newParamMap);
+						}
+					} else {
+						newParamSets.add(ArraysExt.merge(incompleteParams, new String[]{"-" + paramName, paramValue}));
+						Map<String, String> newParamMap = new HashMap<String, String>(incompleteParamMap);
+						newParamMap.put(paramName, paramValue);
+						newParamValueMaps.add(newParamMap);
+					}
+				}
+			}
+			result = newParamSets;
+			paramValueMaps = newParamValueMaps;
+		}
+
+		// replace placeholders in fileName and alias
+		for (int i = 0; i < paramValueMaps.size(); i++) {
+			Map<String, String> paramValueMap = paramValueMaps.get(i);
+			String newFileName = fileName;
+			String newAlias = alias;
+			for (String paramName : paramValueMap.keySet()) {
+				newFileName = newFileName.replace(String.format("%%%s%%", paramName), paramValueMap.get(paramName));
+				newAlias = newAlias.replace(String.format("%%%s%%", paramName), paramValueMap.get(paramName));
+			}
+			
+			result.set(i, ArraysExt.merge(result.get(i), new String[] {"-fileName", newFileName, "-alias", newAlias}));
+		}
+
+		return result;
 	}
 
 	/**
@@ -778,8 +833,7 @@ public class BackendClient extends Thread {
 	 *         every run, this client has scheduled.
 	 * @throws RemoteException
 	 */
-	public Map<String, Pair<RUN_STATUS, Float>> getMyRunStatus()
-			throws RemoteException {
+	public Map<String, Pair<RUN_STATUS, Float>> getMyRunStatus() throws RemoteException {
 		return server.getRunStatusForClientId(this.clientId);
 	}
 
@@ -800,8 +854,8 @@ public class BackendClient extends Thread {
 	 * @return The run results for the given unique run identifier.
 	 * @throws RemoteException
 	 */
-	public Map<Pair<String, String>, Map<String, Double>> getRunResults(
-			final String uniqueRunIdentifier) throws RemoteException {
+	public Map<Pair<String, String>, Map<String, Double>> getRunResults(final String uniqueRunIdentifier)
+			throws RemoteException {
 		return server.getRunResults(uniqueRunIdentifier);
 	}
 
@@ -875,8 +929,7 @@ public class BackendClient extends Thread {
 	 *         dataset generator.
 	 * @throws RemoteException
 	 */
-	public Options getOptionsForDataSetGenerator(final String generatorName)
-			throws RemoteException {
+	public Options getOptionsForDataSetGenerator(final String generatorName) throws RemoteException {
 		return server.getOptionsForDataSetGenerator(generatorName);
 	}
 
@@ -888,8 +941,7 @@ public class BackendClient extends Thread {
 	 *         randomizer.
 	 * @throws RemoteException
 	 */
-	public Options getOptionsForDataRandomizer(final String randomizerName)
-			throws RemoteException {
+	public Options getOptionsForDataRandomizer(final String randomizerName) throws RemoteException {
 		return server.getOptionsForDataRandomizer(randomizerName);
 	}
 
@@ -926,8 +978,7 @@ public class BackendClient extends Thread {
 	 * @return True, if successful
 	 * @throws RemoteException
 	 */
-	public boolean resumeRun(final String uniqueRunIdentifier)
-			throws RemoteException {
+	public boolean resumeRun(final String uniqueRunIdentifier) throws RemoteException {
 		return server.resumeRun(this.clientId, uniqueRunIdentifier);
 	}
 
@@ -1021,10 +1072,8 @@ public class BackendClient extends Thread {
 				List<Completer> completers = new LinkedList<Completer>();
 				completers.add(new BackendClientCompleter(clientId, args));
 
-				String ip = params.hasOption("ip") ? params
-						.getOptionValue("ip") : "localhost";
-				String port = params.hasOption("port") ? params
-						.getOptionValue("port") : "1099";
+				String ip = params.hasOption("ip") ? params.getOptionValue("ip") : "localhost";
+				String port = params.hasOption("port") ? params.getOptionValue("port") : "1099";
 
 				setDefaultPromptAndCompleter(ip, port, completers);
 
@@ -1032,17 +1081,15 @@ public class BackendClient extends Thread {
 
 				while ((line = reader.readLine()) != null) {
 
-					if (line.equalsIgnoreCase("quit")
-							|| line.equalsIgnoreCase("exit")) {
+					if (line.equalsIgnoreCase("quit") || line.equalsIgnoreCase("exit")) {
 						break;
 					}
 
 					boolean connectException = false;
 					do {
 						try {
-							new BackendClient(ArraysExt.merge(args,
-									("-clientId " + clientId + " -" + line)
-											.split(" ")));
+							new BackendClient(
+									ArraysExt.merge(args, ("-clientId " + clientId + " -" + line).split(" ")));
 							connectException = false;
 						} catch (ConnectException e) {
 							e.printStackTrace();
@@ -1059,22 +1106,18 @@ public class BackendClient extends Thread {
 			System.err.println("Parsing failed.  Reason: " + e.getMessage());
 
 			HelpFormatter formatter = new HelpFormatter();
-			formatter
-					.printHelp(
-							"clustevalClient",
-							"Invoking this client without any parameters will open a shell with tab-completion.",
-							clientCLIOptions, "", true);
+			formatter.printHelp("clustevalClient",
+					"Invoking this client without any parameters will open a shell with tab-completion.",
+					clientCLIOptions, "", true);
 		} catch (Throwable t) {
 			// t.printStackTrace();
 		}
 	}
 
-	protected static void setDefaultPromptAndCompleter(String ip, String port,
-			Collection<Completer> newCompleters) {
+	protected static void setDefaultPromptAndCompleter(String ip, String port, Collection<Completer> newCompleters) {
 		reader.setPrompt("ClustEval @" + ip + ":" + port + "> ");
 
-		List<Completer> oldCompleters = new LinkedList<Completer>(
-				reader.getCompleters());
+		List<Completer> oldCompleters = new LinkedList<Completer>(reader.getCompleters());
 		for (Completer c : oldCompleters)
 			reader.removeCompleter(c);
 
@@ -1130,8 +1173,7 @@ public class BackendClient extends Thread {
 					logLevel = Level.OFF;
 					break;
 				default :
-					throw new ParseException(
-							"The logLevel argument requires one of the value of [0,1,2,3,4,5,6]");
+					throw new ParseException("The logLevel argument requires one of the value of [0,1,2,3,4,5,6]");
 			}
 		} else {
 			logLevel = Level.INFO;
@@ -1144,8 +1186,7 @@ public class BackendClient extends Thread {
 		// file appender for clustevalServer.log plaintext file
 		FileAppender<ILoggingEvent> fileApp = new FileAppender<ILoggingEvent>();
 		fileApp.setName("clientLogFile");
-		String logFilePath = FileUtils.buildPath(
-				System.getProperty("user.dir"), "clustevalClient.log");
+		String logFilePath = FileUtils.buildPath(System.getProperty("user.dir"), "clustevalClient.log");
 		fileApp.setFile(logFilePath);
 
 		fileApp.setAppend(true);
