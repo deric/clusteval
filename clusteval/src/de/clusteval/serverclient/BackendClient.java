@@ -763,7 +763,7 @@ public class BackendClient extends Thread {
 		paramValueMaps.add(new HashMap<String, String>());
 
 		for (String paramName : splitValues.keySet()) {
-			if (paramName.equals("fileName") || paramName.equals("alias"))
+			if (paramName == null || paramName.equals("fileName") || paramName.equals("alias"))
 				continue;
 			boolean isSwitch = !options.getOption(paramName).hasArg();
 			List<String[]> newParamSets = new ArrayList<String[]>();
@@ -807,8 +807,8 @@ public class BackendClient extends Thread {
 				newFileName = newFileName.replace(String.format("%%%s%%", paramName), paramValueMap.get(paramName));
 				newAlias = newAlias.replace(String.format("%%%s%%", paramName), paramValueMap.get(paramName));
 			}
-			
-			result.set(i, ArraysExt.merge(result.get(i), new String[] {"-fileName", newFileName, "-alias", newAlias}));
+
+			result.set(i, ArraysExt.merge(result.get(i), new String[]{"-fileName", newFileName, "-alias", newAlias}));
 		}
 
 		return result;
