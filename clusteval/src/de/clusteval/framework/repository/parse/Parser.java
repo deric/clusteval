@@ -526,6 +526,10 @@ class DataAnalysisRunParser extends AnalysisRunParser<DataAnalysisRun> {
 			UnknownDataRandomizerException {
 		super.parseFromFile(absPath);
 
+		String[] list = getProps().getStringArray("dataConfig");
+		if (list.length == 0)
+			throw new RunException("At least one data config must be specified");
+
 		/*
 		 * An analysis run consists of a set of dataconfigs
 		 */
@@ -533,7 +537,7 @@ class DataAnalysisRunParser extends AnalysisRunParser<DataAnalysisRun> {
 
 		List<DataStatistic> dataStatistics = new LinkedList<DataStatistic>();
 
-		for (String dataConfig : getProps().getStringArray("dataConfig")) {
+		for (String dataConfig : list) {
 			dataConfigs.add(repo.getRegisteredObject(Parser.parseFromFile(
 					DataConfig.class,
 					new File(FileUtils.buildPath(

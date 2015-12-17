@@ -709,6 +709,22 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 */
 	@Override
 	public void unloadFromMemory() {
+		if (this.iterationNumbers != null) {
+			this.iterationNumbers.clear();
+			this.iterationNumbers = null;
+		}
+		if (this.optimalClustering != null) {
+			this.optimalClustering.clear();
+			this.optimalClustering = null;
+		}
+		if (this.optimalCriterionValue != null) {
+			this.optimalCriterionValue.clear();
+			this.optimalCriterionValue = null;
+		}
+		if (this.optimalParameterSet != null) {
+			this.optimalParameterSet.clear();
+			this.optimalParameterSet = null;
+		}
 		if (this.parameterSets != null) {
 			this.parameterSets.clear();
 			this.parameterSets = null;

@@ -671,9 +671,9 @@ public class BackendClient extends Thread {
 		CommandLineParser parser = new PosixParser();
 		Options options = getOptionsForDataSetGenerator(generatorName);
 
-		List<String[]> parameterSets = splitParameterValues(options, this.args);
-
 		try {
+			List<String[]> parameterSets = splitParameterValues(options, this.args);
+
 			for (String[] vals : parameterSets) {
 				parser.parse(options, vals);
 				this.server.generateDataSet(generatorName, vals);
@@ -704,8 +704,9 @@ public class BackendClient extends Thread {
 	 * 
 	 * @param args2
 	 * @return
+	 * @throws ParseException
 	 */
-	private List<String[]> splitParameterValues(final Options options, final String[] args2) {
+	private List<String[]> splitParameterValues(final Options options, final String[] args2) throws ParseException {
 		Map<String, String[]> splitValues = new HashMap<String, String[]>();
 
 		Set<String> paramsRequiredInName = new HashSet<String>();
@@ -741,6 +742,9 @@ public class BackendClient extends Thread {
 
 		// check, that the fileName and alias parameter contain all
 		// parameters with more than 1 value;
+		if (!splitValues.containsKey("fileName") || !splitValues.containsKey("alias"))
+			throw new ParseException("");
+
 		String fileName = splitValues.get("fileName")[0];
 		String alias = splitValues.get("alias")[0];
 
