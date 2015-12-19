@@ -50,12 +50,19 @@ public class StringProgramParameter extends ProgramParameter<String> {
 			throws RegisterException {
 		final Repository repo = programConfig.getRepository();
 
-		StringProgramParameter result = new StringProgramParameter(repo, true,
+		StringProgramParameter result = new StringProgramParameter(repo, false,
 				programConfig, name, desc, options, def);
+		
+		
+		StringProgramParameter registeredResult = programConfig.getRepository().getRegisteredObject(result);
 
-		result = programConfig.getRepository().getRegisteredObject(result);
-
-		return result;
+		// if our new object has not been found in the repository, we register
+		// it
+		if (registeredResult == null) {
+			result.register();
+			return result;
+		}
+		return registeredResult;
 	}
 
 	/**

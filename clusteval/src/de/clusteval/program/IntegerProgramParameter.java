@@ -54,12 +54,18 @@ public class IntegerProgramParameter extends ProgramParameter<Integer> {
 		final Repository repo = programConfig.getRepository();
 
 		IntegerProgramParameter result = new IntegerProgramParameter(repo,
-				true, programConfig, name, desc, minValue, maxValue, options,
+				false, programConfig, name, desc, minValue, maxValue, options,
 				def);
+		
+		IntegerProgramParameter registeredResult = programConfig.getRepository().getRegisteredObject(result);
 
-		result = programConfig.getRepository().getRegisteredObject(result);
-
-		return result;
+		// if our new object has not been found in the repository, we register
+		// it
+		if (registeredResult == null) {
+			result.register();
+			return result;
+		}
+		return registeredResult;
 	}
 
 	/**

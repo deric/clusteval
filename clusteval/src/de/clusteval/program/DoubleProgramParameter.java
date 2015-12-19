@@ -44,18 +44,23 @@ public class DoubleProgramParameter extends ProgramParameter<Double> {
 	 * @return The parsed double program parameter.
 	 * @throws RegisterException
 	 */
-	public static DoubleProgramParameter parseFromStrings(
-			final ProgramConfig programConfig, final String name,
-			final String desc, final String minValue, final String maxValue,
-			final String[] options, final String def) throws RegisterException {
+	public static DoubleProgramParameter parseFromStrings(final ProgramConfig programConfig, final String name,
+			final String desc, final String minValue, final String maxValue, final String[] options, final String def)
+					throws RegisterException {
 		final Repository repo = programConfig.getRepository();
 
-		DoubleProgramParameter result = new DoubleProgramParameter(repo, true,
-				programConfig, name, desc, minValue, maxValue, options, def);
+		DoubleProgramParameter result = new DoubleProgramParameter(repo, false, programConfig, name, desc, minValue,
+				maxValue, options, def);
 
-		result = programConfig.getRepository().getRegisteredObject(result);
+		DoubleProgramParameter registeredResult = programConfig.getRepository().getRegisteredObject(result);
 
-		return result;
+		// if our new object has not been found in the repository, we register
+		// it
+		if (registeredResult == null) {
+			result.register();
+			return result;
+		}
+		return registeredResult;
 	}
 
 	/**
@@ -80,13 +85,10 @@ public class DoubleProgramParameter extends ProgramParameter<Double> {
 	 *            The default value of the parameter.
 	 * @throws RegisterException
 	 */
-	protected DoubleProgramParameter(final Repository repository,
-			final boolean register, final ProgramConfig programConfig,
-			final String name, final String desc, String minValue,
-			String maxValue, final String[] options, String def)
-			throws RegisterException {
-		super(repository, register, programConfig, name, desc, minValue,
-				maxValue, options, def);
+	protected DoubleProgramParameter(final Repository repository, final boolean register,
+			final ProgramConfig programConfig, final String name, final String desc, String minValue, String maxValue,
+			final String[] options, String def) throws RegisterException {
+		super(repository, register, programConfig, name, desc, minValue, maxValue, options, def);
 	}
 
 	/**
@@ -96,8 +98,7 @@ public class DoubleProgramParameter extends ProgramParameter<Double> {
 	 *            The object to clone.
 	 * @throws RegisterException
 	 */
-	public DoubleProgramParameter(final DoubleProgramParameter other)
-			throws RegisterException {
+	public DoubleProgramParameter(final DoubleProgramParameter other) throws RegisterException {
 		super(other);
 
 	}
@@ -144,22 +145,19 @@ public class DoubleProgramParameter extends ProgramParameter<Double> {
 	 * @see program.ProgramParameter#evaluateMinValue()
 	 */
 	@Override
-	public Double evaluateMinValue(final DataConfig dataConfig,
-			final ProgramConfig programConfig)
+	public Double evaluateMinValue(final DataConfig dataConfig, final ProgramConfig programConfig)
 			throws InternalAttributeException {
 
 		/*
 		 * Parse minValue
 		 */
-		String newMinValue = this.repository.evaluateInternalAttributes(
-				minValue, dataConfig, programConfig);
+		String newMinValue = this.repository.evaluateInternalAttributes(minValue, dataConfig, programConfig);
 
 		try {
 			newMinValue = this.repository.evaluateJavaScript(newMinValue);
 		} catch (ScriptException e) {
-			throw new InternalAttributeException("The expression '" + minValue
-					+ "' for parameter attribute " + this.programConfig + "/"
-					+ this.name + "/minValue is invalid");
+			throw new InternalAttributeException("The expression '" + minValue + "' for parameter attribute "
+					+ this.programConfig + "/" + this.name + "/minValue is invalid");
 		}
 
 		return Double.parseDouble(newMinValue);
@@ -171,22 +169,19 @@ public class DoubleProgramParameter extends ProgramParameter<Double> {
 	 * @see program.ProgramParameter#evaluateMaxValue()
 	 */
 	@Override
-	public Double evaluateMaxValue(final DataConfig dataConfig,
-			final ProgramConfig programConfig)
+	public Double evaluateMaxValue(final DataConfig dataConfig, final ProgramConfig programConfig)
 			throws InternalAttributeException {
 
 		/*
 		 * Parse maxValue
 		 */
-		String newMaxValue = this.repository.evaluateInternalAttributes(
-				maxValue, dataConfig, programConfig);
+		String newMaxValue = this.repository.evaluateInternalAttributes(maxValue, dataConfig, programConfig);
 
 		try {
 			newMaxValue = this.repository.evaluateJavaScript(newMaxValue);
 		} catch (ScriptException e) {
-			throw new InternalAttributeException("The expression '" + maxValue
-					+ "' for parameter attribute " + this.programConfig + "/"
-					+ this.name + "/maxValue is invalid");
+			throw new InternalAttributeException("The expression '" + maxValue + "' for parameter attribute "
+					+ this.programConfig + "/" + this.name + "/maxValue is invalid");
 		}
 
 		return Double.parseDouble(newMaxValue);
@@ -198,24 +193,20 @@ public class DoubleProgramParameter extends ProgramParameter<Double> {
 	 * @see program.ProgramParameter#evaluateDefaultValue()
 	 */
 	@Override
-	public Double evaluateDefaultValue(final DataConfig dataConfig,
-			final ProgramConfig programConfig)
+	public Double evaluateDefaultValue(final DataConfig dataConfig, final ProgramConfig programConfig)
 			throws InternalAttributeException {
 
 		/*
 		 * Parse default
 		 */
 
-		String newDefaultValue = this.repository.evaluateInternalAttributes(
-				def, dataConfig, programConfig);
+		String newDefaultValue = this.repository.evaluateInternalAttributes(def, dataConfig, programConfig);
 
 		try {
-			newDefaultValue = this.repository
-					.evaluateJavaScript(newDefaultValue);
+			newDefaultValue = this.repository.evaluateJavaScript(newDefaultValue);
 		} catch (ScriptException e) {
-			throw new InternalAttributeException("The expression '" + def
-					+ "' for parameter attribute " + this.programConfig + "/"
-					+ this.name + "/def is invalid");
+			throw new InternalAttributeException("The expression '" + def + "' for parameter attribute "
+					+ this.programConfig + "/" + this.name + "/def is invalid");
 		}
 
 		return Double.parseDouble(newDefaultValue);
@@ -229,8 +220,8 @@ public class DoubleProgramParameter extends ProgramParameter<Double> {
 	 * .DataConfig, de.clusteval.program.ProgramConfig)
 	 */
 	@Override
-	public Double[] evaluateOptions(DataConfig dataConfig,
-			ProgramConfig programConfig) throws InternalAttributeException {
+	public Double[] evaluateOptions(DataConfig dataConfig, ProgramConfig programConfig)
+			throws InternalAttributeException {
 		return new Double[0];
 	}
 
