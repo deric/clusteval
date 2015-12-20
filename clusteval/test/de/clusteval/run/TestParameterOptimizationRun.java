@@ -40,6 +40,7 @@ import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
+import de.clusteval.framework.repository.config.DefaultRepositoryConfig;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.framework.repository.db.DatabaseConnectException;
@@ -179,7 +180,7 @@ public class TestParameterOptimizationRun extends AbstractClustEvalTest {
 				.unregister(getRepository());
 
 		Repository newRepo = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
+				new File("testCaseRepository").getAbsolutePath(), null, new DefaultRepositoryConfig());
 		newRepo.initialize();
 		try {
 

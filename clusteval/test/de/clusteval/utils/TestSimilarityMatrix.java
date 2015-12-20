@@ -61,9 +61,7 @@ public class TestSimilarityMatrix {
 	@Test
 	public void test() {
 		Map<Double, Integer> distribution = matrix.toDistribution(10);
-		Assert.assertArrayEquals(new Integer[]{2, 3, 2, 0, 0, 0, 0, 0, 0, 2},
-				distribution.values().toArray(new Integer[0]));
-
+		
 		Map<Double, Integer> expectedMap = new HashMap<Double, Integer>();
 		expectedMap.put(0.2, 2);
 		expectedMap.put(0.27999999999999997, 2);

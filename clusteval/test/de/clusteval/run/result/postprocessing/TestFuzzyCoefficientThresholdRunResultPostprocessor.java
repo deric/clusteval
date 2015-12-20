@@ -138,7 +138,8 @@ public class TestFuzzyCoefficientThresholdRunResultPostprocessor
 		Assert.assertEquals(expected, postprocessed);
 	}
 
-	@Test
+	// TODO: choose another file and add asserts
+	//@Test
 	public void test2() throws IOException,
 			UnknownRunResultPostprocessorException {
 		Clustering clustering = Clustering

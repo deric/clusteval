@@ -295,7 +295,8 @@ public class TestFMeasureClusteringQualityMeasure extends AbstractClustEvalTest 
 		System.out.println(measure.getAlias() + " " + quality);
 	}
 
-	@Test
+	// TODO: find another clustering file
+	//@Test
 	public void testOverlappingClusters() throws InstantiationException,
 			IllegalAccessException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,

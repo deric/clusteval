@@ -38,9 +38,11 @@ import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
+import de.clusteval.framework.repository.config.DefaultRepositoryConfig;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.framework.repository.db.DatabaseConnectException;
+import de.clusteval.framework.repository.db.SQLConfig;
 import de.clusteval.framework.repository.parse.Parser;
 import de.clusteval.program.NoOptimizableProgramParameterException;
 import de.clusteval.program.UnknownParameterType;
@@ -103,53 +105,35 @@ public class TestClusteringRun extends AbstractClustEvalTest {
 	 * @throws DatabaseConnectException
 	 */
 	@Test
-	public void testNewParser() throws InterruptedException,
-			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, UnknownDataSetFormatException,
-			GoldStandardNotFoundException, GoldStandardConfigurationException,
-			DataSetConfigurationException, DataSetNotFoundException,
-			DataSetConfigNotFoundException,
-			GoldStandardConfigNotFoundException, NoDataSetException,
-			DataConfigurationException, DataConfigNotFoundException,
-			NumberFormatException, ConfigurationException, RegisterException,
-			UnknownContextException, UnknownParameterType, IOException,
-			UnknownRunResultFormatException,
-			UnknownClusteringQualityMeasureException,
-			UnknownProgramParameterException, NoRepositoryFoundException,
-			InvalidOptimizationParameterException, RunException,
-			UnknownProgramTypeException, UnknownRProgramException,
-			UnknownDistanceMeasureException, UnknownDataSetTypeException,
-			UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException,
-			IncompatibleContextException,
-			IncompatibleParameterOptimizationMethodException,
-			UnknownParameterOptimizationMethodException,
-			NoOptimizableProgramParameterException,
-			UnknownDataStatisticException, UnknownRunStatisticException,
-			UnknownRunDataStatisticException,
-			UnknownRunResultPostprocessorException,
-			UnknownDataRandomizerException, DatabaseConnectException {
-		ClusteringRun run = Parser.parseFromFile(ClusteringRun.class, new File(
-				"testCaseRepository/runs/all_vs_DS1_clustering.run")
-				.getAbsoluteFile());
+	public void testNewParser() throws InterruptedException, RepositoryAlreadyExistsException,
+			InvalidRepositoryException, RepositoryConfigNotFoundException, RepositoryConfigurationException,
+			UnknownDataSetFormatException, GoldStandardNotFoundException, GoldStandardConfigurationException,
+			DataSetConfigurationException, DataSetNotFoundException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, NoDataSetException, DataConfigurationException,
+			DataConfigNotFoundException, NumberFormatException, ConfigurationException, RegisterException,
+			UnknownContextException, UnknownParameterType, IOException, UnknownRunResultFormatException,
+			UnknownClusteringQualityMeasureException, UnknownProgramParameterException, NoRepositoryFoundException,
+			InvalidOptimizationParameterException, RunException, UnknownProgramTypeException, UnknownRProgramException,
+			UnknownDistanceMeasureException, UnknownDataSetTypeException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException, IncompatibleContextException,
+			IncompatibleParameterOptimizationMethodException, UnknownParameterOptimizationMethodException,
+			NoOptimizableProgramParameterException, UnknownDataStatisticException, UnknownRunStatisticException,
+			UnknownRunDataStatisticException, UnknownRunResultPostprocessorException, UnknownDataRandomizerException,
+			DatabaseConnectException {
+		ClusteringRun run = Parser.parseFromFile(ClusteringRun.class,
+				new File("testCaseRepository/runs/all_vs_DS1_clustering.run").getAbsoluteFile());
 
 		getRepository().terminateSupervisorThread();
 
-		de.clusteval.framework.repository.Repository
-				.unregister(getRepository());
+		de.clusteval.framework.repository.Repository.unregister(getRepository());
 
-		Repository newRepo = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
+		Repository newRepo = new Repository(new File("testCaseRepository").getAbsolutePath(), null,
+				new DefaultRepositoryConfig());
 		newRepo.initialize();
 		try {
 
-			ClusteringRun run2 = Parser
-					.parseFromFile(
-							ClusteringRun.class,
-							new File(
-									"testCaseRepository/runs/all_vs_DS1_clustering.run")
-									.getAbsoluteFile());
+			ClusteringRun run2 = Parser.parseFromFile(ClusteringRun.class,
+					new File("testCaseRepository/runs/all_vs_DS1_clustering.run").getAbsoluteFile());
 
 			Assert.assertEquals(run2.logFilePath, run.logFilePath);
 			Assert.assertEquals(run2.runIdentString, run.runIdentString);

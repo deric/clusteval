@@ -39,47 +39,14 @@ import de.clusteval.run.RunInitializationException;
 import de.clusteval.run.result.RunResult;
 import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.runnable.RunRunnableInitializationException;
+import de.clusteval.utils.AbstractClustEvalTest;
 import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public class TestKMeansClusteringRProgram {
-
-	Repository repo;
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		repo = new Repository(new File("testCaseRepository").getAbsolutePath(),
-				null);
-		repo.initialize();
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-		repo.terminateSupervisorThread();
-	}
+public class TestKMeansClusteringRProgram extends AbstractClustEvalTest {
 
 	/**
 	 * @throws RepositoryAlreadyExistsException
@@ -92,17 +59,12 @@ public class TestKMeansClusteringRProgram {
 	 */
 	@Test
 	public void testApplyToRelativeDataSet()
-			throws RepositoryAlreadyExistsException,
-			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, IOException,
-			RunRunnableInitializationException, InterruptedException,
+			throws RepositoryAlreadyExistsException, InvalidRepositoryException, RepositoryConfigNotFoundException,
+			RepositoryConfigurationException, IOException, RunRunnableInitializationException, InterruptedException,
 			UnknownDataRandomizerException, RunInitializationException {
-		ClustevalBackendServer.logLevel(Level.INFO);
+		RunSchedulerThread scheduler = this.getRepository().getSupervisorThread().getRunScheduler();
 
-		RunSchedulerThread scheduler = repo.getSupervisorThread()
-				.getRunScheduler();
-
-		Run run = repo.getStaticObjectWithName(Run.class,"test_kmeans_sfld_layered_f2");
+		Run run = this.getRepository().getStaticObjectWithName(Run.class, "test_kmeans_sfld_layered_f2");
 		try {
 			run.perform(scheduler);
 
@@ -113,11 +75,9 @@ public class TestKMeansClusteringRProgram {
 			Assert.assertEquals(1, exceptions.size());
 
 			Throwable t = exceptions.get(0);
-			Assert.assertEquals(IncompatibleDataSetFormatException.class,
-					t.getClass());
+			Assert.assertEquals(IncompatibleDataSetFormatException.class, t.getClass());
 		} finally {
-			FileUtils.delete(new File(FileUtils.buildPath(
-					repo.getBasePath(RunResult.class),
+			FileUtils.delete(new File(FileUtils.buildPath(this.getRepository().getBasePath(RunResult.class),
 					run.getRunIdentificationString())));
 		}
 	}

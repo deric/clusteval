@@ -36,79 +36,35 @@ import de.clusteval.framework.repository.config.RepositoryConfigNotFoundExceptio
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.run.result.format.RunResultFormat;
+import de.clusteval.utils.AbstractClustEvalTest;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public class TestRProgramConfig {
-
-	Repository repo;
-
-	@Rule
-	public TestName name = new TestName();
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-		System.out.println("################## Testcase: "
-				+ this.getClass().getSimpleName() + "." + name.getMethodName());
-		ClustevalBackendServer.logLevel(Level.INFO);
-		repo = new Repository(new File("testCaseRepository").getAbsolutePath(),
-				null);
-		repo.initialize();
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-		repo.terminateSupervisorThread();
-	}
+public class TestRProgramConfig extends AbstractClustEvalTest {
 
 	@Test
 	public void testKMeansCompatibleDataSetFormats()
-			throws FileNotFoundException, RepositoryAlreadyExistsException,
-			InvalidRepositoryException, RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, InterruptedException {
+			throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException,
+			RepositoryConfigNotFoundException, RepositoryConfigurationException, InterruptedException {
 
-		ProgramConfig programConfig = repo
-				.getStaticObjectWithName(ProgramConfig.class,"KMeans_Clustering");
-		List<DataSetFormat> dataSetFormats = programConfig
-				.getCompatibleDataSetFormats();
+		ProgramConfig programConfig = this.getRepository().getStaticObjectWithName(ProgramConfig.class,
+				"KMeans_Clustering");
+		List<DataSetFormat> dataSetFormats = programConfig.getCompatibleDataSetFormats();
 		Assert.assertEquals(1, dataSetFormats.size());
 		DataSetFormat format = dataSetFormats.get(0);
-		Assert.assertEquals("MatrixDataSetFormat", format.getClass()
-				.getSimpleName());
+		Assert.assertEquals("MatrixDataSetFormat", format.getClass().getSimpleName());
 	}
 
 	@Test
-	public void testKMeansRunResultFormat() throws FileNotFoundException,
-			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, InterruptedException {
+	public void testKMeansRunResultFormat()
+			throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException,
+			RepositoryConfigNotFoundException, RepositoryConfigurationException, InterruptedException {
 
-		ProgramConfig programConfig = repo
-				.getStaticObjectWithName(ProgramConfig.class,"KMeans_Clustering");
+		ProgramConfig programConfig = this.getRepository().getStaticObjectWithName(ProgramConfig.class,
+				"KMeans_Clustering");
 		RunResultFormat format = programConfig.getOutputFormat();
-		Assert.assertEquals("TabSeparatedRunResultFormat", format.getClass()
-				.getSimpleName());
+		Assert.assertEquals("TabSeparatedRunResultFormat", format.getClass().getSimpleName());
 	}
 }

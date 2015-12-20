@@ -28,6 +28,7 @@ import de.clusteval.framework.repository.NoRepositoryFoundException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.RunResultRepository;
+import de.clusteval.framework.repository.config.DefaultRepositoryConfig;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.framework.repository.db.DatabaseConnectException;
@@ -54,15 +55,12 @@ public class TestRepository {
 	 * @throws DatabaseConnectException
 	 */
 	@Before
-	public void setUp() throws FileNotFoundException,
-			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, NoRepositoryFoundException,
+	public void setUp() throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException,
+			RepositoryConfigNotFoundException, RepositoryConfigurationException, NoRepositoryFoundException,
 			NoSuchAlgorithmException, DatabaseConnectException {
-		System.out.println("################## Testcase: "
-				+ this.getClass().getSimpleName() + "." + name.getMethodName());
-		parent = new Repository(
-				new File("testCaseRepository").getAbsolutePath(), null);
+		System.out.println(
+				"################## Testcase: " + this.getClass().getSimpleName() + "." + name.getMethodName());
+		parent = new Repository(new File("testCaseRepository").getAbsolutePath(), null, new DefaultRepositoryConfig());
 	}
 
 	/**
@@ -85,17 +83,13 @@ public class TestRepository {
 	 * @throws DatabaseConnectException
 	 */
 	@Test(expected = InvalidRepositoryException.class)
-	public void test1() throws FileNotFoundException,
-			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, NoRepositoryFoundException,
+	public void test1() throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException,
+			RepositoryConfigNotFoundException, RepositoryConfigurationException, NoRepositoryFoundException,
 			NoSuchAlgorithmException, DatabaseConnectException {
 		/*
 		 * Nested without parantal relationship not allowed
 		 */
-		Repository child = new RunResultRepository(
-				"testCaseRepository/results/01_30_2013-21_31_25_tc_vs_DS1",
-				null);
+		Repository child = new RunResultRepository("testCaseRepository/results/01_30_2013-21_31_25_tc_vs_DS1", null);
 	}
 
 	/**
@@ -109,14 +103,10 @@ public class TestRepository {
 	 * @throws DatabaseConnectException
 	 */
 	@Test
-	public void test2() throws FileNotFoundException,
-			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, NoRepositoryFoundException,
+	public void test2() throws FileNotFoundException, RepositoryAlreadyExistsException, InvalidRepositoryException,
+			RepositoryConfigNotFoundException, RepositoryConfigurationException, NoRepositoryFoundException,
 			NoSuchAlgorithmException, DatabaseConnectException {
-		Repository child = new RunResultRepository(
-				"testCaseRepository/results/01_30_2013-21_31_25_tc_vs_DS1",
-				parent);
+		Repository child = new RunResultRepository("testCaseRepository/results/01_30_2013-21_31_25_tc_vs_DS1", parent);
 	}
 
 	/**
@@ -131,13 +121,11 @@ public class TestRepository {
 	 * 
 	 */
 	@Test
-	public void testGetRepositoryForPathString() throws FileNotFoundException,
-			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, NoRepositoryFoundException,
-			NoSuchAlgorithmException, DatabaseConnectException {
+	public void testGetRepositoryForPathString() throws FileNotFoundException, RepositoryAlreadyExistsException,
+			InvalidRepositoryException, RepositoryConfigNotFoundException, RepositoryConfigurationException,
+			NoRepositoryFoundException, NoSuchAlgorithmException, DatabaseConnectException {
 		File f = new File("repository2");
 		f.deleteOnExit();
-		Repository child = new Repository(f.getAbsolutePath(), null);
+		Repository child = new Repository(f.getAbsolutePath(), null, new DefaultRepositoryConfig());
 	}
 }

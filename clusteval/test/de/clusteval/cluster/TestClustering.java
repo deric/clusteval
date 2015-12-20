@@ -203,9 +203,9 @@ public class TestClustering extends AbstractClustEvalTest {
 						new File(
 								"testCaseRepository/results/01_30_2013-21_31_25_tc_vs_DS1/clusters/fuzzyClustering.txt")
 								.getAbsoluteFile(), false);
-
+		
+		p.getSecond().loadIntoMemory();
 		Clustering hardClustering = p.getSecond().toHardClustering();
-		hardClustering.loadIntoMemory();
 		System.out.println(hardClustering);
 
 		Set<ClusterItem> clusterItems = new HashSet<ClusterItem>();

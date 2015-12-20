@@ -37,53 +37,21 @@ import de.clusteval.framework.repository.RegisterException;
 import de.clusteval.framework.repository.Repository;
 import de.clusteval.framework.repository.RepositoryAlreadyExistsException;
 import de.clusteval.framework.repository.StaticRepositoryEntity;
+import de.clusteval.framework.repository.config.DefaultRepositoryConfig;
 import de.clusteval.framework.repository.config.RepositoryConfigNotFoundException;
 import de.clusteval.framework.repository.config.RepositoryConfigurationException;
 import de.clusteval.framework.repository.db.DatabaseConnectException;
 import de.clusteval.framework.repository.db.StubSQLCommunicator;
 import de.clusteval.framework.threading.RepositorySupervisorThread;
 import de.clusteval.framework.threading.SupervisorThread;
+import de.clusteval.utils.AbstractClustEvalTest;
 import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * @author Christian Wiwie
  * 
  */
-public class TestRunFinder {
-
-	@Rule
-	public TestName name = new TestName();
-
-	/**
-	 * 
-	 */
-	@Before
-	public void setUp() {
-		System.out.println("################## Testcase: "
-				+ this.getClass().getSimpleName() + "." + name.getMethodName());
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		ClustevalBackendServer.logLevel(Level.WARN);
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
+public class TestRunFinder extends AbstractClustEvalTest {
 
 	/**
 	 * @throws RepositoryAlreadyExistsException
@@ -177,7 +145,7 @@ class TestRepository extends Repository {
 			throws FileNotFoundException, RepositoryAlreadyExistsException,
 			InvalidRepositoryException, RepositoryConfigNotFoundException,
 			RepositoryConfigurationException, DatabaseConnectException {
-		super(basePath, parent);
+		super(basePath, parent, new DefaultRepositoryConfig());
 
 		this.staticRepositoryEntities.put(
 				Run.class,
