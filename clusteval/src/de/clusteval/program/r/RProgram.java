@@ -367,6 +367,9 @@ public abstract class RProgram extends Program implements RLibraryInferior {
 		// } finally {
 		// rEngine.close();
 		// }
+		this.x = null;
+		this.dataSetContent = null;
+		this.ids = null;
 	}
 
 	@SuppressWarnings("unused")
