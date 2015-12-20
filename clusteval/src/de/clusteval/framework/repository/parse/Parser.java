@@ -1132,21 +1132,26 @@ class ParameterOptimizationRunParser extends ExecutionRunParser<ParameterOptimiz
 				maxExecutionTimes);
 		ParameterOptimizationRun registeredResult = repo.getRegisteredObject(result, false);
 
-		// if we have the run already registered, we take that run and do not
-		// register the parameter optimization methods.
 		if (registeredResult != null) {
 			result = registeredResult;
-			return;
 		}
 
 		// now we set the run reference of the methods
-		// added 21.03.2013: handle registering of the methods
 		for (int i = 0; i < optimizationMethods.size(); i++) {
 			ParameterOptimizationMethod method = optimizationMethods.get(i);
 			method.setRun(result);
+		}
 
-			method.register();
-			optimizationMethods.set(i, repo.getRegisteredObject(method));
+		// if we have the run already registered, we take that run and do not
+		// register the parameter optimization methods.
+		if (registeredResult == null) {
+			// added 21.03.2013: handle registering of the methods
+			for (int i = 0; i < optimizationMethods.size(); i++) {
+				ParameterOptimizationMethod method = optimizationMethods.get(i);
+
+				method.register();
+				optimizationMethods.set(i, repo.getRegisteredObject(method));
+			}
 		}
 
 		ParameterOptimizationRun.checkCompatibilityParameterOptimizationMethod(optimizationMethods, programConfigs,
