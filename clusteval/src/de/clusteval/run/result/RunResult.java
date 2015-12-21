@@ -143,56 +143,37 @@ public abstract class RunResult extends RepositoryObject {
 	// structure of the Parser class. Best solution: rewrite
 	// ParameterOptimizationRunResult class, such that it contains all results
 	// of the folder in one object.
-	public static Run parseFromRunResultFolder(
-			final Repository parentRepository, final File runResultFolder,
-			final List<RunResult> result, final boolean parseClusterings,
-			final boolean storeClusterings, final boolean register)
-			throws IOException, UnknownRunResultFormatException,
-			UnknownDataSetFormatException,
-			UnknownClusteringQualityMeasureException, InvalidRunModeException,
-			UnknownParameterOptimizationMethodException,
-			NoOptimizableProgramParameterException,
-			UnknownProgramParameterException,
-			UnknownGoldStandardFormatException,
-			InvalidConfigurationFileException,
-			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			NoRepositoryFoundException, GoldStandardNotFoundException,
-			InvalidOptimizationParameterException,
-			GoldStandardConfigurationException, DataSetConfigurationException,
-			DataSetNotFoundException, DataSetConfigNotFoundException,
-			GoldStandardConfigNotFoundException, DataConfigurationException,
-			DataConfigNotFoundException, RunException,
-			UnknownDataStatisticException, UnknownProgramTypeException,
-			UnknownRProgramException,
-			IncompatibleParameterOptimizationMethodException,
-			UnknownDistanceMeasureException, UnknownRunStatisticException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, ConfigurationException,
-			RegisterException, UnknownDataSetTypeException,
-			NumberFormatException, NoDataSetException,
-			UnknownRunDataStatisticException, RunResultParseException,
-			UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException,
-			UnknownContextException, IncompatibleContextException,
-			UnknownParameterType, InterruptedException,
-			UnknownRunResultPostprocessorException,
-			UnknownDataRandomizerException {
+	public static Run parseFromRunResultFolder(final Repository parentRepository, final File runResultFolder,
+			final List<RunResult> result, final boolean parseClusterings, final boolean storeClusterings,
+			final boolean register) throws IOException, UnknownRunResultFormatException, UnknownDataSetFormatException,
+					UnknownClusteringQualityMeasureException, InvalidRunModeException,
+					UnknownParameterOptimizationMethodException, NoOptimizableProgramParameterException,
+					UnknownProgramParameterException, UnknownGoldStandardFormatException,
+					InvalidConfigurationFileException, RepositoryAlreadyExistsException, InvalidRepositoryException,
+					NoRepositoryFoundException, GoldStandardNotFoundException, InvalidOptimizationParameterException,
+					GoldStandardConfigurationException, DataSetConfigurationException, DataSetNotFoundException,
+					DataSetConfigNotFoundException, GoldStandardConfigNotFoundException, DataConfigurationException,
+					DataConfigNotFoundException, RunException, UnknownDataStatisticException,
+					UnknownProgramTypeException, UnknownRProgramException,
+					IncompatibleParameterOptimizationMethodException, UnknownDistanceMeasureException,
+					UnknownRunStatisticException, RepositoryConfigNotFoundException, RepositoryConfigurationException,
+					ConfigurationException, RegisterException, UnknownDataSetTypeException, NumberFormatException,
+					NoDataSetException, UnknownRunDataStatisticException, RunResultParseException,
+					UnknownDataPreprocessorException, IncompatibleDataSetConfigPreprocessorException,
+					UnknownContextException, IncompatibleContextException, UnknownParameterType, InterruptedException,
+					UnknownRunResultPostprocessorException, UnknownDataRandomizerException {
 		try {
 			Logger log = LoggerFactory.getLogger(RunResult.class);
 			log.debug("Parsing run result from '" + runResultFolder + "'");
-			Repository childRepository = Repository
-					.getRepositoryForExactPath(runResultFolder
-							.getAbsolutePath());
+			Repository childRepository = Repository.getRepositoryForExactPath(runResultFolder.getAbsolutePath());
 			if (childRepository == null) {
-				childRepository = new RunResultRepository(
-						runResultFolder.getAbsolutePath(), parentRepository);
+				childRepository = new RunResultRepository(runResultFolder.getAbsolutePath(), parentRepository);
 			}
 			childRepository.initialize();
 			try {
 
 				File runFile = null;
-				File configFolder = new File(FileUtils.buildPath(
-						runResultFolder.getAbsolutePath(), "configs"));
+				File configFolder = new File(FileUtils.buildPath(runResultFolder.getAbsolutePath(), "configs"));
 				if (!configFolder.exists())
 					return null;
 				for (File child : configFolder.listFiles())
@@ -205,29 +186,21 @@ public abstract class RunResult extends RepositoryObject {
 				final Run run = Parser.parseRunFromFile(runFile);
 
 				if (run instanceof ClusteringRun) {
-					return ClusteringRunResult.parseFromRunResultFolder(
-							(ClusteringRun) run, childRepository,
+					return ClusteringRunResult.parseFromRunResultFolder((ClusteringRun) run, childRepository,
 							runResultFolder, result, register);
 				} else if (run instanceof ParameterOptimizationRun) {
-					return ParameterOptimizationResult
-							.parseFromRunResultFolder(
-									(ParameterOptimizationRun) run,
-									childRepository, runResultFolder, result,
-									parseClusterings, storeClusterings,
-									register);
+					return ParameterOptimizationResult.parseFromRunResultFolder((ParameterOptimizationRun) run,
+							childRepository, runResultFolder, result, parseClusterings, storeClusterings, register);
 				} else if (run instanceof DataAnalysisRun) {
-					DataAnalysisRunResult.parseFromRunResultFolder(
-							(DataAnalysisRun) run, childRepository,
+					DataAnalysisRunResult.parseFromRunResultFolder((DataAnalysisRun) run, childRepository,
 							runResultFolder, result, register);
 					return run;
 				} else if (run instanceof RunDataAnalysisRun) {
-					RunDataAnalysisRunResult.parseFromRunResultFolder(
-							(RunDataAnalysisRun) run, childRepository,
+					RunDataAnalysisRunResult.parseFromRunResultFolder((RunDataAnalysisRun) run, childRepository,
 							runResultFolder, result, register);
 					return run;
 				} else if (run instanceof RunAnalysisRun) {
-					RunAnalysisRunResult.parseFromRunResultFolder(
-							(RunAnalysisRun) run, childRepository,
+					RunAnalysisRunResult.parseFromRunResultFolder((RunAnalysisRun) run, childRepository,
 							runResultFolder, result, register);
 					return run;
 				}
@@ -256,8 +229,7 @@ public abstract class RunResult extends RepositoryObject {
 	 * @param run
 	 * @throws RegisterException
 	 */
-	public RunResult(Repository repository, long changeDate, File absPath,
-			final String runIdentString, final Run run)
+	public RunResult(Repository repository, long changeDate, File absPath, final String runIdentString, final Run run)
 			throws RegisterException {
 		super(repository, false, changeDate, absPath);
 		this.runIdentString = runIdentString;
@@ -299,6 +271,14 @@ public abstract class RunResult extends RepositoryObject {
 	public Run getRun() {
 		return this.run;
 	}
+
+	/**
+	 * Checks, whether this run result is currently held in memory.
+	 * 
+	 * @return True, if this run result is currently held in memory. False
+	 *         otherwise.
+	 */
+	public abstract boolean isInMemory();
 
 	/**
 	 * This method loads the contents of this run result into the memory by

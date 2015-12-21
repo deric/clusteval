@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.wiwie.wiutils.utils.Pair;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
@@ -33,10 +32,12 @@ import de.clusteval.program.ParameterSet;
 import de.clusteval.program.ProgramConfig;
 import de.clusteval.program.ProgramParameter;
 import de.clusteval.run.result.ParameterOptimizationResult;
+import de.clusteval.run.result.RunResultParseException;
 import de.clusteval.run.result.postprocessing.RunResultPostprocessor;
 import de.clusteval.run.runnable.ExecutionRunRunnable;
 import de.clusteval.run.runnable.ParameterOptimizationRunRunnable;
 import de.clusteval.run.runnable.RunRunnable;
+import de.wiwie.wiutils.utils.Pair;
 
 /**
  * A type of execution run that performs several clusterings with different
@@ -78,35 +79,27 @@ public class ParameterOptimizationRun extends ExecutionRun {
 	 * 
 	 */
 	public static void checkCompatibilityParameterOptimizationMethod(
-			final List<ParameterOptimizationMethod> optimizationMethods,
-			final List<ProgramConfig> programConfigs,
-			final List<DataConfig> dataConfigs)
-			throws IncompatibleParameterOptimizationMethodException {
+			final List<ParameterOptimizationMethod> optimizationMethods, final List<ProgramConfig> programConfigs,
+			final List<DataConfig> dataConfigs) throws IncompatibleParameterOptimizationMethodException {
 		for (ParameterOptimizationMethod method : optimizationMethods) {
 			if (!method.getCompatibleDataSetFormatBaseClasses().isEmpty()) {
 				// for every datasetformat we check, whether it class is
 				// compatible
 				for (DataConfig dataConfig : dataConfigs) {
-					Class<? extends DataSetFormat> dataSetFormatClass = dataConfig
-							.getDatasetConfig().getDataSet().getDataSetFormat()
-							.getClass();
+					Class<? extends DataSetFormat> dataSetFormatClass = dataConfig.getDatasetConfig().getDataSet()
+							.getDataSetFormat().getClass();
 					boolean compatible = false;
-					for (Class<? extends DataSetFormat> parentClass : method
-							.getCompatibleDataSetFormatBaseClasses()) {
+					for (Class<? extends DataSetFormat> parentClass : method.getCompatibleDataSetFormatBaseClasses()) {
 						if (parentClass.isAssignableFrom(dataSetFormatClass)) {
 							compatible = true;
 							break;
 						}
 					}
 					if (!compatible) {
-						throw new IncompatibleParameterOptimizationMethodException(
-								"The ParameterOptimizationMethod "
-										+ method.getClass().getSimpleName()
-										+ " cannot be applied to the dataset "
-										+ dataConfig.getDatasetConfig()
-												.getDataSet()
-										+ " with the format "
-										+ dataSetFormatClass.getSimpleName());
+						throw new IncompatibleParameterOptimizationMethodException("The ParameterOptimizationMethod "
+								+ method.getClass().getSimpleName() + " cannot be applied to the dataset "
+								+ dataConfig.getDatasetConfig().getDataSet() + " with the format "
+								+ dataSetFormatClass.getSimpleName());
 					}
 				}
 			}
@@ -115,16 +108,12 @@ public class ParameterOptimizationRun extends ExecutionRun {
 				// for every program we check, whether it class is
 				// compatible
 				for (ProgramConfig programConfig : programConfigs) {
-					String programName = programConfig.getProgram()
-							.getMajorName();
-					boolean compatible = method.getCompatibleProgramNames()
-							.contains(programName);
+					String programName = programConfig.getProgram().getMajorName();
+					boolean compatible = method.getCompatibleProgramNames().contains(programName);
 					if (!compatible) {
 						throw new IncompatibleParameterOptimizationMethodException(
-								"The ParameterOptimizationMethod "
-										+ method.getClass().getSimpleName()
-										+ " cannot be applied to the program "
-										+ programName);
+								"The ParameterOptimizationMethod " + method.getClass().getSimpleName()
+										+ " cannot be applied to the program " + programName);
 					}
 				}
 			}
@@ -171,20 +160,16 @@ public class ParameterOptimizationRun extends ExecutionRun {
 	 *            sets are to be evaluated and stores the results.
 	 * @throws RegisterException
 	 */
-	public ParameterOptimizationRun(final Repository repository,
-			final Context context, final long changeDate, final File absPath,
-			final List<ProgramConfig> programConfigs,
-			final List<DataConfig> dataConfigs,
+	public ParameterOptimizationRun(final Repository repository, final Context context, final long changeDate,
+			final File absPath, final List<ProgramConfig> programConfigs, final List<DataConfig> dataConfigs,
 			final List<ClusteringQualityMeasure> qualityMeasures,
 			final List<Map<ProgramParameter<?>, String>> parameterValues,
 			final List<List<ProgramParameter<?>>> optimizationParameters,
 			final List<ParameterOptimizationMethod> optimizationMethods,
-			final List<RunResultPostprocessor> postProcessors,
-			final Map<String, Integer> maxExecutionTimes)
-			throws RegisterException {
-		super(repository, context, false, changeDate, absPath, programConfigs,
-				dataConfigs, qualityMeasures, parameterValues, postProcessors,
-				maxExecutionTimes);
+			final List<RunResultPostprocessor> postProcessors, final Map<String, Integer> maxExecutionTimes)
+					throws RegisterException {
+		super(repository, context, false, changeDate, absPath, programConfigs, dataConfigs, qualityMeasures,
+				parameterValues, postProcessors, maxExecutionTimes);
 
 		this.optimizationParameters = optimizationParameters;
 		this.optimizationMethods = optimizationMethods;
@@ -216,13 +201,10 @@ public class ParameterOptimizationRun extends ExecutionRun {
 	 *            The parameter optimization run to be cloned.
 	 * @throws RegisterException
 	 */
-	protected ParameterOptimizationRun(final ParameterOptimizationRun otherRun)
-			throws RegisterException {
+	protected ParameterOptimizationRun(final ParameterOptimizationRun otherRun) throws RegisterException {
 		super(otherRun);
-		this.optimizationMethods = ParameterOptimizationMethod
-				.cloneOptimizationMethods(otherRun.optimizationMethods);
-		this.optimizationParameters = ProgramParameter
-				.cloneParameterListList(otherRun.optimizationParameters);
+		this.optimizationMethods = ParameterOptimizationMethod.cloneOptimizationMethods(otherRun.optimizationMethods);
+		this.optimizationParameters = ProgramParameter.cloneParameterListList(otherRun.optimizationParameters);
 	}
 
 	/*
@@ -233,20 +215,16 @@ public class ParameterOptimizationRun extends ExecutionRun {
 	 * boolean)
 	 */
 	@Override
-	protected ExecutionRunRunnable createRunRunnableFor(
-			RunSchedulerThread runScheduler, Run run,
-			ProgramConfig programConfig, DataConfig dataConfig,
-			String runIdentString, boolean isResume,
+	protected ExecutionRunRunnable createRunRunnableFor(RunSchedulerThread runScheduler, Run run,
+			ProgramConfig programConfig, DataConfig dataConfig, String runIdentString, boolean isResume,
 			Map<ProgramParameter<?>, String> runParams) {
 
 		// 06.04.2013: changed from indexOf to this manual search, because at
 		// this point the passed programConfig and dataConfig are moved clones
 		// of the originals in #runPairs
 		int p = -1;
-		for (int i = 0; i < ((ParameterOptimizationRun) run).getRunPairs()
-				.size(); i++) {
-			Pair<ProgramConfig, DataConfig> pair = ((ParameterOptimizationRun) run)
-					.getRunPairs().get(i);
+		for (int i = 0; i < ((ParameterOptimizationRun) run).getRunPairs().size(); i++) {
+			Pair<ProgramConfig, DataConfig> pair = ((ParameterOptimizationRun) run).getRunPairs().get(i);
 			if (pair.getFirst().getName().equals(programConfig.getName())
 					&& pair.getSecond().getName().equals(dataConfig.getName())) {
 				p = i;
@@ -254,11 +232,10 @@ public class ParameterOptimizationRun extends ExecutionRun {
 			}
 		}
 
-		ParameterOptimizationMethod optimizationMethod = ((ParameterOptimizationRun) run)
-				.getOptimizationMethods().get(p);
-		ParameterOptimizationRunRunnable t = new ParameterOptimizationRunRunnable(
-				runScheduler, run, programConfig, dataConfig,
-				optimizationMethod, runIdentString, isResume, runParams);
+		ParameterOptimizationMethod optimizationMethod = ((ParameterOptimizationRun) run).getOptimizationMethods()
+				.get(p);
+		ParameterOptimizationRunRunnable t = new ParameterOptimizationRunRunnable(runScheduler, run, programConfig,
+				dataConfig, optimizationMethod, runIdentString, isResume, runParams);
 		run.progress.addSubProgress(t.getProgressPrinter(), 10000);
 		return t;
 	}
@@ -291,8 +268,7 @@ public class ParameterOptimizationRun extends ExecutionRun {
 			RepositoryRemoveEvent event = (RepositoryRemoveEvent) e;
 			if (optimizationMethods.contains(event.getRemovedObject())) {
 				event.getRemovedObject().removeListener(this);
-				this.log.info("Run " + this
-						+ ": Removed, because ParameterOptimizationMethod "
+				this.log.info("Run " + this + ": Removed, because ParameterOptimizationMethod "
 						+ event.getRemovedObject() + " has changed.");
 				RepositoryRemoveEvent newEvent = new RepositoryRemoveEvent(this);
 				this.unregister();
@@ -324,49 +300,56 @@ public class ParameterOptimizationRun extends ExecutionRun {
 		try {
 			for (RunRunnable t : this.runnables) {
 				ParameterOptimizationRunRunnable thread = (ParameterOptimizationRunRunnable) t;
-				Pair<String, String> configs = Pair.getPair(thread
-						.getProgramConfig().toString(), thread.getDataConfig()
-						.toString());
+				Pair<String, String> configs = Pair.getPair(thread.getProgramConfig().toString(),
+						thread.getDataConfig().toString());
 
-				ParameterOptimizationResult paramOptRes = thread
-						.getOptimizationMethod().getResult();
+				ParameterOptimizationResult paramOptRes = thread.getOptimizationMethod().getResult();
 
-				// measure -> best qualities
-				Map<String, Pair<Map<String, String>, String>> qualities = new HashMap<String, Pair<Map<String, String>, String>>();
-				// has the runnable already initialized the optimization method
-				// and result?
-				if (paramOptRes != null) {
-					// get the best achieved qualities
-					ClusteringQualitySet bestQuals = thread
-							.getOptimizationMethod().getResult()
-							.getOptimalCriterionValue();
-					// get the optimal parameter values
-					Map<ClusteringQualityMeasure, ParameterSet> bestParams = thread
-							.getOptimizationMethod().getResult()
-							.getOptimalParameterSets();
+				boolean isInMemory = paramOptRes.isInMemory();
+				if (!isInMemory)
+					try {
+						paramOptRes.loadIntoMemory();
+						isInMemory = paramOptRes.isInMemory();
+					} catch (RunResultParseException e) {
+						isInMemory = false;
+					}
+				try {
 
-					// measure -> best parameters
-					Map<ClusteringQualityMeasure, Map<String, String>> bestParamsMap = new HashMap<ClusteringQualityMeasure, Map<String, String>>();
-					for (ClusteringQualityMeasure measure : bestParams.keySet()) {
-						ParameterSet pSet = bestParams.get(measure);
-						Map<String, String> tmp = new HashMap<String, String>();
-						for (String p : pSet.keySet())
-							tmp.put(p.toString(), pSet.get(p));
+					// measure -> best qualities
+					Map<String, Pair<Map<String, String>, String>> qualities = new HashMap<String, Pair<Map<String, String>, String>>();
+					// has the runnable already initialized the optimization
+					// method
+					// and result?
+					if (paramOptRes != null && isInMemory) {
+						// get the best achieved qualities
+						ClusteringQualitySet bestQuals = thread.getOptimizationMethod().getResult()
+								.getOptimalCriterionValue();
+						// get the optimal parameter values
+						Map<ClusteringQualityMeasure, ParameterSet> bestParams = thread.getOptimizationMethod()
+								.getResult().getOptimalParameterSets();
 
-						bestParamsMap.put(measure, tmp);
+						// measure -> best parameters
+						Map<ClusteringQualityMeasure, Map<String, String>> bestParamsMap = new HashMap<ClusteringQualityMeasure, Map<String, String>>();
+						for (ClusteringQualityMeasure measure : bestParams.keySet()) {
+							ParameterSet pSet = bestParams.get(measure);
+							Map<String, String> tmp = new HashMap<String, String>();
+							for (String p : pSet.keySet())
+								tmp.put(p.toString(), pSet.get(p));
+
+							bestParamsMap.put(measure, tmp);
+						}
+
+						for (ClusteringQualityMeasure measure : bestQuals.keySet())
+							qualities.put(measure.getAlias(),
+									Pair.getPair(bestParamsMap.get(measure), bestQuals.get(measure).toString()));
 					}
 
-					for (ClusteringQualityMeasure measure : bestQuals.keySet())
-						qualities.put(measure.getAlias(), Pair.getPair(
-								bestParamsMap.get(measure),
-								bestQuals.get(measure).toString()));
+					result.put(configs, new Pair<Double, Map<String, Pair<Map<String, String>, String>>>(
+							(double) t.getProgressPrinter().getPercent(), qualities));
+				} finally {
+					if (!isInMemory)
+						paramOptRes.unloadFromMemory();
 				}
-
-				result.put(
-						configs,
-						new Pair<Double, Map<String, Pair<Map<String, String>, String>>>(
-								(double) t.getProgressPrinter().getPercent(),
-								qualities));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
