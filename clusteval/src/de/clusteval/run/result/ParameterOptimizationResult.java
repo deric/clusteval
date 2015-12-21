@@ -147,49 +147,32 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 * @throws UnknownRunResultPostprocessorException
 	 * @throws UnknownDataRandomizerException
 	 */
-	public static Run parseFromRunResultFolder(
-			final Repository parentRepository, final File runResultFolder,
-			final List<ParameterOptimizationResult> result,
-			final boolean parseClusterings, final boolean storeClusterings,
-			final boolean register) throws IOException,
-			UnknownRunResultFormatException, UnknownDataSetFormatException,
-			UnknownClusteringQualityMeasureException, InvalidRunModeException,
-			UnknownParameterOptimizationMethodException,
-			NoOptimizableProgramParameterException,
-			UnknownProgramParameterException,
-			UnknownGoldStandardFormatException,
-			InvalidConfigurationFileException,
-			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			NoRepositoryFoundException, GoldStandardNotFoundException,
-			InvalidOptimizationParameterException,
-			GoldStandardConfigurationException, DataSetConfigurationException,
-			DataSetNotFoundException, DataSetConfigNotFoundException,
-			GoldStandardConfigNotFoundException, DataConfigurationException,
-			DataConfigNotFoundException, RunException,
-			UnknownDataStatisticException, UnknownProgramTypeException,
-			UnknownRProgramException,
-			IncompatibleParameterOptimizationMethodException,
-			UnknownDistanceMeasureException, UnknownRunStatisticException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, ConfigurationException,
-			RegisterException, UnknownDataSetTypeException,
-			NumberFormatException, NoDataSetException,
-			UnknownRunDataStatisticException, RunResultParseException,
-			UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException,
-			UnknownContextException, IncompatibleContextException,
-			UnknownParameterType, InterruptedException,
-			UnknownRunResultPostprocessorException,
-			UnknownDataRandomizerException {
+	public static Run parseFromRunResultFolder(final Repository parentRepository, final File runResultFolder,
+			final List<ParameterOptimizationResult> result, final boolean parseClusterings,
+			final boolean storeClusterings, final boolean register) throws IOException, UnknownRunResultFormatException,
+					UnknownDataSetFormatException, UnknownClusteringQualityMeasureException, InvalidRunModeException,
+					UnknownParameterOptimizationMethodException, NoOptimizableProgramParameterException,
+					UnknownProgramParameterException, UnknownGoldStandardFormatException,
+					InvalidConfigurationFileException, RepositoryAlreadyExistsException, InvalidRepositoryException,
+					NoRepositoryFoundException, GoldStandardNotFoundException, InvalidOptimizationParameterException,
+					GoldStandardConfigurationException, DataSetConfigurationException, DataSetNotFoundException,
+					DataSetConfigNotFoundException, GoldStandardConfigNotFoundException, DataConfigurationException,
+					DataConfigNotFoundException, RunException, UnknownDataStatisticException,
+					UnknownProgramTypeException, UnknownRProgramException,
+					IncompatibleParameterOptimizationMethodException, UnknownDistanceMeasureException,
+					UnknownRunStatisticException, RepositoryConfigNotFoundException, RepositoryConfigurationException,
+					ConfigurationException, RegisterException, UnknownDataSetTypeException, NumberFormatException,
+					NoDataSetException, UnknownRunDataStatisticException, RunResultParseException,
+					UnknownDataPreprocessorException, IncompatibleDataSetConfigPreprocessorException,
+					UnknownContextException, IncompatibleContextException, UnknownParameterType, InterruptedException,
+					UnknownRunResultPostprocessorException, UnknownDataRandomizerException {
 		try {
-			Repository childRepository = new RunResultRepository(
-					runResultFolder.getAbsolutePath(), parentRepository);
+			Repository childRepository = new RunResultRepository(runResultFolder.getAbsolutePath(), parentRepository);
 			childRepository.initialize();
 			try {
 
 				File runFile = null;
-				File configFolder = new File(FileUtils.buildPath(
-						runResultFolder.getAbsolutePath(), "configs"));
+				File configFolder = new File(FileUtils.buildPath(runResultFolder.getAbsolutePath(), "configs"));
 				if (!configFolder.exists())
 					return null;
 				for (File child : configFolder.listFiles())
@@ -208,20 +191,13 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 					// List<ParameterOptimizationResult> result = new
 					// ArrayList<ParameterOptimizationResult>();
 
-					File clusterFolder = new File(FileUtils.buildPath(
-							runResultFolder.getAbsolutePath(), "clusters"));
-					for (final ParameterOptimizationMethod method : paramRun
-							.getOptimizationMethods()) {
-						final File completeFile = new File(FileUtils.buildPath(
-								clusterFolder.getAbsolutePath(), method
-										.getProgramConfig().toString()
-										+ "_"
-										+ method.getDataConfig().toString()
+					File clusterFolder = new File(FileUtils.buildPath(runResultFolder.getAbsolutePath(), "clusters"));
+					for (final ParameterOptimizationMethod method : paramRun.getOptimizationMethods()) {
+						final File completeFile = new File(FileUtils.buildPath(clusterFolder.getAbsolutePath(),
+								method.getProgramConfig().toString() + "_" + method.getDataConfig().toString()
 										+ ".results.qual.complete"));
-						final ParameterOptimizationResult tmpResult = parseFromRunResultCompleteFile(
-								parentRepository, paramRun, method,
-								completeFile, parseClusterings,
-								storeClusterings, register);
+						final ParameterOptimizationResult tmpResult = parseFromRunResultCompleteFile(parentRepository,
+								paramRun, method, completeFile, parseClusterings, storeClusterings, register);
 						if (tmpResult != null)
 							result.add(tmpResult);
 
@@ -268,18 +244,15 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 * @throws RegisterException
 	 * @throws RunResultParseException
 	 */
-	public static ParameterOptimizationResult parseFromRunResultCompleteFile(
-			Repository repository, ParameterOptimizationRun run,
-			ParameterOptimizationMethod method, File completeFile,
-			final boolean parseClusterings, final boolean storeClusterings,
-			final boolean register) throws RegisterException,
-			RunResultParseException {
+	public static ParameterOptimizationResult parseFromRunResultCompleteFile(Repository repository,
+			ParameterOptimizationRun run, ParameterOptimizationMethod method, File completeFile,
+			final boolean parseClusterings, final boolean storeClusterings, final boolean register)
+					throws RegisterException, RunResultParseException {
 		ParameterOptimizationResult result = null;
 		if (completeFile.exists()) {
-			result = new ParameterOptimizationResult(repository, false,
-					completeFile.lastModified(), completeFile, completeFile
-							.getParentFile().getParentFile().getName(), run,
-					method, parseClusterings, storeClusterings);
+			result = new ParameterOptimizationResult(repository, false, completeFile.lastModified(), completeFile,
+					completeFile.getParentFile().getParentFile().getName(), run, method, parseClusterings,
+					storeClusterings);
 
 			if (register) {
 				result.loadIntoMemory();
@@ -333,12 +306,10 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 * @throws RegisterException
 	 * 
 	 */
-	public ParameterOptimizationResult(final Repository repository,
-			final long changeDate, final File absPath,
-			final String runIdentString, final Run run,
-			final ParameterOptimizationMethod method) throws RegisterException {
-		this(repository, false, changeDate, absPath, runIdentString, run,
-				method, false, false);
+	public ParameterOptimizationResult(final Repository repository, final long changeDate, final File absPath,
+			final String runIdentString, final Run run, final ParameterOptimizationMethod method)
+					throws RegisterException {
+		this(repository, false, changeDate, absPath, runIdentString, run, method, false, false);
 	}
 
 	/**
@@ -358,28 +329,29 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 *            Whether to store parsed clusterings in RAM.
 	 * @throws RegisterException
 	 */
-	public ParameterOptimizationResult(final Repository repository,
-			final boolean register, final long changeDate, final File absPath,
-			final String runIdentString, final Run run,
-			final ParameterOptimizationMethod method,
-			final boolean parseClusterings, final boolean storeClusterings)
-			throws RegisterException {
-		super(repository, changeDate, absPath, runIdentString, run, method
-				.getDataConfig(), method.getProgramConfig());
+	public ParameterOptimizationResult(final Repository repository, final boolean register, final long changeDate,
+			final File absPath, final String runIdentString, final Run run, final ParameterOptimizationMethod method,
+			final boolean parseClusterings, final boolean storeClusterings) throws RegisterException {
+		super(repository, changeDate, absPath, runIdentString, run, method.getDataConfig(), method.getProgramConfig());
 		this.method = method;
+		this.parseClusterings = parseClusterings;
+		this.storeClusterings = storeClusterings;
+
+		this.initAttributes();
+
+		if (register)
+			this.register();
+	}
+
+	protected void initAttributes() {
 		this.parameterSetToQualities = new HashMap<ParameterSet, ClusteringQualitySet>();
 		this.optimalCriterionValue = new ClusteringQualitySet();
 		this.optimalParameterSet = new HashMap<ClusteringQualityMeasure, ParameterSet>();
 		this.parameterSets = new ArrayList<ParameterSet>();
 		this.iterationNumbers = new ArrayList<Long>();
 		this.parameterSetToIterationNumber = new HashMap<ParameterSet, Long>();
-		this.parseClusterings = parseClusterings;
-		this.storeClusterings = storeClusterings;
 		this.parameterSetToClustering = new HashMap<ParameterSet, Clustering>();
 		this.optimalClustering = new HashMap<ClusteringQualityMeasure, Clustering>();
-
-		if (register)
-			this.register();
 	}
 
 	/**
@@ -389,8 +361,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 *            The object to clone.
 	 * @throws RegisterException
 	 */
-	public ParameterOptimizationResult(final ParameterOptimizationResult other)
-			throws RegisterException {
+	public ParameterOptimizationResult(final ParameterOptimizationResult other) throws RegisterException {
 		super(other);
 
 		this.method = other.method.clone();
@@ -408,8 +379,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 			Map<ClusteringQualityMeasure, Clustering> optimalClustering) {
 		final Map<ClusteringQualityMeasure, Clustering> result = new HashMap<ClusteringQualityMeasure, Clustering>();
 
-		for (Map.Entry<ClusteringQualityMeasure, Clustering> entry : optimalClustering
-				.entrySet()) {
+		for (Map.Entry<ClusteringQualityMeasure, Clustering> entry : optimalClustering.entrySet()) {
 			result.put(entry.getKey().clone(), entry.getValue().clone());
 		}
 
@@ -420,16 +390,14 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 			Map<ParameterSet, Clustering> parameterSetToClustering) {
 		final Map<ParameterSet, Clustering> result = new HashMap<ParameterSet, Clustering>();
 
-		for (Map.Entry<ParameterSet, Clustering> entry : parameterSetToClustering
-				.entrySet()) {
+		for (Map.Entry<ParameterSet, Clustering> entry : parameterSetToClustering.entrySet()) {
 			result.put(entry.getKey().clone(), entry.getValue().clone());
 		}
 
 		return result;
 	}
 
-	private List<ParameterSet> cloneParameterSets(
-			List<ParameterSet> parameterSets) {
+	private List<ParameterSet> cloneParameterSets(List<ParameterSet> parameterSets) {
 		final List<ParameterSet> result = new ArrayList<ParameterSet>();
 
 		for (ParameterSet paramSet : parameterSets) {
@@ -443,8 +411,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 		return new ArrayList<Long>(iterationNumbers);
 	}
 
-	private Map<ParameterSet, Long> cloneParameterSetToIterationNumbers(
-			Map<ParameterSet, Long> iterationNumbers) {
+	private Map<ParameterSet, Long> cloneParameterSetToIterationNumbers(Map<ParameterSet, Long> iterationNumbers) {
 		final Map<ParameterSet, Long> result = new HashMap<ParameterSet, Long>();
 
 		for (Map.Entry<ParameterSet, Long> entry : iterationNumbers.entrySet()) {
@@ -458,8 +425,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 			Map<ClusteringQualityMeasure, ParameterSet> optimalParameterSet) {
 		final Map<ClusteringQualityMeasure, ParameterSet> result = new HashMap<ClusteringQualityMeasure, ParameterSet>();
 
-		for (Map.Entry<ClusteringQualityMeasure, ParameterSet> entry : optimalParameterSet
-				.entrySet()) {
+		for (Map.Entry<ClusteringQualityMeasure, ParameterSet> entry : optimalParameterSet.entrySet()) {
 			result.put(entry.getKey().clone(), entry.getValue().clone());
 		}
 
@@ -470,8 +436,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 			Map<ParameterSet, ClusteringQualitySet> parameterSetToQualities) {
 		final Map<ParameterSet, ClusteringQualitySet> result = new HashMap<ParameterSet, ClusteringQualitySet>();
 
-		for (Map.Entry<ParameterSet, ClusteringQualitySet> entry : parameterSetToQualities
-				.entrySet()) {
+		for (Map.Entry<ParameterSet, ClusteringQualitySet> entry : parameterSetToQualities.entrySet()) {
 			result.put(entry.getKey().clone(), entry.getValue().clone());
 		}
 
@@ -529,13 +494,12 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 *            The clustering resulting the given parameter set.
 	 * @return The old value, if this operation replaced an old mapping,
 	 */
-	public ClusteringQualitySet put(long iterationNumber, ParameterSet last,
-			ClusteringQualitySet qualities, Clustering clustering) {
+	public ClusteringQualitySet put(long iterationNumber, ParameterSet last, ClusteringQualitySet qualities,
+			Clustering clustering) {
 		// we want that this result is parsed again
 		changedSinceLastRegister = true;
 
-		ClusteringQualitySet result = this.parameterSetToQualities.put(last,
-				qualities);
+		ClusteringQualitySet result = this.parameterSetToQualities.put(last, qualities);
 
 		if (this.parameterSetToClustering != null)
 			this.parameterSetToClustering.put(last, clustering);
@@ -546,11 +510,9 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 		if (qualities != null) {
 			for (ClusteringQualityMeasure measure : qualities.keySet()) {
 				if (optimalCriterionValue.get(measure) == null
-						|| measure.isBetterThan(qualities.get(measure),
-								this.optimalCriterionValue.get(measure))) {
+						|| measure.isBetterThan(qualities.get(measure), this.optimalCriterionValue.get(measure))) {
 
-					this.optimalCriterionValue.put(measure,
-							qualities.get(measure));
+					this.optimalCriterionValue.put(measure, qualities.get(measure));
 					this.optimalParameterSet.put(measure, last);
 
 					if (this.parameterSetToClustering != null)
@@ -568,8 +530,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 */
 	public ParameterSet getOptimalParameterSet() {
 		if (this.optimalParameterSet != null)
-			return this.optimalParameterSet.get(this.method
-					.getOptimizationCriterion());
+			return this.optimalParameterSet.get(this.method.getOptimizationCriterion());
 		return null;
 	}
 
@@ -596,8 +557,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 */
 	public Clustering getOptimalClustering() {
 		if (this.optimalClustering != null)
-			return this.optimalClustering.get(this.method
-					.getOptimizationCriterion());
+			return this.optimalClustering.get(this.method.getOptimizationCriterion());
 		return null;
 	}
 
@@ -618,8 +578,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	public List<Pair<ParameterSet, ClusteringQualitySet>> getOptimizationQualities() {
 		List<Pair<ParameterSet, ClusteringQualitySet>> result = new ArrayList<Pair<ParameterSet, ClusteringQualitySet>>();
 		for (ParameterSet paramSet : this.parameterSets)
-			result.add(Pair.getPair(paramSet,
-					this.parameterSetToQualities.get(paramSet)));
+			result.add(Pair.getPair(paramSet, this.parameterSetToQualities.get(paramSet)));
 		return result;
 	}
 
@@ -639,8 +598,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 		return this.iterationNumbers;
 	}
 
-	public long getIterationNumberForParameterSet(
-			final ParameterSet parameterSet) {
+	public long getIterationNumberForParameterSet(final ParameterSet parameterSet) {
 		try {
 			if (this.parameterSetToIterationNumber.containsKey(parameterSet))
 				return this.parameterSetToIterationNumber.get(parameterSet);
@@ -659,8 +617,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	public List<Pair<ParameterSet, Clustering>> getOptimizationClusterings() {
 		List<Pair<ParameterSet, Clustering>> result = new ArrayList<Pair<ParameterSet, Clustering>>();
 		for (ParameterSet paramSet : this.parameterSets)
-			result.add(Pair.getPair(paramSet,
-					this.parameterSetToClustering.get(paramSet)));
+			result.add(Pair.getPair(paramSet, this.parameterSetToClustering.get(paramSet)));
 		return result;
 	}
 
@@ -684,19 +641,28 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see de.clusteval.run.result.RunResult#isInMemory()
+	 */
+	@Override
+	public boolean isInMemory() {
+		return this.iterationNumbers != null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.clusteval.run.result.RunResult#loadIntoMemory()
 	 */
 	@Override
 	public void loadIntoMemory() throws RunResultParseException {
+		this.initAttributes();
 		// the parser fills the attributes of this run result object
 		ParameterOptimizationResultParser parser;
 		try {
-			parser = new ParameterOptimizationResultParser(method,
-					this.getRun(), this, absPath.getAbsolutePath(),
-					new int[]{}, new int[]{}, parseClusterings,
-					storeClusterings);
+			parser = new ParameterOptimizationResultParser(method, this.getRun(), this, absPath.getAbsolutePath(),
+					new int[]{}, new int[]{}, parseClusterings, storeClusterings);
 			parser.process();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new RunResultParseException(e.getMessage());
 		}
 	}
@@ -798,26 +764,17 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 * @throws RegisterException
 	 * @throws RunResultParseException
 	 */
-	public static Run parseFromRunResultFolder(
-			final ParameterOptimizationRun run, final Repository repository,
-			final File runResultFolder, final List<RunResult> result,
-			final boolean parseClusterings, final boolean storeClusterings,
-			final boolean register) throws RegisterException,
-			RunResultParseException {
+	public static Run parseFromRunResultFolder(final ParameterOptimizationRun run, final Repository repository,
+			final File runResultFolder, final List<RunResult> result, final boolean parseClusterings,
+			final boolean storeClusterings, final boolean register) throws RegisterException, RunResultParseException {
 
-		File clusterFolder = new File(FileUtils.buildPath(
-				runResultFolder.getAbsolutePath(), "clusters"));
-		for (final ParameterOptimizationMethod method : run
-				.getOptimizationMethods()) {
-			final File completeFile = new File(FileUtils.buildPath(
-					clusterFolder.getAbsolutePath(), method.getProgramConfig()
-							.toString()
-							+ "_"
-							+ method.getDataConfig().toString()
-							+ ".results.qual.complete"));
-			final ParameterOptimizationResult tmpResult = parseFromRunResultCompleteFile(
-					repository, run, method, completeFile, parseClusterings,
-					storeClusterings, register);
+		File clusterFolder = new File(FileUtils.buildPath(runResultFolder.getAbsolutePath(), "clusters"));
+		for (final ParameterOptimizationMethod method : run.getOptimizationMethods()) {
+			final File completeFile = new File(
+					FileUtils.buildPath(clusterFolder.getAbsolutePath(), method.getProgramConfig().toString() + "_"
+							+ method.getDataConfig().toString() + ".results.qual.complete"));
+			final ParameterOptimizationResult tmpResult = parseFromRunResultCompleteFile(repository, run, method,
+					completeFile, parseClusterings, storeClusterings, register);
 			if (tmpResult != null)
 				result.add(tmpResult);
 
@@ -836,16 +793,13 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	}
 }
 
-class ParameterOptimizationResultIterator
-		implements
-			Iterator<Pair<ParameterSet, ClusteringQualitySet>> {
+class ParameterOptimizationResultIterator implements Iterator<Pair<ParameterSet, ClusteringQualitySet>> {
 
 	protected ParameterOptimizationResult result;
 
 	protected int currPos;
 
-	public ParameterOptimizationResultIterator(
-			final ParameterOptimizationResult result) {
+	public ParameterOptimizationResultIterator(final ParameterOptimizationResult result) {
 		super();
 		this.result = result;
 		this.currPos = 0;

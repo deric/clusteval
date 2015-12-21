@@ -108,13 +108,10 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	 * @param run
 	 * @throws RegisterException
 	 */
-	public ClusteringRunResult(final Repository repository,
-			final long changeDate, final File absPath,
-			final DataConfig dataConfig, final ProgramConfig programConfig,
-			final RunResultFormat resultFormat, final String runIdentString,
-			final Run run) throws RegisterException {
-		super(repository, changeDate, absPath, runIdentString, run, dataConfig,
-				programConfig);
+	public ClusteringRunResult(final Repository repository, final long changeDate, final File absPath,
+			final DataConfig dataConfig, final ProgramConfig programConfig, final RunResultFormat resultFormat,
+			final String runIdentString, final Run run) throws RegisterException {
+		super(repository, changeDate, absPath, runIdentString, run, dataConfig, programConfig);
 
 		this.resultFormat = resultFormat;
 	}
@@ -126,13 +123,11 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	 *            The object to clone.
 	 * @throws RegisterException
 	 */
-	public ClusteringRunResult(final ClusteringRunResult other)
-			throws RegisterException {
+	public ClusteringRunResult(final ClusteringRunResult other) throws RegisterException {
 		super(other);
 
 		this.resultFormat = other.resultFormat.clone();
-		this.clustering = Pair.getPair(other.clustering.getFirst(),
-				other.clustering.getSecond());
+		this.clustering = Pair.getPair(other.clustering.getFirst(), other.clustering.getSecond());
 	}
 
 	/*
@@ -179,17 +174,15 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	 * @throws RegisterException
 	 */
 	@SuppressWarnings("unused")
-	public ClusteringRunResult convertTo(final RunResultFormat format,
-			final Map<String, String> internalParams,
+	public ClusteringRunResult convertTo(final RunResultFormat format, final Map<String, String> internalParams,
 			final Map<String, String> params)
-			throws NoRunResultFormatParserException,
-			RunResultNotFoundException, RegisterException {
+					throws NoRunResultFormatParserException, RunResultNotFoundException, RegisterException {
 		ClusteringRunResult result = null;
 		RunResultFormatParser p = null;
 
 		if (!new File(this.absPath.getAbsolutePath()).exists())
-			throw new RunResultNotFoundException("The result file "
-					+ this.absPath.getAbsolutePath() + " does not exist!");
+			throw new RunResultNotFoundException(
+					"The result file " + this.absPath.getAbsolutePath() + " does not exist!");
 
 		/*
 		 * We already have the same format
@@ -200,13 +193,10 @@ public class ClusteringRunResult extends ExecutionRunResult {
 			 * ClusteringRunResult
 			 */
 			try {
-				org.apache.commons.io.FileUtils.copyFile(
-						new File(this.getAbsolutePath()),
+				org.apache.commons.io.FileUtils.copyFile(new File(this.getAbsolutePath()),
 						new File(this.getAbsolutePath() + ".conv"));
-				return new ClusteringRunResult(this.repository,
-						System.currentTimeMillis(), new File(
-								this.absPath.getAbsolutePath() + ".conv"),
-						this.dataConfig, this.programConfig, format,
+				return new ClusteringRunResult(this.repository, System.currentTimeMillis(),
+						new File(this.absPath.getAbsolutePath() + ".conv"), this.dataConfig, this.programConfig, format,
 						this.runIdentString, run);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -214,18 +204,13 @@ public class ClusteringRunResult extends ExecutionRunResult {
 		}
 
 		try {
-			p = this.repository
-					.getRunResultFormatParser(
-							this.getResultFormat().getClass().getName())
+			p = this.repository.getRunResultFormatParser(this.getResultFormat().getClass().getName())
 					.getConstructor(Map.class, Map.class, String.class)
-					.newInstance(internalParams, params,
-							this.absPath.getAbsolutePath());
+					.newInstance(internalParams, params, this.absPath.getAbsolutePath());
 			if (p != null) {
 				p.convertToStandardFormat();
-				result = new ClusteringRunResult(this.repository,
-						System.currentTimeMillis(), new File(
-								this.absPath.getAbsolutePath() + ".conv"),
-						this.dataConfig, this.programConfig, format,
+				result = new ClusteringRunResult(this.repository, System.currentTimeMillis(),
+						new File(this.absPath.getAbsolutePath() + ".conv"), this.dataConfig, this.programConfig, format,
 						this.runIdentString, run);
 			}
 		} catch (InstantiationException e) {
@@ -237,9 +222,8 @@ public class ClusteringRunResult extends ExecutionRunResult {
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			if (e.getCause() instanceof FileNotFoundException
-					| (e.getCause() instanceof IOException && e.getCause()
-							.getMessage().startsWith("Empty file given"))) {
+			if (e.getCause() instanceof FileNotFoundException | (e.getCause() instanceof IOException
+					&& e.getCause().getMessage().startsWith("Empty file given"))) {
 				/*
 				 * Ensure, that all the files of this result are deleted
 				 */
@@ -300,23 +284,17 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	 * @return The parameter optimization run parsed from the runresult folder.
 	 * @throws RegisterException
 	 */
-	public static Run parseFromRunResultFolder(final ClusteringRun run,
-			final Repository repository, final File runResultFolder,
-			final List<RunResult> result, final boolean register)
-			throws RegisterException {
+	public static Run parseFromRunResultFolder(final ClusteringRun run, final Repository repository,
+			final File runResultFolder, final List<RunResult> result, final boolean register) throws RegisterException {
 
-		File clusterFolder = new File(FileUtils.buildPath(
-				runResultFolder.getAbsolutePath(), "clusters"));
+		File clusterFolder = new File(FileUtils.buildPath(runResultFolder.getAbsolutePath(), "clusters"));
 
 		for (final DataConfig dataConfig : run.getDataConfigs()) {
 			for (final ProgramConfig programConfig : run.getProgramConfigs()) {
-				final File completeFile = new File(FileUtils.buildPath(
-						clusterFolder.getAbsolutePath(),
-						programConfig.toString() + "_" + dataConfig
-								+ ".1.results.conv"));
-				final ClusteringRunResult tmpResult = parseFromRunResultCompleteFile(
-						repository, run, dataConfig, programConfig,
-						completeFile, register);
+				final File completeFile = new File(FileUtils.buildPath(clusterFolder.getAbsolutePath(),
+						programConfig.toString() + "_" + dataConfig + ".1.results.conv"));
+				final ClusteringRunResult tmpResult = parseFromRunResultCompleteFile(repository, run, dataConfig,
+						programConfig, completeFile, register);
 				if (tmpResult != null)
 					result.add(tmpResult);
 			}
@@ -335,15 +313,12 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	 *         runresult folder.
 	 * @throws RegisterException
 	 */
-	public static ClusteringRunResult parseFromRunResultCompleteFile(
-			Repository repository, ClusteringRun run,
-			final DataConfig dataConfig, final ProgramConfig programConfig,
-			final File completeFile, final boolean register)
-			throws RegisterException {
+	public static ClusteringRunResult parseFromRunResultCompleteFile(Repository repository, ClusteringRun run,
+			final DataConfig dataConfig, final ProgramConfig programConfig, final File completeFile,
+			final boolean register) throws RegisterException {
 		ClusteringRunResult result = null;
 		if (completeFile.exists()) {
-			result = new ClusteringRunResult(repository,
-					completeFile.lastModified(), completeFile, dataConfig,
+			result = new ClusteringRunResult(repository, completeFile.lastModified(), completeFile, dataConfig,
 					programConfig, programConfig.getOutputFormat(),
 					completeFile.getParentFile().getParentFile().getName(), run);
 
@@ -414,48 +389,33 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	 * @throws UnknownRunResultPostprocessorException
 	 * @throws UnknownDataRandomizerException
 	 */
-	public static Run parseFromRunResultFolder(
-			final Repository parentRepository, final File runResultFolder,
+	public static Run parseFromRunResultFolder(final Repository parentRepository, final File runResultFolder,
 			final List<ExecutionRunResult> result, final boolean register)
-			throws IOException, UnknownRunResultFormatException,
-			UnknownDataSetFormatException,
-			UnknownClusteringQualityMeasureException, InvalidRunModeException,
-			UnknownParameterOptimizationMethodException,
-			NoOptimizableProgramParameterException,
-			UnknownProgramParameterException,
-			UnknownGoldStandardFormatException,
-			InvalidConfigurationFileException,
-			RepositoryAlreadyExistsException, InvalidRepositoryException,
-			NoRepositoryFoundException, GoldStandardNotFoundException,
-			InvalidOptimizationParameterException,
-			GoldStandardConfigurationException, DataSetConfigurationException,
-			DataSetNotFoundException, DataSetConfigNotFoundException,
-			GoldStandardConfigNotFoundException, DataConfigurationException,
-			DataConfigNotFoundException, RunException,
-			UnknownDataStatisticException, UnknownProgramTypeException,
-			UnknownRProgramException,
-			IncompatibleParameterOptimizationMethodException,
-			UnknownDistanceMeasureException, UnknownRunStatisticException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, ConfigurationException,
-			RegisterException, UnknownDataSetTypeException,
-			NumberFormatException, NoDataSetException,
-			UnknownRunDataStatisticException, UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException,
-			UnknownContextException, IncompatibleContextException,
-			UnknownParameterType, InterruptedException,
-			UnknownRunResultPostprocessorException,
-			UnknownDataRandomizerException {
+					throws IOException, UnknownRunResultFormatException, UnknownDataSetFormatException,
+					UnknownClusteringQualityMeasureException, InvalidRunModeException,
+					UnknownParameterOptimizationMethodException, NoOptimizableProgramParameterException,
+					UnknownProgramParameterException, UnknownGoldStandardFormatException,
+					InvalidConfigurationFileException, RepositoryAlreadyExistsException, InvalidRepositoryException,
+					NoRepositoryFoundException, GoldStandardNotFoundException, InvalidOptimizationParameterException,
+					GoldStandardConfigurationException, DataSetConfigurationException, DataSetNotFoundException,
+					DataSetConfigNotFoundException, GoldStandardConfigNotFoundException, DataConfigurationException,
+					DataConfigNotFoundException, RunException, UnknownDataStatisticException,
+					UnknownProgramTypeException, UnknownRProgramException,
+					IncompatibleParameterOptimizationMethodException, UnknownDistanceMeasureException,
+					UnknownRunStatisticException, RepositoryConfigNotFoundException, RepositoryConfigurationException,
+					ConfigurationException, RegisterException, UnknownDataSetTypeException, NumberFormatException,
+					NoDataSetException, UnknownRunDataStatisticException, UnknownDataPreprocessorException,
+					IncompatibleDataSetConfigPreprocessorException, UnknownContextException,
+					IncompatibleContextException, UnknownParameterType, InterruptedException,
+					UnknownRunResultPostprocessorException, UnknownDataRandomizerException {
 
 		Repository childRepository;
 		try {
-			childRepository = new RunResultRepository(
-					runResultFolder.getAbsolutePath(), parentRepository);
+			childRepository = new RunResultRepository(runResultFolder.getAbsolutePath(), parentRepository);
 			childRepository.initialize();
 
 			File runFile = null;
-			File configFolder = new File(FileUtils.buildPath(
-					runResultFolder.getAbsolutePath(), "configs"));
+			File configFolder = new File(FileUtils.buildPath(runResultFolder.getAbsolutePath(), "configs"));
 			if (!configFolder.exists())
 				return null;
 			for (File child : configFolder.listFiles())
@@ -470,18 +430,13 @@ public class ClusteringRunResult extends ExecutionRunResult {
 			if (run instanceof ClusteringRun) {
 				final ClusteringRun paramRun = (ClusteringRun) run;
 
-				File clusterFolder = new File(FileUtils.buildPath(
-						runResultFolder.getAbsolutePath(), "clusters"));
+				File clusterFolder = new File(FileUtils.buildPath(runResultFolder.getAbsolutePath(), "clusters"));
 				for (final DataConfig dataConfig : paramRun.getDataConfigs()) {
-					for (final ProgramConfig programConfig : paramRun
-							.getProgramConfigs()) {
-						final File completeFile = new File(FileUtils.buildPath(
-								clusterFolder.getAbsolutePath(),
-								programConfig.toString() + "_" + dataConfig
-										+ ".results.qual.complete"));
-						final ClusteringRunResult tmpResult = parseFromRunResultCompleteFile(
-								parentRepository, paramRun, dataConfig,
-								programConfig, completeFile, register);
+					for (final ProgramConfig programConfig : paramRun.getProgramConfigs()) {
+						final File completeFile = new File(FileUtils.buildPath(clusterFolder.getAbsolutePath(),
+								programConfig.toString() + "_" + dataConfig + ".results.qual.complete"));
+						final ClusteringRunResult tmpResult = parseFromRunResultCompleteFile(parentRepository, paramRun,
+								dataConfig, programConfig, completeFile, register);
 						if (tmpResult != null)
 							result.add(tmpResult);
 					}
@@ -503,12 +458,8 @@ public class ClusteringRunResult extends ExecutionRunResult {
 	public void loadIntoMemory() {
 		if (absPath.exists()) {
 			try {
-				final Pair<ParameterSet, Clustering> pair = Clustering
-						.parseFromFile(
-								repository,
-								new File(absPath.getAbsolutePath().replace(
-										"results.qual.complete",
-										"1.results.conv")), true);
+				final Pair<ParameterSet, Clustering> pair = Clustering.parseFromFile(repository,
+						new File(absPath.getAbsolutePath().replace("results.qual.complete", "1.results.conv")), true);
 
 				ParameterSet paramSet = new ParameterSet();
 				for (String param : pair.getFirst().keySet())
@@ -518,6 +469,16 @@ public class ClusteringRunResult extends ExecutionRunResult {
 			} catch (Exception e) {
 			}
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.run.result.RunResult#isInMemory()
+	 */
+	@Override
+	public boolean isInMemory() {
+		return this.clustering != null;
 	}
 
 	/*

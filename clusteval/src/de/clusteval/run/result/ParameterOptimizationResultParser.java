@@ -57,13 +57,10 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 	 * @param storeClusterings
 	 * @throws IOException
 	 */
-	public ParameterOptimizationResultParser(
-			final ParameterOptimizationMethod method,
-			final ParameterOptimizationRun run,
-			final ParameterOptimizationResult tmpResult,
-			final String absFilePath, int[] keyColumnIds, int[] valueColumnIds,
-			final boolean parseClusterings, final boolean storeClusterings)
-			throws IOException {
+	public ParameterOptimizationResultParser(final ParameterOptimizationMethod method,
+			final ParameterOptimizationRun run, final ParameterOptimizationResult tmpResult, final String absFilePath,
+			int[] keyColumnIds, int[] valueColumnIds, final boolean parseClusterings, final boolean storeClusterings)
+					throws IOException {
 		super(absFilePath, keyColumnIds, valueColumnIds);
 		this.setLockTargetFile(true);
 		this.method = method;
@@ -83,8 +80,7 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 			// 04.04.2013: added iteration number into first column
 			String[] paramSplit = StringExt.split(value[1], ",");
 			for (String p : paramSplit)
-				parameters
-						.add(method.getProgramConfig().getParameterForName(p));
+				parameters.add(method.getProgramConfig().getParameterForName(p));
 			for (int i = 2; i < value.length; i++) {
 				String q = value[i];
 				for (ClusteringQualityMeasure other : run.getQualityMeasures())
@@ -141,12 +137,10 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 				// clustering exists
 				String iterationId = iterationNumber + "";
 				// find the file with the longest name with this prefix
-				String clusteringFilePath = new File(this.getAbsoluteFilePath()
-						.replace("results.qual.complete",
-								iterationId + ".results.conv"))
-						.getAbsolutePath();
-				for (RunResultPostprocessor postprocessor : run
-						.getPostProcessors()) {
+				String clusteringFilePath = new File(
+						this.getAbsoluteFilePath().replace("results.qual.complete", iterationId + ".results.conv"))
+								.getAbsolutePath();
+				for (RunResultPostprocessor postprocessor : run.getPostProcessors()) {
 					String newPath = String.format("%s.%s", clusteringFilePath,
 							postprocessor.getClass().getSimpleName());
 					if (new File(newPath).exists()) {
@@ -192,10 +186,8 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 				// granted
 				// if (absFile.exists()) {
 				for (int pos = 2; pos < value.length; pos++) {
-					ClusteringQualityMeasure other = this.qualityMeasures
-							.get(pos - 2);
-					qualitySet.put(other, ClusteringQualityMeasureValue
-							.parseFromString(value[pos]));
+					ClusteringQualityMeasure other = this.qualityMeasures.get(pos - 2);
+					qualitySet.put(other, ClusteringQualityMeasureValue.parseFromString(value[pos]));
 				}
 				// }
 				// if the file does not exist, put NT quality values
@@ -212,11 +204,9 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 
 				Clustering clustering = null;
 				if (absFile.exists())
-					clustering = Clustering.parseFromFile(
-							method.getRepository(), absFile, false).getSecond();
+					clustering = Clustering.parseFromFile(method.getRepository(), absFile, false).getSecond();
 
-				tmpResult
-						.put(iterationNumber, paramSet, qualitySet, clustering);
+				tmpResult.put(iterationNumber, paramSet, qualitySet, clustering);
 
 				// added 20.08.2012
 				if (parseClusterings) {
@@ -244,8 +234,6 @@ public class ParameterOptimizationResultParser extends TextFileParser {
 	 */
 	@Override
 	protected String[] split(String line) {
-		return this.splitLines
-				? StringExt.split(line, this.inSplit)
-				: new String[]{line};
+		return this.splitLines ? StringExt.split(line, this.inSplit) : new String[]{line};
 	}
 }

@@ -78,9 +78,7 @@ import de.wiwie.wiutils.file.FileUtils;
  * @author Christian Wiwie
  * 
  */
-public class RunAnalysisRunResult
-		extends
-			AnalysisRunResult<String, RunStatistic> {
+public class RunAnalysisRunResult extends AnalysisRunResult<String, RunStatistic> {
 
 	/**
 	 * @param repository
@@ -91,9 +89,8 @@ public class RunAnalysisRunResult
 	 * @param run
 	 * @throws RegisterException
 	 */
-	public RunAnalysisRunResult(Repository repository, boolean register,
-			long changeDate, File absPath, String runIdentString, final Run run)
-			throws RegisterException {
+	public RunAnalysisRunResult(Repository repository, boolean register, long changeDate, File absPath,
+			String runIdentString, final Run run) throws RegisterException {
 		super(repository, changeDate, absPath, runIdentString, run);
 
 		if (register)
@@ -107,8 +104,7 @@ public class RunAnalysisRunResult
 	 *            The object to clone.
 	 * @throws RegisterException
 	 */
-	public RunAnalysisRunResult(final RunAnalysisRunResult other)
-			throws RegisterException {
+	public RunAnalysisRunResult(final RunAnalysisRunResult other) throws RegisterException {
 		super(other);
 	}
 
@@ -118,12 +114,10 @@ public class RunAnalysisRunResult
 	 * @see run.result.AnalysisRunResult#cloneStatistics(java.util.Map)
 	 */
 	@Override
-	protected Map<String, List<RunStatistic>> cloneStatistics(
-			Map<String, List<RunStatistic>> statistics) {
+	protected Map<String, List<RunStatistic>> cloneStatistics(Map<String, List<RunStatistic>> statistics) {
 		final Map<String, List<RunStatistic>> result = new HashMap<String, List<RunStatistic>>();
 
-		for (Map.Entry<String, List<RunStatistic>> entry : statistics
-				.entrySet()) {
+		for (Map.Entry<String, List<RunStatistic>> entry : statistics.entrySet()) {
 			List<RunStatistic> newList = new ArrayList<RunStatistic>();
 
 			for (RunStatistic elem : entry.getValue()) {
@@ -209,46 +203,29 @@ public class RunAnalysisRunResult
 	 * @throws UnknownRunResultPostprocessorException
 	 * @throws UnknownDataRandomizerException
 	 */
-	public static RunAnalysisRunResult parseFromRunResultFolder(
-			final Repository repository, final File runResultFolder)
-			throws RepositoryAlreadyExistsException,
-			InvalidRepositoryException, GoldStandardConfigurationException,
-			DataSetConfigurationException, DataSetNotFoundException,
-			DataSetConfigNotFoundException,
-			GoldStandardConfigNotFoundException, DataConfigurationException,
-			DataConfigNotFoundException, IOException,
-			UnknownRunResultFormatException, UnknownDataSetFormatException,
-			InvalidConfigurationFileException,
+	public static RunAnalysisRunResult parseFromRunResultFolder(final Repository repository, final File runResultFolder)
+			throws RepositoryAlreadyExistsException, InvalidRepositoryException, GoldStandardConfigurationException,
+			DataSetConfigurationException, DataSetNotFoundException, DataSetConfigNotFoundException,
+			GoldStandardConfigNotFoundException, DataConfigurationException, DataConfigNotFoundException, IOException,
+			UnknownRunResultFormatException, UnknownDataSetFormatException, InvalidConfigurationFileException,
 			UnknownClusteringQualityMeasureException, InvalidRunModeException,
-			UnknownParameterOptimizationMethodException,
-			NoOptimizableProgramParameterException,
-			UnknownProgramParameterException, NoRepositoryFoundException,
-			GoldStandardNotFoundException,
-			InvalidOptimizationParameterException, RunException,
-			UnknownDataStatisticException, UnknownProgramTypeException,
-			UnknownRProgramException,
-			IncompatibleParameterOptimizationMethodException,
-			UnknownDistanceMeasureException, UnknownRunStatisticException,
-			UnknownGoldStandardFormatException,
-			RepositoryConfigNotFoundException,
-			RepositoryConfigurationException, ConfigurationException,
-			RegisterException, UnknownDataSetTypeException,
-			NumberFormatException, NoDataSetException,
-			UnknownRunDataStatisticException, RunResultParseException,
-			UnknownDataPreprocessorException,
-			IncompatibleDataSetConfigPreprocessorException,
-			UnknownContextException, IncompatibleContextException,
-			UnknownParameterType, InterruptedException,
-			UnknownRunResultPostprocessorException,
+			UnknownParameterOptimizationMethodException, NoOptimizableProgramParameterException,
+			UnknownProgramParameterException, NoRepositoryFoundException, GoldStandardNotFoundException,
+			InvalidOptimizationParameterException, RunException, UnknownDataStatisticException,
+			UnknownProgramTypeException, UnknownRProgramException, IncompatibleParameterOptimizationMethodException,
+			UnknownDistanceMeasureException, UnknownRunStatisticException, UnknownGoldStandardFormatException,
+			RepositoryConfigNotFoundException, RepositoryConfigurationException, ConfigurationException,
+			RegisterException, UnknownDataSetTypeException, NumberFormatException, NoDataSetException,
+			UnknownRunDataStatisticException, RunResultParseException, UnknownDataPreprocessorException,
+			IncompatibleDataSetConfigPreprocessorException, UnknownContextException, IncompatibleContextException,
+			UnknownParameterType, InterruptedException, UnknownRunResultPostprocessorException,
 			UnknownDataRandomizerException {
 		try {
-			Repository childRepository = new RunResultRepository(
-					runResultFolder.getAbsolutePath(), repository);
+			Repository childRepository = new RunResultRepository(runResultFolder.getAbsolutePath(), repository);
 			childRepository.initialize();
 
 			File runFile = null;
-			File configFolder = new File(FileUtils.buildPath(
-					runResultFolder.getAbsolutePath(), "configs"));
+			File configFolder = new File(FileUtils.buildPath(runResultFolder.getAbsolutePath(), "configs"));
 			if (!configFolder.exists())
 				return null;
 			for (File child : configFolder.listFiles())
@@ -265,12 +242,10 @@ public class RunAnalysisRunResult
 			if (object instanceof RunAnalysisRun) {
 				final RunAnalysisRun run = (RunAnalysisRun) object;
 
-				File analysesFolder = new File(FileUtils.buildPath(
-						runResultFolder.getAbsolutePath(), "analyses"));
+				File analysesFolder = new File(FileUtils.buildPath(runResultFolder.getAbsolutePath(), "analyses"));
 
-				analysisResult = new RunAnalysisRunResult(repository, false,
-						analysesFolder.lastModified(), analysesFolder,
-						analysesFolder.getParentFile().getName(), run);
+				analysisResult = new RunAnalysisRunResult(repository, false, analysesFolder.lastModified(),
+						analysesFolder, analysesFolder.getParentFile().getName(), run);
 
 				analysisResult.loadIntoMemory();
 				try {
@@ -304,21 +279,16 @@ public class RunAnalysisRunResult
 	@Override
 	public void loadIntoMemory() throws RunResultParseException {
 
-		for (final String uniqueRunIdentifier : this.getRun()
-				.getUniqueRunAnalysisRunIdentifiers()) {
+		for (final String uniqueRunIdentifier : this.getRun().getUniqueRunAnalysisRunIdentifiers()) {
 
 			List<RunStatistic> statistics = new ArrayList<RunStatistic>();
 			for (final Statistic runStatistic : this.getRun().getStatistics()) {
-				final File completeFile = new File(FileUtils.buildPath(
-						absPath.getAbsolutePath(), uniqueRunIdentifier + "_"
-								+ runStatistic.getIdentifier() + ".txt"));
+				final File completeFile = new File(FileUtils.buildPath(absPath.getAbsolutePath(),
+						uniqueRunIdentifier + "_" + runStatistic.getIdentifier() + ".txt"));
 				if (!completeFile.exists())
-					throw new RunResultParseException("The result file of ("
-							+ uniqueRunIdentifier + ","
-							+ runStatistic.getIdentifier()
-							+ ") could not be found: " + completeFile);
-				final String fileContents = FileUtils
-						.readStringFromFile(completeFile.getAbsolutePath());
+					throw new RunResultParseException("The result file of (" + uniqueRunIdentifier + ","
+							+ runStatistic.getIdentifier() + ") could not be found: " + completeFile);
+				final String fileContents = FileUtils.readStringFromFile(completeFile.getAbsolutePath());
 
 				runStatistic.parseFromString(fileContents);
 				statistics.add((RunStatistic) runStatistic);
@@ -326,6 +296,16 @@ public class RunAnalysisRunResult
 			}
 			this.put(uniqueRunIdentifier, statistics);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.clusteval.run.result.RunResult#isInMemory()
+	 */
+	@Override
+	public boolean isInMemory() {
+		return this.statistics.isEmpty();
 	}
 
 	/*
@@ -372,36 +352,27 @@ public class RunAnalysisRunResult
 	 * @throws RegisterException
 	 * 
 	 */
-	public static RunAnalysisRunResult parseFromRunResultFolder(
-			final RunAnalysisRun run, final Repository repository,
-			final File runResultFolder, final List<RunResult> result,
-			final boolean register) throws RunResultParseException,
-			RegisterException {
+	public static RunAnalysisRunResult parseFromRunResultFolder(final RunAnalysisRun run, final Repository repository,
+			final File runResultFolder, final List<RunResult> result, final boolean register)
+					throws RunResultParseException, RegisterException {
 
 		RunAnalysisRunResult analysisResult = null;
 
-		File analysesFolder = new File(FileUtils.buildPath(
-				runResultFolder.getAbsolutePath(), "analyses"));
+		File analysesFolder = new File(FileUtils.buildPath(runResultFolder.getAbsolutePath(), "analyses"));
 
-		analysisResult = new RunAnalysisRunResult(repository, false,
-				analysesFolder.lastModified(), analysesFolder, analysesFolder
-						.getParentFile().getName(), run);
+		analysisResult = new RunAnalysisRunResult(repository, false, analysesFolder.lastModified(), analysesFolder,
+				analysesFolder.getParentFile().getName(), run);
 
-		for (final String uniqueRunIdentifier : run
-				.getUniqueRunAnalysisRunIdentifiers()) {
+		for (final String uniqueRunIdentifier : run.getUniqueRunAnalysisRunIdentifiers()) {
 
 			List<RunStatistic> statistics = new ArrayList<RunStatistic>();
 			for (final Statistic runStatistic : run.getStatistics()) {
-				final File completeFile = new File(FileUtils.buildPath(
-						analysesFolder.getAbsolutePath(), uniqueRunIdentifier
-								+ "_" + runStatistic.getIdentifier() + ".txt"));
+				final File completeFile = new File(FileUtils.buildPath(analysesFolder.getAbsolutePath(),
+						uniqueRunIdentifier + "_" + runStatistic.getIdentifier() + ".txt"));
 				if (!completeFile.exists())
-					throw new RunResultParseException("The result file of ("
-							+ uniqueRunIdentifier + ","
-							+ runStatistic.getIdentifier()
-							+ ") could not be found: " + completeFile);
-				final String fileContents = FileUtils
-						.readStringFromFile(completeFile.getAbsolutePath());
+					throw new RunResultParseException("The result file of (" + uniqueRunIdentifier + ","
+							+ runStatistic.getIdentifier() + ") could not be found: " + completeFile);
+				final String fileContents = FileUtils.readStringFromFile(completeFile.getAbsolutePath());
 
 				runStatistic.parseFromString(fileContents);
 				statistics.add((RunStatistic) runStatistic);
