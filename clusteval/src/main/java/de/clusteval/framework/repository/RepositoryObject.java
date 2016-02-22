@@ -4,15 +4,16 @@
  * are made available under the terms of the GNU Public License v3.0
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
- * 
+ *
  * Contributors:
  *     Christian Wiwie - initial API and implementation
  ******************************************************************************/
 /**
- * 
+ *
  */
 package de.clusteval.framework.repository;
 
+import de.wiwie.wiutils.file.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,16 +21,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import de.wiwie.wiutils.file.FileUtils;
 
 /**
  * A {@link RepositoryObject} provides integrated functionalities in terms of
  * automatic handling by the {@link Repository} it is registered in.
- * 
+ *
  * <p>
  * Functionality of this repository registration includes
  * <ul>
@@ -40,7 +38,7 @@ import de.wiwie.wiutils.file.FileUtils;
  * <li>central access to all objects of the framework in the repository</li>
  * <li>copy handling</li>
  * </ul>
- * 
+ *
  * @author Christian Wiwie
  */
 public abstract class RepositoryObject implements RepositoryListener {
@@ -66,17 +64,17 @@ public abstract class RepositoryObject implements RepositoryListener {
 	 * The absolute path of this object is used for identification and equality
 	 * checks of objects.
 	 */
-	protected File absPath;
+    public File absPath;
 
 	protected Logger log;
 
 	/**
 	 * Instantiates a new repository object.
-	 * 
+	 *
 	 * <p>
 	 * This is a convenience constructor which implicitely registers the new
 	 * object in its repository.
-	 * 
+	 *
 	 * @param repository
 	 *            The repository this object is registered in.
 	 * @param changeDate
@@ -94,7 +92,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 
 	/**
 	 * Instantiates a new repository object.
-	 * 
+	 *
 	 * @param repository
 	 *            The repository this object is registered in.
 	 * @param register
@@ -125,10 +123,10 @@ public abstract class RepositoryObject implements RepositoryListener {
 
 	/**
 	 * The copy constructor for repository objects.
-	 * 
+	 *
 	 * <p>
 	 * Cloned repository objects are never registered at the repository.
-	 * 
+	 *
 	 * @param other
 	 *            The object to clone.
 	 * @throws RegisterException
@@ -170,7 +168,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 	/**
 	 * Any subclass needs to implement this method. It will be responsible to
 	 * register a new object of the subclass at the repository.
-	 * 
+	 *
 	 * @return true, if successful
 	 * @throws RegisterException
 	 *             An exception is thrown if something goes wrong during the
@@ -184,7 +182,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 	/**
 	 * Any subclass needs to implement this method. It will be responsible to
 	 * unregister an object of the subclass from the repository.
-	 * 
+	 *
 	 * @return true, if successful
 	 */
 	public boolean unregister() {
@@ -208,7 +206,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -222,7 +220,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -234,7 +232,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 	/**
 	 * A convenience method for {@link #copyTo(File, boolean)}, with overwriting
 	 * enabled.
-	 * 
+	 *
 	 * @param copyDestination
 	 *            The absolute path to the destination file.
 	 * @return True, if the copy operation was successful.
@@ -246,7 +244,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 	/**
 	 * A convenience method for {@link #copyTo(File, boolean, boolean)}, with
 	 * waiting for the operation to finish.
-	 * 
+	 *
 	 * @param copyDestination
 	 *            The absolute path to the destination file.
 	 * @param overwrite
@@ -262,13 +260,13 @@ public abstract class RepositoryObject implements RepositoryListener {
 	/**
 	 * This method copies the file corresponding to this repository object to
 	 * the destination.
-	 * 
+	 *
 	 * <p>
 	 * <b>Hint:</b> Use the wait parameter with caution: It might increase the
 	 * ressource load of this method considerably. Also the wait operation might
 	 * not terminate, if source and target filesystem use different encodings
 	 * and the equality checks return false.
-	 * 
+	 *
 	 * @param copyDestination
 	 *            The absolute path to the destination file.
 	 * @param overwrite
@@ -304,7 +302,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 	/**
 	 * A convenience method for {@link #moveTo(File, boolean)}, with overwriting
 	 * enabled.
-	 * 
+	 *
 	 * @param moveDestination
 	 *            The absolute path to the destination file.
 	 * @return True, if the move operation was successful.
@@ -316,13 +314,13 @@ public abstract class RepositoryObject implements RepositoryListener {
 	/**
 	 * This method moves the file corresponding to this repository object to the
 	 * destination.
-	 * 
+	 *
 	 * <p>
 	 * <b>Hint:</b> Use the wait parameter with caution: It might increase the
 	 * ressource load of this method considerably. Also the wait operation might
 	 * not terminate, if source and target filesystem use different encodings
 	 * and the equality checks return false.
-	 * 
+	 *
 	 * @param moveDest
 	 *            The absolute path to the destination file.
 	 * @param overwrite
@@ -349,7 +347,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 	/**
 	 * A convenience method for {@link #moveToFolder(File, boolean)}, with
 	 * overwriting enabled.
-	 * 
+	 *
 	 * @param moveFolderDestination
 	 *            The folder into which this file should be move
 	 * @return True, if the move operation was successful.
@@ -361,7 +359,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 	/**
 	 * This method moves the file corresponding to this repository object into
 	 * the destination folder.
-	 * 
+	 *
 	 * @param moveFolderDestination
 	 *            The folder in which this file should be copied
 	 * @param overwrite
@@ -380,7 +378,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 	/**
 	 * A convenience method for {@link #copyToFolder(File, boolean)}, with
 	 * overwriting enabled.
-	 * 
+	 *
 	 * @param copyFolderDestination
 	 *            The folder in which this file should be copied
 	 * @return True, if the copy operation was successful.
@@ -392,7 +390,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 	/**
 	 * This method copies the file corresponding to this repository object into
 	 * the destination folder.
-	 * 
+	 *
 	 * @param copyFolderDestination
 	 *            The folder in which this file should be copied
 	 * @param overwrite
@@ -412,7 +410,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 	 * Add a listener to this objects listeners. Those are for example informed
 	 * when this object is removed from the repository or replaced by another
 	 * object.
-	 * 
+	 *
 	 * @param listener
 	 *            The new listener.
 	 * @return True, if the listener was added successfully
@@ -425,7 +423,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 
 	/**
 	 * Remove a listener from this objects listener.
-	 * 
+	 *
 	 * @param listener
 	 *            The listener to remove.
 	 * @return True, if the listener was removed successfully
@@ -437,7 +435,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 	/**
 	 * A helper method of {@link #notify(RepositoryEvent)}, in case this object
 	 * needs to inform its listeners about the passed event.
-	 * 
+	 *
 	 * @param event
 	 *            The event related to this object which is going to be
 	 *            propagated to the listeners of this object.
@@ -454,7 +452,7 @@ public abstract class RepositoryObject implements RepositoryListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.wiwie.wiutils.utils.RepositoryListener#notify(utils.RepositoryEvent)
 	 */
 	@Override

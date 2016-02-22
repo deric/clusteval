@@ -4,33 +4,11 @@
  * are made available under the terms of the GNU Public License v3.0
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
- * 
+ *
  * Contributors:
  *     Christian Wiwie - initial API and implementation
  ******************************************************************************/
 package de.clusteval.framework.repository;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Pattern;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
-import org.rosuda.REngine.Rserve.RserveException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.ParameterOptimizationMethod;
@@ -88,6 +66,25 @@ import de.clusteval.utils.NamedDoubleAttribute;
 import de.clusteval.utils.NamedIntegerAttribute;
 import de.clusteval.utils.NamedStringAttribute;
 import de.wiwie.wiutils.file.FileUtils;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import org.rosuda.REngine.Rserve.RserveException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The repository is the central object of the backend, where objects are
@@ -95,16 +92,16 @@ import de.wiwie.wiutils.file.FileUtils;
  * unregistered and get certain functions for free. For example duplication
  * recognition, automatic detection of changes of objects and informing other
  * objects (as listeners) about changes of other objects.
- * 
+ *
  * <p>
  * General hint: This class contains a lot of hashmaps for performance reasons.
  * All the hashmaps of this class are updated with current objects. The maps
  * then contain old key objects and current value objects. Therefore you should
  * never iterate over the result of keySet() of the maps, but instead use
  * values().
- * 
+ *
  * @author Christian Wiwie
- * 
+ *
  */
 public class Repository {
 
@@ -117,7 +114,7 @@ public class Repository {
 
 	/**
 	 * This method returns a repository (if available) with the given root path.
-	 * 
+	 *
 	 * @param absFilePath
 	 *            The absolute root path of the repository.
 	 * @return The repository with the given root path.
@@ -131,7 +128,7 @@ public class Repository {
 	 * contains the given path. That means, if there are several nested
 	 * repositories for the given path, this method will return the lowest one
 	 * of the hierarchy.
-	 * 
+	 *
 	 * @param absFilePath
 	 *            The absolute file path we want to find the repository for.
 	 * @return The repository for the given path, which is lowest in the
@@ -153,7 +150,7 @@ public class Repository {
 	 * This method checks, whether the given string represents an internal
 	 * attribute placeholder, that means it follows the format of
 	 * {@value #internalAttributePattern}.
-	 * 
+	 *
 	 * @param value
 	 *            The string to check whether it is a internal attribute.
 	 * @return True, if the given string is an internal attribute, false
@@ -166,7 +163,7 @@ public class Repository {
 
 	/**
 	 * Register a new repository.
-	 * 
+	 *
 	 * @param repository
 	 *            The new repository to register.
 	 * @return The old repository, if the new repository replaced an old one
@@ -192,7 +189,7 @@ public class Repository {
 
 	/**
 	 * Unregister the given repository.
-	 * 
+	 *
 	 * @param repository
 	 *            The repository to remove.
 	 * @return The removed repository. If null, the given repository was not
@@ -218,12 +215,12 @@ public class Repository {
 	/**
 	 * A repository can have a parent repository, which means, that the root
 	 * folder of this repository is located inside the parent repository.
-	 * 
+	 *
 	 * <p>
 	 * As a consequence if a child repository cannot complete a lookup operation
 	 * sucessfully, that means cannot find a certain object, it will also look
 	 * for this object in the parent repository.
-	 * 
+	 *
 	 * <p>
 	 * This relationship is only allowed (located inside a subfolder), if the
 	 * parental relationship is indicated by setting this parent repository
@@ -258,7 +255,7 @@ public class Repository {
 	/**
 	 * The absolute path to the directory within this repository, where all
 	 * supplementary materials are stored.
-	 * 
+	 *
 	 * <p>
 	 * Supplementary materials contain e.g. jar files of parameter optimization
 	 * methods or clustering quality measures.
@@ -325,7 +322,7 @@ public class Repository {
 	 */
 	protected Map<String, NamedIntegerAttribute> internalIntegerAttributes;
 
-	protected Logger log;
+    public Logger log;
 
 	/**
 	 * The configuration of this repository holds options that can specify the
@@ -369,7 +366,7 @@ public class Repository {
 
 	/**
 	 * Instantiates a new repository.
-	 * 
+	 *
 	 * @param parent
 	 *            Can be null, if this repository has no parent repository.
 	 * @param basePath
@@ -389,7 +386,7 @@ public class Repository {
 
 	/**
 	 * Instantiates a new repository.
-	 * 
+	 *
 	 * @param parent
 	 *            Can be null, if this repository has no parent repository.
 	 * @param basePath
@@ -471,7 +468,7 @@ public class Repository {
 	/**
 	 * This method clears the existing exceptions for missing R libraries for
 	 * the given class name.
-	 * 
+	 *
 	 * @param className
 	 *            The class name for which we want to clear the missing
 	 *            libraries.
@@ -496,14 +493,14 @@ public class Repository {
 	/**
 	 * This method creates a sql communicator for this repository depending on
 	 * the fact, whether mysql should be used by this repository.
-	 * 
+	 *
 	 * <p>
 	 * Override this method in subclasses, if you want to change the type of sql
 	 * communicator for your subtype. You can see an example in
 	 * {@link RunResultRepository#createSQLCommunicator()}, where instead of
 	 * {@link DefaultSQLCommunicator} a {@link RunResultSQLCommunicator} is
 	 * created.
-	 * 
+	 *
 	 * @return A new instance of sql communicator.
 	 * @throws DatabaseConnectException
 	 */
@@ -516,14 +513,14 @@ public class Repository {
 
 	/**
 	 * This method creates the supervisor thread object for this repository.
-	 * 
+	 *
 	 * <p>
 	 * Override this method in subclasses, if you want to change the type of
 	 * supervisor thread for your subtype. You can see an example in
 	 * {@link RunResultRepository#createSupervisorThread()}, where instead of a
 	 * {@link RepositorySupervisorThread} a
 	 * {@link RunResultRepositorySupervisorThread} is created.
-	 * 
+	 *
 	 * @return
 	 */
 	protected SupervisorThread createSupervisorThread() {
@@ -534,7 +531,7 @@ public class Repository {
 	/**
 	 * Helper method of {@link #ensureFolderStructure()}, which ensures that a
 	 * single folder exists.
-	 * 
+	 *
 	 * @param absFolderPath
 	 *            The absolute path of the folder to ensure.
 	 * @return true, if successful
@@ -555,12 +552,12 @@ public class Repository {
 	 * This method ensures the complete folder structure of this repository. If
 	 * a folder does not exist, it is recreated. In case a folder creation is
 	 * not successful an exception is thrown.
-	 * 
+	 *
 	 * <p>
 	 * A helper method of
 	 * {@link #Repository(String, Repository, long, long, long, long, long, long, long)}
 	 * .
-	 * 
+	 *
 	 * @return true, if successful
 	 * @throws FileNotFoundException
 	 */
@@ -597,7 +594,7 @@ public class Repository {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -613,7 +610,7 @@ public class Repository {
 	/**
 	 * This method evaluates all internal attribute placeholders contained in
 	 * the passed string.
-	 * 
+	 *
 	 * @param old
 	 *            The string which might contain internal attribute
 	 *            placeholders.
@@ -656,13 +653,13 @@ public class Repository {
 	/**
 	 * This method is used to evaluate parameter values containing javascript
 	 * arithmetic operations.
-	 * 
+	 *
 	 * <p>
 	 * A helper method of
 	 * {@link ProgramParameter#evaluateDefaultValue(DataConfig, ProgramConfig)},
 	 * {@link ProgramParameter#evaluateMinValue(DataConfig, ProgramConfig)} and
 	 * {@link ProgramParameter#evaluateMaxValue(DataConfig, ProgramConfig)}.
-	 * 
+	 *
 	 * @param script
 	 *            The parameter value containing javascript arithmetic
 	 *            operations.
@@ -683,11 +680,11 @@ public class Repository {
 	 * This method prefixes placeholder of internal attributes with their data
 	 * configuration such that they can be replaced in an unambigious way later
 	 * in {@link Repository#evaluateInternalAttributes(String)}.
-	 * 
+	 *
 	 * <p>
 	 * A helper method for
 	 * {@link #evaluateInternalAttributes(String, DataConfig, ProgramConfig)}.
-	 * 
+	 *
 	 * @param old
 	 *            The parameter value that might contain placeholders which need
 	 *            to be extended.
@@ -960,11 +957,11 @@ public class Repository {
 	 * It is used by default, if no other version for a format is specified. If
 	 * the current version of a format changes, add a static block to that
 	 * formats class and overwrite the format version.
-	 * 
+	 *
 	 * @param formatClass
 	 *            The dataset format class for which we want to know the current
 	 *            version.
-	 * 
+	 *
 	 * @return The current version for the given dataset format class.
 	 * @throws UnknownDataSetFormatException
 	 */
@@ -988,7 +985,7 @@ public class Repository {
 	/**
 	 * This method looks up and returns (if it exists) the class of the parser
 	 * corresponding to the dataset format with the given name.
-	 * 
+	 *
 	 * @param dataSetFormatName
 	 *            The name of the class of the dataset format.
 	 * @return The class of the dataset format parser with the given name or
@@ -1003,7 +1000,7 @@ public class Repository {
 	 * This method checks whether the given string is a valid and internal
 	 * double attribute by invoking {@link #isInternalAttribute(String)}. Then
 	 * the internal double attribute is looked up and returned if it exists.
-	 * 
+	 *
 	 * @param value
 	 *            The name of the internal double attribute.
 	 * @return The internal double attribute with the given name or null, if
@@ -1023,7 +1020,7 @@ public class Repository {
 	 * This method checks whether the given string is a valid and internal
 	 * integer attribute by invoking {@link #isInternalAttribute(String)}. Then
 	 * the internal integer attribute is looked up and returned if it exists.
-	 * 
+	 *
 	 * @param value
 	 *            The name of the internal integer attribute.
 	 * @return The internal integer attribute with the given name or null, if
@@ -1043,7 +1040,7 @@ public class Repository {
 	 * This method checks whether the given string is a valid and internal
 	 * string attribute by invoking {@link #isInternalAttribute(String)}. Then
 	 * the internal string attribute is looked up and returned if it exists.
-	 * 
+	 *
 	 * @param value
 	 *            The name of the internal string attribute.
 	 * @return The internal string attribute with the given name or null, if
@@ -1069,7 +1066,7 @@ public class Repository {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return The parent repository of this repository, or null if this
 	 *         repository has no parent.
 	 */
@@ -1080,7 +1077,7 @@ public class Repository {
 	/**
 	 * This method looks up and returns (if it exists) the repository object
 	 * that belongs to the passed absolute path.
-	 * 
+	 *
 	 * @param absFilePath
 	 *            The absolute path for which we want to find the repository
 	 *            object.
@@ -1093,7 +1090,7 @@ public class Repository {
 	/**
 	 * This method checks, whether there is a named double attribute registered,
 	 * that is equal to the passed object and returns it.
-	 * 
+	 *
 	 * <p>
 	 * Equality is checked in terms of
 	 * <ul>
@@ -1101,14 +1098,14 @@ public class Repository {
 	 * <li><b>object.equals(other)</b></li>
 	 * </ul>
 	 * since internally the repository uses hash datastructures.
-	 * 
+	 *
 	 * <p>
 	 * By default the {@link RepositoryObject#equals(Object)} method is only
 	 * based on the absolute path of the repository object and the repositories
 	 * of the two objects, this means two repository objects are considered the
 	 * same if they are stored in the same repository and they have the same
 	 * absolute path.
-	 * 
+	 *
 	 * @param object
 	 *            The object for which we want to find an equal registered
 	 *            object.
@@ -1124,7 +1121,7 @@ public class Repository {
 	/**
 	 * This method checks, whether there is a named integer attribute
 	 * registered, that is equal to the passed object and returns it.
-	 * 
+	 *
 	 * <p>
 	 * Equality is checked in terms of
 	 * <ul>
@@ -1132,14 +1129,14 @@ public class Repository {
 	 * <li><b>object.equals(other)</b></li>
 	 * </ul>
 	 * since internally the repository uses hash datastructures.
-	 * 
+	 *
 	 * <p>
 	 * By default the {@link RepositoryObject#equals(Object)} method is only
 	 * based on the absolute path of the repository object and the repositories
 	 * of the two objects, this means two repository objects are considered the
 	 * same if they are stored in the same repository and they have the same
 	 * absolute path.
-	 * 
+	 *
 	 * @param object
 	 *            The object for which we want to find an equal registered
 	 *            object.
@@ -1155,7 +1152,7 @@ public class Repository {
 	/**
 	 * This method checks, whether there is a named string attribute registered,
 	 * that is equal to the passed object and returns it.
-	 * 
+	 *
 	 * <p>
 	 * Equality is checked in terms of
 	 * <ul>
@@ -1163,14 +1160,14 @@ public class Repository {
 	 * <li><b>object.equals(other)</b></li>
 	 * </ul>
 	 * since internally the repository uses hash datastructures.
-	 * 
+	 *
 	 * <p>
 	 * By default the {@link RepositoryObject#equals(Object)} method is only
 	 * based on the absolute path of the repository object and the repositories
 	 * of the two objects, this means two repository objects are considered the
 	 * same if they are stored in the same repository and they have the same
 	 * absolute path.
-	 * 
+	 *
 	 * @param object
 	 *            The object for which we want to find an equal registered
 	 *            object.
@@ -1186,7 +1183,7 @@ public class Repository {
 	/**
 	 * This method looks up and returns (if it exists) the runresult with the
 	 * given unique identifier.
-	 * 
+	 *
 	 * @param runIdentifier
 	 *            The identifier of the runresult.
 	 * @return The runresult with the given identifier.
@@ -1207,7 +1204,7 @@ public class Repository {
 	 * This method looks up and returns (if it exists) the class of the
 	 * runresult format parser corresponding to the runresult format with the
 	 * given name.
-	 * 
+	 *
 	 * @param runResultFormatName
 	 *            The runresult format name.
 	 * @return The runresult format parser for the given runresult format name,
@@ -1276,7 +1273,7 @@ public class Repository {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return The supervisor thread is responsible for starting and keeping
 	 *         alive all threads that check the repository on the filesystem for
 	 *         changes.
@@ -1303,7 +1300,7 @@ public class Repository {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -1316,7 +1313,7 @@ public class Repository {
 	 * logger-level in subclasses of this class. For example in
 	 * RunResultRepostories we do not want to log everything, therefore we
 	 * change the log level to debug.
-	 * 
+	 *
 	 * @param The
 	 *            message to log.
 	 */
@@ -1337,7 +1334,7 @@ public class Repository {
 	/**
 	 * This method initializes all attribute maps and all variables, that keep
 	 * registered repository objects.
-	 * 
+	 *
 	 * <p>
 	 * A helper method for and invoked by
 	 * {@link #Repository(String, Repository, long, long, long, long, long, long, long)}
@@ -1471,7 +1468,7 @@ public class Repository {
 	 * Initializes this repository by creating a supervisor thread
 	 * {@link #createSupervisorThread()} and waiting until
 	 * {@link #isInitialized()} returns true.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 *             Is thrown, if the current thread is interrupted while waiting
 	 *             for finishing the initialization process.
@@ -1524,7 +1521,7 @@ public class Repository {
 	/**
 	 * This method sets all the absolute paths used by the repository to store
 	 * any kinds of files and data on the filesystem.
-	 * 
+	 *
 	 * <p>
 	 * This method only initializes the attributes itself to valid paths, but
 	 * does not create or ensure any folder structure.
@@ -1532,9 +1529,9 @@ public class Repository {
 	 * A helper method of
 	 * {@link #Repository(String, Repository, long, long, long, long, long, long, long)}
 	 * .
-	 * 
+	 *
 	 * @throws InvalidRepositoryException
-	 * 
+	 *
 	 */
 	@SuppressWarnings("unused")
 	protected void initializePaths() throws InvalidRepositoryException {
@@ -1549,7 +1546,7 @@ public class Repository {
 	/**
 	 * This method checks, whether this repository has been initialized. A
 	 * repository is initialized, if the following invocations return true:
-	 * 
+	 *
 	 * <ul>
 	 * <li><b>getDataSetFormatsInitialized()</b></li>
 	 * <li><b>getDataSetTypesInitialized()</b></li>
@@ -1568,7 +1565,7 @@ public class Repository {
 	 * <li><b>getDataSetGeneratorsInitialized()</b></li>
 	 * <li><b>getDistanceMeasuresInitialized()</b></li>
 	 * </ul>
-	 * 
+	 *
 	 * @return True, if this repository is initialized.
 	 */
 	public boolean isInitialized() {
@@ -1587,7 +1584,7 @@ public class Repository {
 	/**
 	 * This method checks whether a parser has been registered for the given
 	 * runresult format class.
-	 * 
+	 *
 	 * @param runResultFormat
 	 *            The class for which we want to know whether a parser has been
 	 *            registered.
@@ -1601,7 +1598,7 @@ public class Repository {
 	/**
 	 * This method checks whether a parser has been registered for the dataset
 	 * format with the given class name.
-	 * 
+	 *
 	 * @param runResultFormatName
 	 *            The class for which we want to know whether a parser has been
 	 *            registered.
@@ -1616,7 +1613,7 @@ public class Repository {
 	 * This method registers a new named double attribute. If an old object was
 	 * already registered that equals the new object, the new object is not
 	 * registered.
-	 * 
+	 *
 	 * @param object
 	 *            The new object to register.
 	 * @return True, if the new object has been registered.
@@ -1633,7 +1630,7 @@ public class Repository {
 	 * This method registers a new named integer attribute. If an old object was
 	 * already registered that equals the new object, the new object is not
 	 * registered.
-	 * 
+	 *
 	 * @param object
 	 *            The new object to register.
 	 * @return True, if the new object has been registered.
@@ -1650,7 +1647,7 @@ public class Repository {
 	 * This method registers a new named string attribute. If an old object was
 	 * already registered that equals the new object, the new object is not
 	 * registered.
-	 * 
+	 *
 	 * @param object
 	 *            The new object to register.
 	 * @return True, if the new object has been registered.
@@ -1701,7 +1698,7 @@ public class Repository {
 
 	/**
 	 * This method registers a dataset format parser.
-	 * 
+	 *
 	 * @param dsFormatParser
 	 *            The dataset format parser to register.
 	 * @return True, if the dataset format parser replaced an old object.
@@ -1714,7 +1711,7 @@ public class Repository {
 	/**
 	 * This method checks whether a parser has been registered for the given
 	 * dataset format class.
-	 * 
+	 *
 	 * @param dsFormat
 	 *            The class for which we want to know whether a parser has been
 	 *            registered.
@@ -1727,7 +1724,7 @@ public class Repository {
 
 	/**
 	 * This method registers a new runresult format parser class.
-	 * 
+	 *
 	 * @param runResultFormatParser
 	 *            The new class to register.
 	 * @return True, if the new class replaced an old one.
@@ -1747,7 +1744,7 @@ public class Repository {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -1757,7 +1754,7 @@ public class Repository {
 
 	/**
 	 * This method unregisters the passed object.
-	 * 
+	 *
 	 * @param object
 	 *            The object to be removed.
 	 * @return True, if the object was remved successfully
@@ -1768,7 +1765,7 @@ public class Repository {
 
 	/**
 	 * This method unregisters the passed object.
-	 * 
+	 *
 	 * @param object
 	 *            The object to be removed.
 	 * @return True, if the object was remved successfully
@@ -1779,7 +1776,7 @@ public class Repository {
 
 	/**
 	 * This method unregisters the passed object.
-	 * 
+	 *
 	 * @param object
 	 *            The object to be removed.
 	 * @return True, if the object was remved successfully
@@ -1790,7 +1787,7 @@ public class Repository {
 
 	/**
 	 * This method unregisters the passed object.
-	 * 
+	 *
 	 * @param object
 	 *            The object to be removed.
 	 * @return True, if the object was remved successfully
@@ -1804,7 +1801,7 @@ public class Repository {
 	 * This method is invoked by
 	 * {@link Run#setStatus(de.clusteval.run.RUN_STATUS)} and ensures that the
 	 * new status is passed to the whole framework, e.g. the frontend database.
-	 * 
+	 *
 	 * @param run
 	 *            The run which changed its status.
 	 * @param newStatus
@@ -1820,7 +1817,7 @@ public class Repository {
 	 * logger-level in subclasses of this class. For example in
 	 * RunResultRepostories we do not want to log everything, therefore we
 	 * change the log level to debug.
-	 * 
+	 *
 	 * @param The
 	 *            message to log.
 	 */
@@ -1844,7 +1841,7 @@ public class Repository {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return A map containing dependencies between jar files that are loaded
 	 *         dynamically.
 	 */
@@ -1853,7 +1850,7 @@ public class Repository {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return The change dates of the jar files that were loaded dynamically by
 	 *         jar finder instances.
 	 */

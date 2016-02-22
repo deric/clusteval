@@ -4,27 +4,15 @@
  * are made available under the terms of the GNU Public License v3.0
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
- * 
+ *
  * Contributors:
  *     Christian Wiwie - initial API and implementation
  ******************************************************************************/
 /**
- * 
+ *
  */
 package de.clusteval.run;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.junit.runners.model.RunnerScheduler;
-
-import de.wiwie.wiutils.utils.Pair;
 import de.clusteval.cluster.quality.ClusteringQualityMeasure;
 import de.clusteval.context.Context;
 import de.clusteval.data.DataConfig;
@@ -42,16 +30,25 @@ import de.clusteval.run.runnable.ExecutionRunRunnable;
 import de.clusteval.run.runnable.RunRunnable;
 import de.clusteval.run.runnable.RunRunnableInitializationException;
 import de.wiwie.wiutils.file.FileUtils;
+import de.wiwie.wiutils.utils.Pair;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * An abstract class for all run types, that involve execution of clustering
  * tools and applying them to datasets.
- * 
+ *
  * <p>
  * An execution run has a list of program and data configurations. These are
  * pairwise combined and for every pair (see {@link #runPairs}) a runnable is
  * created and executed asynchronously by the {@link RunnerScheduler}.
- * 
+ *
  * <p>
  * The data and program configurations passed to this run are the same as the
  * objects stored in the repository. Thus those objects can change during
@@ -59,9 +56,9 @@ import de.wiwie.wiutils.file.FileUtils;
  * execution the original objects are cloned in
  * {@link #initRunPairs(List, List)} before they are passed to the run runnables
  * which are performed asynchronously.
- * 
+ *
  * @author Christian Wiwie
- * 
+ *
  */
 public abstract class ExecutionRun extends Run {
 
@@ -95,7 +92,7 @@ public abstract class ExecutionRun extends Run {
 
 	/**
 	 * A list of program configurations contained in this run.
-	 * 
+	 *
 	 * <p>
 	 * The references to program configurations in this list are the same as
 	 * those stored in the repository. That means the objects in this list can
@@ -107,7 +104,7 @@ public abstract class ExecutionRun extends Run {
 
 	/**
 	 * A list of data configurations contained in this run.
-	 * 
+	 *
 	 * <p>
 	 * The references to data configurations in this list are the same as those
 	 * stored in the repository. That means the objects in this list can change
@@ -137,7 +134,7 @@ public abstract class ExecutionRun extends Run {
 	/**
 	 * The constructor of this class takes a name, date and configuration. It is
 	 * protected, to force usage of the static method
-	 * 
+	 *
 	 * @param repository
 	 *            the repository
 	 * @param register
@@ -202,7 +199,7 @@ public abstract class ExecutionRun extends Run {
 
 	/**
 	 * Copy constructor for execution runs.
-	 * 
+	 *
 	 * @param other
 	 *            The execution run to be cloned.
 	 * @throws RegisterException
@@ -224,7 +221,7 @@ public abstract class ExecutionRun extends Run {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see framework.repository.RepositoryObject#clone()
 	 */
 	@Override
@@ -243,7 +240,7 @@ public abstract class ExecutionRun extends Run {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see run.Run#getUpperLimitProgress()
 	 */
 	@Override
@@ -257,7 +254,7 @@ public abstract class ExecutionRun extends Run {
 	 * every dataset contained in this run's configuration. For every such
 	 * combination a runnable is performed and the result of this will be added
 	 * to the list of run results.
-	 * 
+	 *
 	 * @throws RunRunnableInitializationException
 	 * @throws RunInitializationException
 	 */
@@ -286,7 +283,7 @@ public abstract class ExecutionRun extends Run {
 	 * every dataset contained in this run's configuration. For every such
 	 * combination a runnable is performed and the result of this will be added
 	 * to the list of run results.
-	 * 
+	 *
 	 * @throws RunRunnableInitializationException
 	 * @throws RunInitializationException
 	 */
@@ -314,7 +311,7 @@ public abstract class ExecutionRun extends Run {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see run.Run#getNumberOfRunRunnables()
 	 */
 	@Override
@@ -593,7 +590,7 @@ public abstract class ExecutionRun extends Run {
 	 * methods. This method is responsible to instanciate objects of the
 	 * corresponding runnable runtime type for the runtime type of this run.
 	 * Override it in your own sub type of the ExecutionRun class.
-	 * 
+	 *
 	 * @param runScheduler
 	 *            The run scheduler to which the newly created runnable should
 	 *            be passed.
@@ -624,7 +621,7 @@ public abstract class ExecutionRun extends Run {
 	 * every data configuration. This can be due to the fact, that some quality
 	 * measures require a goldstandard. If a data configuration does not contain
 	 * a goldstandard, such quality measures cannot be calculated.
-	 * 
+	 *
 	 * @param dataConfigs
 	 *            The data configurations to check.
 	 * @param qualityMeasures
@@ -665,13 +662,13 @@ public abstract class ExecutionRun extends Run {
 	/**
 	 * For every pair of program and data configuration we create an object and
 	 * add it to the list of runpairs.
-	 * 
+	 *
 	 * <p>
 	 * This method clones the data and program configurations of this execution
 	 * run, such that only cloned objects are passed to the threads. This
 	 * ensures, that changes that happen to the configurations during runtime do
 	 * not affect the runs currently performing.
-	 * 
+	 *
 	 * @param programConfigs
 	 *            The list of program configurations of this run.
 	 * @param dataConfigs
@@ -743,7 +740,7 @@ public abstract class ExecutionRun extends Run {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.wiwie.wiutils.utils.RepositoryObject#notify(utils.RepositoryEvent)
 	 */
 	@Override
