@@ -4,51 +4,15 @@
  * are made available under the terms of the GNU Public License v3.0
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
- * 
+ *
  * Contributors:
  *     Christian Wiwie - initial API and implementation
  ******************************************************************************/
 /**
- * 
+ *
  */
 package de.clusteval.framework;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.rmi.AccessException;
-import java.rmi.AlreadyBoundException;
-import java.rmi.NoSuchObjectException;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.PosixParser;
-import org.apache.commons.configuration.ConfigurationException;
-import org.rosuda.REngine.Rserve.RserveException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import de.wiwie.wiutils.utils.Pair;
-import de.wiwie.wiutils.utils.Triple;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.PatternLayout;
@@ -130,6 +94,40 @@ import de.clusteval.serverclient.IBackendServer;
 import de.clusteval.utils.InvalidConfigurationFileException;
 import de.clusteval.utils.MyHighlightingCompositeConverter;
 import de.wiwie.wiutils.file.FileUtils;
+import de.wiwie.wiutils.utils.Pair;
+import de.wiwie.wiutils.utils.Triple;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.NoSuchObjectException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.PosixParser;
+import org.apache.commons.configuration.ConfigurationException;
+import org.rosuda.REngine.Rserve.RserveException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class represents the server of the backend of the framework. The server
@@ -137,21 +135,21 @@ import de.wiwie.wiutils.file.FileUtils;
  * resuming or terminating runs, shutdown the framework or get status
  * information about various objects available in the repository (e.g. datasets,
  * runs, programs,...).
- * 
+ *
  * <p>
  * You can start the server by invoking the {@link #main(String[])} method. If
  * you do so, you can pass either a path to an existing repository or a new
  * repository is automatically created in the subfolder 'repository'.
- * 
+ *
  * <p>
  * When the server is started it registers itself in the RMI registry (remote
  * method invocation), either with the default port 1099 or if specified with
  * -hostport xxxx under any other port.
- * 
+ *
  * <p>
  * The start of the server requires a running Rserve instance. If this cannot be
  * found, the server will not start.
- * 
+ *
  * @author Christian Wiwie
  */
 public class ClustevalBackendServer implements IBackendServer {
@@ -274,7 +272,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	/**
 	 * This method returns file objects that can be used to synchronize process
 	 * wide access to files.
-	 * 
+	 *
 	 * @param file
 	 *            The file object for which you want a common file object.
 	 * @return A common file object for the passed file, that is stored
@@ -287,7 +285,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/**
 	 * Instantiates a new backend server.
-	 * 
+	 *
 	 * @param absRepositoryPath
 	 *            The absolute path to the repository used by this server.
 	 * @throws FileNotFoundException
@@ -307,7 +305,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	/**
 	 * Instantiates a new backend server and registers the server at the RMI
 	 * registry.
-	 * 
+	 *
 	 * @param repository
 	 *            The repository used by this server.
 	 * @throws InterruptedException
@@ -342,7 +340,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/**
 	 * Gets the repository.
-	 * 
+	 *
 	 * @return The repository used by this server.
 	 * @see #repository
 	 */
@@ -354,7 +352,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.EvalServer#performRun(java.lang.String,
 	 * java.lang.String)
 	 */
@@ -373,7 +371,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.EvalServer#performRun(java.lang.String,
 	 * java.lang.String)
 	 */
@@ -391,7 +389,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * repository</li>
 	 * <li><b>-port <port></b>: The port on which this server should listen</li>
 	 * </ul>
-	 * 
+	 *
 	 * @param args
 	 *            Arguments to control the behaviour of the server
 	 * @throws FileNotFoundException
@@ -506,7 +504,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	 * <li><b>FileAppender</b>: Writes the logging output in lilith binary
 	 * format to the file clustevalServer.lilith</li>
 	 * </ul>
-	 * 
+	 *
 	 * @param cmd
 	 *            The command line parameters including possible options of
 	 *            logging
@@ -607,7 +605,7 @@ public class ClustevalBackendServer implements IBackendServer {
 	/**
 	 * A helper method for {@link #ClusteringEvalFramework(Repository)}, which
 	 * registers the new backend server instance in the RMI registry.
-	 * 
+	 *
 	 * @param framework
 	 *            The backend server to register.
 	 * @return True, if the server has been registered successfully
@@ -636,19 +634,19 @@ public class ClustevalBackendServer implements IBackendServer {
 	/**
 	 * A helper method for {@link #shutdown(String, long)}, which terminates
 	 * this framework after a certain timeout.
-	 * 
+	 *
 	 * <p>
 	 * This method first interrupts the supervisor thread (see
 	 * {@link SupervisorThread}) and waits for its termination until the timeout
 	 * was reached.
-	 * 
+	 *
 	 * <p>
 	 * Then the backend server instance is unregistered from the RMI registry
 	 * and the repository of this framework is removed from the set of all
 	 * registered repositories.
-	 * 
+	 *
 	 * @throws InterruptedException
-	 * 
+	 *
 	 */
 	private void terminate(final long forceTimeout) throws InterruptedException {
 		this.repository.terminateSupervisorThread();
@@ -676,7 +674,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.EvalServer#getClientId()
 	 */
 	@SuppressWarnings("unused")
@@ -687,7 +685,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.EvalServer#getRunStatusForClientId(java.lang.String)
 	 */
 	@SuppressWarnings("unused")
@@ -705,7 +703,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.EvalServer#getRuns()
 	 */
 	@Override
@@ -718,7 +716,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.EvalServer#getDataSets()
 	 */
 	@Override
@@ -731,7 +729,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.EvalServer#getPrograms()
 	 */
 	@Override
@@ -764,7 +762,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.EvalServer#getRunResumes()
 	 */
 	@SuppressWarnings("unused")
@@ -783,7 +781,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.EvalServer#getRunResults(java.lang.String,
 	 * java.lang.String)
 	 */
@@ -795,8 +793,8 @@ public class ClustevalBackendServer implements IBackendServer {
 
 		List<ParameterOptimizationResult> list = new ArrayList<ParameterOptimizationResult>();
 		try {
-			ParameterOptimizationResult.parseFromRunResultFolder(repository,
-					new File(FileUtils.buildPath(repository.getBasePath(RunResult.class), uniqueRunIdentifier)), list,
+                    ParameterOptimizationResult.parseFromRunResultFolder2(repository,
+                       					new File(FileUtils.buildPath(repository.getBasePath(RunResult.class), uniqueRunIdentifier)), list,
 					false, false, false);
 			for (ParameterOptimizationResult r : list) {
 				String dataConfig = r.getMethod().getDataConfig().getName();
@@ -907,7 +905,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * serverclient.IBackendServer#setLogLevel(ch.qos.logback.classic.Level)
 	 */
@@ -919,7 +917,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/**
 	 * Change the log level of this JVM.
-	 * 
+	 *
 	 * @param logLevel
 	 *            The new log level
 	 */
@@ -929,7 +927,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.IBackendServer#getDataSetGenerators()
 	 */
 	@Override
@@ -947,7 +945,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.IBackendServer#getDataSetRandomizers()
 	 */
 	@Override
@@ -964,7 +962,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.IBackendServer#getOptionsForDataSetGenerator(java.lang.
 	 * String )
 	 */
@@ -986,7 +984,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.IBackendServer#generateDataSet(java.lang.String,
 	 * java.lang.String[])
 	 */
@@ -1018,7 +1016,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.IBackendServer#getQueue()
 	 */
 	@SuppressWarnings("unused")
@@ -1030,7 +1028,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.clusteval.serverclient.IBackendServer#getActiveThreads()
 	 */
 	@Override
@@ -1077,7 +1075,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * serverclient.IBackendServer#getOptionsForDataRandomizer(java.lang.String
 	 * )
@@ -1100,7 +1098,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see serverclient.IBackendServer#randomizeDataConfig(java.lang.String,
 	 * java.lang.String[])
 	 */
@@ -1120,7 +1118,7 @@ public class ClustevalBackendServer implements IBackendServer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.clusteval.serverclient.IBackendServer#setThreadNumber(int)
 	 */
 	@Override

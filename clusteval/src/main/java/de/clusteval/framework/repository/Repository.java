@@ -231,7 +231,7 @@ public class Repository {
 	/**
 	 * The absolute path of the root of this repository.
 	 */
-	protected String basePath;
+    public String basePath;
 
 	/**
 	 * The absolute path to the directory within this repository, where all
@@ -784,8 +784,8 @@ public class Repository {
 				|| (dynamicEntityFound = this.dynamicRepositoryEntities.containsKey(c)))
 				&& object.getClass().getSuperclass() != null
 				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
-			return this.getRegisteredObject((Class<? extends RepositoryObject>) c.getSuperclass(), object,
-					ignoreChangeDate);
+                    return this.getRegisteredObject((Class<RepositoryObject>) c.getSuperclass(), object,
+                       					ignoreChangeDate);
 		}
 		if (staticEntityFound)
 			return this.staticRepositoryEntities.get(c).getRegisteredObject(object, ignoreChangeDate);
@@ -808,7 +808,7 @@ public class Repository {
 				|| (dynamicEntityFound = this.dynamicRepositoryEntities.containsKey(c)))
 				&& object.getClass().getSuperclass() != null
 				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
-			return this.unregister((Class<? extends RepositoryObject>) c.getSuperclass(), object);
+                    return this.unregister((Class<RepositoryObject>) c.getSuperclass(), object);
 		}
 
 		if (staticEntityFound)
@@ -834,7 +834,7 @@ public class Repository {
 				&& object.getClass().getSuperclass() != null
 				&& RepositoryObject.class.isAssignableFrom(c.getSuperclass())) {
 			// we only return, if we found the right class
-			return this.register((Class<? extends RepositoryObject>) c.getSuperclass(), object);
+			return this.register((Class<RepositoryObject>) c.getSuperclass(), object);
 		}
 
 		if (staticEntityFound)
@@ -874,7 +874,7 @@ public class Repository {
 	public <T extends RepositoryObject, S extends T> boolean registerClass(final Class<T> base, final Class<S> c) {
 		if (!this.dynamicRepositoryEntities.containsKey(base) && base.getSuperclass() != null
 				&& RepositoryObject.class.isAssignableFrom(base.getSuperclass())) {
-			return this.registerClass((Class<? extends RepositoryObject>) base.getSuperclass(), c);
+                    return this.registerClass((Class<RepositoryObject>) base.getSuperclass(), c);
 		}
 		return this.dynamicRepositoryEntities.get(base).registerClass(c);
 	}
@@ -887,7 +887,7 @@ public class Repository {
 	public <T extends RepositoryObject, S extends T> boolean unregisterClass(final Class<T> base, final Class<S> c) {
 		if (!this.dynamicRepositoryEntities.containsKey(base) && base.getSuperclass() != null
 				&& RepositoryObject.class.isAssignableFrom(base.getSuperclass())) {
-			return this.unregisterClass((Class<? extends RepositoryObject>) base.getSuperclass(), c);
+                    return this.unregisterClass((Class<RepositoryObject>) base.getSuperclass(), c);
 		}
 		return this.dynamicRepositoryEntities.get(base).unregisterClass(c);
 	}

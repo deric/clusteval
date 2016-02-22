@@ -4,12 +4,12 @@
  * are made available under the terms of the GNU Public License v3.0
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
- * 
+ *
  * Contributors:
  *     Christian Wiwie - initial API and implementation
  ******************************************************************************/
 /**
- * 
+ *
  */
 package de.clusteval.framework.threading;
 
@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
@@ -50,16 +49,16 @@ import de.wiwie.wiutils.file.FileUtils;
 /**
  * Threads of this class are responsible for scheduling, creating, starting and
  * terminating runs.
- * 
+ *
  * <p>
  * The methods {@link #schedule(String, String)},
  * {@link #scheduleResume(String, String)} and
  * {@link #terminate(String, String)} of this thread are invoked by the backend
  * server {@link ClustevalBackendServer} which in turn gets its commands from a
  * client.
- * 
+ *
  * @author Christian Wiwie
- * 
+ *
  */
 public class RunSchedulerThread extends ClustevalThread {
 
@@ -106,9 +105,9 @@ public class RunSchedulerThread extends ClustevalThread {
 
 	/**
 	 * Constructor of run scheduler threads.
-	 * 
+	 *
 	 * @param supervisorThread
-	 * 
+	 *
 	 * @param repository
 	 *            The repository this run scheduler belongs to. This scheduler
 	 *            can only control runs that are contained in this repository.
@@ -213,7 +212,7 @@ public class RunSchedulerThread extends ClustevalThread {
 	 * {@link ClustevalBackendServer#performRun(String, String)} and schedules a
 	 * run. As soon as ressources are available this run is then performed in an
 	 * asynchronous way in its own thread.
-	 * 
+	 *
 	 * @param clientId
 	 *            The id of the client that wants to schedule this run.
 	 * @param runId
@@ -267,7 +266,7 @@ public class RunSchedulerThread extends ClustevalThread {
 	 * {@link ClustevalBackendServer#resumeRun(String, String)} and schedules a
 	 * resume of a run. As soon as ressources are available this resume is then
 	 * performed in an asynchronous way in its own thread.
-	 * 
+	 *
 	 * @param clientId
 	 *            The id of the client that wants to schedule this run.
 	 * @param uniqueRunResultIdentifier
@@ -324,7 +323,7 @@ public class RunSchedulerThread extends ClustevalThread {
 	 * This method is invoked by
 	 * {@link ClustevalBackendServer#terminateRun(String, String)} and
 	 * terminates a run that is currently being executed.
-	 * 
+	 *
 	 * @param clientId
 	 *            The id of the client that wants to terminate this run.
 	 * @param runId
@@ -405,7 +404,7 @@ public class RunSchedulerThread extends ClustevalThread {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return A collection of runs, that have been executed or resumed.
 	 */
 	public Set<Run> getRuns() {
@@ -418,12 +417,12 @@ public class RunSchedulerThread extends ClustevalThread {
 	}
 
 	/**
-	 * 
+	 *
 	 * This method is invoked by
 	 * {@link ClustevalBackendServer#getRunStatusForClientId(String)} and gets
 	 * the status of all runs and run resumes scheduled and executed by the user
 	 * with the given id.
-	 * 
+	 *
 	 * @param clientId
 	 *            The id of the client for which we want to know the status of
 	 *            its scheduled and executed runs and run resumes.
@@ -463,7 +462,7 @@ public class RunSchedulerThread extends ClustevalThread {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Thread#run()
 	 */
 	@Override
@@ -495,7 +494,7 @@ public class RunSchedulerThread extends ClustevalThread {
 
 						/*
 						 * (non-Javadoc)
-						 * 
+						 *
 						 * @see java.lang.Runnable#run()
 						 */
 						@Override
@@ -513,11 +512,11 @@ public class RunSchedulerThread extends ClustevalThread {
 					};
 					t.start();
 				} else {
-					List<ParameterOptimizationResult> results = new ArrayList<ParameterOptimizationResult>();
+                                    ArrayList<ParameterOptimizationResult> results = new ArrayList<ParameterOptimizationResult>();
 					try {
 						run = ParameterOptimizationResult
-								.parseFromRunResultFolder(
-										repository,
+                                                        .parseFromRunResultFolder2(
+                                                      										repository,
 										new File(FileUtils.buildPath(repository
 												.getBasePath(RunResult.class),
 												runId)), results, false, false,
@@ -535,7 +534,7 @@ public class RunSchedulerThread extends ClustevalThread {
 
 							/*
 							 * (non-Javadoc)
-							 * 
+							 *
 							 * @see java.lang.Runnable#run()
 							 */
 							@Override
@@ -573,7 +572,7 @@ public class RunSchedulerThread extends ClustevalThread {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Thread#interrupt()
 	 */
 	@Override
@@ -590,7 +589,7 @@ public class RunSchedulerThread extends ClustevalThread {
 	 * This method takes a {@link RunRunnable} and adds it to the thread pool of
 	 * this run scheduler thread. The thread pool then determines, when the
 	 * runnable can and will be performed depending on the available ressources.
-	 * 
+	 *
 	 * @param runRunnable
 	 *            The new runnable to perform.
 	 * @return A future object, that allows to retrieve the current status of

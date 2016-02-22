@@ -4,26 +4,15 @@
  * are made available under the terms of the GNU Public License v3.0
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
- * 
+ *
  * Contributors:
  *     Christian Wiwie - initial API and implementation
  ******************************************************************************/
 /**
- * 
+ *
  */
 package de.clusteval.run.result;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.configuration.ConfigurationException;
-
-import de.wiwie.wiutils.utils.Pair;
 import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
 import de.clusteval.cluster.paramOptimization.InvalidOptimizationParameterException;
@@ -77,13 +66,22 @@ import de.clusteval.run.statistics.UnknownRunDataStatisticException;
 import de.clusteval.run.statistics.UnknownRunStatisticException;
 import de.clusteval.utils.InvalidConfigurationFileException;
 import de.wiwie.wiutils.file.FileUtils;
+import de.wiwie.wiutils.utils.Pair;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.configuration.ConfigurationException;
 
 /**
  * A wrapper class for parameter optimization runresults produced by parameter
  * optimization runs.
- * 
+ *
  * @author Christian Wiwie
- * 
+ *
  */
 
 public class ParameterOptimizationResult extends ExecutionRunResult
@@ -147,8 +145,8 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 * @throws UnknownRunResultPostprocessorException
 	 * @throws UnknownDataRandomizerException
 	 */
-	public static Run parseFromRunResultFolder(final Repository parentRepository, final File runResultFolder,
-			final List<ParameterOptimizationResult> result, final boolean parseClusterings,
+    public static Run parseFromRunResultFolder2(final Repository parentRepository, final File runResultFolder,
+         			final List<ParameterOptimizationResult> result, final boolean parseClusterings,
 			final boolean storeClusterings, final boolean register) throws IOException, UnknownRunResultFormatException,
 					UnknownDataSetFormatException, UnknownClusteringQualityMeasureException, InvalidRunModeException,
 					UnknownParameterOptimizationMethodException, NoOptimizableProgramParameterException,
@@ -244,8 +242,8 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 * @throws RegisterException
 	 * @throws RunResultParseException
 	 */
-	public static ParameterOptimizationResult parseFromRunResultCompleteFile(Repository repository,
-			ParameterOptimizationRun run, ParameterOptimizationMethod method, File completeFile,
+    public static ParameterOptimizationResult parseFromRunResultCompleteFile(final Repository repository,
+         			ParameterOptimizationRun run, ParameterOptimizationMethod method, File completeFile,
 			final boolean parseClusterings, final boolean storeClusterings, final boolean register)
 					throws RegisterException, RunResultParseException {
 		ParameterOptimizationResult result = null;
@@ -296,7 +294,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 
 	/**
 	 * By default we do not parse clusterings.
-	 * 
+	 *
 	 * @param repository
 	 * @param changeDate
 	 * @param absPath
@@ -304,7 +302,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	 * @param run
 	 * @param method
 	 * @throws RegisterException
-	 * 
+	 *
 	 */
 	public ParameterOptimizationResult(final Repository repository, final long changeDate, final File absPath,
 			final String runIdentString, final Run run, final ParameterOptimizationMethod method)
@@ -315,7 +313,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	/**
 	 * Use this constructor if you want to parse clusterings as well. They will
 	 * be stored in a map from parameter sets to the clusterings.
-	 * 
+	 *
 	 * @param repository
 	 * @param register
 	 * @param changeDate
@@ -356,7 +354,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 
 	/**
 	 * The copy constructor of run results.
-	 * 
+	 *
 	 * @param other
 	 *            The object to clone.
 	 * @throws RegisterException
@@ -445,7 +443,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see run.result.RunResult#clone()
 	 */
 	@Override
@@ -462,10 +460,10 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	/**
 	 * A convenience method for
 	 * {@link #put(long, ParameterSet, ClusteringQualitySet, Clustering)}.
-	 * 
+	 *
 	 * @param iterationNumber
 	 *            The number of the iteration.
-	 * 
+	 *
 	 * @param last
 	 *            The parameter set for which we want to add clustering
 	 *            qualities.
@@ -481,10 +479,10 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	/**
 	 * This method adds the given qualities for the given parameter set and
 	 * resulting clustering.
-	 * 
+	 *
 	 * @param iterationNumber
 	 *            The number of the iteration.
-	 * 
+	 *
 	 * @param last
 	 *            The parameter set for which we want to add clustering
 	 *            qualities.
@@ -630,7 +628,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.clusteval.run.result.RunResult#getRun()
 	 */
 	@Override
@@ -640,7 +638,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.clusteval.run.result.RunResult#isInMemory()
 	 */
 	@Override
@@ -650,7 +648,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.clusteval.run.result.RunResult#loadIntoMemory()
 	 */
 	@Override
@@ -725,7 +723,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 	}
 
 	/**
-	 * 
+	 *
 	 * @param paramSet
 	 *            The parameter set for which we want to know the resulting
 	 *            clustering.
@@ -737,7 +735,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -784,7 +782,7 @@ public class ParameterOptimizationResult extends ExecutionRunResult
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Iterable#iterator()
 	 */
 	@Override
@@ -807,7 +805,7 @@ class ParameterOptimizationResultIterator implements Iterator<Pair<ParameterSet,
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.util.Iterator#hasNext()
 	 */
 	@Override
@@ -820,7 +818,7 @@ class ParameterOptimizationResultIterator implements Iterator<Pair<ParameterSet,
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.util.Iterator#next()
 	 */
 	@Override
@@ -831,7 +829,7 @@ class ParameterOptimizationResultIterator implements Iterator<Pair<ParameterSet,
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.util.Iterator#remove()
 	 */
 	@Override

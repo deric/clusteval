@@ -4,33 +4,15 @@
  * are made available under the terms of the GNU Public License v3.0
  * which accompanies this distribution, and is available at
  * http://www.gnu.org/licenses/gpl.html
- * 
+ *
  * Contributors:
  *     Christian Wiwie - initial API and implementation
  ******************************************************************************/
 /**
- * 
+ *
  */
 package de.clusteval.tools;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.configuration.ConfigurationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import de.wiwie.wiutils.utils.ProgressPrinter;
-import de.wiwie.wiutils.utils.parse.TextFileParser;
-import de.wiwie.wiutils.utils.parse.TextFileParser.OUTPUT_MODE;
 import ch.qos.logback.classic.Level;
 import de.clusteval.cluster.Clustering;
 import de.clusteval.cluster.paramOptimization.IncompatibleParameterOptimizationMethodException;
@@ -92,10 +74,26 @@ import de.clusteval.utils.FormatConversionException;
 import de.clusteval.utils.InvalidConfigurationFileException;
 import de.clusteval.utils.RNotAvailableException;
 import de.wiwie.wiutils.file.FileUtils;
+import de.wiwie.wiutils.utils.ProgressPrinter;
+import de.wiwie.wiutils.utils.parse.TextFileParser;
+import de.wiwie.wiutils.utils.parse.TextFileParser.OUTPUT_MODE;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.apache.commons.configuration.ConfigurationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Christian Wiwie
- * 
+ *
  */
 public class ClustQualityEval {
 
@@ -151,8 +149,8 @@ public class ClustQualityEval {
 
 		List<ParameterOptimizationResult> result = new ArrayList<ParameterOptimizationResult>();
 		final ParameterOptimizationRun run = (ParameterOptimizationRun) ParameterOptimizationResult
-				.parseFromRunResultFolder(parent, new File(absRepoPath),
-						result, false, false, false);
+                        .parseFromRunResultFolder2(parent, new File(absRepoPath),
+                          						result, false, false, false);
 
 		this.dataConfig = this.repo.getStaticObjectWithName(DataConfig.class,
 				dataConfigName);
@@ -215,7 +213,7 @@ public class ClustQualityEval {
 
 							/*
 							 * (non-Javadoc)
-							 * 
+							 *
 							 * @see java.io.FilenameFilter#accept(java.io.File,
 							 * java.lang.String)
 							 */
@@ -340,7 +338,7 @@ public class ClustQualityEval {
 
 							/*
 							 * (non-Javadoc)
-							 * 
+							 *
 							 * @see
 							 * de.wiwie.wiutils.utils.parse.TextFileParser#processLine(java.lang.
 							 * String[], java.lang.String[])
@@ -352,7 +350,7 @@ public class ClustQualityEval {
 
 							/*
 							 * (non-Javadoc)
-							 * 
+							 *
 							 * @see
 							 * de.wiwie.wiutils.utils.parse.TextFileParser#getLineOutput(java
 							 * .lang .String[], java.lang.String[])
@@ -458,7 +456,7 @@ public class ClustQualityEval {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see de.wiwie.wiutils.utils.parse.TextFileParser#processLine(java.lang.String[],
 			 * java.lang.String[])
 			 */
@@ -468,7 +466,7 @@ public class ClustQualityEval {
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see de.wiwie.wiutils.utils.parse.TextFileParser#getLineOutput(java.lang.String[],
 			 * java.lang.String[])
 			 */
@@ -531,7 +529,7 @@ public class ClustQualityEval {
 class MyProgressPrinter extends ProgressPrinter {
 
 	/**
-	 * 
+	 *
 	 */
 	public MyProgressPrinter(final long upperLimit,
 			final boolean printOnNewPercent) {
@@ -540,7 +538,7 @@ class MyProgressPrinter extends ProgressPrinter {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.wiwie.wiutils.utils.ProgressPrinter#log(java.lang.String)
 	 */
 	@Override

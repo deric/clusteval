@@ -66,7 +66,7 @@ public class StubSQLCommunicator_pg extends SQLCommunicator {
 	 * @param repository
 	 */
 	public StubSQLCommunicator_pg(Repository repository) {
-		super(repository);
+            super(repository, null);
 	}
 
 	/*
