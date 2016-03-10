@@ -1,0 +1,15 @@
+-----------------------------------
+Running ... TransClust v1.0
+Mon Dec 21 11:48:49 CET 2015
+-----------------------------------
+
+Clustering Mode: cluster iterativ
+
+Threshold range: 0.0707070707070707 to 0.0707070707070707
+Stepsize: 0.01
+
+calculating clusters for threshold 0.0707070707070707
+
+fmeasure: 0.6676923076923077
+cluster distribution: 34:1, 
+

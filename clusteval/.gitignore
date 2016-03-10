@@ -1,5 +1,6 @@
 /bin/
 /registry/
+/repository/
 server.date
 client.date
 *.log

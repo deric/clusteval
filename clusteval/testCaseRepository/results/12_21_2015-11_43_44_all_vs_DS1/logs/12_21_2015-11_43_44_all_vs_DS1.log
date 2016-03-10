@@ -1,0 +1,7 @@
+12_21_2015-11_43_44	Starting run "all_vs_DS1"
+12_21_2015-11_43_44	Starting runThread "all_vs_DS1 (TransClust_2,DS1)"
+12_21_2015-11_43_44	Starting runThread "all_vs_DS1 (MCL_1,DS1)"
+12_21_2015-11_43_44	Starting runThread "all_vs_DS1 (APcluster_1,DS1)"
+12_21_2015-11_43_47	Finished runThread "all_vs_DS1 (MCL_1,DS1)" (Duration 2s 883ms)
+12_21_2015-11_45_00	Finished runThread "all_vs_DS1 (TransClust_2,DS1)" (Duration 1m 16s 284ms)
+12_21_2015-11_45_00	Finished run "all_vs_DS1" (Duration 1m 16s 326ms)

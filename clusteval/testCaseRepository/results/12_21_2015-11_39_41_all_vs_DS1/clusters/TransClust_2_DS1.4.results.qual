@@ -1,0 +1,6 @@
+FDRClusteringQualityMeasure	0.0
+TransClustF2ClusteringQualityMeasure	0.8263814616755792
+SensitivityClusteringQualityMeasure	0.6776556776556777
+FPRClusteringQualityMeasure	0.0
+RandIndexClusteringQualityMeasure	0.8431372549019608
+SpecificityClusteringQualityMeasure	1.0
