@@ -19,5 +19,5 @@ packages <- function(pkg){
     sapply(pkg, require, character.only = TRUE)
 }
 
-packages(c("cluster","fields","Hmisc","igraph","kernlab","lattice","MASS","mlbench","stats","proxy","fpc","clv","lars","kohonen","clusterGeneration"))
+packages(c("cluster","fields","Hmisc","igraph","kernlab","lattice","MASS","mlbench","stats","proxy","fpc","clv","lars","kohonen","clusterGeneration","tnet"))
 ```
